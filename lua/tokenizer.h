@@ -25,94 +25,107 @@ enum class token_type {
     STRING_RAW,
     STRING,
 
+    COMMENT_RAW,
     COMMENT,
 
     NUMBER_HEXADECIMAL,
     NUMBER_BINARY,
     NUMBER,
 
-    DECL_FUNCTION,
-    DECL_LOCAL,
+    KEYWORD,
+    PUNCTUATION
 
-    BOOL_FALSE,
-    BOOL_TRUE,
-
-    COND_AND,
-    COND_NOT,
-    COND_OR,
-
-    STAT_ELSE_IF,
-    STAT_ELSE,
-    STAT_FOR,
-    STAT_DO,
-    STAT_IF,
-    STAT_WHILE,
-    STAT_REPEAT,
-    STAT_RETURN,
-    STAT_GOTO,
-
-    LOOP_BREAK,
-    LOOP_CONTINUE,
-
-    KEYWORD_UNTIL,
-    KEYWORD_THEN,
-    KEYWORD_NIL,
-    KEYWORD_IN,
-    KEYWORD_END,
-
-
-    OP_EQ,
-    OP_NOT_EQ,
-    OP_LE,
-    OP_GE,
-    OP_LT,
-    OP_GT,
-
-    OP_ADD,
-    OP_SUB,
-    OP_MUL,
-    OP_DIV,
-    OP_MOD,
-    OP_POW,
-    OP_IDIV,
-    OP_CONCAT,
-
-    OP_BIT_AND,
-    OP_BIT_NOT,
-    OP_BIT_XOR,
-    OP_BIT_LSHIFT,
-    OP_BIT_RSHIFT,
-
-    OP_LEN,
-    OP_INDEX,
-    OP_INDEX_SYNTACTIC,
-
-    OP_ASSIGN,
-    OP_ASSIGN_ADD,
-    OP_ASSIGN_SUB,
-    OP_ASSIGN_MUL,
-    OP_ASSIGN_DIV,
-    OP_ASSIGN_MOD,
-    OP_ASSIGN_POW,
-    OP_ASSIGN_CONCAT,
-
-
-    PUNC_LPAREN,
-    PUNC_RPAREN,
-    PUNC_LBRACE,
-    PUNC_RBRACE,
-    PUNC_LBRACKET,
-    PUNC_RBRACKET,
-
-    PUNC_VARARGS,
-    PUNC_SEMICOLON,
-    PUNC_COMMA,
-    PUNC_LABEL
+    // DECL_FUNCTION,
+    // DECL_LOCAL,
+    //
+    // BOOL_FALSE,
+    // BOOL_TRUE,
+    //
+    // COND_AND,
+    // COND_NOT,
+    // COND_OR,
+    //
+    // STAT_ELSE_IF,
+    // STAT_ELSE,
+    // STAT_FOR,
+    // STAT_DO,
+    // STAT_IF,
+    // STAT_WHILE,
+    // STAT_REPEAT,
+    // STAT_RETURN,
+    // STAT_GOTO,
+    //
+    // LOOP_BREAK,
+    // LOOP_CONTINUE,
+    //
+    // KEYWORD_UNTIL,
+    // KEYWORD_THEN,
+    // KEYWORD_NIL,
+    // KEYWORD_IN,
+    // KEYWORD_END,
+    //
+    //
+    // OP_EQ,
+    // OP_NOT_EQ,
+    // OP_LE,
+    // OP_GE,
+    // OP_LT,
+    // OP_GT,
+    //
+    // OP_ADD,
+    // OP_SUB,
+    // OP_MUL,
+    // OP_DIV,
+    // OP_MOD,
+    // OP_POW,
+    // OP_IDIV,
+    // OP_CONCAT,
+    //
+    // OP_BIT_AND,
+    // OP_BIT_NOT,
+    // OP_BIT_XOR,
+    // OP_BIT_LSHIFT,
+    // OP_BIT_RSHIFT,
+    //
+    // OP_LEN,
+    // OP_INDEX,
+    // OP_INDEX_SYNTACTIC,
+    //
+    // OP_ASSIGN,
+    // OP_ASSIGN_ADD,
+    // OP_ASSIGN_SUB,
+    // OP_ASSIGN_MUL,
+    // OP_ASSIGN_DIV,
+    // OP_ASSIGN_MOD,
+    // OP_ASSIGN_POW,
+    // OP_ASSIGN_CONCAT,
+    //
+    //
+    // PUNC_LPAREN,
+    // PUNC_RPAREN,
+    // PUNC_LBRACE,
+    // PUNC_RBRACE,
+    // PUNC_LBRACKET,
+    // PUNC_RBRACKET,
+    //
+    // PUNC_VARARGS,
+    // PUNC_SEMICOLON,
+    // PUNC_COMMA,
+    // PUNC_LABEL
 };
 
 struct token {
+public:
     token_type type;
     std::string literal;
+
+    [[nodiscard]] bool is(const std::string& literal) const {
+        return this->literal == literal;
+    }
+
+    [[nodiscard]] bool is(const token_type& type, const std::string& literal) const {
+        return this->type == type && this->literal == literal;
+    }
 };
 
 
@@ -490,14 +503,14 @@ public:
 
         if (starts_with_long_bracket()) {
             parse_long_brackets();
+            add_token(token_type::COMMENT_RAW);
         }
         else {
             while (not_starts_with('\n')) {
                 bump();
             }
+            add_token(token_type::COMMENT);
         }
-
-        add_token(token_type::COMMENT);
     }
 
     void parse_identifier() {
@@ -508,75 +521,75 @@ public:
     }
 
     void parse_keyword() {
-        return_token("function", token_type::DECL_FUNCTION)
-        return_token("local", token_type::DECL_LOCAL)
+        return_token("function", token_type::KEYWORD)
+        return_token("local", token_type::KEYWORD)
 
-        return_token("false", token_type::BOOL_FALSE)
-        return_token("true", token_type::BOOL_TRUE)
+        return_token("false", token_type::KEYWORD)
+        return_token("true", token_type::KEYWORD)
 
-        return_token("and", token_type::COND_AND)
-        return_token("not", token_type::COND_NOT)
-        return_token("or", token_type::COND_OR)
+        return_token("and", token_type::KEYWORD)
+        return_token("not", token_type::KEYWORD)
+        return_token("or", token_type::KEYWORD)
 
-        return_token("elseif", token_type::STAT_ELSE_IF)
-        return_token("else", token_type::STAT_ELSE)
-        return_token("for", token_type::STAT_FOR)
-        return_token("do", token_type::STAT_DO)
-        return_token("if", token_type::STAT_IF)
-        return_token("while", token_type::STAT_WHILE)
-        return_token("repeat", token_type::STAT_REPEAT)
-        return_token("return", token_type::STAT_RETURN)
+        return_token("elseif", token_type::KEYWORD)
+        return_token("else", token_type::KEYWORD)
+        return_token("for", token_type::KEYWORD)
+        return_token("do", token_type::KEYWORD)
+        return_token("if", token_type::KEYWORD)
+        return_token("while", token_type::KEYWORD)
+        return_token("repeat", token_type::KEYWORD)
+        return_token("return", token_type::KEYWORD)
 
-        return_token("break", token_type::LOOP_BREAK)
-        return_token("continue", token_type::LOOP_CONTINUE)
+        return_token("break", token_type::KEYWORD)
+        return_token("continue", token_type::KEYWORD)
 
-        return_token("until", token_type::KEYWORD_UNTIL)
-        return_token("then", token_type::KEYWORD_THEN)
-        return_token("nil", token_type::KEYWORD_NIL)
-        return_token("in", token_type::KEYWORD_IN)
-        return_token("end", token_type::KEYWORD_END)
+        return_token("until", token_type::KEYWORD)
+        return_token("then", token_type::KEYWORD)
+        return_token("nil", token_type::KEYWORD)
+        return_token("in", token_type::KEYWORD)
+        return_token("end", token_type::KEYWORD)
     }
 
     void parse_punctuation() {
-        return_token("...", token_type::PUNC_VARARGS)
+        return_token("...", token_type::PUNCTUATION)
 
-        return_token("==", token_type::OP_EQ)
-        return_token("~=", token_type::OP_NOT_EQ)
-        return_token("<=", token_type::OP_LE)
-        return_token(">=", token_type::OP_GE)
-        return_token("<", token_type::OP_LT)
-        return_token(">", token_type::OP_GT)
+        return_token("==", token_type::PUNCTUATION)
+        return_token("~=", token_type::PUNCTUATION)
+        return_token("<=", token_type::PUNCTUATION)
+        return_token(">=", token_type::PUNCTUATION)
+        return_token("<", token_type::PUNCTUATION)
+        return_token(">", token_type::PUNCTUATION)
 
-        return_token("+=", token_type::OP_ASSIGN_ADD)
-        return_token("-=", token_type::OP_ASSIGN_SUB)
-        return_token("*=", token_type::OP_ASSIGN_MUL)
-        return_token("/=", token_type::OP_ASSIGN_DIV)
-        return_token("%=", token_type::OP_ASSIGN_MOD)
-        return_token("^=", token_type::OP_ASSIGN_POW)
-        return_token("..=", token_type::OP_ASSIGN_CONCAT)
+        return_token("+=", token_type::PUNCTUATION)
+        return_token("-=", token_type::PUNCTUATION)
+        return_token("*=", token_type::PUNCTUATION)
+        return_token("/=", token_type::PUNCTUATION)
+        return_token("%=", token_type::PUNCTUATION)
+        return_token("^=", token_type::PUNCTUATION)
+        return_token("..=", token_type::PUNCTUATION)
 
-        return_token("+", token_type::OP_ADD)
-        return_token("-", token_type::OP_SUB)
-        return_token("*", token_type::OP_MUL)
-        return_token("/", token_type::OP_DIV)
-        return_token("%", token_type::OP_MOD)
-        return_token("^", token_type::OP_POW)
-        return_token("..", token_type::OP_CONCAT)
+        return_token("+", token_type::PUNCTUATION)
+        return_token("-", token_type::PUNCTUATION)
+        return_token("*", token_type::PUNCTUATION)
+        return_token("/", token_type::PUNCTUATION)
+        return_token("%", token_type::PUNCTUATION)
+        return_token("^", token_type::PUNCTUATION)
+        return_token("..", token_type::PUNCTUATION)
 
 
-        return_token("#", token_type::OP_LEN)
-        return_token("=", token_type::OP_ASSIGN)
+        return_token("#", token_type::PUNCTUATION)
+        return_token("=", token_type::PUNCTUATION)
 
-        return_token(".", token_type::OP_INDEX)
-        return_token(":", token_type::OP_INDEX_SYNTACTIC)
-        return_token(";", token_type::PUNC_SEMICOLON)
-        return_token(",", token_type::PUNC_COMMA)
-        return_token("(", token_type::PUNC_LPAREN)
-        return_token(")", token_type::PUNC_RPAREN)
-        return_token("{", token_type::PUNC_LBRACE)
-        return_token("}", token_type::PUNC_RBRACE)
-        return_token("[", token_type::PUNC_LBRACKET)
-        return_token("]", token_type::PUNC_RBRACKET)
+        return_token(".", token_type::PUNCTUATION)
+        return_token(":", token_type::PUNCTUATION)
+        return_token(";", token_type::PUNCTUATION)
+        return_token(",", token_type::PUNCTUATION)
+        return_token("(", token_type::PUNCTUATION)
+        return_token(")", token_type::PUNCTUATION)
+        return_token("{", token_type::PUNCTUATION)
+        return_token("}", token_type::PUNCTUATION)
+        return_token("[", token_type::PUNCTUATION)
+        return_token("]", token_type::PUNCTUATION)
     }
 
 
