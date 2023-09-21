@@ -174,6 +174,20 @@ public:
     ) : base(lua::kind::table_constructor_expr), field_list(std::move(field_list)) {}
 };
 
+
+
+//    CONSTRUCT(
+//        numeric_literal,
+//        lua::kind::table_constructor_expr,
+//        (
+//                std::unique_ptr<base> field_list),
+//        field_list(std::move(field_list))
+//    )
+})
+
+class numeric_literal : public base {
+}
+
 #define ADD_CLASS(CLASS_NAME, A, B) \
 class CLASS_NAME : public base { \
 public: \

@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/lua.dir/main.cpp.obj"
-  "CMakeFiles/lua.dir/main.cpp.obj.d"
-  "liblua.dll.a"
-  "lua.exe"
-  "lua.exe.manifest"
+  "CMakeFiles/lua.dir/main.cpp.o"
+  "CMakeFiles/lua.dir/main.cpp.o.d"
+  "lua"
   "lua.pdb"
 )
 

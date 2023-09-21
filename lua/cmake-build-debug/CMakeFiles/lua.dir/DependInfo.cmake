@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/dylan/OneDrive/Desktop/lexer/lua/main.cpp" "CMakeFiles/lua.dir/main.cpp.obj" "gcc" "CMakeFiles/lua.dir/main.cpp.obj.d"
+  "/Users/Dylan/CLionProjects/lexer/lua/main.cpp" "CMakeFiles/lua.dir/main.cpp.o" "gcc" "CMakeFiles/lua.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
