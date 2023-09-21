@@ -2,6 +2,7 @@
 #define LUA_PARSER_H
 
 #include "tokenizer.h"
+#include <iostream>
 #include <memory>
 
 #pragma region MACROS
@@ -173,6 +174,16 @@ public:
     ) : base(lua::kind::table_constructor_expr), field_list(std::move(field_list)) {}
 };
 
+#define ADD_CLASS(CLASS_NAME, A, B) \
+class CLASS_NAME : public base { \
+public: \
+    B; \
+    CLASS_NAME( \
+        B \
+    ) : base(A), B(std::move(B)) {} \
+};
+
+
 
 
 class parser {
@@ -180,6 +191,136 @@ public:
     std::size_t length = 0;
     std::size_t index = 0;
     std::vector<token> tokens;
+
+    void parse(const std::string& source) {
+        token_stream stream;
+        stream.tokenize(source);
+        tokens = stream.tokens;
+
+        #define PRINT_TOKENS
+        // #define RETURN_EARLY
+
+        #ifdef PRINT_TOKENS
+        {
+            std::clog << "VIEW TOKENS: " << stream.tokens.size() << "\n";
+
+            std::size_t max_length = 0;
+            for (token& token: stream.tokens) {
+                if (token.literal.length() <= 15) {
+                    max_length = std::max(max_length, token.literal.length());
+                }
+            }
+
+            for (token& token: stream.tokens) {
+                std::string type;
+
+                switch (token.type) {
+                    case token_type::IDENTIFIER: {
+                        type = "IDENTIFIER";
+                        break;
+                    }
+                    case token_type::STRING_RAW: {
+                        type = "STRING_RAW";
+                        break;
+                    }
+                    case token_type::STRING: {
+                        type = "STRING";
+                        break;
+                    }
+                    case token_type::COMMENT_RAW: {
+                        type = "COMMENT_RAW";
+                        break;
+                    }
+                    case token_type::COMMENT: {
+                        type = "COMMENT";
+                        break;
+                    }
+                    case token_type::NUMBER_HEXADECIMAL: {
+                        type = "NUMBER_HEXADECIMAL";
+                        break;
+                    }
+                    case token_type::NUMBER_BINARY: {
+                        type = "NUMBER_BINARY";
+                        break;
+                    }
+                    case token_type::NUMBER: {
+                        type = "NUMBER";
+                        break;
+                    }
+                    case token_type::KEYWORD: {
+                        type = "KEYWORD";
+                        break;
+                    }
+                    case token_type::PUNCTUATION: {
+                        type = "PUNCTUATION";
+                        break;
+                    }
+                }
+
+                // if (!(token.type == token_type::STRING)) {
+                //     continue;
+                // }
+
+                if (token.literal.length() <= 15) {
+                    std::cout << token.literal << std::string(
+                        max_length - token.literal.length(),
+                        ' '
+                    ) << " -> " << (type) << "\n";
+                }
+                else {
+                    std::cout << token.literal << " -> " << (type) << "\n";
+                }
+            }
+
+            std::cout << "\n";
+        }
+        #endif
+
+        #ifdef RETURN_EARLY
+            return;
+        #endif
+    }
+
+    std::unique_ptr<base> parse_primary() {
+        if (!next()) {
+            return nullptr;
+        }
+
+        switch (peek().type) {
+            case token_type::IDENTIFIER: {
+                break;
+            }
+            case token_type::STRING_RAW: {
+                break;
+            }
+            case token_type::STRING: {
+                break;
+            }
+            case token_type::COMMENT_RAW: {
+                break;
+            }
+            case token_type::COMMENT: {
+                break;
+            }
+            case token_type::NUMBER_HEXADECIMAL: {
+                break;
+            }
+            case token_type::NUMBER_BINARY: {
+                break;
+            }
+            case token_type::NUMBER: {
+                break;
+            }
+            case token_type::KEYWORD: {
+                break;
+            }
+            case token_type::PUNCTUATION: {
+                break;
+            }
+        }
+        return nullptr;
+    }
+
 
     bool next(std::size_t offset = 0) const {
         return index + offset < length;
