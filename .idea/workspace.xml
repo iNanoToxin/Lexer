@@ -10,7 +10,9 @@
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
-    <generated />
+    <generated>
+      <config projectName="lua" targetName="lua" />
+    </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
