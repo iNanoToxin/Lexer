@@ -352,15 +352,11 @@ public:
     }
 
     std::shared_ptr<base> parse_primary() {
-        COUT("REACHED");
-
         if (!next()) {
             return nullptr;
         }
 
         token curr_token = peek();
-
-        COUT(curr_token.literal);
 
         switch (curr_token.type) {
             case token_type::IDENTIFIER: {
@@ -404,7 +400,6 @@ public:
 
     std::shared_ptr<base> parse_rhs(int min_precedence, std::shared_ptr<base> lhs) {
         while(next()) {
-            COUT("RAN");
 
             token curr_token = peek();
             int curr_precedence = get_precedence(curr_token);
