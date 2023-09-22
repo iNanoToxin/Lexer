@@ -6,6 +6,7 @@
 #include <memory>
 
 #pragma region MACROS
+    #define COUT(A) std::cout << A << std::endl
     #define SP(A, B) std::string((B) * 4, ' ') + A + "\n"
 
     #define PRINT_NAME_SPACE(NAME, INSIDE)                  \
@@ -24,7 +25,7 @@
             str.erase(str.end() - 1);                       \
             str += ": <";                                   \
             std::size_t pos = str.size();                   \
-            str += FIELD->to_string(depth);                 \
+            str += FIELD->tostring(depth);                  \
             str.erase(pos, depth * 4);                      \
             while (pos < str.size()) {                      \
                 if (str[pos] == ' ') {                      \
@@ -59,6 +60,23 @@
             str += SP(NAME + " = {}", depth);               \
         }                                                   \
     } while (false)
+
+    #define TOSTRING(BODY) \
+    [[nodiscard]] std::string tostring(std::size_t depth) const override { \
+        std::string str;   \
+        BODY               \
+        return str;        \
+    }
+
+    template <typename T>
+    void HELPER_PRINT(const std::string& name, std::shared_ptr<T> field, std::string& str, std::size_t depth) {
+        PRINT_PTR_FIELD(name, field);
+    }
+
+    template <typename T>
+    void HELPER_PRINT(const std::string& name, T field, std::string& str, std::size_t depth) {
+        PRINT_FIELD(name, field);
+    }
 #pragma endregion
 
 bool is_binop(const token& token) {
@@ -96,7 +114,10 @@ bool is_unop(const token& token) {
     || token.is("~");
 }
 
-namespace lua {
+
+
+class base {
+public:
     enum class kind {
         CHUNK,
         BLOCK,
@@ -128,74 +149,79 @@ namespace lua {
         binary_operator_expr,
         unary_operator_expr,
         table_constructor_expr,
+        numeric_literal_expr,
+        conditional_expr,
+        boolean_expr,
+        null_expr
     };
-}
+
+    kind kind;
+    explicit base(enum kind kind) : kind(kind) {}
+    [[nodiscard]] virtual std::string tostring(std::size_t depth = 0) const { return ""; }
+};
 
 
-
-class base {
-public:
-    lua::kind kind;
-    explicit base(lua::kind kind) : kind(kind) {}
-    std::string tostring(std::size_t depth = 0) { return ""; }
+#define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
+class CLASS_NAME : public base { \
+public: \
+    TYPE FIELD_NAME; \
+    explicit CLASS_NAME(TYPE FIELD_NAME) : \
+    base(kind::CLASS_NAME), \
+    FIELD_NAME(std::move(FIELD_NAME)) {} \
+    TOSTRING({ \
+        PRINT_NAME_SPACE(#CLASS_NAME, {               \
+            HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth); \
+        }); \
+    }) \
 };
 
 
 class binary_operator_expr : public base {
 public:
     std::string binary_operator;
-    std::unique_ptr<base> lhs;
-    std::unique_ptr<base> rhs;
+    std::shared_ptr<base> lhs;
+    std::shared_ptr<base> rhs;
 
     binary_operator_expr(
         std::string binary_operator,
-        std::unique_ptr<base> lhs,
-        std::unique_ptr<base> rhs
-    ) : base(lua::kind::binary_operator_expr), binary_operator(std::move(binary_operator)), lhs(std::move(lhs)), rhs(std::move(rhs)) {}
+        std::shared_ptr<base> lhs,
+        std::shared_ptr<base> rhs
+    ) :
+        base(kind::binary_operator_expr),
+        binary_operator(std::move(binary_operator)),
+        lhs(std::move(lhs)),
+        rhs(std::move(rhs)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("binary_operator_expr", {
+            PRINT_FIELD("binary_operator", "\'" + binary_operator + "\'");
+            PRINT_PTR_FIELD("lhs", lhs);
+            PRINT_PTR_FIELD("rhs", rhs);
+        });
+    })
 };
 
 class unary_operator_expr : public base {
 public:
     std::string unary_operator;
-    std::unique_ptr<base> exp;
+    std::shared_ptr<base> exp;
 
     unary_operator_expr(
         std::string unary_operator,
-        std::unique_ptr<base> exp
-    ) : base(lua::kind::unary_operator_expr), unary_operator(std::move(unary_operator)), exp(std::move(exp)) {}
-};
-
-class table_constructor_expr : public base {
-public:
-    std::unique_ptr<base> field_list;
-
-    table_constructor_expr(
-        std::unique_ptr<base> field_list
-    ) : base(lua::kind::table_constructor_expr), field_list(std::move(field_list)) {}
+        std::shared_ptr<base> exp
+    ) :
+        base(kind::unary_operator_expr),
+        unary_operator(std::move(unary_operator)),
+        exp(std::move(exp)) {}
 };
 
 
 
-//    CONSTRUCT(
-//        numeric_literal,
-//        lua::kind::table_constructor_expr,
-//        (
-//                std::unique_ptr<base> field_list),
-//        field_list(std::move(field_list))
-//    )
-})
-
-class numeric_literal : public base {
-}
-
-#define ADD_CLASS(CLASS_NAME, A, B) \
-class CLASS_NAME : public base { \
-public: \
-    B; \
-    CLASS_NAME( \
-        B \
-    ) : base(A), B(std::move(B)) {} \
-};
+BASE_TYPE_CLASS(table_constructor_expr, std::shared_ptr<base>, field_list )
+BASE_TYPE_CLASS(numeric_literal_expr,   std::string,           value      )
+BASE_TYPE_CLASS(conditional_expr,       std::string,           conditional)
+BASE_TYPE_CLASS(boolean_expr,           std::string,           boolean    )
+BASE_TYPE_CLASS(null_expr,              std::string,           value      )
 
 
 
@@ -210,6 +236,7 @@ public:
         token_stream stream;
         stream.tokenize(source);
         tokens = stream.tokens;
+        length = tokens.size();
 
         #define PRINT_TOKENS
         // #define RETURN_EARLY
@@ -293,14 +320,49 @@ public:
         #ifdef RETURN_EARLY
             return;
         #endif
+
+
+        COUT(parse_next()->tostring(0));
     }
 
-    std::unique_ptr<base> parse_primary() {
+    int get_precedence(const token& token) {
+        static const std::vector<std::vector<std::string>> priority = {
+            {"or"},
+            {"and"},
+            {"<", ">", "<=", ">=", "~=", "=="},
+            {"|"},
+            {"~"},
+            {"&"},
+            {"<<", ">>"},
+            {".."},
+            {"+", "-"},
+            {"*", "/", "//", "%"},
+            {"not", "#", "-", "~"},
+            {"^"}
+        };
+
+        for (int i = 0; i < priority.size(); i++) {
+            for (auto& e : priority[i]) {
+                if (token.is(e)) {
+                    return i + 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    std::shared_ptr<base> parse_primary() {
+        COUT("REACHED");
+
         if (!next()) {
             return nullptr;
         }
 
-        switch (peek().type) {
+        token curr_token = peek();
+
+        COUT(curr_token.literal);
+
+        switch (curr_token.type) {
             case token_type::IDENTIFIER: {
                 break;
             }
@@ -316,25 +378,75 @@ public:
             case token_type::COMMENT: {
                 break;
             }
-            case token_type::NUMBER_HEXADECIMAL: {
-                break;
-            }
-            case token_type::NUMBER_BINARY: {
-                break;
-            }
+            case token_type::NUMBER_HEXADECIMAL:
+            case token_type::NUMBER_BINARY:
             case token_type::NUMBER: {
-                break;
+                return std::make_unique<numeric_literal_expr>(consume().literal);
             }
             case token_type::KEYWORD: {
+                if (curr_token.is("and") || curr_token.is("or")) {
+                    return std::make_unique<conditional_expr>(consume().literal);
+                }
+                else if (curr_token.is("true") || curr_token.is("false")) {
+                    return std::make_unique<boolean_expr>(consume().literal);
+                }
+
                 break;
             }
             case token_type::PUNCTUATION: {
                 break;
             }
         }
+
+        throw std::invalid_argument("unknown: " + curr_token.literal);
         return nullptr;
     }
 
+    std::shared_ptr<base> parse_rhs(int min_precedence, std::shared_ptr<base> lhs) {
+        while(next()) {
+            COUT("RAN");
+
+            token curr_token = peek();
+            int curr_precedence = get_precedence(curr_token);
+
+
+            if (curr_precedence < min_precedence) {
+                return lhs;
+            }
+
+            consume();
+
+            auto rhs = parse_primary();
+            if (rhs == nullptr) {
+                return rhs;
+            }
+
+            if (next()) {
+                int next_precedence = get_precedence(peek());
+                if (curr_precedence < next_precedence) {
+                    rhs = parse_rhs(curr_precedence + 1, std::move(rhs));
+                    if (rhs == nullptr) {
+                        return rhs;
+                    }
+                }
+            }
+
+            if (is_binop(curr_token)) {
+                lhs = std::make_unique<binary_operator_expr>(curr_token.literal, std::move(lhs), std::move(rhs));
+            }
+        }
+        return lhs;
+    }
+
+    std::shared_ptr<base> parse_next() {
+        auto expr = parse_primary();
+
+        if (expr != nullptr) {
+            expr = parse_rhs(0, std::move(expr));
+        }
+
+        return expr;
+    }
 
     bool next(std::size_t offset = 0) const {
         return index + offset < length;

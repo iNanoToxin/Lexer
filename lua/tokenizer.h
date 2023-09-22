@@ -156,44 +156,52 @@ static constexpr const char* KEYWORDS[] = {
 };
 
 static constexpr const char* PUNCTUATIONS[] = {
-    // Variadic Symbol.
+    "<<=",
+    ">>=",
+    "//=",
     "...",
-    // Equality operators.
-    "==",
-    "~=",
-    "<=",
-    ">=",
-    "<",
-    ">",
-    // Assignment operators.
+
     "+=",
     "-=",
     "*=",
     "/=",
-    "%=",
     "^=",
-    "..=",
-    "=",
-    // Operators.
+    "&=",
+    "~=",
+    "|=",
+    "<<",
+    ">>",
+    "//",
+    "==",
+    "~=",
+    "<=",
+    ">=",
+    "..",
+    "::",
+
     "+",
     "-",
     "*",
     "/",
     "%",
     "^",
-    "..",
     "#",
-
-    ".",
-    ":",
-    ";",
-    ",",
+    "&",
+    "~",
+    "|",
+    "<",
+    ">",
+    "=",
+    "(",
+    ")",
     "{",
     "}",
     "[",
     "]",
-    "(",
-    ")"
+    ":",
+    ";",
+    ",",
+    "."
 };
 
 
@@ -551,45 +559,52 @@ public:
     }
 
     void parse_punctuation() {
-        return_token("...", token_type::PUNCTUATION)
+        // return_token("...", token_type::PUNCTUATION)
+        //
+        // return_token("==", token_type::PUNCTUATION)
+        // return_token("~=", token_type::PUNCTUATION)
+        // return_token("<=", token_type::PUNCTUATION)
+        // return_token(">=", token_type::PUNCTUATION)
+        // return_token("<", token_type::PUNCTUATION)
+        // return_token(">", token_type::PUNCTUATION)
+        //
+        // return_token("+=", token_type::PUNCTUATION)
+        // return_token("-=", token_type::PUNCTUATION)
+        // return_token("*=", token_type::PUNCTUATION)
+        // return_token("/=", token_type::PUNCTUATION)
+        // return_token("%=", token_type::PUNCTUATION)
+        // return_token("^=", token_type::PUNCTUATION)
+        // return_token("..=", token_type::PUNCTUATION)
+        //
+        // return_token("+", token_type::PUNCTUATION)
+        // return_token("-", token_type::PUNCTUATION)
+        // return_token("*", token_type::PUNCTUATION)
+        // return_token("/", token_type::PUNCTUATION)
+        // return_token("%", token_type::PUNCTUATION)
+        // return_token("^", token_type::PUNCTUATION)
+        // return_token("..", token_type::PUNCTUATION)
+        //
+        //
+        // return_token("#", token_type::PUNCTUATION)
+        // return_token("=", token_type::PUNCTUATION)
+        //
+        // return_token(".", token_type::PUNCTUATION)
+        // return_token(":", token_type::PUNCTUATION)
+        // return_token(";", token_type::PUNCTUATION)
+        // return_token(",", token_type::PUNCTUATION)
+        // return_token("(", token_type::PUNCTUATION)
+        // return_token(")", token_type::PUNCTUATION)
+        // return_token("{", token_type::PUNCTUATION)
+        // return_token("}", token_type::PUNCTUATION)
+        // return_token("[", token_type::PUNCTUATION)
+        // return_token("]", token_type::PUNCTUATION)
 
-        return_token("==", token_type::PUNCTUATION)
-        return_token("~=", token_type::PUNCTUATION)
-        return_token("<=", token_type::PUNCTUATION)
-        return_token(">=", token_type::PUNCTUATION)
-        return_token("<", token_type::PUNCTUATION)
-        return_token(">", token_type::PUNCTUATION)
-
-        return_token("+=", token_type::PUNCTUATION)
-        return_token("-=", token_type::PUNCTUATION)
-        return_token("*=", token_type::PUNCTUATION)
-        return_token("/=", token_type::PUNCTUATION)
-        return_token("%=", token_type::PUNCTUATION)
-        return_token("^=", token_type::PUNCTUATION)
-        return_token("..=", token_type::PUNCTUATION)
-
-        return_token("+", token_type::PUNCTUATION)
-        return_token("-", token_type::PUNCTUATION)
-        return_token("*", token_type::PUNCTUATION)
-        return_token("/", token_type::PUNCTUATION)
-        return_token("%", token_type::PUNCTUATION)
-        return_token("^", token_type::PUNCTUATION)
-        return_token("..", token_type::PUNCTUATION)
-
-
-        return_token("#", token_type::PUNCTUATION)
-        return_token("=", token_type::PUNCTUATION)
-
-        return_token(".", token_type::PUNCTUATION)
-        return_token(":", token_type::PUNCTUATION)
-        return_token(";", token_type::PUNCTUATION)
-        return_token(",", token_type::PUNCTUATION)
-        return_token("(", token_type::PUNCTUATION)
-        return_token(")", token_type::PUNCTUATION)
-        return_token("{", token_type::PUNCTUATION)
-        return_token("}", token_type::PUNCTUATION)
-        return_token("[", token_type::PUNCTUATION)
-        return_token("]", token_type::PUNCTUATION)
+        for (auto punctuation : PUNCTUATIONS) {
+            if (starts_with(punctuation)) {
+                bump(strlen(punctuation));
+                add_token(token_type::PUNCTUATION);
+            }
+        }
     }
 
 
