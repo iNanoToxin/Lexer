@@ -530,6 +530,15 @@ public:
     }
 
     std::shared_ptr<base> get_field() {
+        if (expect_peek("[")) {
+
+        }
+        else if (expect_peek(token_type::IDENTIFIER)) {
+
+        }
+        else {
+
+        }
         return nullptr;
     }
 
@@ -625,7 +634,7 @@ public:
 
         // COUT(parse_next()->tostring(0));
 
-        COUT(get_parlist()->tostring(0));
+        COUT(get_field()->tostring(0));
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
