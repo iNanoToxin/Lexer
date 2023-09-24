@@ -77,6 +77,11 @@
     }
 
     template <typename T>
+    void HELPER_PRINT(const std::string& name, std::vector<std::shared_ptr<T>> fields, std::string& str, std::size_t depth) {
+        PRINT_VECTOR_FIELD(name, fields);
+    }
+
+    template <typename T>
     void HELPER_PRINT(const std::string& name, T field, std::string& str, std::size_t depth) {
         PRINT_FIELD(name, field);
     }
@@ -171,6 +176,7 @@ public:
         string_expr,
         varargs_expr,
         identifier_expr,
+        attrib_expr,
 
         attnamelist,
     };
@@ -188,7 +194,17 @@ public:                                               \
     explicit CLASS_NAME(TYPE FIELD_NAME) :            \
     base(kind::CLASS_NAME),                           \
     FIELD_NAME(std::move(FIELD_NAME)) {}              \
+    std::string tostring(std::size_t depth) const override; \
 };
+
+#define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
+std::string CLASS_NAME::tostring(std::size_t depth) const { \
+    std::string str;                               \
+    PRINT_NAME_SPACE(#CLASS_NAME, {                \
+        HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth);  \
+    });                                            \
+    return str;                                    \
+}
 
 
 class binary_operator_expr : public base {
@@ -237,7 +253,26 @@ public:
     })
 };
 
+class attrib_expr : public base {
+public:
+    std::shared_ptr<base> name;
+    std::shared_ptr<base> attrib;
 
+    attrib_expr(
+            std::shared_ptr<base> name,
+            std::shared_ptr<base> attrib
+    ) :
+        base(kind::attrib_expr),
+        name(std::move(name)),
+        attrib(std::move(attrib)) {}
+
+    TOSTRING({
+         PRINT_NAME_SPACE("attrib_expr", {
+             PRINT_PTR_FIELD("name", name);
+             PRINT_PTR_FIELD("attrib", attrib);
+         });
+    })
+};
 
 BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
 BASE_TYPE_CLASS(  numeric_literal_expr,                        std::string,       value)
@@ -249,10 +284,17 @@ BASE_TYPE_CLASS(          varargs_expr,                        std::string,     
 BASE_TYPE_CLASS(       identifier_expr,                        std::string,       value)
 BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,       value)
 
+BASE_TYPE_TOSTRING(table_constructor_expr,  field_list)
+BASE_TYPE_TOSTRING(  numeric_literal_expr,       value)
+BASE_TYPE_TOSTRING(      conditional_expr, conditional)
+BASE_TYPE_TOSTRING(          boolean_expr,     boolean)
+BASE_TYPE_TOSTRING(             null_expr,       value)
+BASE_TYPE_TOSTRING(           string_expr,       value)
+BASE_TYPE_TOSTRING(          varargs_expr,       value)
+BASE_TYPE_TOSTRING(       identifier_expr,       value)
+BASE_TYPE_TOSTRING(           attnamelist,       value)
 
-std::string attnamelist::tostring(std::size_t depth) const {
-    return "";
-}
+
 
 #define RETURN_UNOP(TOKEN) \
 do {                       \
@@ -263,6 +305,15 @@ do {                       \
     throw std::invalid_argument("expected expression after " + TOKEN.literal); \
 } while (false)
 
+#define DO_WHILE_COMMA(BODY) \
+bool comma_required = false; \
+do {                         \
+    if (comma_required) {    \
+        consume();           \
+    }                        \
+    BODY                     \
+    comma_required = true;   \
+} while (expect_peek(","))
 
 
 class parser {
@@ -279,8 +330,37 @@ public:
         return parse_primary();
     }
 
-    std::shared_ptr<base> get_attname() {
+    std::shared_ptr<base> get_attnamelist() {
+        std::vector<std::shared_ptr<base>> list;
 
+        DO_WHILE_COMMA({
+            auto name = get_name();
+
+            if (!name) {
+                throw std::invalid_argument("expected name");
+            }
+
+            if (expect_peek("<")) {
+                consume();
+
+                auto attrib = get_name();
+
+                if (!attrib) {
+                    throw std::invalid_argument("expected attrib");
+                }
+
+                if (!expect_peek(">")) {
+                    throw std::invalid_argument("expected > after <");
+                }
+                consume();
+
+                list.push_back(std::make_unique<attrib_expr>(std::move(name), std::move(attrib)));
+            } else {
+                list.push_back(std::move(name));
+            }
+        });
+
+        return std::make_unique<attnamelist>(std::move(list));
     }
 
 
@@ -378,7 +458,9 @@ public:
         #endif
 
 
-        COUT(parse_next()->tostring(0));
+//        COUT(parse_next()->tostring(0));
+
+        COUT(get_attnamelist()->tostring(0));
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
@@ -550,6 +632,10 @@ public:
 
     bool expect_peek(token_type type) {
         return next() && peek().type == type;
+    }
+
+    bool expect_peek(const std::string& match) {
+        return next() && peek().literal == match;
     }
 
     bool expect_peek(std::size_t offset, token_type type) {
