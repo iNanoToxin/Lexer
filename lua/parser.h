@@ -176,9 +176,17 @@ public:
         string_expr,
         varargs_expr,
         identifier_expr,
+        member_expr,
+        method_expr,
         attrib_expr,
 
         attnamelist,
+        retstat,
+        explist,
+        parlist,
+        namelist,
+        label,
+        funcname,
     };
 
     kind kind;
@@ -186,26 +194,26 @@ public:
     [[nodiscard]] virtual std::string tostring(std::size_t depth = 0) const { return ""; }
 };
 
+#pragma region MACROS_2
+    #define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
+    class CLASS_NAME : public base {                      \
+    public:                                               \
+        TYPE FIELD_NAME;                                  \
+        explicit CLASS_NAME(TYPE FIELD_NAME) :            \
+        base(kind::CLASS_NAME),                           \
+        FIELD_NAME(std::move(FIELD_NAME)) {}              \
+        std::string tostring(std::size_t depth) const override; \
+    };
 
-#define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
-class CLASS_NAME : public base {                      \
-public:                                               \
-    TYPE FIELD_NAME;                                  \
-    explicit CLASS_NAME(TYPE FIELD_NAME) :            \
-    base(kind::CLASS_NAME),                           \
-    FIELD_NAME(std::move(FIELD_NAME)) {}              \
-    std::string tostring(std::size_t depth) const override; \
-};
-
-#define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
-std::string CLASS_NAME::tostring(std::size_t depth) const { \
-    std::string str;                               \
-    PRINT_NAME_SPACE(#CLASS_NAME, {                \
-        HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth);  \
-    });                                            \
-    return str;                                    \
-}
-
+    #define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
+    std::string CLASS_NAME::tostring(std::size_t depth) const { \
+        std::string str;                               \
+        PRINT_NAME_SPACE(#CLASS_NAME, {                \
+            HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth);  \
+        });                                            \
+        return str;                                    \
+    }
+#pragma endregion
 
 class binary_operator_expr : public base {
 public:
@@ -282,7 +290,15 @@ BASE_TYPE_CLASS(             null_expr,                        std::string,     
 BASE_TYPE_CLASS(           string_expr,                        std::string,       value)
 BASE_TYPE_CLASS(          varargs_expr,                        std::string,       value)
 BASE_TYPE_CLASS(       identifier_expr,                        std::string,       value)
+BASE_TYPE_CLASS(           member_expr,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(           method_expr,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,       value)
+BASE_TYPE_CLASS(              namelist, std::vector<std::shared_ptr<base>>,       value)
+BASE_TYPE_CLASS(               explist, std::vector<std::shared_ptr<base>>,       value)
+BASE_TYPE_CLASS(               parlist, std::vector<std::shared_ptr<base>>,       value)
+BASE_TYPE_CLASS(               retstat,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(                 label,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(              funcname, std::vector<std::shared_ptr<base>>,       value)
 
 BASE_TYPE_TOSTRING(table_constructor_expr,  field_list)
 BASE_TYPE_TOSTRING(  numeric_literal_expr,       value)
@@ -292,7 +308,15 @@ BASE_TYPE_TOSTRING(             null_expr,       value)
 BASE_TYPE_TOSTRING(           string_expr,       value)
 BASE_TYPE_TOSTRING(          varargs_expr,       value)
 BASE_TYPE_TOSTRING(       identifier_expr,       value)
+BASE_TYPE_TOSTRING(           member_expr,       value)
+BASE_TYPE_TOSTRING(           method_expr,       value)
 BASE_TYPE_TOSTRING(           attnamelist,       value)
+BASE_TYPE_TOSTRING(               explist,       value)
+BASE_TYPE_TOSTRING(               parlist,       value)
+BASE_TYPE_TOSTRING(              namelist,       value)
+BASE_TYPE_TOSTRING(               retstat,       value)
+BASE_TYPE_TOSTRING(                 label,       value)
+BASE_TYPE_TOSTRING(              funcname,       value)
 
 
 
@@ -305,15 +329,15 @@ do {                       \
     throw std::invalid_argument("expected expression after " + TOKEN.literal); \
 } while (false)
 
-#define DO_WHILE_COMMA(BODY) \
-bool comma_required = false; \
-do {                         \
-    if (comma_required) {    \
-        consume();           \
-    }                        \
-    BODY                     \
-    comma_required = true;   \
-} while (expect_peek(","))
+#define DO_WHILE_PUNCTUATION(PUNCTUATION, BODY) \
+bool punctuation_required = false;              \
+do {                                            \
+    if (punctuation_required) {                 \
+        consume();                              \
+    }                                           \
+    BODY                                        \
+    punctuation_required = true;                \
+} while (expect_peek(PUNCTUATION))
 
 
 class parser {
@@ -325,7 +349,7 @@ public:
 
     std::shared_ptr<base> get_name() {
         if (!expect_peek(token_type::IDENTIFIER)) {
-            throw std::invalid_argument("name expected");
+            return nullptr;
         }
         return parse_primary();
     }
@@ -333,10 +357,14 @@ public:
     std::shared_ptr<base> get_attnamelist() {
         std::vector<std::shared_ptr<base>> list;
 
-        DO_WHILE_COMMA({
+        bool first = true;
+        DO_WHILE_PUNCTUATION(",", {
             auto name = get_name();
 
             if (!name) {
+                if (first) {
+                    return nullptr;
+                }
                 throw std::invalid_argument("expected name");
             }
 
@@ -358,14 +386,125 @@ public:
             } else {
                 list.push_back(std::move(name));
             }
+            first = false;
         });
 
         return std::make_unique<attnamelist>(std::move(list));
     }
 
+    std::shared_ptr<base> get_explist() {
+        std::vector<std::shared_ptr<base>> list;
 
+        bool first = true;
+        DO_WHILE_PUNCTUATION(",", {
+            auto expr = parse_next();
 
+            if (!expr) {
+                if (first) {
+                    return nullptr;
+                }
+                throw std::invalid_argument("expression expected");
+            }
 
+            list.push_back(std::move(expr));
+            first = false;
+        });
+
+        return std::make_unique<explist>(std::move(list));
+    }
+
+    std::shared_ptr<base> get_retstat() {
+        consume();
+
+        auto explist = get_explist();
+
+        if (expect_peek(";")) {
+            consume();
+        }
+
+        return std::make_unique<retstat>(std::move(explist));
+    }
+
+    std::shared_ptr<base> get_label() {
+        consume();
+        auto name = get_name();
+
+        if (!expect_peek("::")) {
+            throw std::invalid_argument("expected :: after ::");
+        }
+
+        return std::make_unique<label>(std::move(name));
+    }
+
+    std::shared_ptr<base> get_funcname() {
+        std::vector<std::shared_ptr<base>> list;
+
+        bool first = true;
+        DO_WHILE_PUNCTUATION(".", {
+            auto name = get_name();
+
+            if (!name) {
+                if (first) {
+                    return nullptr;
+                }
+                throw std::invalid_argument("expected name for function");
+            }
+
+            if (first) {
+                list.push_back(std::move(name));
+            }
+            else {
+                list.push_back(std::make_unique<member_expr>(name));
+            }
+            first = false;
+        });
+
+        if (expect_peek(":")) {
+            consume();
+            auto name = get_name();
+
+            if (!name) {
+                throw std::invalid_argument("expected name for method");
+            }
+
+            list.push_back(std::make_unique<method_expr>(name));
+        }
+
+        return std::make_unique<funcname>(std::move(list));
+    }
+
+    std::shared_ptr<base> get_namelist(bool include_varargs = false) {
+        std::vector<std::shared_ptr<base>> list;
+
+        bool first = true;
+        DO_WHILE_PUNCTUATION(",", {
+            if (include_varargs && expect_peek("...")) {
+                list.push_back(parse_primary());
+                break;
+            }
+
+            auto name = get_name();
+
+            if (!name) {
+                if (first) {
+                    return nullptr;
+                }
+                throw std::invalid_argument("expected name");
+            }
+
+            list.push_back(std::move(name));
+            first = false;
+        });
+
+        if (include_varargs) {
+            return std::make_unique<parlist>(std::move(list));
+        }
+        return std::make_unique<namelist>(std::move(list));
+    }
+
+    std::shared_ptr<base> get_parlist() {
+        return get_namelist(true);
+    }
 
 
     void parse(const std::string& source) {
@@ -458,9 +597,9 @@ public:
         #endif
 
 
-//        COUT(parse_next()->tostring(0));
+        // COUT(parse_next()->tostring(0));
 
-        COUT(get_attnamelist()->tostring(0));
+        COUT(get_parlist()->tostring(0));
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
@@ -535,7 +674,10 @@ public:
                 break;
             }
             case token_type::PUNCTUATION: {
-                if (curr_token.is("(")) {
+                if (curr_token.is("...")) {
+                    return std::make_unique<varargs_expr>(consume().literal);
+                }
+                else if (curr_token.is("(")) {
                     consume();
 
                     auto expr = parse_next();
