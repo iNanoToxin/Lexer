@@ -1,3 +1,6 @@
+// #pragma clang diagnostic push
+// #pragma ide diagnostic ignored "OCDFAInspection"
+
 #ifndef LUA_PARSER_H
 #define LUA_PARSER_H
 
@@ -114,6 +117,18 @@ bool is_unop(const token& token) {
     || token.is("~");
 }
 
+bool is_boolean(const token& token) {
+    return token.is("true") || token.is("false");
+}
+
+bool is_conditional(const token& token) {
+    return token.is("and") || token.is("or");
+}
+
+bool is_null(const token& token) {
+    return token.is("nil");
+}
+
 
 
 class base {
@@ -152,7 +167,12 @@ public:
         numeric_literal_expr,
         conditional_expr,
         boolean_expr,
-        null_expr
+        null_expr,
+        string_expr,
+        varargs_expr,
+        identifier_expr,
+
+        attnamelist,
     };
 
     kind kind;
@@ -162,17 +182,12 @@ public:
 
 
 #define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
-class CLASS_NAME : public base { \
-public: \
-    TYPE FIELD_NAME; \
-    explicit CLASS_NAME(TYPE FIELD_NAME) : \
-    base(kind::CLASS_NAME), \
-    FIELD_NAME(std::move(FIELD_NAME)) {} \
-    TOSTRING({ \
-        PRINT_NAME_SPACE(#CLASS_NAME, {               \
-            HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth); \
-        }); \
-    }) \
+class CLASS_NAME : public base {                      \
+public:                                               \
+    TYPE FIELD_NAME;                                  \
+    explicit CLASS_NAME(TYPE FIELD_NAME) :            \
+    base(kind::CLASS_NAME),                           \
+    FIELD_NAME(std::move(FIELD_NAME)) {}              \
 };
 
 
@@ -204,25 +219,49 @@ public:
 class unary_operator_expr : public base {
 public:
     std::string unary_operator;
-    std::shared_ptr<base> exp;
+    std::shared_ptr<base> expr;
 
     unary_operator_expr(
         std::string unary_operator,
-        std::shared_ptr<base> exp
+        std::shared_ptr<base> expr
     ) :
         base(kind::unary_operator_expr),
         unary_operator(std::move(unary_operator)),
-        exp(std::move(exp)) {}
+        expr(std::move(expr)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("unary_operator_expr", {
+            PRINT_FIELD("unary_operator", "\'" + unary_operator + "\'");
+            PRINT_PTR_FIELD("expr", expr);
+        });
+    })
 };
 
 
 
-BASE_TYPE_CLASS(table_constructor_expr, std::shared_ptr<base>, field_list )
-BASE_TYPE_CLASS(numeric_literal_expr,   std::string,           value      )
-BASE_TYPE_CLASS(conditional_expr,       std::string,           conditional)
-BASE_TYPE_CLASS(boolean_expr,           std::string,           boolean    )
-BASE_TYPE_CLASS(null_expr,              std::string,           value      )
+BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
+BASE_TYPE_CLASS(  numeric_literal_expr,                        std::string,       value)
+BASE_TYPE_CLASS(      conditional_expr,                        std::string, conditional)
+BASE_TYPE_CLASS(          boolean_expr,                        std::string,     boolean)
+BASE_TYPE_CLASS(             null_expr,                        std::string,       value)
+BASE_TYPE_CLASS(           string_expr,                        std::string,       value)
+BASE_TYPE_CLASS(          varargs_expr,                        std::string,       value)
+BASE_TYPE_CLASS(       identifier_expr,                        std::string,       value)
+BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,       value)
 
+
+std::string attnamelist::tostring(std::size_t depth) const {
+    return "";
+}
+
+#define RETURN_UNOP(TOKEN) \
+do {                       \
+    consume();             \
+    if (auto expr = parse_next(get_precedence(TOKEN, true))) { \
+        return std::make_unique<unary_operator_expr>(TOKEN.literal, std::move(expr)); \
+    }                      \
+    throw std::invalid_argument("expected expression after " + TOKEN.literal); \
+} while (false)
 
 
 
@@ -231,6 +270,23 @@ public:
     std::size_t length = 0;
     std::size_t index = 0;
     std::vector<token> tokens;
+
+
+    std::shared_ptr<base> get_name() {
+        if (!expect_peek(token_type::IDENTIFIER)) {
+            throw std::invalid_argument("name expected");
+        }
+        return parse_primary();
+    }
+
+    std::shared_ptr<base> get_attname() {
+
+    }
+
+
+
+
+
 
     void parse(const std::string& source) {
         token_stream stream;
@@ -325,7 +381,7 @@ public:
         COUT(parse_next()->tostring(0));
     }
 
-    int get_precedence(const token& token) {
+    int get_precedence(const token& token, bool is_unop = false) {
         static const std::vector<std::vector<std::string>> priority = {
             {"or"},
             {"and"},
@@ -340,6 +396,10 @@ public:
             {"not", "#", "-", "~"},
             {"^"}
         };
+
+        if (is_unop) {
+            return priority.size() - 1;
+        }
 
         for (int i = 0; i < priority.size(); i++) {
             for (auto& e : priority[i]) {
@@ -360,13 +420,11 @@ public:
 
         switch (curr_token.type) {
             case token_type::IDENTIFIER: {
-                break;
+                return std::make_unique<identifier_expr>(consume().literal);
             }
-            case token_type::STRING_RAW: {
-                break;
-            }
+            case token_type::STRING_RAW:
             case token_type::STRING: {
-                break;
+                return std::make_unique<string_expr>(consume().literal);
             }
             case token_type::COMMENT_RAW: {
                 break;
@@ -380,16 +438,51 @@ public:
                 return std::make_unique<numeric_literal_expr>(consume().literal);
             }
             case token_type::KEYWORD: {
-                if (curr_token.is("and") || curr_token.is("or")) {
+                if (is_conditional(curr_token)) {
                     return std::make_unique<conditional_expr>(consume().literal);
                 }
-                else if (curr_token.is("true") || curr_token.is("false")) {
+                else if (is_boolean(curr_token)) {
                     return std::make_unique<boolean_expr>(consume().literal);
                 }
-
+                else if (is_unop(curr_token)) {
+                    RETURN_UNOP(curr_token);
+                }
+                else if (is_null(curr_token)) {
+                    return std::make_unique<null_expr>(consume().literal);
+                }
                 break;
             }
             case token_type::PUNCTUATION: {
+                if (curr_token.is("(")) {
+                    consume();
+
+                    auto expr = parse_next();
+
+                    if (!expect_peek(token_type::PUNCTUATION) || !peek().is(")")) {
+                        throw std::invalid_argument("expected ) after (");
+                    }
+                    consume();
+
+                    return expr;
+                }
+                else if (curr_token.is("{")) {
+                    consume();
+
+                    // auto expr = parse_next();
+
+                    if (!expect_peek(token_type::PUNCTUATION) || !peek().is("}")) {
+                        throw std::invalid_argument("expected } after {");
+                    }
+                    consume();
+
+                    return std::make_unique<table_constructor_expr>(nullptr);
+                }
+                else if (curr_token.is("...")) {
+                    return std::make_unique<varargs_expr>(consume().literal);
+                }
+                else if (is_unop(curr_token)) {
+                    RETURN_UNOP(curr_token);
+                }
                 break;
             }
         }
@@ -400,10 +493,8 @@ public:
 
     std::shared_ptr<base> parse_rhs(int min_precedence, std::shared_ptr<base> lhs) {
         while(next()) {
-
             token curr_token = peek();
             int curr_precedence = get_precedence(curr_token);
-
 
             if (curr_precedence < min_precedence) {
                 return lhs;
@@ -433,11 +524,13 @@ public:
         return lhs;
     }
 
-    std::shared_ptr<base> parse_next() {
+    std::shared_ptr<base> parse_next(int precedence = 0) {
         auto expr = parse_primary();
 
         if (expr != nullptr) {
-            expr = parse_rhs(0, std::move(expr));
+            if (auto next_expr = parse_rhs(precedence, std::move(expr))) {
+                expr = next_expr;
+            }
         }
 
         return expr;
