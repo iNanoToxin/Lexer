@@ -87,6 +87,46 @@
     }
 #pragma endregion
 
+#pragma region MACROS_2
+#define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
+    class CLASS_NAME : public base {                      \
+    public:                                               \
+        TYPE FIELD_NAME;                                  \
+        explicit CLASS_NAME(TYPE FIELD_NAME) :            \
+        base(kind::CLASS_NAME),                           \
+        FIELD_NAME(std::move(FIELD_NAME)) {}              \
+        std::string tostring(std::size_t depth) const override; \
+    };
+
+#define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
+    std::string CLASS_NAME::tostring(std::size_t depth) const { \
+        std::string str;                               \
+        PRINT_NAME_SPACE(#CLASS_NAME, {                \
+            HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth);  \
+        });                                            \
+        return str;                                    \
+    }
+
+#define RETURN_UNOP(TOKEN) \
+    do {                       \
+        consume();             \
+        if (auto expr = parse_next(get_precedence(TOKEN, true))) { \
+            return std::make_unique<unary_operator_expr>(TOKEN.literal, std::move(expr)); \
+        }                      \
+        throw std::invalid_argument("expected expression after " + TOKEN.literal); \
+    } while (false)
+
+#define DO_WHILE_PUNCTUATION(PUNCTUATION, BODY) \
+    bool punctuation_required = false;              \
+    do {                                            \
+        if (punctuation_required) {                 \
+            consume();                              \
+        }                                           \
+        BODY                                        \
+        punctuation_required = true;                \
+    } while (expect_peek(PUNCTUATION))
+#pragma endregion
+
 bool is_binop(const token& token) {
     return token.is("+") 
     || token.is("-")
@@ -139,33 +179,6 @@ bool is_null(const token& token) {
 class base {
 public:
     enum class kind {
-        CHUNK,
-        BLOCK,
-        STAT,
-        ATTNAMELIST,
-        ATTRIB,
-        RETSTAT,
-        LABEL,
-        FUNCNAME,
-        VARLIST,
-        VAR,
-        NAMELIST,
-        EXPLIST,
-        EXP,
-        PREFIXEXP,
-        FUNCTIONCALL,
-        ARGS,
-        FUNCTIONDEF,
-        FUNCBODY,
-        PARLIST,
-        TABLECONSTRUCTOR,
-        FIELDLIST,
-        FIELD,
-        FIELDSEP,
-        BINOP,
-        UNOP,
-
-
         binary_operator_expr,
         unary_operator_expr,
         table_constructor_expr,
@@ -179,6 +192,9 @@ public:
         member_expr,
         method_expr,
         attrib_expr,
+        table_index_value_expr,
+        table_name_value_expr,
+        table_value_expr,
 
         attnamelist,
         retstat,
@@ -193,27 +209,6 @@ public:
     explicit base(enum kind kind) : kind(kind) {}
     [[nodiscard]] virtual std::string tostring(std::size_t depth = 0) const { return ""; }
 };
-
-#pragma region MACROS_2
-    #define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
-    class CLASS_NAME : public base {                      \
-    public:                                               \
-        TYPE FIELD_NAME;                                  \
-        explicit CLASS_NAME(TYPE FIELD_NAME) :            \
-        base(kind::CLASS_NAME),                           \
-        FIELD_NAME(std::move(FIELD_NAME)) {}              \
-        std::string tostring(std::size_t depth) const override; \
-    };
-
-    #define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
-    std::string CLASS_NAME::tostring(std::size_t depth) const { \
-        std::string str;                               \
-        PRINT_NAME_SPACE(#CLASS_NAME, {                \
-            HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth);  \
-        });                                            \
-        return str;                                    \
-    }
-#pragma endregion
 
 class binary_operator_expr : public base {
 public:
@@ -282,6 +277,49 @@ public:
     })
 };
 
+class table_index_value_expr : public base {
+public:
+    std::shared_ptr<base> index;
+    std::shared_ptr<base> value;
+
+    table_index_value_expr(
+        std::shared_ptr<base> index,
+        std::shared_ptr<base> value
+    ) :
+        base(kind::table_index_value_expr),
+        index(std::move(index)),
+        value(std::move(value)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("table_index_value_expr", {
+            PRINT_PTR_FIELD("index", index);
+            PRINT_PTR_FIELD("value", value);
+        });
+    })
+};
+
+class table_name_value_expr : public base {
+public:
+    std::string name;
+    std::shared_ptr<base> value;
+
+    table_name_value_expr(
+        std::string name,
+        std::shared_ptr<base> value
+    ) :
+        base(kind::table_name_value_expr),
+        name(std::move(name)),
+        value(std::move(value)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("table_name_value_expr", {
+            PRINT_FIELD("name", name);
+            PRINT_PTR_FIELD("value", value);
+        });
+    })
+};
+
+
 BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
 BASE_TYPE_CLASS(  numeric_literal_expr,                        std::string,       value)
 BASE_TYPE_CLASS(      conditional_expr,                        std::string, conditional)
@@ -292,6 +330,7 @@ BASE_TYPE_CLASS(          varargs_expr,                        std::string,     
 BASE_TYPE_CLASS(       identifier_expr,                        std::string,       value)
 BASE_TYPE_CLASS(           member_expr,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(           method_expr,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(      table_value_expr,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(              namelist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(               explist, std::vector<std::shared_ptr<base>>,       value)
@@ -310,6 +349,7 @@ BASE_TYPE_TOSTRING(          varargs_expr,       value)
 BASE_TYPE_TOSTRING(       identifier_expr,       value)
 BASE_TYPE_TOSTRING(           member_expr,       value)
 BASE_TYPE_TOSTRING(           method_expr,       value)
+BASE_TYPE_TOSTRING(      table_value_expr,       value)
 BASE_TYPE_TOSTRING(           attnamelist,       value)
 BASE_TYPE_TOSTRING(               explist,       value)
 BASE_TYPE_TOSTRING(               parlist,       value)
@@ -320,24 +360,7 @@ BASE_TYPE_TOSTRING(              funcname,       value)
 
 
 
-#define RETURN_UNOP(TOKEN) \
-do {                       \
-    consume();             \
-    if (auto expr = parse_next(get_precedence(TOKEN, true))) { \
-        return std::make_unique<unary_operator_expr>(TOKEN.literal, std::move(expr)); \
-    }                      \
-    throw std::invalid_argument("expected expression after " + TOKEN.literal); \
-} while (false)
 
-#define DO_WHILE_PUNCTUATION(PUNCTUATION, BODY) \
-bool punctuation_required = false;              \
-do {                                            \
-    if (punctuation_required) {                 \
-        consume();                              \
-    }                                           \
-    BODY                                        \
-    punctuation_required = true;                \
-} while (expect_peek(PUNCTUATION))
 
 
 class parser {
@@ -506,6 +529,9 @@ public:
         return get_namelist(true);
     }
 
+    std::shared_ptr<base> get_field() {
+        return nullptr;
+    }
 
     void parse(const std::string& source) {
         token_stream stream;
