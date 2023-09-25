@@ -727,7 +727,50 @@ public:
     std::shared_ptr<base> get_var() {
         COUT("REACHED");
 
+        auto root = get_name();
 
+        if (!root) {
+            return nullptr;
+        }
+
+        while (true) {
+            if (expect_peek("[")) {
+                consume();
+
+                auto expr = parse_next();
+
+                if (!expr) {
+                    throw std::invalid_argument("expected expression in var");
+                }
+
+                if (!expect_peek("]")) {
+                    throw std::invalid_argument("expected ] after [ in var");
+                }
+                consume();
+
+                root = std::make_unique<index_expr>(std::move(root), std::move(expr));
+            }
+            else if (expect_peek(".")) {
+                consume();
+
+                auto name = get_name();
+
+                if (!name) {
+                    throw std::invalid_argument("expected name in var");
+                }
+
+                root = std::make_unique<member_expr>(std::move(root), std::move(name));
+            }
+            else {
+                break;
+            }
+        }
+
+
+
+        {
+            return std::make_unique<var>(std::move(root));
+        }
 
         if (auto name = get_name()) {
             return std::make_unique<var>(std::move(name));
