@@ -88,7 +88,7 @@
 #pragma endregion
 
 #pragma region MACROS_2
-#define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
+    #define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
     class CLASS_NAME : public base {                      \
     public:                                               \
         TYPE FIELD_NAME;                                  \
@@ -98,7 +98,7 @@
         std::string tostring(std::size_t depth) const override; \
     };
 
-#define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
+    #define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
     std::string CLASS_NAME::tostring(std::size_t depth) const { \
         std::string str;                               \
         PRINT_NAME_SPACE(#CLASS_NAME, {                \
@@ -107,7 +107,7 @@
         return str;                                    \
     }
 
-#define RETURN_UNOP(TOKEN) \
+    #define RETURN_UNOP(TOKEN) \
     do {                       \
         consume();             \
         if (auto expr = parse_next(get_precedence(TOKEN, true))) { \
@@ -116,15 +116,15 @@
         throw std::invalid_argument("expected expression after " + TOKEN.literal); \
     } while (false)
 
-#define DO_WHILE_PUNCTUATION(PUNCTUATION, BODY) \
-    bool punctuation_required = false;              \
-    do {                                            \
-        if (punctuation_required) {                 \
-            consume();                              \
-        }                                           \
-        BODY                                        \
-        punctuation_required = true;                \
-    } while (expect_peek(PUNCTUATION))
+    #define DO_WHILE_CONSUME(CONDITION, BODY) \
+    bool can_consume = false;                 \
+    do {                                      \
+        if (can_consume) {                    \
+            consume();                        \
+        }                                     \
+        BODY                                  \
+        can_consume = true;                   \
+    } while (CONDITION)
 #pragma endregion
 
 bool is_binop(const token& token) {
@@ -201,7 +201,9 @@ public:
         explist,
         parlist,
         namelist,
-        label,
+        fieldlist,
+        label,\
+        args,
         funcname,
     };
 
@@ -300,25 +302,24 @@ public:
 
 class table_name_value_expr : public base {
 public:
-    std::string name;
+    std::shared_ptr<base> index;
     std::shared_ptr<base> value;
 
     table_name_value_expr(
-        std::string name,
+        std::shared_ptr<base> index,
         std::shared_ptr<base> value
     ) :
         base(kind::table_name_value_expr),
-        name(std::move(name)),
+        index(std::move(index)),
         value(std::move(value)) {}
 
     TOSTRING({
         PRINT_NAME_SPACE("table_name_value_expr", {
-            PRINT_FIELD("name", name);
+            PRINT_PTR_FIELD("index", index);
             PRINT_PTR_FIELD("value", value);
         });
     })
 };
-
 
 BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
 BASE_TYPE_CLASS(  numeric_literal_expr,                        std::string,       value)
@@ -335,8 +336,10 @@ BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,     
 BASE_TYPE_CLASS(              namelist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(               explist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(               parlist, std::vector<std::shared_ptr<base>>,       value)
+BASE_TYPE_CLASS(             fieldlist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(               retstat,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                 label,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(                  args,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(              funcname, std::vector<std::shared_ptr<base>>,       value)
 
 BASE_TYPE_TOSTRING(table_constructor_expr,  field_list)
@@ -353,9 +356,11 @@ BASE_TYPE_TOSTRING(      table_value_expr,       value)
 BASE_TYPE_TOSTRING(           attnamelist,       value)
 BASE_TYPE_TOSTRING(               explist,       value)
 BASE_TYPE_TOSTRING(               parlist,       value)
+BASE_TYPE_TOSTRING(             fieldlist,       value)
 BASE_TYPE_TOSTRING(              namelist,       value)
 BASE_TYPE_TOSTRING(               retstat,       value)
 BASE_TYPE_TOSTRING(                 label,       value)
+BASE_TYPE_TOSTRING(                  args,       value)
 BASE_TYPE_TOSTRING(              funcname,       value)
 
 
@@ -377,38 +382,47 @@ public:
         return parse_primary();
     }
 
+    std::shared_ptr<base> get_attrib() {
+        auto name = get_name();
+
+        if (!name) {
+            return nullptr;
+        }
+
+        if (expect_peek("<")) {
+            consume();
+
+            auto attribute = get_name();
+
+            if (!attribute) {
+                throw std::invalid_argument("expected attribute");
+            }
+
+            if (!expect_peek(">")) {
+                throw std::invalid_argument("expected > after < in attrib");
+            }
+            consume();
+
+            return std::make_unique<attrib_expr>(std::move(name), std::move(attribute));
+        }
+        return name;
+    }
+
     std::shared_ptr<base> get_attnamelist() {
         std::vector<std::shared_ptr<base>> list;
 
         bool first = true;
-        DO_WHILE_PUNCTUATION(",", {
-            auto name = get_name();
+        DO_WHILE_CONSUME(expect_peek(","), {
+            auto attribute = get_attrib();
 
-            if (!name) {
+            if (!attribute) {
                 if (first) {
                     return nullptr;
                 }
-                throw std::invalid_argument("expected name");
+                throw std::invalid_argument("expected attrib");
             }
 
-            if (expect_peek("<")) {
-                consume();
-
-                auto attrib = get_name();
-
-                if (!attrib) {
-                    throw std::invalid_argument("expected attrib");
-                }
-
-                if (!expect_peek(">")) {
-                    throw std::invalid_argument("expected > after <");
-                }
-                consume();
-
-                list.push_back(std::make_unique<attrib_expr>(std::move(name), std::move(attrib)));
-            } else {
-                list.push_back(std::move(name));
-            }
+            list.push_back(std::move(attribute));
             first = false;
         });
 
@@ -419,7 +433,7 @@ public:
         std::vector<std::shared_ptr<base>> list;
 
         bool first = true;
-        DO_WHILE_PUNCTUATION(",", {
+        DO_WHILE_CONSUME(expect_peek(","), {
             auto expr = parse_next();
 
             if (!expr) {
@@ -437,6 +451,9 @@ public:
     }
 
     std::shared_ptr<base> get_retstat() {
+        if (!expect_peek("return")) {
+            return nullptr;
+        }
         consume();
 
         auto explist = get_explist();
@@ -449,12 +466,17 @@ public:
     }
 
     std::shared_ptr<base> get_label() {
+        if (!expect_peek("::")) {
+            return nullptr;
+        }
         consume();
+
         auto name = get_name();
 
         if (!expect_peek("::")) {
             throw std::invalid_argument("expected :: after ::");
         }
+        consume();
 
         return std::make_unique<label>(std::move(name));
     }
@@ -463,7 +485,7 @@ public:
         std::vector<std::shared_ptr<base>> list;
 
         bool first = true;
-        DO_WHILE_PUNCTUATION(".", {
+        DO_WHILE_CONSUME(expect_peek("."), {
             auto name = get_name();
 
             if (!name) {
@@ -500,7 +522,7 @@ public:
         std::vector<std::shared_ptr<base>> list;
 
         bool first = true;
-        DO_WHILE_PUNCTUATION(",", {
+        DO_WHILE_CONSUME(expect_peek(","), {
             if (include_varargs && expect_peek("...")) {
                 list.push_back(parse_primary());
                 break;
@@ -531,16 +553,116 @@ public:
 
     std::shared_ptr<base> get_field() {
         if (expect_peek("[")) {
+            consume();
 
+            auto index = parse_next();
+
+            if (!index) {
+                throw std::invalid_argument("expected index in field");
+            }
+
+            if (!expect_peek("]")) {
+                throw std::invalid_argument("expected ] after [ in field");
+            }
+            consume();
+
+            if (!expect_peek("=")) {
+                throw std::invalid_argument("expected = after ] in field");
+            }
+            consume();
+
+            auto value = parse_next();
+
+            if (!value) {
+                throw std::invalid_argument("expected value in field");
+            }
+
+            return std::make_unique<table_index_value_expr>(std::move(index), std::move(value));
         }
-        else if (expect_peek(token_type::IDENTIFIER)) {
+        else if (expect_peek(token_type::IDENTIFIER) && expect_peek(1, "=")) {
+            auto index = get_name();
 
+            if (!expect_peek("=")) {
+                throw std::invalid_argument("expected = after name in field");
+            }
+            consume();
+
+            auto value = parse_next();
+
+            if (!value) {
+                throw std::invalid_argument("expected value in field");
+            }
+
+            return std::make_unique<table_name_value_expr>(std::move(index), std::move(value));
         }
-        else {
 
+        auto expr = parse_next();
+
+        if (!expr) {
+            return nullptr;
+        }
+        return std::make_unique<table_value_expr>(std::move(expr));
+    }
+
+    std::shared_ptr<base> get_fieldlist() {
+        std::vector<std::shared_ptr<base>> list;
+
+        bool first = true;
+        DO_WHILE_CONSUME(expect_peek(",") || expect_peek(";"), {
+            auto field = get_field();
+
+            if (!field) {
+                if (first) {
+                    return nullptr;
+                }
+                throw std::invalid_argument("expected field in fieldlist");
+            }
+
+            list.push_back(std::move(field));
+            first = false;
+        });
+
+        return std::make_unique<fieldlist>(std::move(list));
+    }
+
+    std::shared_ptr<base> get_args() {
+        if (expect_peek("(")) {
+            consume();
+
+            auto expr_list = get_explist();
+
+            if (!expect_peek(")")) {
+                throw std::invalid_argument("expected ) after ( in args");
+            }
+            consume();
+            return std::make_unique<args>(std::move(expr_list));
+        }
+        else if (expect_peek(token_type::STRING) || expect_peek(token_type::STRING_RAW)) {
+            return std::make_unique<args>(parse_primary());
+        }
+        else if (auto table_constructor = get_table_contructor()) {
+            return std::make_unique<args>(std::move(table_constructor));
         }
         return nullptr;
     }
+
+    std::shared_ptr<base> get_table_contructor() {
+        if (!expect_peek("{")) {
+            return nullptr;
+        }
+        consume();
+
+        auto fieldlist = get_fieldlist();
+
+        if (!expect_peek(token_type::PUNCTUATION) || !peek().is("}")) {
+            throw std::invalid_argument("expected } after {");
+        }
+        consume();
+
+        return std::make_unique<table_constructor_expr>(fieldlist);
+    }
+
+
 
     void parse(const std::string& source) {
         token_stream stream;
@@ -634,7 +756,7 @@ public:
 
         // COUT(parse_next()->tostring(0));
 
-        COUT(get_field()->tostring(0));
+        COUT(parse_next()->tostring(0));
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
@@ -725,16 +847,7 @@ public:
                     return expr;
                 }
                 else if (curr_token.is("{")) {
-                    consume();
-
-                    // auto expr = parse_next();
-
-                    if (!expect_peek(token_type::PUNCTUATION) || !peek().is("}")) {
-                        throw std::invalid_argument("expected } after {");
-                    }
-                    consume();
-
-                    return std::make_unique<table_constructor_expr>(nullptr);
+                    return get_table_contructor();
                 }
                 else if (curr_token.is("...")) {
                     return std::make_unique<varargs_expr>(consume().literal);
@@ -746,12 +859,12 @@ public:
             }
         }
 
-        throw std::invalid_argument("unknown: " + curr_token.literal);
+        // throw std::invalid_argument("unknown: " + curr_token.literal);
         return nullptr;
     }
 
     std::shared_ptr<base> parse_rhs(int min_precedence, std::shared_ptr<base> lhs) {
-        while(next()) {
+        while (next()) {
             token curr_token = peek();
             int curr_precedence = get_precedence(curr_token);
 
@@ -811,15 +924,18 @@ public:
         return next() && peek().type == type;
     }
 
+    bool expect_peek(std::size_t offset, token_type type) {
+        return next(offset) && peek(offset).type == type;
+    }
+
     bool expect_peek(const std::string& match) {
         return next() && peek().literal == match;
     }
 
-    bool expect_peek(std::size_t offset, token_type type) {
-        return next(offset) && peek(offset).type == type;
+    bool expect_peek(std::size_t offset, const std::string& match) {
+        return next(offset) && peek(offset).literal == match;
     }
 };
-
 
 
 
