@@ -334,11 +334,8 @@ public:
             if (is_comment_token()) {
                 parse_comment();
             }
-            else if (is_keyword_token()) {
-                parse_keyword();
-            }
-            else if (is_identifier_token()) {
-                parse_identifier();
+            else if (is_word_token()) {
+                parse_word();
             }
             else if (is_string_token()) {
                 parse_string();
@@ -521,10 +518,17 @@ public:
         }
     }
 
-    void parse_identifier() {
+    void parse_word() {
         while (next() && is_identifier(peek())) {
             bump();
         }
+
+        // for (const char* keyword : KEYWORDS) {
+        //     if (starts_with(keyword)) {
+        //         return true;
+        //     }
+        // }
+
         add_token(token_type::IDENTIFIER);
     }
 
@@ -612,7 +616,7 @@ public:
         return starts_with("--");
     }
 
-    bool is_identifier_token() {
+    bool is_word_token() {
         return is_identifier_nondigit(peek());
     }
 
@@ -632,14 +636,7 @@ public:
         }
         return false;
     }
-    bool is_keyword_token() {
-        for (const char* keyword : KEYWORDS) {
-            if (starts_with(keyword)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
     char consume() {
         return source.at(index++);
     }

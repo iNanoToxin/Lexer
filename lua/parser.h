@@ -388,6 +388,27 @@ public:
     })
 };
 
+class functioncall : public base {
+public:
+    std::shared_ptr<base> root;
+    std::shared_ptr<base> args;
+
+    functioncall(
+        std::shared_ptr<base> root,
+        std::shared_ptr<base> args
+    ) :
+        base(kind::index_expr),
+        root(std::move(root)),
+        args(std::move(args)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("functioncall", {
+            PRINT_PTR_FIELD("root", root);
+            PRINT_PTR_FIELD("args", args);
+        });
+    })
+};
+
 BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
 BASE_TYPE_CLASS(  numeric_literal_expr,                        std::string,       value)
 BASE_TYPE_CLASS(      conditional_expr,                        std::string, conditional)
@@ -727,14 +748,29 @@ public:
     std::shared_ptr<base> get_var() {
         COUT("REACHED");
 
-        auto root = get_name();
-
-        if (!root) {
-            return nullptr;
-        }
+        std::shared_ptr<base> root = nullptr;
 
         while (true) {
-            if (expect_peek("[")) {
+            if (!root) {
+                if (auto name = get_name()) {
+                    root = std::move(name);
+                }
+                else if (expect_peek("(")) {
+                    consume();
+
+                    root = parse_next();
+
+                    if (!root) {
+                        throw std::invalid_argument("expected expression in var");
+                    }
+
+                    if (!expect_peek(")")) {
+                        throw std::invalid_argument("expected ) after ( in var");
+                    }
+                    consume();
+                }
+            }
+            else if (expect_peek("[")) {
                 consume();
 
                 auto expr = parse_next();
@@ -760,6 +796,26 @@ public:
                 }
 
                 root = std::make_unique<member_expr>(std::move(root), std::move(name));
+            }
+            else if (expect_peek(":")) {
+                consume();
+
+                auto name = get_name();
+
+                if (!name) {
+                    throw std::invalid_argument("expected name in var");
+                }
+                root = std::make_unique<method_expr>(std::move(root), std::move(name));
+
+                auto args = get_args();
+
+                if (!args) {
+                    throw std::invalid_argument("expected args in var");
+                }
+                root = std::make_unique<functioncall>(std::move(root), std::move(args));
+            }
+            else if (auto args = get_args()) {
+                root = std::make_unique<functioncall>(std::move(root), std::move(args));
             }
             else {
                 break;
@@ -1084,6 +1140,10 @@ public:
 
     token consume() {
         return tokens.at(index++);
+    }
+
+    token revert() {
+        return tokens.at(index--);
     }
 
     bool expect_peek(token_type type) {
