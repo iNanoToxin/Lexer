@@ -819,46 +819,7 @@ public:
                 break;
             }
         }
-
-
-
-        {
-            return std::make_unique<var>(std::move(root));
-        }
-
-        if (auto name = get_name()) {
-            return std::make_unique<var>(std::move(name));
-        }
-        else if (auto prefix_expr = get_prefixexp()) {
-            if (expect_peek("[")) {
-                consume();
-
-                auto expr = parse_next();
-
-                if (!expr) {
-                    throw std::invalid_argument("expected expression in var");
-                }
-
-                if (!expect_peek("]")) {
-                    throw std::invalid_argument("expected ] after [ in var");
-                }
-                consume();
-
-                return std::make_unique<var>(std::make_unique<index_expr>(std::move(prefix_expr), std::move(expr)));
-            }
-            else if (expect_peek(".")) {
-                consume();
-
-                auto expr = parse_next();
-
-                if (!expr) {
-                    throw std::invalid_argument("expected expression in var");
-                }
-
-                return std::make_unique<var>(std::make_unique<member_expr>(std::move(prefix_expr), std::move(expr)));
-            }
-        }
-        return nullptr;
+        return std::make_unique<var>(std::move(root));
     }
 
     std::shared_ptr<base> get_prefixexp() {
