@@ -191,6 +191,7 @@ public:
         identifier_expr,
         member_expr,
         method_expr,
+        index_expr,
         attrib_expr,
         table_index_value_expr,
         table_name_value_expr,
@@ -202,9 +203,12 @@ public:
         parlist,
         namelist,
         fieldlist,
-        label,\
+        label,
         args,
         funcname,
+        var,
+        functioncall,
+        prefixexp
     };
 
     kind kind;
@@ -321,6 +325,69 @@ public:
     })
 };
 
+class member_expr : public base {
+public:
+    std::shared_ptr<base> root;
+    std::shared_ptr<base> index;
+
+    member_expr(
+        std::shared_ptr<base> root,
+        std::shared_ptr<base> index
+    ) :
+    base(kind::member_expr),
+    root(std::move(root)),
+    index(std::move(index)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("member_expr", {
+            PRINT_PTR_FIELD("root", root);
+            PRINT_PTR_FIELD("index", index);
+        });
+    })
+};
+
+class method_expr : public base {
+public:
+    std::shared_ptr<base> root;
+    std::shared_ptr<base> index;
+
+    method_expr(
+        std::shared_ptr<base> root,
+        std::shared_ptr<base> index
+    ) :
+        base(kind::member_expr),
+        root(std::move(root)),
+        index(std::move(index)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("method_expr", {
+            PRINT_PTR_FIELD("root", root);
+            PRINT_PTR_FIELD("index", index);
+        });
+    })
+};
+
+class index_expr : public base {
+public:
+    std::shared_ptr<base> root;
+    std::shared_ptr<base> index;
+
+    index_expr(
+        std::shared_ptr<base> root,
+        std::shared_ptr<base> index
+    ) :
+        base(kind::index_expr),
+        root(std::move(root)),
+        index(std::move(index)) {}
+
+    TOSTRING({
+        PRINT_NAME_SPACE("index_expr", {
+            PRINT_PTR_FIELD("root", root);
+            PRINT_PTR_FIELD("index", index);
+        });
+    })
+};
+
 BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
 BASE_TYPE_CLASS(  numeric_literal_expr,                        std::string,       value)
 BASE_TYPE_CLASS(      conditional_expr,                        std::string, conditional)
@@ -329,8 +396,6 @@ BASE_TYPE_CLASS(             null_expr,                        std::string,     
 BASE_TYPE_CLASS(           string_expr,                        std::string,       value)
 BASE_TYPE_CLASS(          varargs_expr,                        std::string,       value)
 BASE_TYPE_CLASS(       identifier_expr,                        std::string,       value)
-BASE_TYPE_CLASS(           member_expr,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(           method_expr,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(      table_value_expr,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(              namelist, std::vector<std::shared_ptr<base>>,       value)
@@ -340,7 +405,8 @@ BASE_TYPE_CLASS(             fieldlist, std::vector<std::shared_ptr<base>>,     
 BASE_TYPE_CLASS(               retstat,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                 label,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                  args,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(              funcname, std::vector<std::shared_ptr<base>>,       value)
+BASE_TYPE_CLASS(              funcname,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(                   var,              std::shared_ptr<base>,       value)
 
 BASE_TYPE_TOSTRING(table_constructor_expr,  field_list)
 BASE_TYPE_TOSTRING(  numeric_literal_expr,       value)
@@ -350,8 +416,6 @@ BASE_TYPE_TOSTRING(             null_expr,       value)
 BASE_TYPE_TOSTRING(           string_expr,       value)
 BASE_TYPE_TOSTRING(          varargs_expr,       value)
 BASE_TYPE_TOSTRING(       identifier_expr,       value)
-BASE_TYPE_TOSTRING(           member_expr,       value)
-BASE_TYPE_TOSTRING(           method_expr,       value)
 BASE_TYPE_TOSTRING(      table_value_expr,       value)
 BASE_TYPE_TOSTRING(           attnamelist,       value)
 BASE_TYPE_TOSTRING(               explist,       value)
@@ -361,6 +425,7 @@ BASE_TYPE_TOSTRING(              namelist,       value)
 BASE_TYPE_TOSTRING(               retstat,       value)
 BASE_TYPE_TOSTRING(                 label,       value)
 BASE_TYPE_TOSTRING(                  args,       value)
+BASE_TYPE_TOSTRING(                   var,       value)
 BASE_TYPE_TOSTRING(              funcname,       value)
 
 
@@ -376,10 +441,7 @@ public:
 
 
     std::shared_ptr<base> get_name() {
-        if (!expect_peek(token_type::IDENTIFIER)) {
-            return nullptr;
-        }
-        return parse_primary();
+        return expect_peek(token_type::IDENTIFIER) ? parse_primary() : nullptr;
     }
 
     std::shared_ptr<base> get_attrib() {
@@ -482,7 +544,7 @@ public:
     }
 
     std::shared_ptr<base> get_funcname() {
-        std::vector<std::shared_ptr<base>> list;
+        std::shared_ptr<base> root = nullptr;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek("."), {
@@ -496,10 +558,10 @@ public:
             }
 
             if (first) {
-                list.push_back(std::move(name));
+                root = std::move(name);
             }
             else {
-                list.push_back(std::make_unique<member_expr>(name));
+                root = std::make_unique<member_expr>(std::move(root), std::move(name));
             }
             first = false;
         });
@@ -512,10 +574,10 @@ public:
                 throw std::invalid_argument("expected name for method");
             }
 
-            list.push_back(std::make_unique<method_expr>(name));
+            root = std::make_unique<method_expr>(std::move(root), std::move(name));
         }
 
-        return std::make_unique<funcname>(std::move(list));
+        return std::make_unique<funcname>(std::move(root));
     }
 
     std::shared_ptr<base> get_namelist(bool include_varargs = false) {
@@ -662,6 +724,67 @@ public:
         return std::make_unique<table_constructor_expr>(fieldlist);
     }
 
+    std::shared_ptr<base> get_var() {
+        COUT("REACHED");
+
+
+
+        if (auto name = get_name()) {
+            return std::make_unique<var>(std::move(name));
+        }
+        else if (auto prefix_expr = get_prefixexp()) {
+            if (expect_peek("[")) {
+                consume();
+
+                auto expr = parse_next();
+
+                if (!expr) {
+                    throw std::invalid_argument("expected expression in var");
+                }
+
+                if (!expect_peek("]")) {
+                    throw std::invalid_argument("expected ] after [ in var");
+                }
+                consume();
+
+                return std::make_unique<var>(std::make_unique<index_expr>(std::move(prefix_expr), std::move(expr)));
+            }
+            else if (expect_peek(".")) {
+                consume();
+
+                auto expr = parse_next();
+
+                if (!expr) {
+                    throw std::invalid_argument("expected expression in var");
+                }
+
+                return std::make_unique<var>(std::make_unique<member_expr>(std::move(prefix_expr), std::move(expr)));
+            }
+        }
+        return nullptr;
+    }
+
+    std::shared_ptr<base> get_prefixexp() {
+        if (expect_peek("(")) {
+            consume();
+
+            auto expr = parse_next();
+
+            if (!expect_peek(")")) {
+                throw std::invalid_argument("expected ) after ( in prefixexp");
+            }
+            consume();
+
+            return std::make_unique<var>(std::move(expr));
+        }
+        else if (auto expr = get_var()) {
+            return std::make_unique<var>(std::move(expr));
+        }
+        return nullptr;
+    }
+
+
+
 
 
     void parse(const std::string& source) {
@@ -756,7 +879,7 @@ public:
 
         // COUT(parse_next()->tostring(0));
 
-        COUT(parse_next()->tostring(0));
+        COUT(get_var()->tostring(0));
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
