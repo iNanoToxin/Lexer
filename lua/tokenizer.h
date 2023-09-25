@@ -6,19 +6,6 @@
 #include <cstring>
 #include <stdexcept>
 
-#define return_if_fail(A) \
-token_result result = A;  \
-if (result != token_result::SUCCESS) { \
-    return result;        \
-}
-
-#define return_token(A, B) \
-if (starts_with(A)) {      \
-    bump(strlen(A));       \
-    add_token(B);          \
-    return; \
-}
-
 enum class token_type {
     IDENTIFIER,
 
@@ -523,43 +510,13 @@ public:
             bump();
         }
 
-        // for (const char* keyword : KEYWORDS) {
-        //     if (starts_with(keyword)) {
-        //         return true;
-        //     }
-        // }
-
+        for (const char* keyword : KEYWORDS) {
+            if (buffer == keyword) {
+                add_token(token_type::KEYWORD);
+                return;
+            }
+        }
         add_token(token_type::IDENTIFIER);
-    }
-
-    void parse_keyword() {
-        return_token("function", token_type::KEYWORD)
-        return_token("local", token_type::KEYWORD)
-
-        return_token("false", token_type::KEYWORD)
-        return_token("true", token_type::KEYWORD)
-
-        return_token("and", token_type::KEYWORD)
-        return_token("not", token_type::KEYWORD)
-        return_token("or", token_type::KEYWORD)
-
-        return_token("elseif", token_type::KEYWORD)
-        return_token("else", token_type::KEYWORD)
-        return_token("for", token_type::KEYWORD)
-        return_token("do", token_type::KEYWORD)
-        return_token("if", token_type::KEYWORD)
-        return_token("while", token_type::KEYWORD)
-        return_token("repeat", token_type::KEYWORD)
-        return_token("return", token_type::KEYWORD)
-
-        return_token("break", token_type::KEYWORD)
-        return_token("continue", token_type::KEYWORD)
-
-        return_token("until", token_type::KEYWORD)
-        return_token("then", token_type::KEYWORD)
-        return_token("nil", token_type::KEYWORD)
-        return_token("in", token_type::KEYWORD)
-        return_token("end", token_type::KEYWORD)
     }
 
     void parse_punctuation() {
@@ -610,6 +567,7 @@ public:
             }
         }
     }
+
 
 
     bool is_comment_token() {

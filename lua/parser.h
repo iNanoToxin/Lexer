@@ -746,8 +746,6 @@ public:
     }
 
     std::shared_ptr<base> get_var() {
-        COUT("REACHED");
-
         std::shared_ptr<base> root = nullptr;
 
         while (true) {
