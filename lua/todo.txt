@@ -18,16 +18,8 @@ stat ::=  ‘;’ |
      local function Name funcbody |
      local attnamelist [‘=’ explist]
 
-varlist ::= var {‘,’ var}
-
-var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
-
 exp ::=  nil | false | true | Numeral | LiteralString | ‘...’ | functiondef |
      prefixexp | tableconstructor | exp binop exp | unop exp
-
-prefixexp ::= var | functioncall | ‘(’ exp ‘)’
-
-functioncall ::=  prefixexp args | prefixexp ‘:’ Name args
 
 functiondef ::= function funcbody
 

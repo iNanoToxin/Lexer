@@ -7,7 +7,7 @@
 
 int main() {
 
-    std::string path = "../tests/test_2.txt";
+    std::string path = "../tests/test_2.lua";
     std::string source;
 
     {

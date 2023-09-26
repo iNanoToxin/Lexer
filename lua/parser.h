@@ -107,6 +107,32 @@
         return str;                                    \
     }
 
+    #define BASE_TYPE_CLASS_2(CLASS_NAME, TYPE_1, FIELD_NAME_1, TYPE_2, FIELD_NAME_2) \
+    class CLASS_NAME : public base {                                                  \
+    public:                                                                           \
+        TYPE_1 FIELD_NAME_1;                                                          \
+        TYPE_2 FIELD_NAME_2;                                                          \
+        explicit CLASS_NAME(                                                          \
+            TYPE_1 FIELD_NAME_1,                                                      \
+            TYPE_2 FIELD_NAME_2                                                       \
+        ) :                                                                           \
+            base(kind::CLASS_NAME),                                                   \
+            FIELD_NAME_1(std::move(FIELD_NAME_1)),                                    \
+            FIELD_NAME_2(std::move(FIELD_NAME_2)) {}                                  \
+                                                                                      \
+        std::string tostring(std::size_t depth) const override;                       \
+    };
+
+    #define BASE_TYPE_TOSTRING_2(CLASS_NAME, FIELD_NAME_1, FIELD_NAME_2) \
+    std::string CLASS_NAME::tostring(std::size_t depth) const {          \
+        std::string str;                                                 \
+        PRINT_NAME_SPACE(#CLASS_NAME, {                                  \
+            HELPER_PRINT(#FIELD_NAME_1, FIELD_NAME_1, str, depth);       \
+            HELPER_PRINT(#FIELD_NAME_2, FIELD_NAME_2, str, depth);       \
+        });                                                              \
+        return str;                                                      \
+    }
+
     #define RETURN_UNOP(TOKEN) \
     do {                       \
         consume();             \
@@ -201,6 +227,7 @@ public:
         retstat,
         explist,
         parlist,
+        varlist,
         namelist,
         fieldlist,
         label,
@@ -208,7 +235,27 @@ public:
         funcname,
         var,
         functioncall,
-        prefixexp
+        prefixexp,
+        
+        
+        block,
+
+
+        block_conditional,
+
+        assignment_stat,
+        call_stat,
+        label_stat,
+        break_stat,
+        goto_stat,
+        do_stat,
+        while_stat,
+        repeat_stat,
+        if_stat,
+        for_stat,
+        generic_for_stat,
+        function_stat,
+        local_stat,
     };
 
     kind kind;
@@ -355,7 +402,7 @@ public:
         std::shared_ptr<base> root,
         std::shared_ptr<base> index
     ) :
-        base(kind::member_expr),
+        base(kind::method_expr),
         root(std::move(root)),
         index(std::move(index)) {}
 
@@ -397,7 +444,7 @@ public:
         std::shared_ptr<base> root,
         std::shared_ptr<base> args
     ) :
-        base(kind::index_expr),
+        base(kind::functioncall),
         root(std::move(root)),
         args(std::move(args)) {}
 
@@ -418,16 +465,27 @@ BASE_TYPE_CLASS(           string_expr,                        std::string,     
 BASE_TYPE_CLASS(          varargs_expr,                        std::string,       value)
 BASE_TYPE_CLASS(       identifier_expr,                        std::string,       value)
 BASE_TYPE_CLASS(      table_value_expr,              std::shared_ptr<base>,       value)
+
 BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(              namelist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(               explist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(               parlist, std::vector<std::shared_ptr<base>>,       value)
+BASE_TYPE_CLASS(               varlist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(             fieldlist, std::vector<std::shared_ptr<base>>,       value)
 BASE_TYPE_CLASS(               retstat,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                 label,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                  args,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(              funcname,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                   var,              std::shared_ptr<base>,       value)
+
+BASE_TYPE_CLASS( label_stat,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(  goto_stat,              std::shared_ptr<base>,       label)
+BASE_TYPE_CLASS(    do_stat,              std::shared_ptr<base>,       block)
+BASE_TYPE_CLASS(repeat_stat,              std::shared_ptr<base>,   statement)
+BASE_TYPE_CLASS( while_stat,              std::shared_ptr<base>,   statement)
+BASE_TYPE_CLASS(    if_stat, std::vector<std::shared_ptr<base>>,  statements)
+BASE_TYPE_CLASS( local_stat,              std::shared_ptr<base>, declaration)
+BASE_TYPE_CLASS(      block, std::vector<std::shared_ptr<base>>,  statements)
 
 BASE_TYPE_TOSTRING(table_constructor_expr,  field_list)
 BASE_TYPE_TOSTRING(  numeric_literal_expr,       value)
@@ -438,9 +496,11 @@ BASE_TYPE_TOSTRING(           string_expr,       value)
 BASE_TYPE_TOSTRING(          varargs_expr,       value)
 BASE_TYPE_TOSTRING(       identifier_expr,       value)
 BASE_TYPE_TOSTRING(      table_value_expr,       value)
+
 BASE_TYPE_TOSTRING(           attnamelist,       value)
 BASE_TYPE_TOSTRING(               explist,       value)
 BASE_TYPE_TOSTRING(               parlist,       value)
+BASE_TYPE_TOSTRING(               varlist,       value)
 BASE_TYPE_TOSTRING(             fieldlist,       value)
 BASE_TYPE_TOSTRING(              namelist,       value)
 BASE_TYPE_TOSTRING(               retstat,       value)
@@ -449,9 +509,22 @@ BASE_TYPE_TOSTRING(                  args,       value)
 BASE_TYPE_TOSTRING(                   var,       value)
 BASE_TYPE_TOSTRING(              funcname,       value)
 
+BASE_TYPE_TOSTRING( label_stat,       value)
+BASE_TYPE_TOSTRING(  goto_stat,       label)
+BASE_TYPE_TOSTRING(    do_stat,       block)
+BASE_TYPE_TOSTRING(repeat_stat,   statement)
+BASE_TYPE_TOSTRING( while_stat,   statement)
+BASE_TYPE_TOSTRING(    if_stat,  statements)
+BASE_TYPE_TOSTRING( local_stat, declaration)
+BASE_TYPE_TOSTRING(      block,  statements)
 
+BASE_TYPE_CLASS_2( assignment_stat, std::shared_ptr<base>,       lhs, std::shared_ptr<base>,   rhs)
+BASE_TYPE_CLASS_2(   function_stat, std::shared_ptr<base>,      name, std::shared_ptr<base>,  body)
+BASE_TYPE_CLASS_2(block_conditional, std::shared_ptr<base>, condition, std::shared_ptr<base>, block)
 
-
+BASE_TYPE_TOSTRING_2( assignment_stat,       lhs,   rhs)
+BASE_TYPE_TOSTRING_2(   function_stat,      name,  body)
+BASE_TYPE_TOSTRING_2(block_conditional, condition, block)
 
 
 class parser {
@@ -745,13 +818,16 @@ public:
         return std::make_unique<table_constructor_expr>(fieldlist);
     }
 
-    std::shared_ptr<base> get_var() {
+    std::shared_ptr<base> get_var(bool include_prefix_expr = false) {
         std::shared_ptr<base> root = nullptr;
+        auto posn = index;
+        bool is_valid_var = true;
 
         while (true) {
             if (!root) {
                 if (auto name = get_name()) {
                     root = std::move(name);
+                    is_valid_var = true;
                 }
                 else if (expect_peek("(")) {
                     consume();
@@ -766,6 +842,10 @@ public:
                         throw std::invalid_argument("expected ) after ( in var");
                     }
                     consume();
+                    is_valid_var = false;
+                }
+                else {
+                    break;
                 }
             }
             else if (expect_peek("[")) {
@@ -783,6 +863,7 @@ public:
                 consume();
 
                 root = std::make_unique<index_expr>(std::move(root), std::move(expr));
+                is_valid_var = true;
             }
             else if (expect_peek(".")) {
                 consume();
@@ -794,6 +875,7 @@ public:
                 }
 
                 root = std::make_unique<member_expr>(std::move(root), std::move(name));
+                is_valid_var = true;
             }
             else if (expect_peek(":")) {
                 consume();
@@ -811,35 +893,146 @@ public:
                     throw std::invalid_argument("expected args in var");
                 }
                 root = std::make_unique<functioncall>(std::move(root), std::move(args));
+                is_valid_var = false;
             }
             else if (auto args = get_args()) {
                 root = std::make_unique<functioncall>(std::move(root), std::move(args));
+                is_valid_var = false;
             }
             else {
                 break;
             }
         }
-        return std::make_unique<var>(std::move(root));
+
+        auto diff = index - posn;
+
+        if (!include_prefix_expr and !is_valid_var) {
+            revert(diff);
+            return nullptr;
+        }
+
+        COUT("VALID: " << is_valid_var);
+        return std::move(root);
     }
 
     std::shared_ptr<base> get_prefixexp() {
-        if (expect_peek("(")) {
-            consume();
+        return get_var(true);
+    }
 
+    std::shared_ptr<base> get_functioncall() {
+        auto posn = index;
+        auto expr = get_prefixexp();
+        auto diff = index - posn;
+
+        COUT("DIFF: " << diff);
+
+        if (!expr || expr->kind != base::kind::functioncall) {
+            revert(diff);
+            return nullptr;
+        }
+        return expr;
+    }
+
+    std::shared_ptr<base> get_varlist() {
+        std::vector<std::shared_ptr<base>> list;
+
+        bool first = true;
+        DO_WHILE_CONSUME(expect_peek(","), {
+            auto expr = get_var();
+
+            if (!expr) {
+                if (first) {
+                    return nullptr;
+                }
+                throw std::invalid_argument("expression expected");
+            }
+
+            list.push_back(std::move(expr));
+            first = false;
+        });
+
+        return std::make_unique<varlist>(std::move(list));
+    }
+    
+    
+    std::shared_ptr<base> get_stat() {
+        if (expect_peek("if")) {
+            std::vector<std::shared_ptr<base>> list;
+            consume();
+            
             auto expr = parse_next();
 
-            if (!expect_peek(")")) {
-                throw std::invalid_argument("expected ) after ( in prefixexp");
+            if (!expr) {
+                throw std::invalid_argument("expected expression in if stat");
+            }
+            
+            if (!expect_peek("then")) {
+                throw std::invalid_argument("expected then in if stat");
             }
             consume();
 
-            return std::make_unique<var>(std::move(expr));
-        }
-        else if (auto expr = get_var()) {
-            return std::make_unique<var>(std::move(expr));
+            auto block = get_block();
+
+            list.push_back(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+
+            while (expect_peek("elseif")) {
+                consume();
+
+                expr = parse_next();
+
+                if (!expr) {
+                    throw std::invalid_argument("expected expression in elseif stat");
+                }
+
+                if (!expect_peek("then")) {
+                    throw std::invalid_argument("expected then in elseif stat");
+                }
+                consume();
+
+                block = get_block();
+
+                list.push_back(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+            }
+
+            if (expect_peek("else")) {
+                consume();
+
+                block = get_block();
+
+                list.push_back(std::make_unique<block_conditional>(nullptr, std::move(block)));
+            }
+
+            if (!expect_peek("end")) {
+                throw std::invalid_argument("expected end after if stat");
+            }
+            consume();
+
+            return std::make_unique<if_stat>(std::move(list));
         }
         return nullptr;
     }
+
+    std::shared_ptr<base> get_block() {
+        std::vector<std::shared_ptr<base>> list;
+
+        while (auto stat = get_stat()) {
+            list.push_back(std::move(stat));
+        }
+
+        if (auto stat = get_retstat()) {
+            list.push_back(std::move(stat));
+        }
+
+        if (list.empty()) {
+            return nullptr;
+        }
+        return std::make_unique<block>(std::move(list));
+    }
+
+
+
+
+
 
 
 
@@ -937,7 +1130,7 @@ public:
 
         // COUT(parse_next()->tostring(0));
 
-        COUT(get_var()->tostring(0));
+        COUT(get_stat()->tostring());
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
@@ -1078,15 +1271,17 @@ public:
     }
 
     std::shared_ptr<base> parse_next(int precedence = 0) {
-        auto expr = parse_primary();
+        if (auto expr = get_prefixexp()) {
+            return expr;
+        }
 
-        if (expr != nullptr) {
+        if (auto expr = parse_primary()) {
             if (auto next_expr = parse_rhs(precedence, std::move(expr))) {
                 expr = next_expr;
             }
+            return expr;
         }
-
-        return expr;
+        return nullptr;
     }
 
     bool next(std::size_t offset = 0) const {
@@ -1101,8 +1296,8 @@ public:
         return tokens.at(index++);
     }
 
-    token revert() {
-        return tokens.at(index--);
+    void revert(std::size_t amount = 0) {
+        index -= amount;
     }
 
     bool expect_peek(token_type type) {
