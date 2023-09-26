@@ -1009,6 +1009,61 @@ public:
 
             return std::make_unique<if_stat>(std::move(list));
         }
+        else if (expect_peek("while")) {
+            consume();
+
+            auto expr = parse_next();
+
+            if (!expr) {
+                throw std::invalid_argument("expected expression in while stat");
+            }
+
+            if (!expect_peek("do")) {
+                throw std::invalid_argument("expected do in while stat");
+            }
+            consume();
+
+            auto block = get_block();
+
+            if (!expect_peek("end")) {
+                throw std::invalid_argument("expected end in while stat");
+            }
+            consume();
+            return std::make_unique<while_stat>(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+        }
+        else if (expect_peek("repeat")) {
+            consume();
+
+            auto block = get_block();
+
+            if (!expect_peek("until")) {
+                throw std::invalid_argument("expected until in repeat stat");
+            }
+            consume();
+
+            auto expr = parse_next();
+
+            if (!expr) {
+                throw std::invalid_argument("expected expression in repeat stat");
+            }
+
+            return std::make_unique<repeat_stat>(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+        }
+        else if (expect_peek("do")) {
+            consume();
+
+
+            auto block = get_block();
+
+            if (!expect_peek("end")) {
+                throw std::invalid_argument("expected end in do stat");
+            }
+            consume();
+            return std::make_unique<do_stat>(std::make_unique<block_conditional>(nullptr, std::move(block)));
+        }
+        else if (expect_peek("local")) {
+
+        }
         return nullptr;
     }
 

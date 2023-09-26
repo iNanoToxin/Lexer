@@ -1,6 +1,5 @@
 
 
-if A:B().C + D then
-
-
+do
+    repeat until a
 end
