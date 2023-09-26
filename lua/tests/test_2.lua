@@ -1,9 +1,6 @@
 
 
-if A + D then
+if A:B().C + D then
 
-elseif B then
-
-elseif C then
 
 end

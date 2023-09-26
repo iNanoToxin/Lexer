@@ -1271,15 +1271,12 @@ public:
     }
 
     std::shared_ptr<base> parse_next(int precedence = 0) {
-        if (auto expr = get_prefixexp()) {
-            return expr;
+        if (auto lhs_expr = get_prefixexp()) {
+            return parse_rhs(precedence, std::move(lhs_expr));
         }
 
-        if (auto expr = parse_primary()) {
-            if (auto next_expr = parse_rhs(precedence, std::move(expr))) {
-                expr = next_expr;
-            }
-            return expr;
+        if (auto lhs_expr = parse_primary()) {
+            return parse_rhs(precedence, std::move(lhs_expr));
         }
         return nullptr;
     }
