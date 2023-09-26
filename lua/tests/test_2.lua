@@ -1,5 +1,3 @@
 
 
-do
-    repeat until a
-end
+local a, b, c

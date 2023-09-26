@@ -22,5 +22,3 @@ exp ::=  nil | false | true | Numeral | LiteralString | ‘...’ | functiondef 
      prefixexp | tableconstructor | exp binop exp | unop exp
 
 functiondef ::= function funcbody
-
-funcbody ::= ‘(’ [parlist] ‘)’ block end

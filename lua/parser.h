@@ -236,9 +236,13 @@ public:
         var,
         functioncall,
         prefixexp,
+        funcbody,
         
         
         block,
+
+        functiondef,
+        functiondef_anon,
 
 
         block_conditional,
@@ -478,14 +482,15 @@ BASE_TYPE_CLASS(                  args,              std::shared_ptr<base>,     
 BASE_TYPE_CLASS(              funcname,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                   var,              std::shared_ptr<base>,       value)
 
-BASE_TYPE_CLASS( label_stat,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(  goto_stat,              std::shared_ptr<base>,       label)
-BASE_TYPE_CLASS(    do_stat,              std::shared_ptr<base>,       block)
-BASE_TYPE_CLASS(repeat_stat,              std::shared_ptr<base>,   statement)
-BASE_TYPE_CLASS( while_stat,              std::shared_ptr<base>,   statement)
-BASE_TYPE_CLASS(    if_stat, std::vector<std::shared_ptr<base>>,  statements)
-BASE_TYPE_CLASS( local_stat,              std::shared_ptr<base>, declaration)
-BASE_TYPE_CLASS(      block, std::vector<std::shared_ptr<base>>,  statements)
+BASE_TYPE_CLASS(      label_stat,              std::shared_ptr<base>,       value)
+BASE_TYPE_CLASS(       goto_stat,              std::shared_ptr<base>,       label)
+BASE_TYPE_CLASS(         do_stat,              std::shared_ptr<base>,       block)
+BASE_TYPE_CLASS(     repeat_stat,              std::shared_ptr<base>,   statement)
+BASE_TYPE_CLASS(      while_stat,              std::shared_ptr<base>,   statement)
+BASE_TYPE_CLASS(         if_stat, std::vector<std::shared_ptr<base>>,  statements)
+BASE_TYPE_CLASS(      local_stat,              std::shared_ptr<base>, declaration)
+BASE_TYPE_CLASS(           block, std::vector<std::shared_ptr<base>>,  statements)
+BASE_TYPE_CLASS(functiondef_anon,              std::shared_ptr<base>,        body)
 
 BASE_TYPE_TOSTRING(table_constructor_expr,  field_list)
 BASE_TYPE_TOSTRING(  numeric_literal_expr,       value)
@@ -508,6 +513,7 @@ BASE_TYPE_TOSTRING(                 label,       value)
 BASE_TYPE_TOSTRING(                  args,       value)
 BASE_TYPE_TOSTRING(                   var,       value)
 BASE_TYPE_TOSTRING(              funcname,       value)
+BASE_TYPE_TOSTRING(      functiondef_anon,         body)
 
 BASE_TYPE_TOSTRING( label_stat,       value)
 BASE_TYPE_TOSTRING(  goto_stat,       label)
@@ -518,13 +524,18 @@ BASE_TYPE_TOSTRING(    if_stat,  statements)
 BASE_TYPE_TOSTRING( local_stat, declaration)
 BASE_TYPE_TOSTRING(      block,  statements)
 
-BASE_TYPE_CLASS_2( assignment_stat, std::shared_ptr<base>,       lhs, std::shared_ptr<base>,   rhs)
-BASE_TYPE_CLASS_2(   function_stat, std::shared_ptr<base>,      name, std::shared_ptr<base>,  body)
-BASE_TYPE_CLASS_2(block_conditional, std::shared_ptr<base>, condition, std::shared_ptr<base>, block)
+BASE_TYPE_CLASS_2(         funcbody, std::shared_ptr<base>, parameters, std::shared_ptr<base>, block)
+BASE_TYPE_CLASS_2(  assignment_stat, std::shared_ptr<base>,        lhs, std::shared_ptr<base>,   rhs)
+BASE_TYPE_CLASS_2(    function_stat, std::shared_ptr<base>,       name, std::shared_ptr<base>,  body)
+BASE_TYPE_CLASS_2(block_conditional, std::shared_ptr<base>,  condition, std::shared_ptr<base>, block)
+BASE_TYPE_CLASS_2(      functiondef, std::shared_ptr<base>,       name, std::shared_ptr<base>,  body)
 
-BASE_TYPE_TOSTRING_2( assignment_stat,       lhs,   rhs)
-BASE_TYPE_TOSTRING_2(   function_stat,      name,  body)
-BASE_TYPE_TOSTRING_2(block_conditional, condition, block)
+
+BASE_TYPE_TOSTRING_2(         funcbody, parameters, block)
+BASE_TYPE_TOSTRING_2(  assignment_stat,        lhs,   rhs)
+BASE_TYPE_TOSTRING_2(    function_stat,       name,  body)
+BASE_TYPE_TOSTRING_2(block_conditional,  condition, block)
+BASE_TYPE_TOSTRING_2(      functiondef,       name,  body)
 
 
 class parser {
@@ -953,7 +964,29 @@ public:
 
         return std::make_unique<varlist>(std::move(list));
     }
-    
+
+    std::shared_ptr<base> get_funcbody() {
+        if (!expect_peek("(")) {
+            return nullptr;
+        }
+        consume();
+
+        auto par_list = get_parlist();
+
+        if (!expect_peek(")")) {
+            throw std::invalid_argument("expected ) after ( in funcbody");
+        }
+        consume();
+
+        auto block = get_block();
+
+        if (!expect_peek("end")) {
+            throw std::invalid_argument("expected end in funcbody");
+        }
+        consume();
+
+        return std::make_unique<funcbody>(std::move(par_list), std::move(block));
+    }
     
     std::shared_ptr<base> get_stat() {
         if (expect_peek("if")) {
@@ -1062,7 +1095,46 @@ public:
             return std::make_unique<do_stat>(std::make_unique<block_conditional>(nullptr, std::move(block)));
         }
         else if (expect_peek("local")) {
+            consume();
 
+            if (expect_peek("function")) {
+                consume();
+                
+                auto name = get_name();
+                
+                if (!name) {
+                    throw std::invalid_argument("expected name in local function");
+                }
+                
+                auto body = get_funcbody();
+                
+                if (!body) {
+                    throw std::invalid_argument("expected function body in local function");
+                }
+                return std::make_unique<local_stat>(std::make_unique<functiondef>(std::move(name), std::move(body)));
+            }
+            else {
+                auto attribute_name_list = get_attnamelist();
+
+
+            }
+        }
+        else if (expect_peek("function")) {
+            consume();
+
+            auto name = get_funcname();
+
+            if (!name) {
+                throw std::invalid_argument("expected name in function");
+            }
+
+            auto body = get_funcbody();
+
+            if (!body) {
+                throw std::invalid_argument("expected function body in function");
+            }
+
+            return std::make_unique<functiondef>(std::move(name), std::move(body));
         }
         return nullptr;
     }
