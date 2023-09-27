@@ -4,6 +4,7 @@
 #ifndef LUA_PARSER_H
 #define LUA_PARSER_H
 
+// #include <cassert>
 #include "tokenizer.h"
 #include <iostream>
 #include <memory>
@@ -54,8 +55,11 @@
             PRINT_NAME_SPACE(NAME, {                        \
                 int i = 0;                                  \
                 for (auto& field : VECTOR_FIELD) {          \
-                    char c = static_cast<char>(++i + '0');  \
-                    PRINT_PTR_FIELD("[" + c + "]", field);  \
+                    std::string idx;                        \
+                    idx += "[";                             \
+                    idx += std::to_string(++i);             \
+                    idx += "]";                             \
+                    PRINT_PTR_FIELD(idx.c_str(), field);    \
                 }                                           \
             });                                             \
         }                                                   \
@@ -153,8 +157,26 @@
     } while (CONDITION)
 #pragma endregion
 
+
+
+#define assert(condition, message)                        \
+do {                                                      \
+    if (!(condition)) {                                   \
+        std::cerr << "Assertion `" #condition "` failed." \
+        << "\n\tFile: " << __FILE__                       \
+        << "\n\tFunc: " << __FUNCTION__                   \
+        << "\n\tLine: " << __LINE__                       \
+        << "\n\tMessage: " << message                     \
+        << std::endl;                                     \
+        abort();                                          \
+    }                                                     \
+} while (false)
+
+
+
+
 bool is_binop(const token& token) {
-    return token.is("+") 
+    return token.is("+")
     || token.is("-")
     || token.is("*")
     || token.is("/")
@@ -252,8 +274,8 @@ public:
         funcbody,
 
         semicolon,
-        
-        
+
+
         block,
 
         functiondef,
@@ -529,7 +551,7 @@ public:
     std::shared_ptr<base> name_list;
     std::shared_ptr<base> expr_list;
     std::shared_ptr<base> block;
-    
+
     generic_for_stat(
         std::shared_ptr<base> name_list,
         std::shared_ptr<base> expr_list,
@@ -540,7 +562,7 @@ public:
         expr_list(std::move(expr_list)),
         block(std::move(block)) {
     }
-        
+
     TOSTRING({
         PRINT_NAME_SPACE("generic_for_stat", {
             PRINT_PTR_FIELD("name_list", name_list);
@@ -691,13 +713,8 @@ public:
 
             auto attribute = get_name();
 
-            if (!attribute) {
-                throw std::invalid_argument("expected attribute");
-            }
-
-            if (!expect_peek(">")) {
-                throw std::invalid_argument("expected > after < in attrib");
-            }
+            assert(attribute, "expected attribute");
+            assert(expect_peek(">"), "expected > after < in attrib");
             consume();
 
             return std::make_unique<attrib_expr>(std::move(name), std::move(attribute));
@@ -712,12 +729,10 @@ public:
         DO_WHILE_CONSUME(expect_peek(","), {
             auto attribute = get_attrib();
 
-            if (!attribute) {
-                if (first) {
-                    return nullptr;
-                }
-                throw std::invalid_argument("expected attrib");
+            if (!attribute && first) {
+                return nullptr;
             }
+            assert(attribute, "expected attrib");
 
             list.push_back(std::move(attribute));
             first = false;
@@ -733,12 +748,10 @@ public:
         DO_WHILE_CONSUME(expect_peek(","), {
             auto expr = parse_next();
 
-            if (!expr) {
-                if (first) {
-                    return nullptr;
-                }
-                throw std::invalid_argument("expression expected");
+            if (!expr && first) {
+                return nullptr;
             }
+            assert(expr, "expression expected");
 
             list.push_back(std::move(expr));
             first = false;
@@ -770,9 +783,7 @@ public:
 
         auto name = get_name();
 
-        if (!expect_peek("::")) {
-            throw std::invalid_argument("expected :: after ::");
-        }
+        assert(expect_peek("::"), "expected :: after :: in label");
         consume();
 
         return std::make_unique<label>(std::move(name));
@@ -785,12 +796,10 @@ public:
         DO_WHILE_CONSUME(expect_peek("."), {
             auto name = get_name();
 
-            if (!name) {
-                if (first) {
-                    return nullptr;
-                }
-                throw std::invalid_argument("expected name for function");
+            if (!name && first) {
+                return nullptr;
             }
+            assert(name, "expected name for function");
 
             if (first) {
                 root = std::move(name);
@@ -805,9 +814,7 @@ public:
             consume();
             auto name = get_name();
 
-            if (!name) {
-                throw std::invalid_argument("expected name for method");
-            }
+            assert(name, "expected name for method");
 
             root = std::make_unique<method_expr>(std::move(root), std::move(name));
         }
@@ -827,12 +834,10 @@ public:
 
             auto name = get_name();
 
-            if (!name) {
-                if (first) {
-                    return nullptr;
-                }
-                throw std::invalid_argument("expected name");
+            if (!name && first) {
+                return nullptr;
             }
+            assert(name, "expected name");
 
             list.push_back(std::move(name));
             first = false;
@@ -852,53 +857,36 @@ public:
         if (expect_peek("[")) {
             consume();
 
-            auto index = parse_next();
+            auto expr = parse_next();
 
-            if (!index) {
-                throw std::invalid_argument("expected index in field");
-            }
+            assert(expr, "expected index in field");
 
-            if (!expect_peek("]")) {
-                throw std::invalid_argument("expected ] after [ in field");
-            }
+            assert(expect_peek("]"), "expected ] after [ in field");
             consume();
-
-            if (!expect_peek("=")) {
-                throw std::invalid_argument("expected = after ] in field");
-            }
+            assert(expect_peek("="), "expected = after ] in field");
             consume();
 
             auto value = parse_next();
 
-            if (!value) {
-                throw std::invalid_argument("expected value in field");
-            }
+            assert(value, "expected value in field");
 
-            return std::make_unique<table_index_value_expr>(std::move(index), std::move(value));
+            return std::make_unique<table_index_value_expr>(std::move(expr), std::move(value));
         }
         else if (expect_peek(token_type::IDENTIFIER) && expect_peek(1, "=")) {
-            auto index = get_name();
+            auto name = get_name();
 
-            if (!expect_peek("=")) {
-                throw std::invalid_argument("expected = after name in field");
-            }
+            assert(expect_peek("="), "expected = after name in field");
             consume();
 
             auto value = parse_next();
+            assert(value, "expected value in field");
 
-            if (!value) {
-                throw std::invalid_argument("expected value in field");
-            }
-
-            return std::make_unique<table_name_value_expr>(std::move(index), std::move(value));
+            return std::make_unique<table_name_value_expr>(std::move(name), std::move(value));
         }
-
-        auto expr = parse_next();
-
-        if (!expr) {
-            return nullptr;
+        else if (auto expr = parse_next()) {
+            return std::make_unique<table_value_expr>(std::move(expr));
         }
-        return std::make_unique<table_value_expr>(std::move(expr));
+        return nullptr;
     }
 
     std::shared_ptr<base> get_fieldlist() {
@@ -924,9 +912,7 @@ public:
 
             auto expr_list = get_explist();
 
-            if (!expect_peek(")")) {
-                throw std::invalid_argument("expected ) after ( in args");
-            }
+            assert(expect_peek(")"), "expected ) after ( in args");
             consume();
             return std::make_unique<args>(std::move(expr_list));
         }
@@ -947,9 +933,7 @@ public:
 
         auto fieldlist = get_fieldlist();
 
-        if (!expect_peek(token_type::PUNCTUATION) || !peek().is("}")) {
-            throw std::invalid_argument("expected } after {");
-        }
+        assert(expect_peek("}"), "expected } after { in table constructor");
         consume();
 
         return std::make_unique<table_constructor_expr>(fieldlist);
@@ -970,14 +954,9 @@ public:
                     consume();
 
                     root = parse_next();
+                    assert(root, "expected expression in var");
 
-                    if (!root) {
-                        throw std::invalid_argument("expected expression in var");
-                    }
-
-                    if (!expect_peek(")")) {
-                        throw std::invalid_argument("expected ) after ( in var");
-                    }
+                    assert(expect_peek(")"), "expected ) after ( in var");
                     consume();
                     is_valid_var = false;
                 }
@@ -989,14 +968,9 @@ public:
                 consume();
 
                 auto expr = parse_next();
+                assert(expr, "expected expression in var");
 
-                if (!expr) {
-                    throw std::invalid_argument("expected expression in var");
-                }
-
-                if (!expect_peek("]")) {
-                    throw std::invalid_argument("expected ] after [ in var");
-                }
+                assert(expect_peek("]"), "expected ] after [ in var");
                 consume();
 
                 root = std::make_unique<index_expr>(std::move(root), std::move(expr));
@@ -1006,10 +980,7 @@ public:
                 consume();
 
                 auto name = get_name();
-
-                if (!name) {
-                    throw std::invalid_argument("expected name in var");
-                }
+                assert(name, "expected name in var");
 
                 root = std::make_unique<member_expr>(std::move(root), std::move(name));
                 is_valid_var = true;
@@ -1018,17 +989,13 @@ public:
                 consume();
 
                 auto name = get_name();
+                assert(name, "expected name in var");
 
-                if (!name) {
-                    throw std::invalid_argument("expected name in var");
-                }
                 root = std::make_unique<method_expr>(std::move(root), std::move(name));
 
                 auto args = get_args();
+                assert(args, "expected args in var");
 
-                if (!args) {
-                    throw std::invalid_argument("expected args in var");
-                }
                 root = std::make_unique<functioncall>(std::move(root), std::move(args));
                 is_valid_var = false;
             }
@@ -1073,12 +1040,10 @@ public:
         DO_WHILE_CONSUME(expect_peek(","), {
             auto expr = get_var();
 
-            if (!expr) {
-                if (first) {
-                    return nullptr;
-                }
-                throw std::invalid_argument("expression expected");
+            if (!expr && first) {
+                return nullptr;
             }
+            assert(expr, "expression expected in var list");
 
             list.push_back(std::move(expr));
             first = false;
@@ -1095,16 +1060,12 @@ public:
 
         auto par_list = get_parlist();
 
-        if (!expect_peek(")")) {
-            throw std::invalid_argument("expected ) after ( in funcbody");
-        }
+        assert(expect_peek(")"), "expected ) after ( in funcbody");
         consume();
 
         auto block = get_block();
 
-        if (!expect_peek("end")) {
-            throw std::invalid_argument("expected end in funcbody");
-        }
+        assert(expect_peek("end"), "expected end in funcbody");
         consume();
 
         return std::make_unique<funcbody>(std::move(par_list), std::move(block));
@@ -1118,12 +1079,10 @@ public:
 
         auto function_body = get_funcbody();
 
-        if (!function_body) {
-            throw std::invalid_argument("expected function body in function definition");
-        }
+        assert(function_body, "expected function body in function definition");
         return std::make_unique<functiondef_anon>(std::move(function_body));
     }
-    
+
     std::shared_ptr<base> get_stat() {
         if (expect_peek(";")) {
             consume();
@@ -1140,16 +1099,11 @@ public:
         else if (expect_peek("if")) {
             std::vector<std::shared_ptr<base>> list;
             consume();
-            
-            auto expr = parse_next();
 
-            if (!expr) {
-                throw std::invalid_argument("expected expression in if stat");
-            }
-            
-            if (!expect_peek("then")) {
-                throw std::invalid_argument("expected then in if stat");
-            }
+            auto expr = parse_next();
+            assert(expr, "expected expression in if stat");
+
+            assert(expect_peek("then"), "expected then in if stat");
             consume();
 
             auto block = get_block();
@@ -1160,14 +1114,9 @@ public:
                 consume();
 
                 expr = parse_next();
+                assert(expr, "expected expression in elseif stat");
 
-                if (!expr) {
-                    throw std::invalid_argument("expected expression in elseif stat");
-                }
-
-                if (!expect_peek("then")) {
-                    throw std::invalid_argument("expected then in elseif stat");
-                }
+                assert(expect_peek("then"), "expected then in elseif stat");
                 consume();
 
                 block = get_block();
@@ -1183,9 +1132,7 @@ public:
                 list.push_back(std::make_unique<block_conditional>(nullptr, std::move(block)));
             }
 
-            if (!expect_peek("end")) {
-                throw std::invalid_argument("expected end after if stat");
-            }
+            assert(expect_peek("end"), "expected end after if stat");
             consume();
 
             return std::make_unique<if_stat>(std::move(list));
@@ -1194,21 +1141,14 @@ public:
             consume();
 
             auto expr = parse_next();
+            assert(expr, "expected expression in while stat");
 
-            if (!expr) {
-                throw std::invalid_argument("expected expression in while stat");
-            }
-
-            if (!expect_peek("do")) {
-                throw std::invalid_argument("expected do in while stat");
-            }
+            assert(expect_peek("do"), "expected do in while stat");
             consume();
 
             auto block = get_block();
 
-            if (!expect_peek("end")) {
-                throw std::invalid_argument("expected end in while stat");
-            }
+            assert(expect_peek("end"), "expected end in while stat");
             consume();
             return std::make_unique<while_stat>(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
         }
@@ -1217,28 +1157,20 @@ public:
 
             auto block = get_block();
 
-            if (!expect_peek("until")) {
-                throw std::invalid_argument("expected until in repeat stat");
-            }
+            assert(expect_peek("until"), "expected until in repeat stat");
             consume();
 
             auto expr = parse_next();
-
-            if (!expr) {
-                throw std::invalid_argument("expected expression in repeat stat");
-            }
+            assert(expr, "expected expression in repeat stat");
 
             return std::make_unique<repeat_stat>(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
         }
         else if (expect_peek("do")) {
             consume();
 
-
             auto block = get_block();
 
-            if (!expect_peek("end")) {
-                throw std::invalid_argument("expected end in do stat");
-            }
+            assert(expect_peek("end"), "expected end in do stat");
             consume();
             return std::make_unique<do_stat>(std::make_unique<block_conditional>(nullptr, std::move(block)));
         }
@@ -1247,35 +1179,24 @@ public:
 
             if (expect_peek("function")) {
                 consume();
-                
+
                 auto name = get_name();
-                
-                if (!name) {
-                    throw std::invalid_argument("expected name in local function");
-                }
-                
+                assert(name, "expected name in local function");
+
                 auto body = get_funcbody();
-                
-                if (!body) {
-                    throw std::invalid_argument("expected function body in local function");
-                }
+                assert(body, "expected function body in local function");
+
                 return std::make_unique<local_stat>(std::make_unique<functiondef>(std::move(name), std::move(body)));
             }
             else {
                 auto attribute_name_list = get_attnamelist();
-
-                if (!attribute_name_list) {
-                    throw std::invalid_argument("expected attribute name list in local stat");
-                }
+                assert(attribute_name_list, "expected attribute name list in local stat");
 
                 if (expect_peek("=")) {
                     consume();
 
                     auto expr_list = get_explist();
-
-                    if (!expr_list) {
-                        throw std::invalid_argument("expected expression list in local stat");
-                    }
+                    assert(expr_list, "expected expression list in local stat");
 
                     return std::make_unique<local_stat>(std::make_unique<assignment_stat>(std::move(attribute_name_list), std::move(expr_list)));
                 }
@@ -1288,16 +1209,10 @@ public:
             consume();
 
             auto name = get_funcname();
-
-            if (!name) {
-                throw std::invalid_argument("expected name in function");
-            }
+            assert(name, "expected name in function");
 
             auto body = get_funcbody();
-
-            if (!body) {
-                throw std::invalid_argument("expected function body in function");
-            }
+            assert(body, "expected function body in function");
 
             return std::make_unique<functiondef>(std::move(name), std::move(body));
         }
@@ -1306,74 +1221,46 @@ public:
 
             if (expect_peek(1, "=")) {
                 auto name = get_name();
+                assert(name, "expected name in numeric for stat");
 
-                if (!name) {
-                    throw std::invalid_argument("expected name in numeric for stat");
-                }
-
-                if (!expect_peek("=")) {
-                    throw std::invalid_argument("expected = in numeric for stat");
-                }
+                assert(expect_peek("="), "expected = in numeric for stat");
                 consume();
 
                 auto init = parse_next();
+                assert(init, "expected expression in numeric for stat");
 
-                if (!init) {
-                    throw std::invalid_argument("expected expression in numeric for stat");
-                }
-
-                if (!expect_peek(",")) {
-                    throw std::invalid_argument("expected , in numeric for stat");
-                }
+                assert(expect_peek(","), "expected , in numeric for stat");
                 consume();
 
                 auto goal = parse_next();
-                std::shared_ptr<base> step = nullptr;
+                assert(goal, "expected expression in numeric for stat");
 
-                if (!goal) {
-                    throw std::invalid_argument("expected expression in numeric for stat");
-                }
+                std::shared_ptr<base> step = nullptr;
 
                 if (expect_peek(",")) {
                     consume();
 
                     step = parse_next();
-
-                    if (!step) {
-                        throw std::invalid_argument("expected expression in numeric for stat");
-                    }
+                    assert(step, "expected expression in numeric for stat");
                 }
                 return std::make_unique<numeric_for_stat>(std::move(name), std::move(init), std::move(goal), std::move(step));
             }
             else {
                 auto name_list = get_namelist();
+                assert(name_list, "expected name list in generic for loop");
 
-                if (!name_list) {
-                    throw std::invalid_argument("expected name list in generic for loop");
-                }
-
-                if (!expect_peek("in")) {
-                    throw std::invalid_argument("expected in after for in generic for stat");
-                }
+                assert(expect_peek("in"), "expected in after for in generic for stat");
                 consume();
 
                 auto expr_list = get_explist();
+                assert(expr_list, "expected expression list in generic for stat");
 
-                if (!expr_list) {
-                    throw std::invalid_argument("expected expression list in generic for stat");
-                }
-
-                if (!expect_peek("do")) {
-                    throw std::invalid_argument("expected do in generic for stat");
-                }
+                assert(expect_peek("do"), "expected do in generic for stat");
                 consume();
 
                 auto block = get_block();
 
-
-                if (!expect_peek("end")) {
-                    throw std::invalid_argument("expected end in generic for stat");
-                }
+                assert(expect_peek("end"), "expected end in generic for stat");
                 consume();
 
                 return std::make_unique<generic_for_stat>(std::move(name_list), std::move(expr_list), std::move(block));
@@ -1383,10 +1270,7 @@ public:
             consume();
 
             auto name = get_name();
-
-            if (!name) {
-                throw std::invalid_argument("expected name in goto stat");
-            }
+            assert(name, "expected name in goto stat");
 
             return std::make_unique<goto_stat>(std::move(name));
         }
@@ -1394,30 +1278,20 @@ public:
             consume();
 
             auto name = get_name();
-            
-            if (!name) {
-                throw std::invalid_argument("expected name in label");
-            }
+            assert(name, "expected name in label");
 
-            if (!expect_peek("::")) {
-                throw std::invalid_argument("expected :: after ::");
-            }
+            assert(expect_peek("::"), "expected :: after :: in label");
             consume();
 
             return std::make_unique<label>(std::move(name));
         }
 
         if (auto var_list = get_varlist()) {
-            if (!expect_peek("=")) {
-                throw std::invalid_argument("expected = in assignment stat");
-            }
+            assert(expect_peek("="), "expected = in assignment stat");
             consume();
 
             auto expr_list = get_explist();
-
-            if (!expr_list) {
-                throw std::invalid_argument("expected expression list in assignment stat");
-            }
+            assert(expr_list, "expected expression list in assignment stat");
 
             return std::make_unique<assignment_stat>(std::move(var_list), std::move(expr_list));
         }
@@ -1426,19 +1300,17 @@ public:
         }
 
         /*else if (auto prefix_expr = get_prefixexp()) {
-            if (!next() || !is_compound_operator(peek())) {
-                throw std::invalid_argument("expected compound operator");
-            }
+            assert(next() && is_compound_operator(peek()), "expected compound operator");
 
             auto compound_operator = consume().literal;
 
             auto expr = parse_next();
+            assert(expr, "expected expression in compound operator");
 
-            if (!expr) {
-                throw std::invalid_argument("expected expression in compound operator");
-            }
             return std::make_unique<compound_assignment_stat>(std::move(compound_operator), std::move(prefix_expr), std::move(expr));
         }*/
+
+
 
         return nullptr;
     }
@@ -1660,10 +1532,9 @@ public:
                     consume();
 
                     auto expr = parse_next();
+                    assert(expr, "expected expression");
 
-                    if (!expect_peek(token_type::PUNCTUATION) || !peek().is(")")) {
-                        throw std::invalid_argument("expected ) after (");
-                    }
+                    assert(expect_peek(")"), "expected ) after (");
                     consume();
 
                     return expr;
@@ -1680,8 +1551,6 @@ public:
                 break;
             }
         }
-
-        // throw std::invalid_argument("unknown: " + curr_token.literal);
         return nullptr;
     }
 
