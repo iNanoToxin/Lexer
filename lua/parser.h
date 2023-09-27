@@ -200,6 +200,20 @@ bool is_null(const token& token) {
     return token.is("nil");
 }
 
+bool is_compound_operator(const token& token) {
+    return token.is("+=")
+    || token.is("-=")
+    || token.is("*=")
+    || token.is("/=")
+    || token.is("%=")
+    || token.is("^=")
+    // || token.is("&=")
+    // || token.is("~=")
+    || token.is("|=")
+    || token.is("<<=")
+    || token.is(">>=")
+    || token.is("//=");
+}
 
 
 class base {
@@ -244,6 +258,8 @@ public:
 
         functiondef,
         functiondef_anon,
+
+        compound_assignment_stat,
 
 
         block_conditional,
@@ -550,6 +566,32 @@ public:
     TOSTRING({
         str += SP("continue_stat = 'continue'", depth);
     });
+};
+
+class compound_assignment_stat : public base {
+public:
+    std::string compound_operator;
+    std::shared_ptr<base> lhs;
+    std::shared_ptr<base> rhs;
+
+    compound_assignment_stat(
+        std::string compound_operator,
+        std::shared_ptr<base> lhs,
+        std::shared_ptr<base> rhs
+    ) :
+        base(kind::compound_assignment_stat),
+        compound_operator(std::move(compound_operator)),
+        lhs(std::move(lhs)),
+        rhs(std::move(rhs)) {
+    }
+
+    TOSTRING({
+        PRINT_NAME_SPACE("compound_assignment_stat", {
+            PRINT_FIELD("compound_operator", "\'" + compound_operator + "\'");
+            PRINT_PTR_FIELD("lhs", lhs);
+            PRINT_PTR_FIELD("rhs", rhs);
+        });
+    })
 };
 
 BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
@@ -1383,6 +1425,21 @@ public:
             return function_call;
         }
 
+        /*else if (auto prefix_expr = get_prefixexp()) {
+            if (!next() || !is_compound_operator(peek())) {
+                throw std::invalid_argument("expected compound operator");
+            }
+
+            auto compound_operator = consume().literal;
+
+            auto expr = parse_next();
+
+            if (!expr) {
+                throw std::invalid_argument("expected expression in compound operator");
+            }
+            return std::make_unique<compound_assignment_stat>(std::move(compound_operator), std::move(prefix_expr), std::move(expr));
+        }*/
+
         return nullptr;
     }
 
@@ -1501,12 +1558,27 @@ public:
             return;
         #endif
 
+        std::string path = "../tests/output.lua";
+        std::string src = get_block()->tostring();
 
-        // COUT(parse_next()->tostring(0));
+        {
+            std::ofstream file(path);
 
-        while (next()) {
-            COUT(get_stat()->tostring());
+
+            if (!file.is_open()) {
+                std::cerr << "Failed to open the file." << "\n";
+                return;
+            }
+
+            file << src;
+
+            file.close();
         }
+        COUT(src);
+
+        // while (next()) {
+        //     COUT(get_stat()->tostring());
+        // }
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
@@ -1624,7 +1696,18 @@ public:
 
             consume();
 
-            auto rhs = parse_next();
+            std::shared_ptr<base> rhs = nullptr;
+
+            if (!rhs) {
+                rhs = get_functiondef();
+            }
+            if (!rhs) {
+                rhs = get_prefixexp();
+            }
+            if (!rhs) {
+                rhs = parse_primary();
+            }
+
             if (rhs == nullptr) {
                 return rhs;
             }

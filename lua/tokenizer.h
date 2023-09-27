@@ -352,7 +352,7 @@ public:
 
     void add_token(const token_type& type) {
         // std::cout << buffer << "\n";
-        if (type != token_type::COMMENT) tokens.push_back(token{.type = type, .literal = buffer});
+        if (type != token_type::COMMENT && type != token_type::COMMENT_RAW) tokens.push_back(token{.type = type, .literal = buffer});
         buffer.clear();
     }
 
