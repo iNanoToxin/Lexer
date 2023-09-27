@@ -1,3 +1,5 @@
 
 
-local a, b, c
+::HI::
+
+goto Hi;

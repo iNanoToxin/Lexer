@@ -352,7 +352,7 @@ public:
 
     void add_token(const token_type& type) {
         // std::cout << buffer << "\n";
-        tokens.push_back(token{.type = type, .literal = buffer});
+        if (type != token_type::COMMENT) tokens.push_back(token{.type = type, .literal = buffer});
         buffer.clear();
     }
 
@@ -410,7 +410,7 @@ public:
             // Handle numbers with exponents.
             if (starts_with('e') || starts_with('E')) {
                 parse_exponential_number();
-                break;
+                return;
             }
 
             if (not_starts_with('_')) {
@@ -520,50 +520,11 @@ public:
     }
 
     void parse_punctuation() {
-        // return_token("...", token_type::PUNCTUATION)
-        //
-        // return_token("==", token_type::PUNCTUATION)
-        // return_token("~=", token_type::PUNCTUATION)
-        // return_token("<=", token_type::PUNCTUATION)
-        // return_token(">=", token_type::PUNCTUATION)
-        // return_token("<", token_type::PUNCTUATION)
-        // return_token(">", token_type::PUNCTUATION)
-        //
-        // return_token("+=", token_type::PUNCTUATION)
-        // return_token("-=", token_type::PUNCTUATION)
-        // return_token("*=", token_type::PUNCTUATION)
-        // return_token("/=", token_type::PUNCTUATION)
-        // return_token("%=", token_type::PUNCTUATION)
-        // return_token("^=", token_type::PUNCTUATION)
-        // return_token("..=", token_type::PUNCTUATION)
-        //
-        // return_token("+", token_type::PUNCTUATION)
-        // return_token("-", token_type::PUNCTUATION)
-        // return_token("*", token_type::PUNCTUATION)
-        // return_token("/", token_type::PUNCTUATION)
-        // return_token("%", token_type::PUNCTUATION)
-        // return_token("^", token_type::PUNCTUATION)
-        // return_token("..", token_type::PUNCTUATION)
-        //
-        //
-        // return_token("#", token_type::PUNCTUATION)
-        // return_token("=", token_type::PUNCTUATION)
-        //
-        // return_token(".", token_type::PUNCTUATION)
-        // return_token(":", token_type::PUNCTUATION)
-        // return_token(";", token_type::PUNCTUATION)
-        // return_token(",", token_type::PUNCTUATION)
-        // return_token("(", token_type::PUNCTUATION)
-        // return_token(")", token_type::PUNCTUATION)
-        // return_token("{", token_type::PUNCTUATION)
-        // return_token("}", token_type::PUNCTUATION)
-        // return_token("[", token_type::PUNCTUATION)
-        // return_token("]", token_type::PUNCTUATION)
-
         for (auto punctuation : PUNCTUATIONS) {
             if (starts_with(punctuation)) {
                 bump(strlen(punctuation));
                 add_token(token_type::PUNCTUATION);
+                break;
             }
         }
     }

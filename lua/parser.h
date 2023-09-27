@@ -233,10 +233,11 @@ public:
         label,
         args,
         funcname,
-        var,
         functioncall,
         prefixexp,
         funcbody,
+
+        semicolon,
         
         
         block,
@@ -248,17 +249,16 @@ public:
         block_conditional,
 
         assignment_stat,
-        call_stat,
         label_stat,
         break_stat,
+        continue_stat,
         goto_stat,
         do_stat,
         while_stat,
         repeat_stat,
         if_stat,
-        for_stat,
         generic_for_stat,
-        function_stat,
+        numeric_for_stat,
         local_stat,
     };
 
@@ -281,7 +281,8 @@ public:
         base(kind::binary_operator_expr),
         binary_operator(std::move(binary_operator)),
         lhs(std::move(lhs)),
-        rhs(std::move(rhs)) {}
+        rhs(std::move(rhs)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("binary_operator_expr", {
@@ -303,7 +304,8 @@ public:
     ) :
         base(kind::unary_operator_expr),
         unary_operator(std::move(unary_operator)),
-        expr(std::move(expr)) {}
+        expr(std::move(expr)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("unary_operator_expr", {
@@ -324,7 +326,8 @@ public:
     ) :
         base(kind::attrib_expr),
         name(std::move(name)),
-        attrib(std::move(attrib)) {}
+        attrib(std::move(attrib)) {
+    }
 
     TOSTRING({
          PRINT_NAME_SPACE("attrib_expr", {
@@ -345,7 +348,8 @@ public:
     ) :
         base(kind::table_index_value_expr),
         index(std::move(index)),
-        value(std::move(value)) {}
+        value(std::move(value)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("table_index_value_expr", {
@@ -366,7 +370,8 @@ public:
     ) :
         base(kind::table_name_value_expr),
         index(std::move(index)),
-        value(std::move(value)) {}
+        value(std::move(value)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("table_name_value_expr", {
@@ -385,9 +390,10 @@ public:
         std::shared_ptr<base> root,
         std::shared_ptr<base> index
     ) :
-    base(kind::member_expr),
-    root(std::move(root)),
-    index(std::move(index)) {}
+        base(kind::member_expr),
+        root(std::move(root)),
+        index(std::move(index)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("member_expr", {
@@ -408,7 +414,8 @@ public:
     ) :
         base(kind::method_expr),
         root(std::move(root)),
-        index(std::move(index)) {}
+        index(std::move(index)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("method_expr", {
@@ -429,7 +436,8 @@ public:
     ) :
         base(kind::index_expr),
         root(std::move(root)),
-        index(std::move(index)) {}
+        index(std::move(index)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("index_expr", {
@@ -450,7 +458,8 @@ public:
     ) :
         base(kind::functioncall),
         root(std::move(root)),
-        args(std::move(args)) {}
+        args(std::move(args)) {
+    }
 
     TOSTRING({
         PRINT_NAME_SPACE("functioncall", {
@@ -458,6 +467,89 @@ public:
             PRINT_PTR_FIELD("args", args);
         });
     })
+};
+
+class semicolon : public base {
+public:
+    semicolon() : base(kind::semicolon) {}
+
+    TOSTRING({
+        str += SP("semicolon = ';'", depth);
+    });
+};
+
+class numeric_for_stat : public base {
+public:
+    std::shared_ptr<base> name;
+    std::shared_ptr<base> init;
+    std::shared_ptr<base> goal;
+    std::shared_ptr<base> step;
+
+    numeric_for_stat(
+        std::shared_ptr<base> name,
+        std::shared_ptr<base> init,
+        std::shared_ptr<base> goal,
+        std::shared_ptr<base> step
+    ) :
+        base(kind::numeric_for_stat),
+        name(std::move(name)),
+        init(std::move(init)),
+        goal(std::move(goal)),
+        step(std::move(step)) {
+    }
+
+    TOSTRING({
+                 PRINT_NAME_SPACE("numeric_for_stat", {
+                     PRINT_PTR_FIELD("name", name);
+                     PRINT_PTR_FIELD("init", init);
+                     PRINT_PTR_FIELD("goal", goal);
+                     PRINT_PTR_FIELD("step", step);
+                 });
+             })
+};
+
+class generic_for_stat : public base {
+public:
+    std::shared_ptr<base> name_list;
+    std::shared_ptr<base> expr_list;
+    std::shared_ptr<base> block;
+    
+    generic_for_stat(
+        std::shared_ptr<base> name_list,
+        std::shared_ptr<base> expr_list,
+        std::shared_ptr<base> block
+    ) :
+        base(kind::generic_for_stat),
+        name_list(std::move(name_list)),
+        expr_list(std::move(expr_list)),
+        block(std::move(block)) {
+    }
+        
+    TOSTRING({
+        PRINT_NAME_SPACE("generic_for_stat", {
+            PRINT_PTR_FIELD("name_list", name_list);
+            PRINT_PTR_FIELD("expr_list", expr_list);
+            PRINT_PTR_FIELD("block", block);
+        });
+    })
+};
+
+class break_stat : public base {
+public:
+    break_stat() : base(kind::break_stat) {}
+
+    TOSTRING({
+        str += SP("break_stat = 'break'", depth);
+    });
+};
+
+class continue_stat : public base {
+public:
+    continue_stat() : base(kind::continue_stat) {}
+
+    TOSTRING({
+        str += SP("continue_stat = 'continue'", depth);
+    });
 };
 
 BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
@@ -480,7 +572,6 @@ BASE_TYPE_CLASS(               retstat,              std::shared_ptr<base>,     
 BASE_TYPE_CLASS(                 label,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(                  args,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(              funcname,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(                   var,              std::shared_ptr<base>,       value)
 
 BASE_TYPE_CLASS(      label_stat,              std::shared_ptr<base>,       value)
 BASE_TYPE_CLASS(       goto_stat,              std::shared_ptr<base>,       label)
@@ -511,7 +602,6 @@ BASE_TYPE_TOSTRING(              namelist,       value)
 BASE_TYPE_TOSTRING(               retstat,       value)
 BASE_TYPE_TOSTRING(                 label,       value)
 BASE_TYPE_TOSTRING(                  args,       value)
-BASE_TYPE_TOSTRING(                   var,       value)
 BASE_TYPE_TOSTRING(              funcname,       value)
 BASE_TYPE_TOSTRING(      functiondef_anon,         body)
 
@@ -526,14 +616,12 @@ BASE_TYPE_TOSTRING(      block,  statements)
 
 BASE_TYPE_CLASS_2(         funcbody, std::shared_ptr<base>, parameters, std::shared_ptr<base>, block)
 BASE_TYPE_CLASS_2(  assignment_stat, std::shared_ptr<base>,        lhs, std::shared_ptr<base>,   rhs)
-BASE_TYPE_CLASS_2(    function_stat, std::shared_ptr<base>,       name, std::shared_ptr<base>,  body)
 BASE_TYPE_CLASS_2(block_conditional, std::shared_ptr<base>,  condition, std::shared_ptr<base>, block)
 BASE_TYPE_CLASS_2(      functiondef, std::shared_ptr<base>,       name, std::shared_ptr<base>,  body)
 
 
 BASE_TYPE_TOSTRING_2(         funcbody, parameters, block)
 BASE_TYPE_TOSTRING_2(  assignment_stat,        lhs,   rhs)
-BASE_TYPE_TOSTRING_2(    function_stat,       name,  body)
 BASE_TYPE_TOSTRING_2(block_conditional,  condition, block)
 BASE_TYPE_TOSTRING_2(      functiondef,       name,  body)
 
@@ -632,7 +720,7 @@ public:
         return std::make_unique<retstat>(std::move(explist));
     }
 
-    std::shared_ptr<base> get_label() {
+    /*std::shared_ptr<base> get_label() {
         if (!expect_peek("::")) {
             return nullptr;
         }
@@ -646,7 +734,7 @@ public:
         consume();
 
         return std::make_unique<label>(std::move(name));
-    }
+    }*/
 
     std::shared_ptr<base> get_funcname() {
         std::shared_ptr<base> root = nullptr;
@@ -774,21 +862,17 @@ public:
     std::shared_ptr<base> get_fieldlist() {
         std::vector<std::shared_ptr<base>> list;
 
-        bool first = true;
-        DO_WHILE_CONSUME(expect_peek(",") || expect_peek(";"), {
-            auto field = get_field();
-
-            if (!field) {
-                if (first) {
-                    return nullptr;
-                }
-                throw std::invalid_argument("expected field in fieldlist");
-            }
-
+        while (auto field = get_field()) {
             list.push_back(std::move(field));
-            first = false;
-        });
 
+            if (expect_peek(",") || expect_peek(";")) {
+                consume();
+            }
+        }
+
+        if (list.empty()) {
+            return nullptr;
+        }
         return std::make_unique<fieldlist>(std::move(list));
     }
 
@@ -921,8 +1005,6 @@ public:
             revert(diff);
             return nullptr;
         }
-
-        COUT("VALID: " << is_valid_var);
         return std::move(root);
     }
 
@@ -934,8 +1016,6 @@ public:
         auto posn = index;
         auto expr = get_prefixexp();
         auto diff = index - posn;
-
-        COUT("DIFF: " << diff);
 
         if (!expr || expr->kind != base::kind::functioncall) {
             revert(diff);
@@ -987,9 +1067,35 @@ public:
 
         return std::make_unique<funcbody>(std::move(par_list), std::move(block));
     }
+
+    std::shared_ptr<base> get_functiondef() {
+        if (!expect_peek("function")) {
+            return nullptr;
+        }
+        consume();
+
+        auto function_body = get_funcbody();
+
+        if (!function_body) {
+            throw std::invalid_argument("expected function body in function definition");
+        }
+        return std::make_unique<functiondef_anon>(std::move(function_body));
+    }
     
     std::shared_ptr<base> get_stat() {
-        if (expect_peek("if")) {
+        if (expect_peek(";")) {
+            consume();
+            return std::make_unique<semicolon>();
+        }
+        else if (expect_peek("break")) {
+            consume();
+            return std::make_unique<break_stat>();
+        }
+        else if (expect_peek("continue")) {
+            consume();
+            return std::make_unique<continue_stat>();
+        }
+        else if (expect_peek("if")) {
             std::vector<std::shared_ptr<base>> list;
             consume();
             
@@ -1116,7 +1222,24 @@ public:
             else {
                 auto attribute_name_list = get_attnamelist();
 
+                if (!attribute_name_list) {
+                    throw std::invalid_argument("expected attribute name list in local stat");
+                }
 
+                if (expect_peek("=")) {
+                    consume();
+
+                    auto expr_list = get_explist();
+
+                    if (!expr_list) {
+                        throw std::invalid_argument("expected expression list in local stat");
+                    }
+
+                    return std::make_unique<local_stat>(std::make_unique<assignment_stat>(std::move(attribute_name_list), std::move(expr_list)));
+                }
+
+
+                return std::make_unique<local_stat>(std::move(attribute_name_list));
             }
         }
         else if (expect_peek("function")) {
@@ -1136,6 +1259,130 @@ public:
 
             return std::make_unique<functiondef>(std::move(name), std::move(body));
         }
+        else if (expect_peek("for")) {
+            consume();
+
+            if (expect_peek(1, "=")) {
+                auto name = get_name();
+
+                if (!name) {
+                    throw std::invalid_argument("expected name in numeric for stat");
+                }
+
+                if (!expect_peek("=")) {
+                    throw std::invalid_argument("expected = in numeric for stat");
+                }
+                consume();
+
+                auto init = parse_next();
+
+                if (!init) {
+                    throw std::invalid_argument("expected expression in numeric for stat");
+                }
+
+                if (!expect_peek(",")) {
+                    throw std::invalid_argument("expected , in numeric for stat");
+                }
+                consume();
+
+                auto goal = parse_next();
+                std::shared_ptr<base> step = nullptr;
+
+                if (!goal) {
+                    throw std::invalid_argument("expected expression in numeric for stat");
+                }
+
+                if (expect_peek(",")) {
+                    consume();
+
+                    step = parse_next();
+
+                    if (!step) {
+                        throw std::invalid_argument("expected expression in numeric for stat");
+                    }
+                }
+                return std::make_unique<numeric_for_stat>(std::move(name), std::move(init), std::move(goal), std::move(step));
+            }
+            else {
+                auto name_list = get_namelist();
+
+                if (!name_list) {
+                    throw std::invalid_argument("expected name list in generic for loop");
+                }
+
+                if (!expect_peek("in")) {
+                    throw std::invalid_argument("expected in after for in generic for stat");
+                }
+                consume();
+
+                auto expr_list = get_explist();
+
+                if (!expr_list) {
+                    throw std::invalid_argument("expected expression list in generic for stat");
+                }
+
+                if (!expect_peek("do")) {
+                    throw std::invalid_argument("expected do in generic for stat");
+                }
+                consume();
+
+                auto block = get_block();
+
+
+                if (!expect_peek("end")) {
+                    throw std::invalid_argument("expected end in generic for stat");
+                }
+                consume();
+
+                return std::make_unique<generic_for_stat>(std::move(name_list), std::move(expr_list), std::move(block));
+            }
+        }
+        else if (expect_peek("goto")) {
+            consume();
+
+            auto name = get_name();
+
+            if (!name) {
+                throw std::invalid_argument("expected name in goto stat");
+            }
+
+            return std::make_unique<goto_stat>(std::move(name));
+        }
+        else if (expect_peek("::")) {
+            consume();
+
+            auto name = get_name();
+            
+            if (!name) {
+                throw std::invalid_argument("expected name in label");
+            }
+
+            if (!expect_peek("::")) {
+                throw std::invalid_argument("expected :: after ::");
+            }
+            consume();
+
+            return std::make_unique<label>(std::move(name));
+        }
+
+        if (auto var_list = get_varlist()) {
+            if (!expect_peek("=")) {
+                throw std::invalid_argument("expected = in assignment stat");
+            }
+            consume();
+
+            auto expr_list = get_explist();
+
+            if (!expr_list) {
+                throw std::invalid_argument("expected expression list in assignment stat");
+            }
+
+            return std::make_unique<assignment_stat>(std::move(var_list), std::move(expr_list));
+        }
+        else if (auto function_call = get_functioncall()) {
+            return function_call;
+        }
+
         return nullptr;
     }
 
@@ -1171,7 +1418,7 @@ public:
         tokens = stream.tokens;
         length = tokens.size();
 
-        #define PRINT_TOKENS
+        // #define PRINT_TOKENS
         // #define RETURN_EARLY
 
         #ifdef PRINT_TOKENS
@@ -1257,7 +1504,9 @@ public:
 
         // COUT(parse_next()->tostring(0));
 
-        COUT(get_stat()->tostring());
+        while (next()) {
+            COUT(get_stat()->tostring());
+        }
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
@@ -1375,7 +1624,7 @@ public:
 
             consume();
 
-            auto rhs = parse_primary();
+            auto rhs = parse_next();
             if (rhs == nullptr) {
                 return rhs;
             }
@@ -1398,6 +1647,10 @@ public:
     }
 
     std::shared_ptr<base> parse_next(int precedence = 0) {
+        if (auto lhs_expr = get_functiondef()) {
+            return parse_rhs(precedence, std::move(lhs_expr));
+        }
+
         if (auto lhs_expr = get_prefixexp()) {
             return parse_rhs(precedence, std::move(lhs_expr));
         }
