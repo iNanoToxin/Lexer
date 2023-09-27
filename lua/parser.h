@@ -1,6 +1,3 @@
-// #pragma clang diagnostic push
-// #pragma ide diagnostic ignored "OCDFAInspection"
-
 #ifndef LUA_PARSER_H
 #define LUA_PARSER_H
 
@@ -1286,17 +1283,26 @@ public:
             return std::make_unique<label>(std::move(name));
         }
 
-        if (auto var_list = get_varlist()) {
-            assert(expect_peek("="), "expected = in assignment stat");
-            consume();
+        if (auto function_call = get_functioncall()) {
+            return function_call;
+        }
+        else if (auto var_list = get_varlist()) {
+            auto list = dynamic_cast<varlist*>(var_list.get());
+
+            if (list->value.size() == 1 && next() && is_compound_operator(peek())) {
+                auto compound_operator = consume().literal;
+
+
+            }
+            else {
+                assert(expect_peek("="), "expected = in assignment stat");
+                consume();
+            }
 
             auto expr_list = get_explist();
             assert(expr_list, "expected expression list in assignment stat");
 
             return std::make_unique<assignment_stat>(std::move(var_list), std::move(expr_list));
-        }
-        else if (auto function_call = get_functioncall()) {
-            return function_call;
         }
 
         /*else if (auto prefix_expr = get_prefixexp()) {
