@@ -4,32 +4,33 @@
 #include <sstream>
 #include <string>
 #include "parser.h"
+#include "generation.h"
+
 
 int main() {
 
-    std::string path = "../tests/test_2.lua";
+
     std::string source;
-
     {
-        std::ifstream file;
+        std::ifstream file("../tests/test_2.lua");
+        assert(file.is_open(), "failed to open file");
+
         std::stringstream stream;
-
-        file.open(path);
-
-        if (!file.is_open()) { // Check if the file is opened successfully
-            std::cerr << "Failed to open the file." << "\n";
-            return 1; // Exit with an error code
-        }
-
         stream << file.rdbuf();
         source = stream.str();
         file.close();
     }
 
-    parser parser;
-    parser.parse(source);
+    generator generator;
+    std::string generated = generator.generate(source);
 
-
+    {
+        std::ofstream file("../tests/output.lua");
+        assert(file.is_open(), "Failed to open the file.");
+        file << generated;
+        file.close();
+    }
+    std::cout << generated;
 
     return 0;
 }

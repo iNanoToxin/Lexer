@@ -8,7 +8,7 @@
 
 #pragma region MACROS
     #define COUT(A) std::cout << A << std::endl
-    #define SP(A, B) std::string((B) * 4, ' ') + A + "\n"
+    #define SP(A, B) std::string((B) * 2, ' ') + A + "\n"
 
     #define PRINT_NAME_SPACE(NAME, INSIDE)                  \
     do {                                                    \
@@ -27,7 +27,7 @@
             str += ": <";                                   \
             std::size_t pos = str.size();                   \
             str += FIELD->tostring(depth);                  \
-            str.erase(pos, depth * 4);                      \
+            str.erase(pos, depth * 2);                      \
             while (pos < str.size()) {                      \
                 if (str[pos] == ' ') {                      \
                     str.insert(str.begin() + pos, '>');     \
@@ -89,59 +89,80 @@
 #pragma endregion
 
 #pragma region MACROS_2
-    #define BASE_TYPE_CLASS(CLASS_NAME, TYPE, FIELD_NAME) \
-    class CLASS_NAME : public base {                      \
-    public:                                               \
-        TYPE FIELD_NAME;                                  \
-        explicit CLASS_NAME(TYPE FIELD_NAME) :            \
-        base(kind::CLASS_NAME),                           \
-        FIELD_NAME(std::move(FIELD_NAME)) {}              \
-        std::string tostring(std::size_t depth) const override; \
+    #define CREATE_CLASS_1(CLASS_NAME, TYPE_1, FIELD_NAME_1)           \
+    class CLASS_NAME : public base {                                   \
+    public:                                                            \
+        TYPE_1 FIELD_NAME_1;                                           \
+                                                                       \
+        explicit CLASS_NAME(                                           \
+            TYPE_1 FIELD_NAME_1                                        \
+        ) :                                                            \
+            base(kind::CLASS_NAME),                                    \
+            FIELD_NAME_1(std::move(FIELD_NAME_1))                      \
+        {}                                                             \
+                                                                       \
+        std::string tostring(std::size_t depth) const {                \
+            std::string str;                                           \
+            PRINT_NAME_SPACE(#CLASS_NAME, {                            \
+                HELPER_PRINT(#FIELD_NAME_1, FIELD_NAME_1, str, depth); \
+            });                                                        \
+            return str;                                                \
+        }                                                              \
     };
 
-    #define BASE_TYPE_TOSTRING(CLASS_NAME, FIELD_NAME) \
-    std::string CLASS_NAME::tostring(std::size_t depth) const { \
-        std::string str;                               \
-        PRINT_NAME_SPACE(#CLASS_NAME, {                \
-            HELPER_PRINT(#FIELD_NAME, FIELD_NAME, str, depth);  \
-        });                                            \
-        return str;                                    \
-    }
-
-    #define BASE_TYPE_CLASS_2(CLASS_NAME, TYPE_1, FIELD_NAME_1, TYPE_2, FIELD_NAME_2) \
-    class CLASS_NAME : public base {                                                  \
-    public:                                                                           \
-        TYPE_1 FIELD_NAME_1;                                                          \
-        TYPE_2 FIELD_NAME_2;                                                          \
-        explicit CLASS_NAME(                                                          \
-            TYPE_1 FIELD_NAME_1,                                                      \
-            TYPE_2 FIELD_NAME_2                                                       \
-        ) :                                                                           \
-            base(kind::CLASS_NAME),                                                   \
-            FIELD_NAME_1(std::move(FIELD_NAME_1)),                                    \
-            FIELD_NAME_2(std::move(FIELD_NAME_2)) {}                                  \
-                                                                                      \
-        std::string tostring(std::size_t depth) const override;                       \
+    #define CREATE_CLASS_2(CLASS_NAME, TYPE_1, FIELD_NAME_1, TYPE_2, FIELD_NAME_2) \
+    class CLASS_NAME : public base {                                               \
+    public:                                                                        \
+        TYPE_1 FIELD_NAME_1;                                                       \
+        TYPE_2 FIELD_NAME_2;                                                       \
+                                                                                   \
+        explicit CLASS_NAME(                                                       \
+            TYPE_1 FIELD_NAME_1,                                                   \
+            TYPE_2 FIELD_NAME_2                                                    \
+        ) :                                                                        \
+            base(kind::CLASS_NAME),                                                \
+            FIELD_NAME_1(std::move(FIELD_NAME_1)),                                 \
+            FIELD_NAME_2(std::move(FIELD_NAME_2))                                  \
+        {}                                                                         \
+                                                                                   \
+        std::string tostring(std::size_t depth) const {                            \
+            std::string str;                                                       \
+            PRINT_NAME_SPACE(#CLASS_NAME, {                                        \
+                HELPER_PRINT(#FIELD_NAME_1, FIELD_NAME_1, str, depth);             \
+                HELPER_PRINT(#FIELD_NAME_2, FIELD_NAME_2, str, depth);             \
+            });                                                                    \
+            return str;                                                            \
+        }                                                                          \
     };
 
-    #define BASE_TYPE_TOSTRING_2(CLASS_NAME, FIELD_NAME_1, FIELD_NAME_2) \
-    std::string CLASS_NAME::tostring(std::size_t depth) const {          \
-        std::string str;                                                 \
-        PRINT_NAME_SPACE(#CLASS_NAME, {                                  \
-            HELPER_PRINT(#FIELD_NAME_1, FIELD_NAME_1, str, depth);       \
-            HELPER_PRINT(#FIELD_NAME_2, FIELD_NAME_2, str, depth);       \
-        });                                                              \
-        return str;                                                      \
-    }
-
-    #define RETURN_UNOP(TOKEN) \
-    do {                       \
-        consume();             \
-        if (auto expr = parse_next(get_precedence(TOKEN, true))) { \
-            return std::make_unique<unary_operator_expr>(TOKEN.literal, std::move(expr)); \
-        }                      \
-        throw std::invalid_argument("expected expression after " + TOKEN.literal); \
-    } while (false)
+    #define CREATE_CLASS_3(CLASS_NAME, TYPE_1, FIELD_NAME_1, TYPE_2, FIELD_NAME_2, TYPE_3, FIELD_NAME_3) \
+    class CLASS_NAME : public base {                                                                     \
+    public:                                                                                              \
+        TYPE_1 FIELD_NAME_1;                                                                             \
+        TYPE_2 FIELD_NAME_2;                                                                             \
+        TYPE_3 FIELD_NAME_3;                                                                             \
+                                                                                                         \
+        explicit CLASS_NAME(                                                                             \
+            TYPE_1 FIELD_NAME_1,                                                                         \
+            TYPE_2 FIELD_NAME_2,                                                                         \
+            TYPE_3 FIELD_NAME_3                                                                          \
+        ) :                                                                                              \
+            base(kind::CLASS_NAME),                                                                      \
+            FIELD_NAME_1(std::move(FIELD_NAME_1)),                                                       \
+            FIELD_NAME_2(std::move(FIELD_NAME_2)),                                                       \
+            FIELD_NAME_3(std::move(FIELD_NAME_3))                                                        \
+        {}                                                                                               \
+                                                                                                         \
+        std::string tostring(std::size_t depth) const {                                                  \
+            std::string str;                                                                             \
+            PRINT_NAME_SPACE(#CLASS_NAME, {                                                              \
+                HELPER_PRINT(#FIELD_NAME_1, FIELD_NAME_1, str, depth);                                   \
+                HELPER_PRINT(#FIELD_NAME_2, FIELD_NAME_2, str, depth);                                   \
+                HELPER_PRINT(#FIELD_NAME_3, FIELD_NAME_3, str, depth);                                   \
+            });                                                                                          \
+            return str;                                                                                  \
+        }                                                                                                \
+    };
 
     #define DO_WHILE_CONSUME(CONDITION, BODY) \
     bool can_consume = false;                 \
@@ -219,22 +240,6 @@ bool is_null(const token& token) {
     return token.is("nil");
 }
 
-bool is_compound_operator(const token& token) {
-    return token.is("+=")
-    || token.is("-=")
-    || token.is("*=")
-    || token.is("/=")
-    || token.is("%=")
-    || token.is("^=")
-    // || token.is("&=")
-    // || token.is("~=")
-    || token.is("|=")
-    || token.is("<<=")
-    || token.is(">>=")
-    || token.is("//=");
-}
-
-
 class base {
 public:
     enum class kind {
@@ -278,15 +283,11 @@ public:
         functiondef,
         functiondef_anon,
 
-        compound_assignment_stat,
-
 
         block_conditional,
 
         assignment_stat,
-        label_stat,
         break_stat,
-        continue_stat,
         goto_stat,
         do_stat,
         while_stat,
@@ -302,207 +303,13 @@ public:
     [[nodiscard]] virtual std::string tostring(std::size_t depth = 0) const { return ""; }
 };
 
-class binary_operator_expr : public base {
-public:
-    std::string binary_operator;
-    std::shared_ptr<base> lhs;
-    std::shared_ptr<base> rhs;
+using base_ptr_arr = std::vector<std::shared_ptr<base>>;
+using base_ptr = std::shared_ptr<base>;
 
-    binary_operator_expr(
-        std::string binary_operator,
-        std::shared_ptr<base> lhs,
-        std::shared_ptr<base> rhs
-    ) :
-        base(kind::binary_operator_expr),
-        binary_operator(std::move(binary_operator)),
-        lhs(std::move(lhs)),
-        rhs(std::move(rhs)) {
-    }
 
-    TOSTRING({
-        PRINT_NAME_SPACE("binary_operator_expr", {
-            PRINT_FIELD("binary_operator", "\'" + binary_operator + "\'");
-            PRINT_PTR_FIELD("lhs", lhs);
-            PRINT_PTR_FIELD("rhs", rhs);
-        });
-    })
-};
 
-class unary_operator_expr : public base {
-public:
-    std::string unary_operator;
-    std::shared_ptr<base> expr;
 
-    unary_operator_expr(
-        std::string unary_operator,
-        std::shared_ptr<base> expr
-    ) :
-        base(kind::unary_operator_expr),
-        unary_operator(std::move(unary_operator)),
-        expr(std::move(expr)) {
-    }
 
-    TOSTRING({
-        PRINT_NAME_SPACE("unary_operator_expr", {
-            PRINT_FIELD("unary_operator", "\'" + unary_operator + "\'");
-            PRINT_PTR_FIELD("expr", expr);
-        });
-    })
-};
-
-class attrib_expr : public base {
-public:
-    std::shared_ptr<base> name;
-    std::shared_ptr<base> attrib;
-
-    attrib_expr(
-            std::shared_ptr<base> name,
-            std::shared_ptr<base> attrib
-    ) :
-        base(kind::attrib_expr),
-        name(std::move(name)),
-        attrib(std::move(attrib)) {
-    }
-
-    TOSTRING({
-         PRINT_NAME_SPACE("attrib_expr", {
-             PRINT_PTR_FIELD("name", name);
-             PRINT_PTR_FIELD("attrib", attrib);
-         });
-    })
-};
-
-class table_index_value_expr : public base {
-public:
-    std::shared_ptr<base> index;
-    std::shared_ptr<base> value;
-
-    table_index_value_expr(
-        std::shared_ptr<base> index,
-        std::shared_ptr<base> value
-    ) :
-        base(kind::table_index_value_expr),
-        index(std::move(index)),
-        value(std::move(value)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("table_index_value_expr", {
-            PRINT_PTR_FIELD("index", index);
-            PRINT_PTR_FIELD("value", value);
-        });
-    })
-};
-
-class table_name_value_expr : public base {
-public:
-    std::shared_ptr<base> index;
-    std::shared_ptr<base> value;
-
-    table_name_value_expr(
-        std::shared_ptr<base> index,
-        std::shared_ptr<base> value
-    ) :
-        base(kind::table_name_value_expr),
-        index(std::move(index)),
-        value(std::move(value)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("table_name_value_expr", {
-            PRINT_PTR_FIELD("index", index);
-            PRINT_PTR_FIELD("value", value);
-        });
-    })
-};
-
-class member_expr : public base {
-public:
-    std::shared_ptr<base> root;
-    std::shared_ptr<base> index;
-
-    member_expr(
-        std::shared_ptr<base> root,
-        std::shared_ptr<base> index
-    ) :
-        base(kind::member_expr),
-        root(std::move(root)),
-        index(std::move(index)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("member_expr", {
-            PRINT_PTR_FIELD("root", root);
-            PRINT_PTR_FIELD("index", index);
-        });
-    })
-};
-
-class method_expr : public base {
-public:
-    std::shared_ptr<base> root;
-    std::shared_ptr<base> index;
-
-    method_expr(
-        std::shared_ptr<base> root,
-        std::shared_ptr<base> index
-    ) :
-        base(kind::method_expr),
-        root(std::move(root)),
-        index(std::move(index)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("method_expr", {
-            PRINT_PTR_FIELD("root", root);
-            PRINT_PTR_FIELD("index", index);
-        });
-    })
-};
-
-class index_expr : public base {
-public:
-    std::shared_ptr<base> root;
-    std::shared_ptr<base> index;
-
-    index_expr(
-        std::shared_ptr<base> root,
-        std::shared_ptr<base> index
-    ) :
-        base(kind::index_expr),
-        root(std::move(root)),
-        index(std::move(index)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("index_expr", {
-            PRINT_PTR_FIELD("root", root);
-            PRINT_PTR_FIELD("index", index);
-        });
-    })
-};
-
-class functioncall : public base {
-public:
-    std::shared_ptr<base> root;
-    std::shared_ptr<base> args;
-
-    functioncall(
-        std::shared_ptr<base> root,
-        std::shared_ptr<base> args
-    ) :
-        base(kind::functioncall),
-        root(std::move(root)),
-        args(std::move(args)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("functioncall", {
-            PRINT_PTR_FIELD("root", root);
-            PRINT_PTR_FIELD("args", args);
-        });
-    })
-};
 
 class semicolon : public base {
 public:
@@ -515,22 +322,25 @@ public:
 
 class numeric_for_stat : public base {
 public:
-    std::shared_ptr<base> name;
-    std::shared_ptr<base> init;
-    std::shared_ptr<base> goal;
-    std::shared_ptr<base> step;
+    base_ptr name;
+    base_ptr init;
+    base_ptr goal;
+    base_ptr step;
+    base_ptr block;
 
     numeric_for_stat(
-        std::shared_ptr<base> name,
-        std::shared_ptr<base> init,
-        std::shared_ptr<base> goal,
-        std::shared_ptr<base> step
+        base_ptr name,
+        base_ptr init,
+        base_ptr goal,
+        base_ptr step,
+        base_ptr block
     ) :
         base(kind::numeric_for_stat),
         name(std::move(name)),
         init(std::move(init)),
         goal(std::move(goal)),
-        step(std::move(step)) {
+        step(std::move(step)),
+        block(std::move(block)) {
     }
 
     TOSTRING({
@@ -543,32 +353,6 @@ public:
              })
 };
 
-class generic_for_stat : public base {
-public:
-    std::shared_ptr<base> name_list;
-    std::shared_ptr<base> expr_list;
-    std::shared_ptr<base> block;
-
-    generic_for_stat(
-        std::shared_ptr<base> name_list,
-        std::shared_ptr<base> expr_list,
-        std::shared_ptr<base> block
-    ) :
-        base(kind::generic_for_stat),
-        name_list(std::move(name_list)),
-        expr_list(std::move(expr_list)),
-        block(std::move(block)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("generic_for_stat", {
-            PRINT_PTR_FIELD("name_list", name_list);
-            PRINT_PTR_FIELD("expr_list", expr_list);
-            PRINT_PTR_FIELD("block", block);
-        });
-    })
-};
-
 class break_stat : public base {
 public:
     break_stat() : base(kind::break_stat) {}
@@ -578,113 +362,59 @@ public:
     });
 };
 
-class continue_stat : public base {
-public:
-    continue_stat() : base(kind::continue_stat) {}
-
-    TOSTRING({
-        str += SP("continue_stat = 'continue'", depth);
-    });
-};
-
-class compound_assignment_stat : public base {
-public:
-    std::string compound_operator;
-    std::shared_ptr<base> lhs;
-    std::shared_ptr<base> rhs;
-
-    compound_assignment_stat(
-        std::string compound_operator,
-        std::shared_ptr<base> lhs,
-        std::shared_ptr<base> rhs
-    ) :
-        base(kind::compound_assignment_stat),
-        compound_operator(std::move(compound_operator)),
-        lhs(std::move(lhs)),
-        rhs(std::move(rhs)) {
-    }
-
-    TOSTRING({
-        PRINT_NAME_SPACE("compound_assignment_stat", {
-            PRINT_FIELD("compound_operator", "\'" + compound_operator + "\'");
-            PRINT_PTR_FIELD("lhs", lhs);
-            PRINT_PTR_FIELD("rhs", rhs);
-        });
-    })
-};
-
-BASE_TYPE_CLASS(table_constructor_expr,              std::shared_ptr<base>,  field_list)
-BASE_TYPE_CLASS(  numeric_literal_expr,                        std::string,       value)
-BASE_TYPE_CLASS(      conditional_expr,                        std::string, conditional)
-BASE_TYPE_CLASS(          boolean_expr,                        std::string,     boolean)
-BASE_TYPE_CLASS(             null_expr,                        std::string,       value)
-BASE_TYPE_CLASS(           string_expr,                        std::string,       value)
-BASE_TYPE_CLASS(          varargs_expr,                        std::string,       value)
-BASE_TYPE_CLASS(       identifier_expr,                        std::string,       value)
-BASE_TYPE_CLASS(      table_value_expr,              std::shared_ptr<base>,       value)
-
-BASE_TYPE_CLASS(           attnamelist, std::vector<std::shared_ptr<base>>,       value)
-BASE_TYPE_CLASS(              namelist, std::vector<std::shared_ptr<base>>,       value)
-BASE_TYPE_CLASS(               explist, std::vector<std::shared_ptr<base>>,       value)
-BASE_TYPE_CLASS(               parlist, std::vector<std::shared_ptr<base>>,       value)
-BASE_TYPE_CLASS(               varlist, std::vector<std::shared_ptr<base>>,       value)
-BASE_TYPE_CLASS(             fieldlist, std::vector<std::shared_ptr<base>>,       value)
-BASE_TYPE_CLASS(               retstat,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(                 label,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(                  args,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(              funcname,              std::shared_ptr<base>,       value)
-
-BASE_TYPE_CLASS(      label_stat,              std::shared_ptr<base>,       value)
-BASE_TYPE_CLASS(       goto_stat,              std::shared_ptr<base>,       label)
-BASE_TYPE_CLASS(         do_stat,              std::shared_ptr<base>,       block)
-BASE_TYPE_CLASS(     repeat_stat,              std::shared_ptr<base>,   statement)
-BASE_TYPE_CLASS(      while_stat,              std::shared_ptr<base>,   statement)
-BASE_TYPE_CLASS(         if_stat, std::vector<std::shared_ptr<base>>,  statements)
-BASE_TYPE_CLASS(      local_stat,              std::shared_ptr<base>, declaration)
-BASE_TYPE_CLASS(           block, std::vector<std::shared_ptr<base>>,  statements)
-BASE_TYPE_CLASS(functiondef_anon,              std::shared_ptr<base>,        body)
-
-BASE_TYPE_TOSTRING(table_constructor_expr,  field_list)
-BASE_TYPE_TOSTRING(  numeric_literal_expr,       value)
-BASE_TYPE_TOSTRING(      conditional_expr, conditional)
-BASE_TYPE_TOSTRING(          boolean_expr,     boolean)
-BASE_TYPE_TOSTRING(             null_expr,       value)
-BASE_TYPE_TOSTRING(           string_expr,       value)
-BASE_TYPE_TOSTRING(          varargs_expr,       value)
-BASE_TYPE_TOSTRING(       identifier_expr,       value)
-BASE_TYPE_TOSTRING(      table_value_expr,       value)
-
-BASE_TYPE_TOSTRING(           attnamelist,       value)
-BASE_TYPE_TOSTRING(               explist,       value)
-BASE_TYPE_TOSTRING(               parlist,       value)
-BASE_TYPE_TOSTRING(               varlist,       value)
-BASE_TYPE_TOSTRING(             fieldlist,       value)
-BASE_TYPE_TOSTRING(              namelist,       value)
-BASE_TYPE_TOSTRING(               retstat,       value)
-BASE_TYPE_TOSTRING(                 label,       value)
-BASE_TYPE_TOSTRING(                  args,       value)
-BASE_TYPE_TOSTRING(              funcname,       value)
-BASE_TYPE_TOSTRING(      functiondef_anon,         body)
-
-BASE_TYPE_TOSTRING( label_stat,       value)
-BASE_TYPE_TOSTRING(  goto_stat,       label)
-BASE_TYPE_TOSTRING(    do_stat,       block)
-BASE_TYPE_TOSTRING(repeat_stat,   statement)
-BASE_TYPE_TOSTRING( while_stat,   statement)
-BASE_TYPE_TOSTRING(    if_stat,  statements)
-BASE_TYPE_TOSTRING( local_stat, declaration)
-BASE_TYPE_TOSTRING(      block,  statements)
-
-BASE_TYPE_CLASS_2(         funcbody, std::shared_ptr<base>, parameters, std::shared_ptr<base>, block)
-BASE_TYPE_CLASS_2(  assignment_stat, std::shared_ptr<base>,        lhs, std::shared_ptr<base>,   rhs)
-BASE_TYPE_CLASS_2(block_conditional, std::shared_ptr<base>,  condition, std::shared_ptr<base>, block)
-BASE_TYPE_CLASS_2(      functiondef, std::shared_ptr<base>,       name, std::shared_ptr<base>,  body)
 
 
-BASE_TYPE_TOSTRING_2(         funcbody, parameters, block)
-BASE_TYPE_TOSTRING_2(  assignment_stat,        lhs,   rhs)
-BASE_TYPE_TOSTRING_2(block_conditional,  condition, block)
-BASE_TYPE_TOSTRING_2(      functiondef,       name,  body)
+
+
+CREATE_CLASS_1(table_constructor_expr,     base_ptr,      field_list)
+CREATE_CLASS_1(  numeric_literal_expr,  std::string,           value)
+CREATE_CLASS_1(      conditional_expr,  std::string,     conditional)
+CREATE_CLASS_1(          boolean_expr,  std::string,         boolean)
+CREATE_CLASS_1(             null_expr,  std::string,           value)
+CREATE_CLASS_1(           string_expr,  std::string,           value)
+CREATE_CLASS_1(          varargs_expr,  std::string,           value)
+CREATE_CLASS_1(       identifier_expr,  std::string,           value)
+CREATE_CLASS_1(      table_value_expr,     base_ptr,           value)
+CREATE_CLASS_1(           attnamelist, base_ptr_arr,           value)
+CREATE_CLASS_1(              namelist, base_ptr_arr,           value)
+CREATE_CLASS_1(               explist, base_ptr_arr,           value)
+CREATE_CLASS_1(               parlist, base_ptr_arr,           value)
+CREATE_CLASS_1(               varlist, base_ptr_arr,           value)
+CREATE_CLASS_1(             fieldlist, base_ptr_arr,           value)
+CREATE_CLASS_1(               retstat,     base_ptr,           value)
+CREATE_CLASS_1(                 label,     base_ptr,           value)
+CREATE_CLASS_1(                  args,     base_ptr,           value)
+CREATE_CLASS_1(              funcname,     base_ptr,           value)
+CREATE_CLASS_1(             goto_stat,     base_ptr,           label)
+CREATE_CLASS_1(               do_stat,     base_ptr,           block)
+CREATE_CLASS_1(           repeat_stat,     base_ptr,       statement)
+CREATE_CLASS_1(            while_stat,     base_ptr,       statement)
+CREATE_CLASS_1(               if_stat, base_ptr_arr,      statements)
+CREATE_CLASS_1(            local_stat,     base_ptr,     declaration)
+CREATE_CLASS_1(                 block, base_ptr_arr,      statements)
+CREATE_CLASS_1(      functiondef_anon,     base_ptr,            body)
+
+CREATE_CLASS_2(              funcbody,     base_ptr,      parameters, base_ptr,     block)
+CREATE_CLASS_2(       assignment_stat,     base_ptr,             lhs, base_ptr,       rhs)
+CREATE_CLASS_2(     block_conditional,     base_ptr,       condition, base_ptr,     block)
+CREATE_CLASS_2(           functiondef,     base_ptr,            name, base_ptr,      body)
+CREATE_CLASS_2(   unary_operator_expr,  std::string,  unary_operator, base_ptr,      expr)
+CREATE_CLASS_2(           attrib_expr,     base_ptr,            name, base_ptr,    attrib)
+CREATE_CLASS_2(table_index_value_expr,     base_ptr,           index, base_ptr,     value)
+CREATE_CLASS_2( table_name_value_expr,     base_ptr,           index, base_ptr,     value)
+CREATE_CLASS_2(           member_expr,     base_ptr,            root, base_ptr,     index)
+CREATE_CLASS_2(           method_expr,     base_ptr,            root, base_ptr,     index)
+CREATE_CLASS_2(            index_expr,     base_ptr,            root, base_ptr,     index)
+CREATE_CLASS_2(          functioncall,     base_ptr,            root, base_ptr,      args)
+
+CREATE_CLASS_3(  binary_operator_expr,  std::string, binary_operator, base_ptr,       lhs, base_ptr,   rhs)
+CREATE_CLASS_3(      generic_for_stat,     base_ptr,       name_list, base_ptr, expr_list, base_ptr, block)
+
+
+
+
+
+
 
 
 class parser {
@@ -694,11 +424,11 @@ public:
     std::vector<token> tokens;
 
 
-    std::shared_ptr<base> get_name() {
+    base_ptr get_name() {
         return expect_peek(token_type::IDENTIFIER) ? parse_primary() : nullptr;
     }
 
-    std::shared_ptr<base> get_attrib() {
+    base_ptr get_attrib() {
         auto name = get_name();
 
         if (!name) {
@@ -719,8 +449,8 @@ public:
         return name;
     }
 
-    std::shared_ptr<base> get_attnamelist() {
-        std::vector<std::shared_ptr<base>> list;
+    base_ptr get_attnamelist() {
+        base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
@@ -738,8 +468,8 @@ public:
         return std::make_unique<attnamelist>(std::move(list));
     }
 
-    std::shared_ptr<base> get_explist() {
-        std::vector<std::shared_ptr<base>> list;
+    base_ptr get_explist() {
+        base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
@@ -757,7 +487,7 @@ public:
         return std::make_unique<explist>(std::move(list));
     }
 
-    std::shared_ptr<base> get_retstat() {
+    base_ptr get_retstat() {
         if (!expect_peek("return")) {
             return nullptr;
         }
@@ -772,22 +502,8 @@ public:
         return std::make_unique<retstat>(std::move(explist));
     }
 
-    /*std::shared_ptr<base> get_label() {
-        if (!expect_peek("::")) {
-            return nullptr;
-        }
-        consume();
-
-        auto name = get_name();
-
-        assert(expect_peek("::"), "expected :: after :: in label");
-        consume();
-
-        return std::make_unique<label>(std::move(name));
-    }*/
-
-    std::shared_ptr<base> get_funcname() {
-        std::shared_ptr<base> root = nullptr;
+    base_ptr get_funcname() {
+        base_ptr root = nullptr;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek("."), {
@@ -819,8 +535,8 @@ public:
         return std::make_unique<funcname>(std::move(root));
     }
 
-    std::shared_ptr<base> get_namelist(bool include_varargs = false) {
-        std::vector<std::shared_ptr<base>> list;
+    base_ptr get_namelist(bool include_varargs = false) {
+        base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
@@ -846,11 +562,11 @@ public:
         return std::make_unique<namelist>(std::move(list));
     }
 
-    std::shared_ptr<base> get_parlist() {
+    base_ptr get_parlist() {
         return get_namelist(true);
     }
 
-    std::shared_ptr<base> get_field() {
+    base_ptr get_field() {
         if (expect_peek("[")) {
             consume();
 
@@ -869,7 +585,7 @@ public:
 
             return std::make_unique<table_index_value_expr>(std::move(expr), std::move(value));
         }
-        else if (expect_peek(token_type::IDENTIFIER) && expect_peek(1, "=")) {
+        else if (expect_peek(token_type::IDENTIFIER) && expect_peek("=", 1)) {
             auto name = get_name();
 
             assert(expect_peek("="), "expected = after name in field");
@@ -886,8 +602,8 @@ public:
         return nullptr;
     }
 
-    std::shared_ptr<base> get_fieldlist() {
-        std::vector<std::shared_ptr<base>> list;
+    base_ptr get_fieldlist() {
+        base_ptr_arr list;
 
         while (auto field = get_field()) {
             list.push_back(std::move(field));
@@ -903,7 +619,7 @@ public:
         return std::make_unique<fieldlist>(std::move(list));
     }
 
-    std::shared_ptr<base> get_args() {
+    base_ptr get_args() {
         if (expect_peek("(")) {
             consume();
 
@@ -922,7 +638,7 @@ public:
         return nullptr;
     }
 
-    std::shared_ptr<base> get_table_contructor() {
+    base_ptr get_table_contructor() {
         if (!expect_peek("{")) {
             return nullptr;
         }
@@ -933,13 +649,13 @@ public:
         assert(expect_peek("}"), "expected } after { in table constructor");
         consume();
 
-        return std::make_unique<table_constructor_expr>(fieldlist);
+        return std::make_unique<table_constructor_expr>(std::move(fieldlist));
     }
 
-    std::shared_ptr<base> get_var(bool include_prefix_expr = false) {
-        std::shared_ptr<base> root = nullptr;
-        auto posn = index;
+    base_ptr get_var(bool is_prefix_expr = false) {
+        base_ptr root = nullptr;
         bool is_valid_var = true;
+        auto marked = mark();
 
         while (true) {
             if (!root) {
@@ -1005,33 +721,31 @@ public:
             }
         }
 
-        auto diff = index - posn;
-
-        if (!include_prefix_expr and !is_valid_var) {
-            revert(diff);
+        if (!is_prefix_expr and !is_valid_var) {
+            revert(marked);
+            COUT("REVERTED");
             return nullptr;
         }
         return std::move(root);
     }
 
-    std::shared_ptr<base> get_prefixexp() {
+    base_ptr get_prefixexp() {
         return get_var(true);
     }
 
-    std::shared_ptr<base> get_functioncall() {
-        auto posn = index;
+    base_ptr get_functioncall() {
+        auto marked = mark();
         auto expr = get_prefixexp();
-        auto diff = index - posn;
 
         if (!expr || expr->kind != base::kind::functioncall) {
-            revert(diff);
+            revert(marked);
             return nullptr;
         }
         return expr;
     }
 
-    std::shared_ptr<base> get_varlist() {
-        std::vector<std::shared_ptr<base>> list;
+    base_ptr get_varlist() {
+        base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
@@ -1049,7 +763,7 @@ public:
         return std::make_unique<varlist>(std::move(list));
     }
 
-    std::shared_ptr<base> get_funcbody() {
+    base_ptr get_funcbody() {
         if (!expect_peek("(")) {
             return nullptr;
         }
@@ -1068,7 +782,7 @@ public:
         return std::make_unique<funcbody>(std::move(par_list), std::move(block));
     }
 
-    std::shared_ptr<base> get_functiondef() {
+    base_ptr get_functiondef() {
         if (!expect_peek("function")) {
             return nullptr;
         }
@@ -1080,7 +794,7 @@ public:
         return std::make_unique<functiondef_anon>(std::move(function_body));
     }
 
-    std::shared_ptr<base> get_stat() {
+    base_ptr get_stat() {
         if (expect_peek(";")) {
             consume();
             return std::make_unique<semicolon>();
@@ -1089,12 +803,8 @@ public:
             consume();
             return std::make_unique<break_stat>();
         }
-        else if (expect_peek("continue")) {
-            consume();
-            return std::make_unique<continue_stat>();
-        }
         else if (expect_peek("if")) {
-            std::vector<std::shared_ptr<base>> list;
+            base_ptr_arr list;
             consume();
 
             auto expr = parse_next();
@@ -1216,7 +926,7 @@ public:
         else if (expect_peek("for")) {
             consume();
 
-            if (expect_peek(1, "=")) {
+            if (expect_peek("=", 1)) {
                 auto name = get_name();
                 assert(name, "expected name in numeric for stat");
 
@@ -1232,7 +942,7 @@ public:
                 auto goal = parse_next();
                 assert(goal, "expected expression in numeric for stat");
 
-                std::shared_ptr<base> step = nullptr;
+                base_ptr step = nullptr;
 
                 if (expect_peek(",")) {
                     consume();
@@ -1240,7 +950,10 @@ public:
                     step = parse_next();
                     assert(step, "expected expression in numeric for stat");
                 }
-                return std::make_unique<numeric_for_stat>(std::move(name), std::move(init), std::move(goal), std::move(step));
+
+                auto block = get_block();
+
+                return std::make_unique<numeric_for_stat>(std::move(name), std::move(init), std::move(goal), std::move(step), std::move(block));
             }
             else {
                 auto name_list = get_namelist();
@@ -1283,46 +996,24 @@ public:
             return std::make_unique<label>(std::move(name));
         }
 
-        if (auto function_call = get_functioncall()) {
-            return function_call;
-        }
-        else if (auto var_list = get_varlist()) {
-            auto list = dynamic_cast<varlist*>(var_list.get());
-
-            if (list->value.size() == 1 && next() && is_compound_operator(peek())) {
-                auto compound_operator = consume().literal;
-
-
-            }
-            else {
-                assert(expect_peek("="), "expected = in assignment stat");
-                consume();
-            }
+        if (auto var_list = get_varlist()) {
+            assert(expect_peek("="), "expected = in assignment stat");
+            consume();
 
             auto expr_list = get_explist();
             assert(expr_list, "expected expression list in assignment stat");
 
             return std::make_unique<assignment_stat>(std::move(var_list), std::move(expr_list));
         }
-
-        /*else if (auto prefix_expr = get_prefixexp()) {
-            assert(next() && is_compound_operator(peek()), "expected compound operator");
-
-            auto compound_operator = consume().literal;
-
-            auto expr = parse_next();
-            assert(expr, "expected expression in compound operator");
-
-            return std::make_unique<compound_assignment_stat>(std::move(compound_operator), std::move(prefix_expr), std::move(expr));
-        }*/
-
-
+        else if (auto function_call = get_functioncall()) {
+            return function_call;
+        }
 
         return nullptr;
     }
 
-    std::shared_ptr<base> get_block() {
-        std::vector<std::shared_ptr<base>> list;
+    base_ptr get_block() {
+        base_ptr_arr list;
 
         while (auto stat = get_stat()) {
             list.push_back(std::move(stat));
@@ -1347,7 +1038,7 @@ public:
 
 
 
-    void parse(const std::string& source) {
+    base_ptr parse(const std::string& source) {
         token_stream stream;
         stream.tokenize(source);
         tokens = stream.tokens;
@@ -1437,26 +1128,17 @@ public:
         #endif
 
         std::string path = "../tests/output.lua";
-        std::string src = get_block()->tostring();
+        auto ptr = get_block();
+        assert(ptr, "failed to parse");
 
-        {
-            std::ofstream file(path);
-
-
-            if (!file.is_open()) {
-                std::cerr << "Failed to open the file." << "\n";
-                return;
-            }
-
-            file << src;
-
-            file.close();
-        }
-        COUT(src);
-
-        // while (next()) {
-        //     COUT(get_stat()->tostring());
+        // {
+        //     std::ofstream file(path);
+        //     assert(file.is_open(), "Failed to open the file.");
+        //     file << ptr->tostring();
+        //     file.close();
         // }
+        // COUT(ptr->tostring());
+        return ptr;
     }
 
     int get_precedence(const token& token, bool is_unop = false) {
@@ -1489,7 +1171,7 @@ public:
         return -1;
     }
 
-    std::shared_ptr<base> parse_primary() {
+    base_ptr parse_primary() {
         if (!next()) {
             return nullptr;
         }
@@ -1523,7 +1205,10 @@ public:
                     return std::make_unique<boolean_expr>(consume().literal);
                 }
                 else if (is_unop(curr_token)) {
-                    RETURN_UNOP(curr_token);
+                    consume();
+                    auto expr = parse_next(get_precedence(curr_token, true));
+                    assert(expr, "expected expression after " + curr_token.literal);
+                    return std::make_unique<unary_operator_expr>(curr_token.literal, std::move(expr));
                 }
                 else if (is_null(curr_token)) {
                     return std::make_unique<null_expr>(consume().literal);
@@ -1552,7 +1237,10 @@ public:
                     return std::make_unique<varargs_expr>(consume().literal);
                 }
                 else if (is_unop(curr_token)) {
-                    RETURN_UNOP(curr_token);
+                    consume();
+                    auto expr = parse_next(get_precedence(curr_token, true));
+                    assert(expr, "expected expression after " + curr_token.literal);
+                    return std::make_unique<unary_operator_expr>(curr_token.literal, std::move(expr));
                 }
                 break;
             }
@@ -1560,7 +1248,7 @@ public:
         return nullptr;
     }
 
-    std::shared_ptr<base> parse_rhs(int min_precedence, std::shared_ptr<base> lhs) {
+    base_ptr parse_rhs(int min_precedence, base_ptr lhs) {
         while (next()) {
             token curr_token = peek();
             int curr_precedence = get_precedence(curr_token);
@@ -1571,7 +1259,7 @@ public:
 
             consume();
 
-            std::shared_ptr<base> rhs = nullptr;
+            base_ptr rhs = nullptr;
 
             if (!rhs) {
                 rhs = get_functiondef();
@@ -1604,7 +1292,7 @@ public:
         return lhs;
     }
 
-    std::shared_ptr<base> parse_next(int precedence = 0) {
+    base_ptr parse_next(int precedence = 0) {
         if (auto lhs_expr = get_functiondef()) {
             return parse_rhs(precedence, std::move(lhs_expr));
         }
@@ -1627,27 +1315,23 @@ public:
         return tokens.at(index + offset);
     }
 
+    std::size_t mark() {
+        return index;
+    }
+
     token consume() {
         return tokens.at(index++);
     }
 
-    void revert(std::size_t amount = 0) {
-        index -= amount;
+    void revert(std::size_t marked) {
+        index = marked;
     }
 
-    bool expect_peek(token_type type) {
-        return next() && peek().type == type;
-    }
-
-    bool expect_peek(std::size_t offset, token_type type) {
+    bool expect_peek(token_type type, std::size_t offset = 0) {
         return next(offset) && peek(offset).type == type;
     }
 
-    bool expect_peek(const std::string& match) {
-        return next() && peek().literal == match;
-    }
-
-    bool expect_peek(std::size_t offset, const std::string& match) {
+    bool expect_peek(const std::string& match, std::size_t offset = 0) {
         return next(offset) && peek(offset).literal == match;
     }
 };
