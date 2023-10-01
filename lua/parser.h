@@ -247,7 +247,6 @@ public:
         unary_operator_expr,
         table_constructor_expr,
         numeric_literal_expr,
-        conditional_expr,
         boolean_expr,
         null_expr,
         string_expr,
@@ -272,7 +271,6 @@ public:
         args,
         funcname,
         functioncall,
-        prefixexp,
         funcbody,
 
         semicolon,
@@ -281,7 +279,6 @@ public:
         block,
 
         functiondef,
-        functiondef_anon,
 
 
         block_conditional,
@@ -368,7 +365,6 @@ public:
 
 CREATE_CLASS_1(table_constructor_expr,     base_ptr,      field_list)
 CREATE_CLASS_1(  numeric_literal_expr,  std::string,           value)
-CREATE_CLASS_1(      conditional_expr,  std::string,     conditional)
 CREATE_CLASS_1(          boolean_expr,  std::string,         boolean)
 CREATE_CLASS_1(             null_expr,  std::string,           value)
 CREATE_CLASS_1(           string_expr,  std::string,           value)
@@ -392,7 +388,6 @@ CREATE_CLASS_1(            while_stat,     base_ptr,       statement)
 CREATE_CLASS_1(               if_stat, base_ptr_arr,      statements)
 CREATE_CLASS_1(            local_stat,     base_ptr,     declaration)
 CREATE_CLASS_1(                 block, base_ptr_arr,      statements)
-CREATE_CLASS_1(      functiondef_anon,     base_ptr,            body)
 
 CREATE_CLASS_2(              funcbody,     base_ptr,      parameters, base_ptr,     block)
 CREATE_CLASS_2(       assignment_stat,     base_ptr,             lhs, base_ptr,       rhs)
@@ -723,7 +718,6 @@ public:
 
         if (!is_prefix_expr and !is_valid_var) {
             revert(marked);
-            COUT("REVERTED");
             return nullptr;
         }
         return std::move(root);
@@ -791,7 +785,7 @@ public:
         auto function_body = get_funcbody();
 
         assert(function_body, "expected function body in function definition");
-        return std::make_unique<functiondef_anon>(std::move(function_body));
+        return std::make_unique<functiondef>(nullptr, std::move(function_body));
     }
 
     base_ptr get_stat() {
@@ -951,7 +945,13 @@ public:
                     assert(step, "expected expression in numeric for stat");
                 }
 
+                assert(expect_peek("do"), "expected do in numeric for stat");
+                consume();
+
                 auto block = get_block();
+
+                assert(expect_peek("end"), "expected do in numeric for stat");
+                consume();
 
                 return std::make_unique<numeric_for_stat>(std::move(name), std::move(init), std::move(goal), std::move(step), std::move(block));
             }
@@ -1198,10 +1198,7 @@ public:
                 return std::make_unique<numeric_literal_expr>(consume().literal);
             }
             case token_type::KEYWORD: {
-                if (is_conditional(curr_token)) {
-                    return std::make_unique<conditional_expr>(consume().literal);
-                }
-                else if (is_boolean(curr_token)) {
+                if (is_boolean(curr_token)) {
                     return std::make_unique<boolean_expr>(consume().literal);
                 }
                 else if (is_unop(curr_token)) {

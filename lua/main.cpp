@@ -30,7 +30,7 @@ int main() {
         file << generated;
         file.close();
     }
-    std::cout << generated;
+    // std::cout << generated;
 
     return 0;
 }
