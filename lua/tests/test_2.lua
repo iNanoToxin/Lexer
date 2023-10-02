@@ -1,8 +1,12 @@
 
 
-local lol = function() return 0 end
+-- local lol = function() return 0 end
+--
+-- lol()
+--
+--
+-- a.lol.lol.lol.lol.lol.lol.lol();
 
-lol()
+if A then
 
-
-a.lol.lol.lol.lol.lol.lol.lol();
+end

@@ -9,7 +9,7 @@
 
 #define NEW_LINE "\n"
 
-#define RENAME_VARIABLES
+// #define RENAME_VARIABLES
 
 #pragma region MACRO_FUNCTIONS
 #define double_cast(class_1, class_2, var, ptr, field)            \
@@ -879,6 +879,8 @@ public:
             {
                 auto stat = dynamic_cast<if_stat*>(ast.get());
                 std::string str;
+
+                COUT((int) ast->parent->kind);
 
                 for (int i = 0; i < stat->statements.size(); i++)
                 {

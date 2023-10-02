@@ -5,6 +5,7 @@
 #include "tokenizer.h"
 #include <iostream>
 #include <memory>
+#include <utility>
 
 #pragma region MACROS
     #define COUT(A) std::cout << A << std::endl
@@ -191,9 +192,8 @@ do {                                                      \
 } while (false)
 
 
-
-
-bool is_binop(const token& token) {
+bool is_binop(const token& token)
+{
     return token.is("+")
     || token.is("-")
     || token.is("*")
@@ -217,32 +217,43 @@ bool is_binop(const token& token) {
     || token.is("or");
 }
 
-bool is_fieldsep(const token& token) {
+bool is_fieldsep(const token& token)
+{
     return token.is(",") || token.is(";");
 }
 
-bool is_unop(const token& token) {
+bool is_unop(const token& token)
+{
     return token.is("-")
     || token.is("not")
     || token.is("#")
     || token.is("~");
 }
 
-bool is_boolean(const token& token) {
+bool is_boolean(const token& token)
+{
     return token.is("true") || token.is("false");
 }
 
-bool is_conditional(const token& token) {
+bool is_conditional(const token& token)
+{
     return token.is("and") || token.is("or");
 }
 
-bool is_null(const token& token) {
+bool is_null(const token& token)
+{
     return token.is("nil");
 }
 
-class base {
+class base;
+using base_ptr_arr = std::vector<std::shared_ptr<base>>;
+using base_ptr = std::shared_ptr<base>;
+
+class base
+{
 public:
-    enum class kind {
+    enum class kind
+    {
         binary_operator_expr,
         unary_operator_expr,
         table_constructor_expr,
@@ -296,28 +307,44 @@ public:
     };
 
     kind kind;
-    explicit base(enum kind kind) : kind(kind) {}
-    [[nodiscard]] virtual std::string tostring(std::size_t depth = 0) const { return ""; }
+    base_ptr parent;
+
+    explicit base(enum kind kind)
+    {
+        this->kind = kind;
+        this->parent = nullptr;
+    }
+
+    explicit base(enum kind kind, base_ptr parent)
+    {
+        this->kind = kind;
+        this->parent = parent;
+    }
+
+    [[nodiscard]] virtual std::string tostring(std::size_t depth = 0) const
+    {
+        return "";
+    }
 };
 
 using base_ptr_arr = std::vector<std::shared_ptr<base>>;
 using base_ptr = std::shared_ptr<base>;
 
 
-
-
-
-
-class semicolon : public base {
+class semicolon : public base
+{
 public:
-    semicolon() : base(kind::semicolon) {}
+    semicolon() : base(kind::semicolon)
+    {
+    }
 
     TOSTRING({
         str += SP("semicolon = ';'", depth);
     });
 };
 
-class numeric_for_stat : public base {
+class numeric_for_stat : public base
+{
 public:
     base_ptr name;
     base_ptr init;
@@ -337,17 +364,20 @@ public:
         init(std::move(init)),
         goal(std::move(goal)),
         step(std::move(step)),
-        block(std::move(block)) {
+        block(std::move(block))
+    {
     }
 
     TOSTRING({
-                 PRINT_NAME_SPACE("numeric_for_stat", {
-                     PRINT_PTR_FIELD("name", name);
-                     PRINT_PTR_FIELD("init", init);
-                     PRINT_PTR_FIELD("goal", goal);
-                     PRINT_PTR_FIELD("step", step);
-                 });
-             })
+        PRINT_NAME_SPACE(
+            "numeric_for_stat", {
+                PRINT_PTR_FIELD("name", name);
+                PRINT_PTR_FIELD("init", init);
+                PRINT_PTR_FIELD("goal", goal);
+                PRINT_PTR_FIELD("step", step);
+            }
+        );
+    })
 };
 
 class break_stat : public base {
@@ -377,7 +407,7 @@ CREATE_CLASS_1(               explist, base_ptr_arr,           value)
 CREATE_CLASS_1(               parlist, base_ptr_arr,           value)
 CREATE_CLASS_1(               varlist, base_ptr_arr,           value)
 CREATE_CLASS_1(             fieldlist, base_ptr_arr,           value)
-CREATE_CLASS_1(               return_stat,     base_ptr,           value)
+CREATE_CLASS_1(           return_stat,     base_ptr,           value)
 CREATE_CLASS_1(                 label,     base_ptr,           value)
 CREATE_CLASS_1(                  args,     base_ptr,           value)
 CREATE_CLASS_1(              funcname,     base_ptr,           value)
@@ -406,31 +436,30 @@ CREATE_CLASS_3(  binary_operator_expr,  std::string, binary_operator, base_ptr, 
 CREATE_CLASS_3(      generic_for_stat,     base_ptr,       name_list, base_ptr, expr_list, base_ptr, block)
 
 
-
-
-
-
-
-
-class parser {
+class parser
+{
 public:
     std::size_t length = 0;
     std::size_t index = 0;
     std::vector<token> tokens;
 
 
-    base_ptr get_name() {
+    base_ptr get_name()
+    {
         return expect_peek(token_type::IDENTIFIER) ? parse_primary() : nullptr;
     }
 
-    base_ptr get_attrib() {
+    base_ptr get_attrib()
+    {
         auto name = get_name();
 
-        if (!name) {
+        if (!name)
+        {
             return nullptr;
         }
 
-        if (expect_peek("<")) {
+        if (expect_peek("<"))
+        {
             consume();
 
             auto attribute = get_name();
@@ -444,14 +473,16 @@ public:
         return name;
     }
 
-    base_ptr get_attnamelist() {
+    base_ptr get_attnamelist()
+    {
         base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
             auto attribute = get_attrib();
 
-            if (!attribute && first) {
+            if (!attribute && first)
+            {
                 return nullptr;
             }
             assert(attribute, "expected attrib");
@@ -463,14 +494,16 @@ public:
         return std::make_unique<attnamelist>(std::move(list));
     }
 
-    base_ptr get_explist() {
+    base_ptr get_explist()
+    {
         base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
             auto expr = parse_next();
 
-            if (!expr && first) {
+            if (!expr && first)
+            {
                 return nullptr;
             }
             assert(expr, "expression expected");
@@ -482,43 +515,51 @@ public:
         return std::make_unique<explist>(std::move(list));
     }
 
-    base_ptr get_return_stat() {
-        if (!expect_peek("return")) {
+    base_ptr get_return_stat()
+    {
+        if (!expect_peek("return"))
+        {
             return nullptr;
         }
         consume();
 
         auto explist = get_explist();
 
-        if (expect_peek(";")) {
+        if (expect_peek(";"))
+        {
             consume();
         }
 
         return std::make_unique<return_stat>(std::move(explist));
     }
 
-    base_ptr get_funcname() {
+    base_ptr get_funcname()
+    {
         base_ptr root = nullptr;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek("."), {
             auto name = get_name();
 
-            if (!name && first) {
+            if (!name && first)
+            {
                 return nullptr;
             }
             assert(name, "expected name for function");
 
-            if (first) {
+            if (first)
+            {
                 root = std::move(name);
             }
-            else {
+            else
+            {
                 root = std::make_unique<member_expr>(std::move(root), std::move(name));
             }
             first = false;
         });
 
-        if (expect_peek(":")) {
+        if (expect_peek(":"))
+        {
             consume();
             auto name = get_name();
 
@@ -530,19 +571,22 @@ public:
         return std::make_unique<funcname>(std::move(root));
     }
 
-    base_ptr get_namelist(bool include_varargs = false) {
+    base_ptr get_namelist(bool include_varargs = false)
+    {
         base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
-            if (include_varargs && expect_peek("...")) {
+            if (include_varargs && expect_peek("..."))
+            {
                 list.push_back(parse_primary());
                 break;
             }
 
             auto name = get_name();
 
-            if (!name && first) {
+            if (!name && first)
+            {
                 return nullptr;
             }
             assert(name, "expected name");
@@ -551,18 +595,22 @@ public:
             first = false;
         });
 
-        if (include_varargs) {
+        if (include_varargs)
+        {
             return std::make_unique<parlist>(std::move(list));
         }
         return std::make_unique<namelist>(std::move(list));
     }
 
-    base_ptr get_parlist() {
+    base_ptr get_parlist()
+    {
         return get_namelist(true);
     }
 
-    base_ptr get_field() {
-        if (expect_peek("[")) {
+    base_ptr get_field()
+    {
+        if (expect_peek("["))
+        {
             consume();
 
             auto expr = parse_next();
@@ -580,7 +628,8 @@ public:
 
             return std::make_unique<table_index_value_expr>(std::move(expr), std::move(value));
         }
-        else if (expect_peek(token_type::IDENTIFIER) && expect_peek("=", 1)) {
+        else if (expect_peek(token_type::IDENTIFIER) && expect_peek("=", 1))
+        {
             auto name = get_name();
 
             assert(expect_peek("="), "expected = after name in field");
@@ -591,31 +640,38 @@ public:
 
             return std::make_unique<table_name_value_expr>(std::move(name), std::move(value));
         }
-        else if (auto expr = parse_next()) {
+        else if (auto expr = parse_next())
+        {
             return std::make_unique<table_value_expr>(std::move(expr));
         }
         return nullptr;
     }
 
-    base_ptr get_fieldlist() {
+    base_ptr get_fieldlist()
+    {
         base_ptr_arr list;
 
-        while (auto field = get_field()) {
+        while (auto field = get_field())
+        {
             list.push_back(std::move(field));
 
-            if (expect_peek(",") || expect_peek(";")) {
+            if (expect_peek(",") || expect_peek(";"))
+            {
                 consume();
             }
         }
 
-        if (list.empty()) {
+        if (list.empty())
+        {
             return nullptr;
         }
         return std::make_unique<fieldlist>(std::move(list));
     }
 
-    base_ptr get_args() {
-        if (expect_peek("(")) {
+    base_ptr get_args()
+    {
+        if (expect_peek("("))
+        {
             consume();
 
             auto expr_list = get_explist();
@@ -624,17 +680,21 @@ public:
             consume();
             return std::make_unique<args>(std::move(expr_list));
         }
-        else if (expect_peek(token_type::STRING) || expect_peek(token_type::STRING_RAW)) {
+        else if (expect_peek(token_type::STRING) || expect_peek(token_type::STRING_RAW))
+        {
             return std::make_unique<args>(parse_primary());
         }
-        else if (auto table_constructor = get_table_contructor()) {
+        else if (auto table_constructor = get_table_contructor())
+        {
             return std::make_unique<args>(std::move(table_constructor));
         }
         return nullptr;
     }
 
-    base_ptr get_table_contructor() {
-        if (!expect_peek("{")) {
+    base_ptr get_table_contructor()
+    {
+        if (!expect_peek("{"))
+        {
             return nullptr;
         }
         consume();
@@ -647,18 +707,23 @@ public:
         return std::make_unique<table_constructor_expr>(std::move(fieldlist));
     }
 
-    base_ptr get_var(bool is_prefix_expr = false) {
+    base_ptr get_var(bool is_prefix_expr = false)
+    {
         base_ptr root = nullptr;
         bool is_valid_var = true;
         auto marked = mark();
 
-        while (true) {
-            if (!root) {
-                if (auto name = get_name()) {
+        while (true)
+        {
+            if (!root)
+            {
+                if (auto name = get_name())
+                {
                     root = std::move(name);
                     is_valid_var = true;
                 }
-                else if (expect_peek("(")) {
+                else if (expect_peek("("))
+                {
                     consume();
 
                     root = parse_next();
@@ -668,11 +733,13 @@ public:
                     consume();
                     is_valid_var = false;
                 }
-                else {
+                else
+                {
                     break;
                 }
             }
-            else if (expect_peek("[")) {
+            else if (expect_peek("["))
+            {
                 consume();
 
                 auto expr = parse_next();
@@ -684,7 +751,8 @@ public:
                 root = std::make_unique<index_expr>(std::move(root), std::move(expr));
                 is_valid_var = true;
             }
-            else if (expect_peek(".")) {
+            else if (expect_peek("."))
+            {
                 consume();
 
                 auto name = get_name();
@@ -693,7 +761,8 @@ public:
                 root = std::make_unique<member_expr>(std::move(root), std::move(name));
                 is_valid_var = true;
             }
-            else if (expect_peek(":")) {
+            else if (expect_peek(":"))
+            {
                 consume();
 
                 auto name = get_name();
@@ -707,45 +776,53 @@ public:
                 root = std::make_unique<functioncall>(std::move(root), std::move(args));
                 is_valid_var = false;
             }
-            else if (auto args = get_args()) {
+            else if (auto args = get_args())
+            {
                 root = std::make_unique<functioncall>(std::move(root), std::move(args));
                 is_valid_var = false;
             }
-            else {
+            else
+            {
                 break;
             }
         }
 
-        if (!is_prefix_expr and !is_valid_var) {
+        if (!is_prefix_expr and !is_valid_var)
+        {
             revert(marked);
             return nullptr;
         }
         return std::move(root);
     }
 
-    base_ptr get_prefixexp() {
+    base_ptr get_prefixexp()
+    {
         return get_var(true);
     }
 
-    base_ptr get_functioncall() {
+    base_ptr get_functioncall()
+    {
         auto marked = mark();
         auto expr = get_prefixexp();
 
-        if (!expr || expr->kind != base::kind::functioncall) {
+        if (!expr || expr->kind != base::kind::functioncall)
+        {
             revert(marked);
             return nullptr;
         }
         return expr;
     }
 
-    base_ptr get_varlist() {
+    base_ptr get_varlist()
+    {
         base_ptr_arr list;
 
         bool first = true;
         DO_WHILE_CONSUME(expect_peek(","), {
             auto expr = get_var();
 
-            if (!expr && first) {
+            if (!expr && first)
+            {
                 return nullptr;
             }
             assert(expr, "expression expected in var list");
@@ -757,8 +834,10 @@ public:
         return std::make_unique<varlist>(std::move(list));
     }
 
-    base_ptr get_funcbody() {
-        if (!expect_peek("(")) {
+    base_ptr get_funcbody()
+    {
+        if (!expect_peek("("))
+        {
             return nullptr;
         }
         consume();
@@ -776,8 +855,10 @@ public:
         return std::make_unique<funcbody>(std::move(par_list), std::move(block));
     }
 
-    base_ptr get_functiondef() {
-        if (!expect_peek("function")) {
+    base_ptr get_functiondef()
+    {
+        if (!expect_peek("function"))
+        {
             return nullptr;
         }
         consume();
@@ -788,17 +869,23 @@ public:
         return std::make_unique<functiondef>(nullptr, std::move(function_body));
     }
 
-    base_ptr get_stat() {
-        if (expect_peek(";")) {
+    base_ptr get_stat()
+    {
+        if (expect_peek(";"))
+        {
             consume();
             return std::make_unique<semicolon>();
         }
-        else if (expect_peek("break")) {
+        else if (expect_peek("break"))
+        {
             consume();
             return std::make_unique<break_stat>();
         }
-        else if (expect_peek("if")) {
+        else if (expect_peek("if"))
+        {
             base_ptr_arr list;
+            base_ptr block_conditional = nullptr;
+            base_ptr if_ptr = nullptr;
             consume();
 
             auto expr = parse_next();
@@ -808,10 +895,17 @@ public:
             consume();
 
             auto block = get_block();
+            block_conditional = std::make_unique<class block_conditional>(expr, block);
+            block_conditional->parent = if_ptr;
+            expr->parent = block_conditional;
+            if (block) {
+                block->parent = block_conditional;
+            }
 
-            list.push_back(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+            list.push_back(block_conditional);
 
-            while (expect_peek("elseif")) {
+            while (expect_peek("elseif"))
+            {
                 consume();
 
                 expr = parse_next();
@@ -821,25 +915,39 @@ public:
                 consume();
 
                 block = get_block();
+                block_conditional = std::make_unique<class block_conditional>(expr, block);
+                block_conditional->parent = if_ptr;
+                expr->parent = block_conditional;
+                if (block) {
+                    block->parent = block_conditional;
+                }
 
-                list.push_back(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+                list.push_back(block_conditional);
             }
 
-            if (expect_peek("else")) {
+            if (expect_peek("else"))
+            {
                 consume();
 
                 block = get_block();
+                block_conditional = std::make_unique<class block_conditional>(nullptr, block);
+                block_conditional->parent = if_ptr;
+                if (block) {
+                    block->parent = block_conditional;
+                }
 
-                list.push_back(std::make_unique<block_conditional>(nullptr, std::move(block)));
+                list.push_back(block_conditional);
             }
 
             assert(expect_peek("end"), "expected end after if stat");
             consume();
 
-            return std::make_unique<if_stat>(std::move(list));
+            return if_ptr = std::make_unique<if_stat>(std::move(list));
         }
-        else if (expect_peek("while")) {
+        else if (expect_peek("while"))
+        {
             consume();
+            base_ptr block_conditional = nullptr;
 
             auto expr = parse_next();
             assert(expr, "expected expression in while stat");
@@ -851,9 +959,15 @@ public:
 
             assert(expect_peek("end"), "expected end in while stat");
             consume();
-            return std::make_unique<while_stat>(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+            expr->parent = block_conditional;
+
+            if (block) {
+                block->parent = block_conditional;
+            }
+            return block_conditional = std::make_unique<while_stat>(std::make_unique<class block_conditional>(std::move(expr), std::move(block)));
         }
-        else if (expect_peek("repeat")) {
+        else if (expect_peek("repeat"))
+        {
             consume();
 
             auto block = get_block();
@@ -864,9 +978,13 @@ public:
             auto expr = parse_next();
             assert(expr, "expected expression in repeat stat");
 
-            return std::make_unique<repeat_stat>(std::make_unique<block_conditional>(std::move(expr), std::move(block)));
+            return std::make_unique<repeat_stat>(
+                std::make_unique<block_conditional>(
+                    std::move(expr),
+                    std::move(block)));
         }
-        else if (expect_peek("do")) {
+        else if (expect_peek("do"))
+        {
             consume();
 
             auto block = get_block();
@@ -875,10 +993,12 @@ public:
             consume();
             return std::make_unique<do_stat>(std::make_unique<block_conditional>(nullptr, std::move(block)));
         }
-        else if (expect_peek("local")) {
+        else if (expect_peek("local"))
+        {
             consume();
 
-            if (expect_peek("function")) {
+            if (expect_peek("function"))
+            {
                 consume();
 
                 auto name = get_name();
@@ -889,24 +1009,30 @@ public:
 
                 return std::make_unique<local_stat>(std::make_unique<functiondef>(std::move(name), std::move(body)));
             }
-            else {
+            else
+            {
                 auto attribute_name_list = get_attnamelist();
                 assert(attribute_name_list, "expected attribute name list in local stat");
 
-                if (expect_peek("=")) {
+                if (expect_peek("="))
+                {
                     consume();
 
                     auto expr_list = get_explist();
                     assert(expr_list, "expected expression list in local stat");
 
-                    return std::make_unique<local_stat>(std::make_unique<assignment_stat>(std::move(attribute_name_list), std::move(expr_list)));
+                    return std::make_unique<local_stat>(
+                        std::make_unique<assignment_stat>(
+                            std::move(attribute_name_list),
+                            std::move(expr_list)));
                 }
 
 
                 return std::make_unique<local_stat>(std::move(attribute_name_list));
             }
         }
-        else if (expect_peek("function")) {
+        else if (expect_peek("function"))
+        {
             consume();
 
             auto name = get_funcname();
@@ -917,10 +1043,12 @@ public:
 
             return std::make_unique<functiondef>(std::move(name), std::move(body));
         }
-        else if (expect_peek("for")) {
+        else if (expect_peek("for"))
+        {
             consume();
 
-            if (expect_peek("=", 1)) {
+            if (expect_peek("=", 1))
+            {
                 auto name = get_name();
                 assert(name, "expected name in numeric for stat");
 
@@ -938,7 +1066,8 @@ public:
 
                 base_ptr step = nullptr;
 
-                if (expect_peek(",")) {
+                if (expect_peek(","))
+                {
                     consume();
 
                     step = parse_next();
@@ -953,9 +1082,15 @@ public:
                 assert(expect_peek("end"), "expected do in numeric for stat");
                 consume();
 
-                return std::make_unique<numeric_for_stat>(std::move(name), std::move(init), std::move(goal), std::move(step), std::move(block));
+                return std::make_unique<numeric_for_stat>(
+                    std::move(name),
+                    std::move(init),
+                    std::move(goal),
+                    std::move(step),
+                    std::move(block));
             }
-            else {
+            else
+            {
                 auto name_list = get_namelist();
                 assert(name_list, "expected name list in generic for loop");
 
@@ -976,7 +1111,8 @@ public:
                 return std::make_unique<generic_for_stat>(std::move(name_list), std::move(expr_list), std::move(block));
             }
         }
-        else if (expect_peek("goto")) {
+        else if (expect_peek("goto"))
+        {
             consume();
 
             auto name = get_name();
@@ -984,7 +1120,8 @@ public:
 
             return std::make_unique<goto_stat>(std::move(name));
         }
-        else if (expect_peek("::")) {
+        else if (expect_peek("::"))
+        {
             consume();
 
             auto name = get_name();
@@ -996,7 +1133,8 @@ public:
             return std::make_unique<label>(std::move(name));
         }
 
-        if (auto var_list = get_varlist()) {
+        if (auto var_list = get_varlist())
+        {
             assert(expect_peek("="), "expected = in assignment stat");
             consume();
 
@@ -1005,40 +1143,46 @@ public:
 
             return std::make_unique<assignment_stat>(std::move(var_list), std::move(expr_list));
         }
-        else if (auto function_call = get_functioncall()) {
+        else if (auto function_call = get_functioncall())
+        {
             return function_call;
         }
 
         return nullptr;
     }
 
-    base_ptr get_block() {
+    base_ptr get_block()
+    {
+        base_ptr block_ptr = std::make_unique<block>(base_ptr_arr());
         base_ptr_arr list;
 
-        while (auto stat = get_stat()) {
-            list.push_back(std::move(stat));
+        while (auto stat = get_stat())
+        {
+            stat->parent = block_ptr;
+            list.push_back(stat);
         }
 
-        if (auto stat = get_return_stat()) {
-            list.push_back(std::move(stat));
+        if (auto stat = get_return_stat())
+        {
+            stat->parent = block_ptr;
+            list.push_back(stat);
         }
 
-        if (list.empty()) {
+
+        if (list.empty())
+        {
             return nullptr;
         }
-        return std::make_unique<block>(std::move(list));
+        dynamic_cast<block*>(block_ptr.get())->statements = list;
+        return block_ptr;
     }
 
 
 
 
 
-
-
-
-
-
-    base_ptr parse(const std::string& source) {
+    base_ptr parse(const std::string& source)
+    {
         token_stream stream;
         stream.tokenize(source);
         tokens = stream.tokens;
@@ -1124,7 +1268,7 @@ public:
         #endif
 
         #ifdef RETURN_EARLY
-            return;
+        return;
         #endif
 
         std::string path = "../tests/output.lua";
@@ -1141,7 +1285,8 @@ public:
         return ptr;
     }
 
-    int get_precedence(const token& token, bool is_unop = false) {
+    int get_precedence(const token& token, bool is_unop = false)
+    {
         static const std::vector<std::vector<std::string>> priority = {
             {"or"},
             {"and"},
@@ -1157,13 +1302,17 @@ public:
             {"^"}
         };
 
-        if (is_unop) {
+        if (is_unop)
+        {
             return priority.size() - 1;
         }
 
-        for (int i = 0; i < priority.size(); i++) {
-            for (auto& e : priority[i]) {
-                if (token.is(e)) {
+        for (int i = 0; i < priority.size(); i++)
+        {
+            for (auto& e: priority[i])
+            {
+                if (token.is(e))
+                {
                     return i + 1;
                 }
             }
@@ -1171,52 +1320,67 @@ public:
         return -1;
     }
 
-    base_ptr parse_primary() {
-        if (!next()) {
+    base_ptr parse_primary()
+    {
+        if (!next())
+        {
             return nullptr;
         }
 
         token curr_token = peek();
 
-        switch (curr_token.type) {
-            case token_type::IDENTIFIER: {
+        switch (curr_token.type)
+        {
+            case token_type::IDENTIFIER:
+            {
                 return std::make_unique<identifier_expr>(consume().literal);
             }
             case token_type::STRING_RAW:
-            case token_type::STRING: {
+            case token_type::STRING:
+            {
                 return std::make_unique<string_expr>(consume().literal);
             }
-            case token_type::COMMENT_RAW: {
+            case token_type::COMMENT_RAW:
+            {
                 break;
             }
-            case token_type::COMMENT: {
+            case token_type::COMMENT:
+            {
                 break;
             }
             case token_type::NUMBER_HEXADECIMAL:
             case token_type::NUMBER_BINARY:
-            case token_type::NUMBER: {
+            case token_type::NUMBER:
+            {
                 return std::make_unique<numeric_literal_expr>(consume().literal);
             }
-            case token_type::KEYWORD: {
-                if (is_boolean(curr_token)) {
+            case token_type::KEYWORD:
+            {
+                if (is_boolean(curr_token))
+                {
                     return std::make_unique<boolean_expr>(consume().literal);
                 }
-                else if (is_unop(curr_token)) {
+                else if (is_unop(curr_token))
+                {
                     consume();
                     auto expr = parse_next(get_precedence(curr_token, true));
                     assert(expr, "expected expression after " + curr_token.literal);
                     return std::make_unique<unary_operator_expr>(curr_token.literal, std::move(expr));
                 }
-                else if (is_null(curr_token)) {
+                else if (is_null(curr_token))
+                {
                     return std::make_unique<null_expr>(consume().literal);
                 }
                 break;
             }
-            case token_type::PUNCTUATION: {
-                if (curr_token.is("...")) {
+            case token_type::PUNCTUATION:
+            {
+                if (curr_token.is("..."))
+                {
                     return std::make_unique<varargs_expr>(consume().literal);
                 }
-                else if (curr_token.is("(")) {
+                else if (curr_token.is("("))
+                {
                     consume();
 
                     auto expr = parse_next();
@@ -1227,13 +1391,16 @@ public:
 
                     return expr;
                 }
-                else if (curr_token.is("{")) {
+                else if (curr_token.is("{"))
+                {
                     return get_table_contructor();
                 }
-                else if (curr_token.is("...")) {
+                else if (curr_token.is("..."))
+                {
                     return std::make_unique<varargs_expr>(consume().literal);
                 }
-                else if (is_unop(curr_token)) {
+                else if (is_unop(curr_token))
+                {
                     consume();
                     auto expr = parse_next(get_precedence(curr_token, true));
                     assert(expr, "expected expression after " + curr_token.literal);
@@ -1245,12 +1412,15 @@ public:
         return nullptr;
     }
 
-    base_ptr parse_rhs(int min_precedence, base_ptr lhs) {
-        while (next()) {
+    base_ptr parse_rhs(int min_precedence, base_ptr lhs)
+    {
+        while (next())
+        {
             token curr_token = peek();
             int curr_precedence = get_precedence(curr_token);
 
-            if (curr_precedence < min_precedence) {
+            if (curr_precedence < min_precedence)
+            {
                 return lhs;
             }
 
@@ -1258,77 +1428,96 @@ public:
 
             base_ptr rhs = nullptr;
 
-            if (!rhs) {
+            if (!rhs)
+            {
                 rhs = get_functiondef();
             }
-            if (!rhs) {
+            if (!rhs)
+            {
                 rhs = get_prefixexp();
             }
-            if (!rhs) {
+            if (!rhs)
+            {
                 rhs = parse_primary();
             }
 
-            if (rhs == nullptr) {
+            if (rhs == nullptr)
+            {
                 return rhs;
             }
 
-            if (next()) {
+            if (next())
+            {
                 int next_precedence = get_precedence(peek());
-                if (curr_precedence < next_precedence) {
+                if (curr_precedence < next_precedence)
+                {
                     rhs = parse_rhs(curr_precedence + 1, std::move(rhs));
-                    if (rhs == nullptr) {
+                    if (rhs == nullptr)
+                    {
                         return rhs;
                     }
                 }
             }
 
-            if (is_binop(curr_token)) {
+            if (is_binop(curr_token))
+            {
                 lhs = std::make_unique<binary_operator_expr>(curr_token.literal, std::move(lhs), std::move(rhs));
             }
         }
         return lhs;
     }
 
-    base_ptr parse_next(int precedence = 0) {
-        if (auto lhs_expr = get_functiondef()) {
+    base_ptr parse_next(int precedence = 0)
+    {
+        if (auto lhs_expr = get_functiondef())
+        {
             return parse_rhs(precedence, std::move(lhs_expr));
         }
 
-        if (auto lhs_expr = get_prefixexp()) {
+        if (auto lhs_expr = get_prefixexp())
+        {
             return parse_rhs(precedence, std::move(lhs_expr));
         }
 
-        if (auto lhs_expr = parse_primary()) {
+        if (auto lhs_expr = parse_primary())
+        {
             return parse_rhs(precedence, std::move(lhs_expr));
         }
         return nullptr;
     }
 
-    bool next(std::size_t offset = 0) const {
+    bool next(std::size_t offset = 0) const
+    {
         return index + offset < length;
     }
 
-    token peek(std::size_t offset = 0) {
+    token peek(std::size_t offset = 0)
+    {
         return tokens.at(index + offset);
     }
 
-    std::size_t mark() {
+    std::size_t mark()
+    {
         return index;
     }
 
-    token consume() {
+    token consume()
+    {
         return tokens.at(index++);
     }
 
-    void revert(std::size_t marked) {
+    void revert(std::size_t marked)
+    {
         index = marked;
     }
 
-    bool expect_peek(token_type type, std::size_t offset = 0) {
+    bool expect_peek(token_type type, std::size_t offset = 0)
+    {
         return next(offset) && peek(offset).type == type;
     }
 
-    bool expect_peek(const std::string& match, std::size_t offset = 0) {
+    bool expect_peek(const std::string& match, std::size_t offset = 0)
+    {
         return next(offset) && peek(offset).literal == match;
     }
 };

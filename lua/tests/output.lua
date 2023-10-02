@@ -1,5 +1,2 @@
-local a = function()
-    return 0
+if A then
 end
-a()
-a.a.a.a.a.a.a.a();
