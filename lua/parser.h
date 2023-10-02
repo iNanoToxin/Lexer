@@ -261,7 +261,7 @@ public:
         table_value_expr,
 
         attnamelist,
-        retstat,
+        return_stat,
         explist,
         parlist,
         varlist,
@@ -377,7 +377,7 @@ CREATE_CLASS_1(               explist, base_ptr_arr,           value)
 CREATE_CLASS_1(               parlist, base_ptr_arr,           value)
 CREATE_CLASS_1(               varlist, base_ptr_arr,           value)
 CREATE_CLASS_1(             fieldlist, base_ptr_arr,           value)
-CREATE_CLASS_1(               retstat,     base_ptr,           value)
+CREATE_CLASS_1(               return_stat,     base_ptr,           value)
 CREATE_CLASS_1(                 label,     base_ptr,           value)
 CREATE_CLASS_1(                  args,     base_ptr,           value)
 CREATE_CLASS_1(              funcname,     base_ptr,           value)
@@ -482,7 +482,7 @@ public:
         return std::make_unique<explist>(std::move(list));
     }
 
-    base_ptr get_retstat() {
+    base_ptr get_return_stat() {
         if (!expect_peek("return")) {
             return nullptr;
         }
@@ -494,7 +494,7 @@ public:
             consume();
         }
 
-        return std::make_unique<retstat>(std::move(explist));
+        return std::make_unique<return_stat>(std::move(explist));
     }
 
     base_ptr get_funcname() {
@@ -1019,7 +1019,7 @@ public:
             list.push_back(std::move(stat));
         }
 
-        if (auto stat = get_retstat()) {
+        if (auto stat = get_return_stat()) {
             list.push_back(std::move(stat));
         }
 
