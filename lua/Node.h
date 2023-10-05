@@ -13,7 +13,12 @@ class Node : public Base
 public:
     std::tuple<T...> mChildren;
 
-    explicit Node() = default;
+
+    // explicit Node(token_type type) = default;
+
+    explicit Node(Kind kind, T... args) : Base(kind) {
+        mChildren = std::make_tuple(args...);
+    }
 };
 
 

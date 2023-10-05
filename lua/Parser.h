@@ -73,7 +73,7 @@ public:
     pBase mParent = nullptr;
     Kind mKind;
 
-    explicit Base() = default;
+    // explicit Base() = default;
     explicit Base(enum Kind kind);
 
     template <typename ...T>
@@ -84,44 +84,111 @@ public:
 
 
 class Parser {
-    std::size_t index = 0;
-    std::size_t length = 0;
-    std::vector<tokens>
+    std::size_t m_index = 0;
+    std::size_t m_length = 0;
+    std::vector<token> m_tokens;
 
-    bool next(std::size_t offset = 0) const
-    {
-        return index + offset < length;
+
+
+    auto get_primary() {
+        if (!next())
+        {
+            return nullptr;
+        }
+
+        token curr_token = peek();
+
+        switch (curr_token.type)
+        {
+            case token_type::IDENTIFIER:
+            {
+                Node<std::string>(5, consume().literal);
+                return nullptr;
+            }
+            case token_type::STRING_RAW:
+            case token_type::STRING:
+            {
+                return std::make_shared<string_expr>(consume().literal);
+            }
+            case token_type::COMMENT_RAW:
+            {
+                break;
+            }
+            case token_type::COMMENT:
+            {
+                break;
+            }
+            case token_type::NUMBER_HEXADECIMAL:
+            case token_type::NUMBER_BINARY:
+            case token_type::NUMBER:
+            {
+                return std::make_shared<numeric_literal_expr>(consume().literal);
+            }
+            case token_type::KEYWORD:
+            {
+                if (is_boolean(curr_token))
+                {
+                    return std::make_shared<boolean_expr>(consume().literal);
+                }
+                else if (is_unop(curr_token))
+                {
+                    consume();
+                    auto expr = parse_next(get_precedence(curr_token, true));
+                    assert(expr, "expected expression after " + curr_token.literal);
+                    return std::make_shared<unary_operator_expr>(curr_token.literal, std::move(expr));
+                }
+                else if (is_null(curr_token))
+                {
+                    return std::make_shared<null_expr>(consume().literal);
+                }
+                break;
+            }
+            case token_type::PUNCTUATION:
+            {
+                if (curr_token.is("..."))
+                {
+                    return std::make_shared<varargs_expr>(consume().literal);
+                }
+                else if (curr_token.is("("))
+                {
+                    consume();
+
+                    auto expr = parse_next();
+                    assert(expr, "expected expression");
+
+                    assert(expect_peek(")"), "expected ) after (");
+                    consume();
+
+                    return expr;
+                }
+                else if (curr_token.is("{"))
+                {
+                    return get_table_contructor();
+                }
+                else if (curr_token.is("..."))
+                {
+                    return std::make_shared<varargs_expr>(consume().literal);
+                }
+                else if (is_unop(curr_token))
+                {
+                    consume();
+                    auto expr = parse_next(get_precedence(curr_token, true));
+                    assert(expr, "expected expression after " + curr_token.literal);
+                    return std::make_shared<unary_operator_expr>(curr_token.literal, std::move(expr));
+                }
+                break;
+            }
+        }
+        return nullptr;
     }
 
-    token peek(std::size_t offset = 0)
-    {
-        return tokens.at(index + offset);
-    }
-
-    std::size_t mark()
-    {
-        return index;
-    }
-
-    token consume()
-    {
-        return tokens.at(index++);
-    }
-
-    void revert(std::size_t marked)
-    {
-        index = marked;
-    }
-
-    bool expect_peek(token_type type, std::size_t offset = 0)
-    {
-        return next(offset) && peek(offset).type == type;
-    }
-
-    bool expect_peek(const std::string& match, std::size_t offset = 0)
-    {
-        return next(offset) && peek(offset).literal == match;
-    }
+    bool next(std::size_t offset = 0) const;
+    token peek(std::size_t offset = 0);
+    std::size_t mark() const;
+    token consume();
+    void revert(std::size_t marked);
+    bool expect_peek(token_type type, std::size_t offset = 0);
+    bool expect_peek(const std::string& match, std::size_t offset = 0);
 };
 
 

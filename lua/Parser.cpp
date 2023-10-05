@@ -147,3 +147,38 @@ auto Base::get(Kind kind) -> Node<T...>*
     }
     return nullptr;
 }
+
+std::size_t Parser::mark() const
+{
+    return m_index;
+}
+
+token Parser::consume()
+{
+    return m_tokens.at(m_index++);
+}
+
+void Parser::revert(std::size_t marked)
+{
+    m_index = marked;
+}
+
+bool Parser::expect_peek(token_type type, std::size_t offset)
+{
+    return next(offset) && peek(offset).type == type;
+}
+
+bool Parser::expect_peek(const std::string& match, std::size_t offset)
+{
+    return next(offset) && peek(offset).literal == match;
+}
+
+token Parser::peek(std::size_t offset)
+{
+    return m_tokens.at(m_index + offset);
+}
+
+bool Parser::next(std::size_t offset) const
+{
+    return m_index + offset < m_length;
+}
