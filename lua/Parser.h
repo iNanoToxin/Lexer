@@ -1,23 +1,22 @@
-#ifndef LUA_PARSER_TEST_H
-#define LUA_PARSER_TEST_H
+#ifndef LUA_PARSER_H
+#define LUA_PARSER_H
 
-// #include <cassert>
 #include "tokenizer.h"
 #include <iostream>
 #include <memory>
 #include <utility>
 #include <tuple>
 
+#include "Node.h"
 
-
-class base;
-using pBaseArray = std::vector<std::shared_ptr<base>>;
-using pBase = std::shared_ptr<base>;
+class Base;
+using pBase = std::shared_ptr<Base>;
+using pBaseArray = std::vector<pBase>;
 
 class Base
 {
 public:
-    enum class kind
+    enum class Kind
     {
         binary_operator_expr,
         unary_operator_expr,
@@ -71,52 +70,59 @@ public:
         local_stat,
     };
 
-    pBase parent = nullptr;
-    kind kind;
+    pBase mParent = nullptr;
+    Kind mKind;
 
     explicit Base() = default;
+    explicit Base(enum Kind kind);
 
-    explicit Base(enum kind kind)
-    {
-        this->kind = kind;
-        this->parent = nullptr;
-    }
+    template <typename ...T>
+    auto get(Kind kind) -> Node<T...>*;
 
-    explicit Base(enum kind kind, base_ptr parent)
-    {
-        this->kind = kind;
-        this->parent = parent;
-    }
-
-    [[nodiscard]] virtual std::string toString(std::size_t depth = 0) const
-    {
-        return "";
-    }
-};
-
-using base_ptr_arr = std::vector<std::shared_ptr<base>>;
-using base_ptr = std::shared_ptr<base>;
-
-
-template <typename ...T>
-class node : public base {
-public:
-    std::tuple<T...> children;
-
-    explicit node() = default;
+    virtual std::string toString(std::size_t depth = 0) const;
 };
 
 
-int main() {
-    using x = node<int, int>;
-    using y = node<char, float>;
+class Parser {
+    std::size_t index = 0;
+    std::size_t length = 0;
+    std::vector<tokens>
 
-    auto f = std::make_shared<x>();
-    auto g = std::make_shared<y>();
+    bool next(std::size_t offset = 0) const
+    {
+        return index + offset < length;
+    }
 
-    f->parent = g;
+    token peek(std::size_t offset = 0)
+    {
+        return tokens.at(index + offset);
+    }
 
-    return 0;
-}
+    std::size_t mark()
+    {
+        return index;
+    }
 
-#endif
+    token consume()
+    {
+        return tokens.at(index++);
+    }
+
+    void revert(std::size_t marked)
+    {
+        index = marked;
+    }
+
+    bool expect_peek(token_type type, std::size_t offset = 0)
+    {
+        return next(offset) && peek(offset).type == type;
+    }
+
+    bool expect_peek(const std::string& match, std::size_t offset = 0)
+    {
+        return next(offset) && peek(offset).literal == match;
+    }
+};
+
+
+#endif //LUA_PARSER_H

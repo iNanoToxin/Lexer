@@ -1,5 +1,5 @@
-#ifndef LUA_PARSER_H
-#define LUA_PARSER_H
+#ifndef LUA_PARSER_OLD_H
+#define LUA_PARSER_OLD_H
 
 // #include <cassert>
 #include "tokenizer.h"

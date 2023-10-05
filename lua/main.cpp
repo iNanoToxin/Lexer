@@ -3,8 +3,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "parser.h"
+#include "parser_old.h"
 #include "generation.h"
+#include "parser_test.h"
 
 
 int main() {
