@@ -7,6 +7,4 @@
 --
 -- a.lol.lol.lol.lol.lol.lol.lol();
 
-if A then
-
-end
+A

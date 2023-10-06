@@ -1111,7 +1111,7 @@ public:
         #endif
 
         std::string path = "../tests/output.lua";
-        auto ptr = getBlock();
+        auto ptr = getPrimaryExpression();
         assert(ptr, "failed to parse");
 
         // {
@@ -1120,7 +1120,7 @@ public:
         //     file << ptr->tostring();
         //     file.close();
         // }
-        // COUT(ptr->tostring());
+        std::cout << ptr->toString() << std::endl;
         return ptr;
     }
 

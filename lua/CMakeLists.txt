@@ -15,6 +15,7 @@ add_executable(lua main.cpp
         Base.h
         Kind.h
         tokenizer.cpp
+        Kind.cpp
 )
 
 #target_include_directories(lua PUBLIC include)

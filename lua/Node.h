@@ -1,6 +1,7 @@
 #ifndef LUA_NODE_H
 #define LUA_NODE_H
 
+#include <iostream>
 #include "Kind.h"
 #include "Base.h"
 
@@ -72,7 +73,7 @@ public:
 
     std::string toString(std::size_t depth = 0) const override
     {
-        return "hi";
+        return getKindName(m_Kind);
     }
 };
 

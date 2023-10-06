@@ -8,16 +8,16 @@
 int main() {
 
 
-    // std::string source;
-    // {
-    //     std::ifstream file("../tests/test_2.lua");
-    //     assert(file.is_open(), "failed to open file");
-    //
-    //     std::stringstream stream;
-    //     stream << file.rdbuf();
-    //     source = stream.str();
-    //     file.close();
-    // }
+    std::string source;
+    {
+        std::ifstream file("../tests/test_2.lua");
+        assert(file.is_open(), "failed to open file");
+
+        std::stringstream stream;
+        stream << file.rdbuf();
+        source = stream.str();
+        file.close();
+    }
     //
     // generator generator;
     // std::string generated = generator.generate(source);
@@ -31,7 +31,7 @@ int main() {
     // std::cout << generated;
 
     Parser p;
-    p.g();
+    p.parse(source);
 
     return 0;
 }
