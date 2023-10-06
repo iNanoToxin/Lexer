@@ -1,26 +1,80 @@
-//
-// Created by Dylan Daniel on 10/5/23.
-//
-
 #ifndef LUA_NODE_H
 #define LUA_NODE_H
 
-#include "Parser.h"
+#include "Kind.h"
+#include "Base.h"
 
-template <typename ...T>
+
+template <typename ...Types>
 class Node : public Base
 {
+private:
+    std::tuple<Types...> m_Children;
+    std::size_t m_Size = 0;
 public:
-    std::tuple<T...> mChildren;
+    explicit Node() = default;
 
+    #pragma region node_methods
 
-    // explicit Node(token_type type) = default;
+    void setChildren(std::tuple<Types...> children)
+    {
+        m_Children = children;
+    }
 
-    explicit Node(Kind kind, T... args) : Base(kind) {
-        mChildren = std::make_tuple(args...);
+    std::tuple<Types...> getChildren()
+    {
+        return m_Children;
+    }
+
+    template <std::size_t Position, typename T>
+    void setChild(T child)
+    {
+        std::get<Position>(m_Children) = child;
+    }
+
+    template <std::size_t Position>
+    auto getChild()
+    {
+        return std::get<Position>(m_Children);
+    }
+
+    void setKind(Kind kind)
+    {
+        this->m_Kind = kind;
+    }
+
+    Kind getKind()
+    {
+        return m_Kind;
+    }
+
+    void setSize(std::size_t size)
+    {
+        m_Size = size;
+    }
+
+    std::size_t getSize()
+    {
+        return m_Size;
+    }
+
+    void setParent(const p_Base& parent)
+    {
+        this->m_Parent = parent;
+    }
+
+    template <typename ...ParentTypes>
+    Node<ParentTypes...>* getParent()
+    {
+        return dynamic_cast<Node<ParentTypes...>*>(m_Parent.get());
+    }
+
+    #pragma endregion
+
+    std::string toString(std::size_t depth = 0) const override
+    {
+        return "hi";
     }
 };
 
-
-
-#endif //LUA_NODE_H
+#endif

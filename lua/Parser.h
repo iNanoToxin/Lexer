@@ -1,114 +1,51 @@
 #ifndef LUA_PARSER_H
 #define LUA_PARSER_H
 
-#include "tokenizer.h"
 #include <iostream>
 #include <memory>
 #include <utility>
 #include <tuple>
+#include <vector>
+#include "tokenizer.h"
 
 #include "Node.h"
 
-class Base;
-using pBase = std::shared_ptr<Base>;
-using pBaseArray = std::vector<pBase>;
 
-class Base
-{
-public:
-    enum class Kind
-    {
-        binary_operator_expr,
-        unary_operator_expr,
-        table_constructor_expr,
-        numeric_literal_expr,
-        boolean_expr,
-        null_expr,
-        string_expr,
-        varargs_expr,
-        identifier_expr,
-        member_expr,
-        method_expr,
-        index_expr,
-        attrib_expr,
-        table_index_value_expr,
-        table_name_value_expr,
-        table_value_expr,
-
-        attnamelist,
-        return_stat,
-        explist,
-        parlist,
-        varlist,
-        namelist,
-        fieldlist,
-        label,
-        args,
-        funcname,
-        functioncall,
-        funcbody,
-
-        semicolon,
-
-
-        block,
-
-        functiondef,
-
-
-        block_conditional,
-
-        assignment_stat,
-        break_stat,
-        goto_stat,
-        do_stat,
-        while_stat,
-        repeat_stat,
-        if_stat,
-        generic_for_stat,
-        numeric_for_stat,
-        local_stat,
-    };
-
-    pBase mParent = nullptr;
-    Kind mKind;
-
-    // explicit Base() = default;
-    explicit Base(enum Kind kind);
-
-    template <typename ...T>
-    auto get(Kind kind) -> Node<T...>*;
-
-    virtual std::string toString(std::size_t depth = 0) const;
-};
 
 
 class Parser {
-    std::size_t m_index = 0;
-    std::size_t m_length = 0;
-    std::vector<token> m_tokens;
+public:
+    std::size_t m_Index = 0;
+    std::size_t m_Length = 0;
+    std::vector<token> m_Tokens;
 
-
-
-    auto get_primary() {
+    p_Base getPrimary()
+    {
         if (!next())
         {
             return nullptr;
         }
 
-        token curr_token = peek();
+        token currentToken = peek();
 
-        switch (curr_token.type)
+        switch (currentToken.type)
         {
             case token_type::IDENTIFIER:
             {
-                Node<std::string>(5, consume().literal);
-                return nullptr;
+                auto identifier = std::make_shared<Node<std::string>>();
+                identifier->setChildren({consume().literal});
+                identifier->setKind(Kind::Identifier);
+                identifier->setSize(1);
+                return identifier;
             }
             case token_type::STRING_RAW:
             case token_type::STRING:
             {
-                return std::make_shared<string_expr>(consume().literal);
+                auto string = std::make_shared<Node<std::string>>();
+                string->setChildren({consume().literal});
+                string->setKind(Kind::String);
+                string->setSize(1);
+                return string;
             }
             case token_type::COMMENT_RAW:
             {
@@ -122,34 +59,55 @@ class Parser {
             case token_type::NUMBER_BINARY:
             case token_type::NUMBER:
             {
-                return std::make_shared<numeric_literal_expr>(consume().literal);
+                auto number = std::make_shared<Node<std::string>>();
+                number->setChildren({consume().literal});
+                number->setKind(Kind::Numeric);
+                number->setSize(1);
+                return number;
             }
             case token_type::KEYWORD:
             {
-                if (is_boolean(curr_token))
+                if (is_boolean(currentToken))
                 {
-                    return std::make_shared<boolean_expr>(consume().literal);
+                    auto boolean = std::make_shared<Node<std::string>>();
+                    boolean->setChildren({consume().literal});
+                    boolean->setKind(Kind::Boolean);
+                    boolean->setSize(1);
+                    return boolean;
                 }
-                else if (is_unop(curr_token))
+                else if (is_unop(currentToken))
                 {
                     consume();
-                    auto expr = parse_next(get_precedence(curr_token, true));
-                    assert(expr, "expected expression after " + curr_token.literal);
-                    return std::make_shared<unary_operator_expr>(curr_token.literal, std::move(expr));
+                    auto expr = parse_next(get_precedence(currentToken, true));
+                    assert(expr, "expected expression after " + currentToken.literal);
+
+                    auto unaryOperator = std::make_shared<Node<std::string, p_Base>>();
+                    unaryOperator->setChildren({consume().literal, expr});
+                    unaryOperator->setKind(Kind::UnaryOperator);
+                    unaryOperator->setSize(2);
+                    return unaryOperator;
                 }
-                else if (is_null(curr_token))
+                else if (is_null(currentToken))
                 {
-                    return std::make_shared<null_expr>(consume().literal);
+                    auto null = std::make_shared<Node<std::string>>();
+                    null->setChildren({consume().literal});
+                    null->setKind(Kind::Null);
+                    null->setSize(1);
+                    return null;
                 }
                 break;
             }
             case token_type::PUNCTUATION:
             {
-                if (curr_token.is("..."))
+                if (currentToken.is("..."))
                 {
-                    return std::make_shared<varargs_expr>(consume().literal);
+                    auto varargs = std::make_shared<Node<std::string>>();
+                    varargs->setChildren({consume().literal});
+                    varargs->setKind(Kind::Varargs);
+                    varargs->setSize(1);
+                    return varargs;
                 }
-                else if (curr_token.is("("))
+                else if (currentToken.is("("))
                 {
                     consume();
 
@@ -161,20 +119,21 @@ class Parser {
 
                     return expr;
                 }
-                else if (curr_token.is("{"))
+                else if (currentToken.is("{"))
                 {
                     return get_table_contructor();
                 }
-                else if (curr_token.is("..."))
-                {
-                    return std::make_shared<varargs_expr>(consume().literal);
-                }
-                else if (is_unop(curr_token))
+                else if (is_unop(currentToken))
                 {
                     consume();
-                    auto expr = parse_next(get_precedence(curr_token, true));
-                    assert(expr, "expected expression after " + curr_token.literal);
-                    return std::make_shared<unary_operator_expr>(curr_token.literal, std::move(expr));
+                    auto expr = parse_next(get_precedence(currentToken, true));
+                    assert(expr, "expected expression after " + currentToken.literal);
+
+                    auto unaryOperator = std::make_shared<Node<std::string, p_Base>>();
+                    unaryOperator->setChildren({consume().literal, expr});
+                    unaryOperator->setKind(Kind::UnaryOperator);
+                    unaryOperator->setSize(2);
+                    return unaryOperator;
                 }
                 break;
             }
@@ -184,9 +143,10 @@ class Parser {
 
     bool next(std::size_t offset = 0) const;
     token peek(std::size_t offset = 0);
-    std::size_t mark() const;
     token consume();
+    std::size_t mark() const;
     void revert(std::size_t marked);
+
     bool expect_peek(token_type type, std::size_t offset = 0);
     bool expect_peek(const std::string& match, std::size_t offset = 0);
 };

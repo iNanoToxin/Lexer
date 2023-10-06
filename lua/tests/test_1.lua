@@ -159,7 +159,7 @@ function get_vocab(str, min_freq)
     return final_res
 end
 
--- change raw data to tokens
+-- change raw data to m_Tokens
 function get_data(str, vocab_mapping)
 	-- can not use torch.ByteTensor because it support mo more than 256
 	-- local data = torch.ByteTensor(g_total_chars) -- store it into 1D first, then rearrange
