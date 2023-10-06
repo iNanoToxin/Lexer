@@ -22,6 +22,15 @@ public:
     // template <typename ...T>
     // auto get(Kind kind) -> Node<T...>*;
 
+    void setKind(Kind kind)
+    {
+        m_Kind = kind;
+    }
+
+    Kind getKind() {
+        return m_Kind;
+    }
+
     virtual std::string toString(std::size_t depth = 0) const {
         return "";
     }

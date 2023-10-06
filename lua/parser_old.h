@@ -192,7 +192,7 @@ do {                                                      \
 } while (false)
 
 
-bool is_binop(const token& token)
+bool isBinaryOperator(const token& token)
 {
     return token.is("+")
     || token.is("-")
@@ -217,12 +217,12 @@ bool is_binop(const token& token)
     || token.is("or");
 }
 
-bool is_fieldsep(const token& token)
+bool isFieldSeparator(const token& token)
 {
     return token.is(",") || token.is(";");
 }
 
-bool is_unop(const token& token)
+bool isUnaryOperator(const token& token)
 {
     return token.is("-")
     || token.is("not")
@@ -230,17 +230,17 @@ bool is_unop(const token& token)
     || token.is("~");
 }
 
-bool is_boolean(const token& token)
+bool isBoolean(const token& token)
 {
     return token.is("true") || token.is("false");
 }
 
-bool is_conditional(const token& token)
+bool isConditional(const token& token)
 {
     return token.is("and") || token.is("or");
 }
 
-bool is_null(const token& token)
+bool isNull(const token& token)
 {
     return token.is("nil");
 }

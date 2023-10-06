@@ -38,16 +38,6 @@ public:
         return std::get<Position>(m_Children);
     }
 
-    void setKind(Kind kind)
-    {
-        this->m_Kind = kind;
-    }
-
-    Kind getKind()
-    {
-        return m_Kind;
-    }
-
     void setSize(std::size_t size)
     {
         m_Size = size;
@@ -70,6 +60,15 @@ public:
     }
 
     #pragma endregion
+
+    template <typename ...NodeTypes>
+    static void setParent(const p_Base& baseNode, const p_Base& parent) {
+        if (baseNode != nullptr)
+        {
+            auto node = dynamic_cast<Node<NodeTypes...>*>(baseNode.get());
+            node->setParent(parent);
+        }
+    }
 
     std::string toString(std::size_t depth = 0) const override
     {
