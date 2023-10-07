@@ -651,14 +651,23 @@ public:
             semicolon->setSize(0);
             return semicolon;
         }
-        else if (expectPeek("break") || expectPeek("continue"))
+        else if (expectPeek("break"))
         {
             consume();
             auto breakStatement = std::make_shared<Node>();
-            breakStatement->setKind(Kind::Semicolon);
+            breakStatement->setKind(Kind::BreakStatement);
             breakStatement->setSize(0);
             return breakStatement;
         }
+        // For Luau continue
+        /*else if (expectPeek("continue"))
+        {
+            consume();
+            auto continueStatement = std::make_shared<Node>();
+            continueStatement->setKind(Kind::BreakStatement);
+            continueStatement->setSize(0);
+            return continueStatement;
+        }*/
         else if (expectPeek("if"))
         {
             consume();
