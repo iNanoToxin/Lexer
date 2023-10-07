@@ -96,7 +96,8 @@ enum class Kind
     GotoStatement,
     Label,
     Block,
-    BinaryOperation
+    BinaryOperation,
+    Chunk
 };
 
 std::string getKindName(const Kind& kind);

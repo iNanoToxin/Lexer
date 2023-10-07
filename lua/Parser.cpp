@@ -5,7 +5,7 @@ bool Parser::next(std::size_t offset) const
     return m_Index + offset < m_Length;
 }
 
-token Parser::peek(std::size_t offset)
+Token Parser::peek(std::size_t offset)
 {
     return m_Tokens.at(m_Index + offset);
 }
@@ -15,7 +15,7 @@ std::size_t Parser::mark() const
     return m_Index;
 }
 
-token Parser::consume()
+Token Parser::consume()
 {
     return m_Tokens.at(m_Index++);
 }
@@ -25,7 +25,7 @@ void Parser::revert(std::size_t marked)
     m_Index = marked;
 }
 
-bool Parser::expectPeek(token_type type, std::size_t offset)
+bool Parser::expectPeek(TokenType type, std::size_t offset)
 {
     return next(offset) && peek(offset).type == type;
 }
@@ -39,7 +39,7 @@ bool Parser::expectPeek(const std::string& match, std::size_t offset)
 
 
 
-bool isBinaryOperator(const token& currentToken)
+bool isBinaryOperator(const Token& currentToken)
 {
     return currentToken.is("+")
         || currentToken.is("-")
@@ -64,12 +64,12 @@ bool isBinaryOperator(const token& currentToken)
         || currentToken.is("or");
 }
 
-bool isFieldSeparator(const token& currentToken)
+bool isFieldSeparator(const Token& currentToken)
 {
     return currentToken.is(",") || currentToken.is(";");
 }
 
-bool isUnaryOperator(const token& currentToken)
+bool isUnaryOperator(const Token& currentToken)
 {
     return currentToken.is("-")
         || currentToken.is("not")
@@ -77,17 +77,17 @@ bool isUnaryOperator(const token& currentToken)
         || currentToken.is("~");
 }
 
-bool isBoolean(const token& currentToken)
+bool isBoolean(const Token& currentToken)
 {
     return currentToken.is("true") || currentToken.is("false");
 }
 
-bool isConditional(const token& currentToken)
+bool isConditional(const Token& currentToken)
 {
     return currentToken.is("and") || currentToken.is("or");
 }
 
-bool isNull(const token& currentToken)
+bool isNull(const Token& currentToken)
 {
     return currentToken.is("nil");
 }

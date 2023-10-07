@@ -7,18 +7,22 @@
 #include <tuple>
 #include <vector>
 #include <fstream>
-#include "tokenizer.h"
+#include "Tokenizer.h"
 
 #include "Node.h"
 
 
-bool isBinaryOperator(const token& currentToken);
-bool isFieldSeparator(const token& currentToken);
-bool isUnaryOperator(const token& currentToken);
-bool isBoolean(const token& currentToken);
-bool isConditional(const token& currentToken);
-bool isNull(const token& currentToken);
+bool isBinaryOperator(const Token& currentToken);
 
+bool isFieldSeparator(const Token& currentToken);
+
+bool isUnaryOperator(const Token& currentToken);
+
+bool isBoolean(const Token& currentToken);
+
+bool isConditional(const Token& currentToken);
+
+bool isNull(const Token& currentToken);
 
 
 #define assert(condition, message)                        \
@@ -30,11 +34,18 @@ do {                                                      \
         << "\n\tLine: " << __LINE__                       \
         << "\n\tMessage: " << message                     \
         << std::endl;                                     \
+                                                          \
+        for (int i = -5; i <= 5; i++) {                   \
+            if (next(i)) {                                \
+                std::string literal = peek(i).literal;    \
+                std::cout << literal << std::endl;        \
+            }                                             \
+        }                                                 \
+                                                          \
+                                                          \
         abort();                                          \
     }                                                     \
 } while (false)
-
-
 
 
 class Parser
@@ -42,11 +53,11 @@ class Parser
 public:
     std::size_t m_Index = 0;
     std::size_t m_Length = 0;
-    std::vector<token> m_Tokens;
+    std::vector<Token> m_Tokens;
 
     p_Base getName()
     {
-        return expectPeek(token_type::IDENTIFIER) ? getPrimaryExpression() : nullptr;
+        return expectPeek(TokenType::IDENTIFIER) ? getPrimaryExpression() : nullptr;
     }
 
     p_Base getAttributeName()
@@ -98,6 +109,8 @@ public:
 
         while (expectPeek(","))
         {
+            consume();
+
             auto attribute = getAttributeName();
             assert(attribute, "expected attribute variable");
 
@@ -223,6 +236,16 @@ public:
             Node::setParent(name, (p_Base&) nameList);
             list.push_back(name);
         }
+        else if (isParameterList && expectPeek("..."))
+        {
+            auto varargs = getPrimaryExpression();
+            Node::setParent(varargs, (p_Base&) nameList);
+            list.push_back(varargs);
+
+            nameList->setKind(Kind::ParameterList);
+            nameList->setChildren({list});
+            return nameList;
+        }
         else
         {
             return nullptr;
@@ -267,7 +290,7 @@ public:
             tableIndexValueExpression->setSize(2);
 
             auto expression = getExpression();
-            assert(expression, "expected index in field");
+            assert(expression, "expected m_Index in field");
             Node::setParent(expression, (p_Base&) tableIndexValueExpression);
 
             assert(expectPeek("]"), "expected ] after [ in field");
@@ -283,7 +306,7 @@ public:
             tableIndexValueExpression->setChildren({expression, value});
             return tableIndexValueExpression;
         }
-        else if (expectPeek(token_type::IDENTIFIER) && expectPeek("=", 1))
+        else if (expectPeek(TokenType::IDENTIFIER) && expectPeek("=", 1))
         {
             auto tableNameValueExpression = std::make_shared<Node>();
             tableNameValueExpression->setKind(Kind::TableNameValue);
@@ -360,7 +383,7 @@ public:
             argumentList->setChildren({expressionList});
             return argumentList;
         }
-        else if (expectPeek(token_type::STRING) || expectPeek(token_type::STRING_RAW))
+        else if (expectPeek(TokenType::STRING) || expectPeek(TokenType::STRING_RAW))
         {
             auto argumentList = std::make_shared<Node>();
             argumentList->setKind(Kind::ArgumentList);
@@ -508,7 +531,6 @@ public:
                 root = functionCall;
 
 
-
                 isValidExpression = false;
             }
             else
@@ -629,7 +651,7 @@ public:
             semicolon->setSize(0);
             return semicolon;
         }
-        else if (expectPeek("break"))
+        else if (expectPeek("break") || expectPeek("continue"))
         {
             consume();
             auto breakStatement = std::make_shared<Node>();
@@ -904,7 +926,12 @@ public:
                 auto forStatement = std::make_shared<Node>();
                 forStatement->setKind(Kind::ForStatement);
                 forStatement->setSize(5);
-                forStatement->setChildren({name, init, goal, step, block});
+                if (step == nullptr) {
+                    forStatement->setChildren({name, init, goal, std::monostate{}, block});
+                }
+                else {
+                    forStatement->setChildren({name, init, goal, step, block});
+                }
                 Node::setParent(name, (p_Base&) forStatement);
                 Node::setParent(init, (p_Base&) forStatement);
                 Node::setParent(goal, (p_Base&) forStatement);
@@ -1025,13 +1052,27 @@ public:
         return block;
     }
 
+    p_Base getChunk() {
+        auto chunk = std::make_shared<Node>();
+        chunk->setKind(Kind::Chunk);
+        chunk->setSize(1);
+
+        if (auto block = getBlock()) {
+            Node::setParent(block, (p_Base&) chunk);
+            chunk->setChildren({block});
+        }
+        else {
+            chunk->setChildren({std::monostate{}});
+        }
+        return chunk;
+    }
 
 
     p_Base parse(const std::string& source)
     {
-        token_stream stream;
+        TokenStream stream;
         stream.tokenize(source);
-        m_Tokens = stream.tokens;
+        m_Tokens = stream.m_Tokens;
         m_Length = m_Tokens.size();
 
         // #define PRINT_TOKENS
@@ -1039,73 +1080,73 @@ public:
 
         #ifdef PRINT_TOKENS
         {
-            std::clog << "VIEW TOKENS: " << stream.tokens.size() << "\n";
+            std::clog << "VIEW TOKENS: " << stream.m_Tokens.size() << "\n";
 
             std::size_t max_length = 0;
-            for (token& token: stream.tokens) {
-                if (token.literal.length() <= 15) {
-                    max_length = std::max(max_length, token.literal.length());
+            for (Token& Token: stream.m_Tokens) {
+                if (Token.literal.m_Length() <= 15) {
+                    max_length = std::max(max_length, Token.literal.m_Length());
                 }
             }
 
-            for (token& token: stream.tokens) {
+            for (Token& Token: stream.m_Tokens) {
                 std::string type;
 
-                switch (token.type) {
-                    case token_type::IDENTIFIER: {
+                switch (Token.type) {
+                    case TokenType::IDENTIFIER: {
                         type = "IDENTIFIER";
                         break;
                     }
-                    case token_type::STRING_RAW: {
+                    case TokenType::STRING_RAW: {
                         type = "STRING_RAW";
                         break;
                     }
-                    case token_type::STRING: {
+                    case TokenType::STRING: {
                         type = "STRING";
                         break;
                     }
-                    case token_type::COMMENT_RAW: {
+                    case TokenType::COMMENT_RAW: {
                         type = "COMMENT_RAW";
                         break;
                     }
-                    case token_type::COMMENT: {
+                    case TokenType::COMMENT: {
                         type = "COMMENT";
                         break;
                     }
-                    case token_type::NUMBER_HEXADECIMAL: {
+                    case TokenType::NUMBER_HEXADECIMAL: {
                         type = "NUMBER_HEXADECIMAL";
                         break;
                     }
-                    case token_type::NUMBER_BINARY: {
+                    case TokenType::NUMBER_BINARY: {
                         type = "NUMBER_BINARY";
                         break;
                     }
-                    case token_type::NUMBER: {
+                    case TokenType::NUMBER: {
                         type = "NUMBER";
                         break;
                     }
-                    case token_type::KEYWORD: {
+                    case TokenType::KEYWORD: {
                         type = "KEYWORD";
                         break;
                     }
-                    case token_type::PUNCTUATION: {
+                    case TokenType::PUNCTUATION: {
                         type = "PUNCTUATION";
                         break;
                     }
                 }
 
-                // if (!(token.type == token_type::STRING)) {
+                // if (!(Token.type == TokenType::STRING)) {
                 //     continue;
                 // }
 
-                if (token.literal.length() <= 15) {
-                    std::cout << token.literal << std::string(
-                        max_length - token.literal.length(),
+                if (Token.literal.m_Length() <= 15) {
+                    std::cout << Token.literal << std::string(
+                        max_length - Token.literal.m_Length(),
                         ' '
                     ) << " -> " << (type) << "\n";
                 }
                 else {
-                    std::cout << token.literal << " -> " << (type) << "\n";
+                    std::cout << Token.literal << " -> " << (type) << "\n";
                 }
             }
 
@@ -1118,7 +1159,7 @@ public:
         #endif
 
         std::string path = "../tests/output.lua";
-        auto ptr = getBlock();
+        auto ptr = getChunk();
         assert(ptr, "failed to parse");
 
         {
@@ -1132,7 +1173,7 @@ public:
     }
 
 
-    static int getPrecedence(const token& currentToken, bool isUnaryOperation = false)
+    static int getPrecedence(const Token& currentToken, bool isUnaryOperation = false)
     {
         static const std::vector<std::vector<std::string>> priority = {
             {"or"},
@@ -1174,11 +1215,11 @@ public:
             return nullptr;
         }
 
-        token currentToken = peek();
+        Token currentToken = peek();
 
         switch (currentToken.type)
         {
-            case token_type::IDENTIFIER:
+            case TokenType::IDENTIFIER:
             {
                 auto identifier = std::make_shared<Node>();
                 identifier->setChildren({consume().literal});
@@ -1186,8 +1227,8 @@ public:
                 identifier->setSize(1);
                 return identifier;
             }
-            case token_type::STRING_RAW:
-            case token_type::STRING:
+            case TokenType::STRING_RAW:
+            case TokenType::STRING:
             {
                 auto string = std::make_shared<Node>();
                 string->setChildren({consume().literal});
@@ -1195,14 +1236,14 @@ public:
                 string->setSize(1);
                 return string;
             }
-            case token_type::COMMENT_RAW:
-            case token_type::COMMENT:
+            case TokenType::COMMENT_RAW:
+            case TokenType::COMMENT:
             {
                 break;
             }
-            case token_type::NUMBER_HEXADECIMAL:
-            case token_type::NUMBER_BINARY:
-            case token_type::NUMBER:
+            case TokenType::NUMBER_HEXADECIMAL:
+            case TokenType::NUMBER_BINARY:
+            case TokenType::NUMBER:
             {
                 auto number = std::make_shared<Node>();
                 number->setChildren({consume().literal});
@@ -1210,7 +1251,7 @@ public:
                 number->setSize(1);
                 return number;
             }
-            case token_type::KEYWORD:
+            case TokenType::KEYWORD:
             {
                 if (isBoolean(currentToken))
                 {
@@ -1242,7 +1283,7 @@ public:
                 }
                 break;
             }
-            case token_type::PUNCTUATION:
+            case TokenType::PUNCTUATION:
             {
                 if (currentToken.is("..."))
                 {
@@ -1309,7 +1350,7 @@ public:
     {
         while (next())
         {
-            token currentToken = peek();
+            Token currentToken = peek();
             int currentPrecedence = getPrecedence(currentToken);
 
             if (currentPrecedence < minPrecedence)
@@ -1367,19 +1408,17 @@ public:
     }
 
 
-
-
     bool next(std::size_t offset = 0) const;
 
-    token peek(std::size_t offset = 0);
+    Token peek(std::size_t offset = 0);
 
-    token consume();
+    Token consume();
 
     std::size_t mark() const;
 
     void revert(std::size_t marked);
 
-    bool expectPeek(token_type type, std::size_t offset = 0);
+    bool expectPeek(TokenType type, std::size_t offset = 0);
 
     bool expectPeek(const std::string& match, std::size_t offset = 0);
 };

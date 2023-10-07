@@ -95,7 +95,7 @@ public:
             if (std::holds_alternative<std::string>(m_Children[i])) {
                 auto value = std::get<std::string>(m_Children[i]);
 
-                if (m_Kind == Kind::String) {
+                if (m_Kind == Kind::String || m_Kind == Kind::Numeric) {
                     str += std::format(
                         "{0}[{1}] = {2}\n",
                         std::string(depth * mul, ' '),
@@ -136,6 +136,13 @@ public:
                         );
                     }
                 }
+            }
+            else if (std::holds_alternative<std::monostate>(m_Children[i])) {
+                str += std::format(
+                    "{0}[{1}] = nullptr\n",
+                    std::string(depth * mul, ' '),
+                    std::to_string(i)
+                );
             }
         }
 

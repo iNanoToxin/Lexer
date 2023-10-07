@@ -4,7 +4,8 @@ project(lua)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(lua main.cpp
-        tokenizer.h
+        Tokenizer.cpp
+        Tokenizer.h
 #        parser_old.h
 #        generation.h
         Parser.cpp
@@ -13,9 +14,8 @@ add_executable(lua main.cpp
         Node.h
 #        Base.cpp
         Base.h
-        Kind.h
-        tokenizer.cpp
         Kind.cpp
+        Kind.h
 )
 
 #target_include_directories(lua PUBLIC include)

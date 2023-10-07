@@ -5,13 +5,26 @@
 #include <string>
 #include "Parser.h"
 
+#define f_assert(condition, message)                        \
+do {                                                      \
+    if (!(condition)) {                                   \
+        std::cerr << "Assertion `" #condition "` failed." \
+        << "\n\tFile: " << __FILE__                       \
+        << "\n\tFunc: " << __FUNCTION__                   \
+        << "\n\tLine: " << __LINE__                       \
+        << "\n\tMessage: " << message                     \
+        << std::endl;                                     \
+        abort();                                          \
+    }                                                     \
+} while (false)
+
 int main() {
 
 
     std::string source;
     {
         std::ifstream file("../tests/test_2.lua");
-        assert(file.is_open(), "failed to open file");
+        f_assert(file.is_open(), "failed to open file");
 
         std::stringstream stream;
         stream << file.rdbuf();
@@ -20,7 +33,7 @@ int main() {
     }
     //
     // generator generator;
-    // std::string generated = generator.generate(source);
+    // std::string generated = generator.generate(m_Source);
     //
     // {
     //     std::ofstream file("../tests/output.lua");
