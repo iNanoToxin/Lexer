@@ -6,6 +6,7 @@
 #include <utility>
 #include <tuple>
 #include <vector>
+#include <fstream>
 #include "tokenizer.h"
 
 #include "Node.h"
@@ -60,7 +61,7 @@ public:
         if (expectPeek("<"))
         {
             consume();
-            auto attribute = std::make_shared<Node<p_Base, p_Base>>();
+            auto attribute = std::make_shared<Node>();
             attribute->setKind(Kind::Attribute);
             attribute->setSize(2);
 
@@ -69,8 +70,8 @@ public:
             assert(attributeType, "expected attribute type");
             assert(expectPeek(">"), "expected > after < in attrib");
             consume();
-            Node<>::setParent<p_Base>(name, (p_Base&) attribute);
-            Node<>::setParent<p_Base>(attributeType, (p_Base&) attribute);
+            Node::setParent(name, (p_Base&) attribute);
+            Node::setParent(attributeType, (p_Base&) attribute);
 
             attribute->setChildren({name, attributeType});
             return attribute;
@@ -80,14 +81,14 @@ public:
 
     p_Base getAttributeList()
     {
-        auto attributeList = std::make_shared<Node<p_BaseArray>>();
+        auto attributeList = std::make_shared<Node>();
         attributeList->setKind(Kind::AttributeList);
         attributeList->setSize(1);
         p_BaseArray list;
 
         if (auto attribute = getAttributeName())
         {
-            Node<>::setParent<p_Base>(attribute, (p_Base&) attributeList);
+            Node::setParent(attribute, (p_Base&) attributeList);
             list.push_back(attribute);
         }
         else
@@ -100,7 +101,7 @@ public:
             auto attribute = getAttributeName();
             assert(attribute, "expected attribute variable");
 
-            Node<>::setParent<p_Base>(attribute, (p_Base&) attributeList);
+            Node::setParent(attribute, (p_Base&) attributeList);
             list.push_back(attribute);
         }
 
@@ -110,14 +111,14 @@ public:
 
     p_Base getExpressionList()
     {
-        auto expressionList = std::make_shared<Node<p_BaseArray>>();
+        auto expressionList = std::make_shared<Node>();
         expressionList->setKind(Kind::ExpressionList);
         expressionList->setSize(1);
         p_BaseArray list;
 
         if (auto expression = getExpression())
         {
-            Node<>::setParent<p_Base>(expression, (p_Base&) expressionList);
+            Node::setParent(expression, (p_Base&) expressionList);
             list.push_back(std::move(expression));
         }
         else
@@ -127,10 +128,12 @@ public:
 
         while (expectPeek(","))
         {
+            consume();
+
             auto expression = getExpression();
             assert(expression, "expression expected");
 
-            Node<>::setParent<p_Base>(expression, (p_Base&) expressionList);
+            Node::setParent(expression, (p_Base&) expressionList);
             list.push_back(std::move(expression));
         }
 
@@ -146,12 +149,12 @@ public:
         }
         consume();
 
-        auto returnStatement = std::make_shared<Node<p_Base>>();
+        auto returnStatement = std::make_shared<Node>();
         returnStatement->setKind(Kind::ReturnStatement);
         returnStatement->setSize(1);
 
         auto expressionList = getExpressionList();
-        Node<>::setParent<p_BaseArray>(expressionList, (p_Base&) returnStatement);
+        Node::setParent(expressionList, (p_Base&) returnStatement);
 
         if (expectPeek(";"))
         {
@@ -164,7 +167,7 @@ public:
 
     p_Base getFunctionName()
     {
-        auto functionName = std::make_shared<Node<p_Base>>();
+        auto functionName = std::make_shared<Node>();
         functionName->setKind(Kind::FunctionName);
         functionName->setSize(1);
 
@@ -173,7 +176,7 @@ public:
         {
             return nullptr;
         }
-        Node<>::setParent<p_Base>(root, (p_Base&) functionName);
+        Node::setParent(root, (p_Base&) functionName);
 
         while (expectPeek("."))
         {
@@ -182,7 +185,7 @@ public:
             auto name = getName();
             assert(name, "expected name for function");
 
-            auto memberExpression = std::make_shared<Node<p_Base, p_Base>>();
+            auto memberExpression = std::make_shared<Node>();
             memberExpression->setKind(Kind::Member);
             memberExpression->setSize(2);
             memberExpression->setChildren({root, name});
@@ -197,7 +200,7 @@ public:
             auto name = getName();
             assert(name, "expected name for method");
 
-            auto methodExpression = std::make_shared<Node<p_Base, p_Base>>();
+            auto methodExpression = std::make_shared<Node>();
             methodExpression->setKind(Kind::Method);
             methodExpression->setSize(2);
             methodExpression->setChildren({root, name});
@@ -211,13 +214,13 @@ public:
 
     p_Base getNameList(bool isParameterList = false)
     {
-        auto nameList = std::make_shared<Node<p_BaseArray>>();
+        auto nameList = std::make_shared<Node>();
         nameList->setSize(1);
         p_BaseArray list;
 
         if (auto name = getName())
         {
-            Node<>::setParent<p_Base>(name, (p_Base&) nameList);
+            Node::setParent(name, (p_Base&) nameList);
             list.push_back(name);
         }
         else
@@ -227,17 +230,19 @@ public:
 
         while (expectPeek(","))
         {
+            consume();
+
             if (isParameterList && expectPeek("..."))
             {
                 auto varargs = getPrimaryExpression();
-                Node<>::setParent<p_Base>(varargs, (p_Base&) nameList);
+                Node::setParent(varargs, (p_Base&) nameList);
                 list.push_back(varargs);
                 break;
             }
 
             auto name = getName();
             assert(name, "expected name");
-            Node<>::setParent<p_Base>(name, (p_Base&) nameList);
+            Node::setParent(name, (p_Base&) nameList);
             list.push_back(name);
         }
 
@@ -257,13 +262,13 @@ public:
         {
             consume();
 
-            auto tableIndexValueExpression = std::make_shared<Node<p_Base, p_Base>>();
+            auto tableIndexValueExpression = std::make_shared<Node>();
             tableIndexValueExpression->setKind(Kind::TableIndexValue);
             tableIndexValueExpression->setSize(2);
 
             auto expression = getExpression();
             assert(expression, "expected index in field");
-            Node<>::setParent<p_Base>(expression, (p_Base&) tableIndexValueExpression);
+            Node::setParent(expression, (p_Base&) tableIndexValueExpression);
 
             assert(expectPeek("]"), "expected ] after [ in field");
             consume();
@@ -272,7 +277,7 @@ public:
 
             auto value = getExpression();
             assert(value, "expected value in field");
-            Node<>::setParent<p_Base>(value, (p_Base&) tableIndexValueExpression);
+            Node::setParent(value, (p_Base&) tableIndexValueExpression);
 
 
             tableIndexValueExpression->setChildren({expression, value});
@@ -280,12 +285,12 @@ public:
         }
         else if (expectPeek(token_type::IDENTIFIER) && expectPeek("=", 1))
         {
-            auto tableNameValueExpression = std::make_shared<Node<p_Base, p_Base>>();
+            auto tableNameValueExpression = std::make_shared<Node>();
             tableNameValueExpression->setKind(Kind::TableNameValue);
             tableNameValueExpression->setSize(2);
 
             auto name = getName();
-            Node<>::setParent<p_Base>(name, (p_Base&) tableNameValueExpression);
+            Node::setParent(name, (p_Base&) tableNameValueExpression);
 
 
             assert(expectPeek("="), "expected = after name in field");
@@ -293,14 +298,14 @@ public:
 
             auto value = getExpression();
             assert(value, "expected value in field");
-            Node<>::setParent<p_Base>(value, (p_Base&) tableNameValueExpression);
+            Node::setParent(value, (p_Base&) tableNameValueExpression);
 
             tableNameValueExpression->setChildren({name, value});
             return tableNameValueExpression;
         }
         else if (auto expression = getExpression())
         {
-            auto tableValueExpression = std::make_shared<Node<p_Base>>();
+            auto tableValueExpression = std::make_shared<Node>();
             tableValueExpression->setKind(Kind::TableValue);
             tableValueExpression->setSize(1);
             tableValueExpression->setChildren({expression});
@@ -311,7 +316,7 @@ public:
 
     p_Base getFieldList()
     {
-        auto fieldList = std::make_shared<Node<p_BaseArray>>();
+        auto fieldList = std::make_shared<Node>();
         fieldList->setKind(Kind::FieldList);
         fieldList->setSize(1);
 
@@ -319,7 +324,7 @@ public:
 
         while (auto field = getField())
         {
-            Node<>::setParent<p_Base>(field, (p_Base&) fieldList);
+            Node::setParent(field, (p_Base&) fieldList);
             list.push_back(field);
 
             if (expectPeek(",") || expectPeek(";"))
@@ -343,7 +348,7 @@ public:
         {
             consume();
 
-            auto argumentList = std::make_shared<Node<p_Base>>();
+            auto argumentList = std::make_shared<Node>();
             argumentList->setKind(Kind::ArgumentList);
             argumentList->setSize(1);
 
@@ -357,7 +362,7 @@ public:
         }
         else if (expectPeek(token_type::STRING) || expectPeek(token_type::STRING_RAW))
         {
-            auto argumentList = std::make_shared<Node<p_Base>>();
+            auto argumentList = std::make_shared<Node>();
             argumentList->setKind(Kind::ArgumentList);
             argumentList->setSize(1);
             argumentList->setChildren({getPrimaryExpression()});
@@ -365,7 +370,7 @@ public:
         }
         else if (auto tableConstructor = getTableConstructor())
         {
-            auto argumentList = std::make_shared<Node<p_Base>>();
+            auto argumentList = std::make_shared<Node>();
             argumentList->setKind(Kind::ArgumentList);
             argumentList->setSize(1);
             argumentList->setChildren({tableConstructor});
@@ -382,12 +387,12 @@ public:
         }
         consume();
 
-        auto tableConstructorExpression = std::make_shared<Node<p_Base>>();
+        auto tableConstructorExpression = std::make_shared<Node>();
         tableConstructorExpression->setKind(Kind::TableConstructor);
         tableConstructorExpression->setSize(1);
 
         auto fieldList = getFieldList();
-        Node<>::setParent<p_Base>(fieldList, (p_Base&) tableConstructorExpression);
+        Node::setParent(fieldList, (p_Base&) tableConstructorExpression);
 
         assert(expectPeek("}"), "expected } after { in table constructor");
         consume();
@@ -431,7 +436,7 @@ public:
             {
                 consume();
 
-                auto indexExpression = std::make_shared<Node<p_Base, p_Base>>();
+                auto indexExpression = std::make_shared<Node>();
                 indexExpression->setKind(Kind::Index);
                 indexExpression->setSize(2);
 
@@ -440,8 +445,8 @@ public:
 
                 assert(expectPeek("]"), "expected ] after [ in var");
                 consume();
-                Node<>::setParent<p_Base>(root, (p_Base&) indexExpression);
-                Node<>::setParent<p_Base>(expression, (p_Base&) indexExpression);
+                Node::setParent(root, (p_Base&) indexExpression);
+                Node::setParent(expression, (p_Base&) indexExpression);
 
                 indexExpression->setChildren({root, expression});
                 root = indexExpression;
@@ -451,14 +456,14 @@ public:
             {
                 consume();
 
-                auto memberExpression = std::make_shared<Node<p_Base, p_Base>>();
+                auto memberExpression = std::make_shared<Node>();
                 memberExpression->setKind(Kind::Member);
                 memberExpression->setSize(2);
 
                 auto name = getName();
                 assert(name, "expected name in var");
-                Node<>::setParent<p_Base>(root, (p_Base&) memberExpression);
-                Node<>::setParent<p_Base>(name, (p_Base&) memberExpression);
+                Node::setParent(root, (p_Base&) memberExpression);
+                Node::setParent(name, (p_Base&) memberExpression);
 
                 memberExpression->setChildren({root, name});
                 root = memberExpression;
@@ -471,36 +476,38 @@ public:
                 auto name = getName();
                 assert(name, "expected name in var");
 
-                auto methodExpression = std::make_shared<Node<p_Base, p_Base>>();
+                auto methodExpression = std::make_shared<Node>();
                 methodExpression->setKind(Kind::Method);
                 methodExpression->setSize(2);
                 methodExpression->setChildren({root, name});
-                Node<>::setParent<p_Base>(root, (p_Base&) methodExpression);
-                Node<>::setParent<p_Base>(name, (p_Base&) methodExpression);
+                Node::setParent(root, (p_Base&) methodExpression);
+                Node::setParent(name, (p_Base&) methodExpression);
                 root = methodExpression;
 
                 auto argumentList = getArgumentList();
                 assert(argumentList, "expected argumentList in var");
 
-                auto functionCall = std::make_shared<Node<p_Base, p_Base>>();
+                auto functionCall = std::make_shared<Node>();
                 functionCall->setKind(Kind::FunctionCall);
                 functionCall->setSize(2);
                 functionCall->setChildren({root, argumentList});
-                Node<>::setParent<p_Base>(root, (p_Base&) functionCall);
-                Node<>::setParent<p_Base>(argumentList, (p_Base&) functionCall);
+                Node::setParent(root, (p_Base&) functionCall);
+                Node::setParent(argumentList, (p_Base&) functionCall);
                 root = functionCall;
 
                 isValidExpression = false;
             }
             else if (auto args = getArgumentList())
             {
-                auto functionCall = std::make_shared<Node<p_Base, p_Base>>();
+                auto functionCall = std::make_shared<Node>();
                 functionCall->setKind(Kind::FunctionCall);
                 functionCall->setSize(2);
                 functionCall->setChildren({root, args});
-                Node<>::setParent<p_Base>(root, (p_Base&) functionCall);
-                Node<>::setParent<p_Base>(args, (p_Base&) functionCall);
+                Node::setParent(root, (p_Base&) functionCall);
+                Node::setParent(args, (p_Base&) functionCall);
                 root = functionCall;
+
+
 
                 isValidExpression = false;
             }
@@ -510,7 +517,7 @@ public:
             }
         }
 
-        if (!isPrefixExpression and !isValidExpression)
+        if (!isPrefixExpression && !isValidExpression)
         {
             revert(marked);
             return nullptr;
@@ -538,7 +545,7 @@ public:
 
     p_Base getVariableList()
     {
-        auto variableList = std::make_shared<Node<p_BaseArray>>();
+        auto variableList = std::make_shared<Node>();
         variableList->setKind(Kind::VariableList);
         variableList->setSize(1);
         p_BaseArray list;
@@ -548,7 +555,7 @@ public:
         {
             return nullptr;
         }
-        Node<>::setParent<p_Base>(variable, (p_Base&) variableList);
+        Node::setParent(variable, (p_Base&) variableList);
         list.push_back(variable);
 
         while (expectPeek(","))
@@ -558,7 +565,7 @@ public:
             variable = getVariable();
             assert(variable, "expression expected in variable list");
 
-            Node<>::setParent<p_Base>(variable, (p_Base&) variableList);
+            Node::setParent(variable, (p_Base&) variableList);
             list.push_back(variable);
         }
 
@@ -584,12 +591,12 @@ public:
         assert(expectPeek("end"), "expected end in function body");
         consume();
 
-        auto functionBody = std::make_shared<Node<p_Base, p_Base>>();
+        auto functionBody = std::make_shared<Node>();
         functionBody->setKind(Kind::FunctionBody);
         functionBody->setSize(2);
         functionBody->setChildren({parameterList, block});
-        Node<>::setParent<p_Base>(parameterList, (p_Base&) functionBody);
-        Node<>::setParent<p_Base>(block, (p_Base&) functionBody);
+        Node::setParent(parameterList, (p_Base&) functionBody);
+        Node::setParent(block, (p_Base&) functionBody);
         return functionBody;
     }
 
@@ -604,11 +611,11 @@ public:
         auto functionBody = getFunctionBody();
         assert(functionBody, "expected function body in function definition");
 
-        auto functionDefinition = std::make_shared<Node<p_Base, p_Base>>();
+        auto functionDefinition = std::make_shared<Node>();
         functionDefinition->setKind(Kind::FunctionDefinition);
         functionDefinition->setSize(2);
-        functionDefinition->setChildren({nullptr, functionBody});
-        Node<>::setParent<p_Base>(functionBody, (p_Base&) functionDefinition);
+        functionDefinition->setChildren({std::monostate{}, functionBody});
+        Node::setParent(functionBody, (p_Base&) functionDefinition);
         return functionDefinition;
     }
 
@@ -617,7 +624,7 @@ public:
         if (expectPeek(";"))
         {
             consume();
-            auto semicolon = std::make_shared<Node<>>();
+            auto semicolon = std::make_shared<Node>();
             semicolon->setKind(Kind::Semicolon);
             semicolon->setSize(0);
             return semicolon;
@@ -625,17 +632,17 @@ public:
         else if (expectPeek("break"))
         {
             consume();
-            auto breakStatement = std::make_shared<Node<>>();
+            auto breakStatement = std::make_shared<Node>();
             breakStatement->setKind(Kind::Semicolon);
             breakStatement->setSize(0);
             return breakStatement;
         }
         else if (expectPeek("if"))
         {
-            p_BaseArray list;
             consume();
+            p_BaseArray list;
 
-            auto ifStatement = std::make_shared<Node<p_BaseArray>>();
+            auto ifStatement = std::make_shared<Node>();
             ifStatement->setKind(Kind::IfStatement);
             ifStatement->setSize(1);
 
@@ -648,13 +655,13 @@ public:
             auto block = getBlock();
 
 
-            auto conditionalBlock = std::make_shared<Node<p_Base, p_Base>>();
+            auto conditionalBlock = std::make_shared<Node>();
             conditionalBlock->setKind(Kind::ConditionalBlock);
             conditionalBlock->setSize(2);
             conditionalBlock->setChildren({expression, block});
             conditionalBlock->setParent(ifStatement);
-            Node<>::setParent<p_Base>(expression, (p_Base&) conditionalBlock);
-            Node<>::setParent<p_Base>(block, (p_Base&) conditionalBlock);
+            Node::setParent(expression, (p_Base&) conditionalBlock);
+            Node::setParent(block, (p_Base&) conditionalBlock);
             list.push_back(conditionalBlock);
 
             while (expectPeek("elseif"))
@@ -669,13 +676,13 @@ public:
 
                 block = getBlock();
 
-                conditionalBlock = std::make_shared<Node<p_Base, p_Base>>();
+                conditionalBlock = std::make_shared<Node>();
                 conditionalBlock->setKind(Kind::ConditionalBlock);
                 conditionalBlock->setSize(2);
                 conditionalBlock->setChildren({expression, block});
                 conditionalBlock->setParent(ifStatement);
-                Node<>::setParent<p_Base>(expression, (p_Base&) conditionalBlock);
-                Node<>::setParent<p_Base>(block, (p_Base&) conditionalBlock);
+                Node::setParent(expression, (p_Base&) conditionalBlock);
+                Node::setParent(block, (p_Base&) conditionalBlock);
                 list.push_back(conditionalBlock);
             }
 
@@ -685,13 +692,13 @@ public:
 
                 block = getBlock();
 
-                conditionalBlock = std::make_shared<Node<p_Base, p_Base>>();
+                conditionalBlock = std::make_shared<Node>();
                 conditionalBlock->setKind(Kind::ConditionalBlock);
                 conditionalBlock->setSize(2);
-                conditionalBlock->setChildren({nullptr, block});
+                conditionalBlock->setChildren({std::monostate{}, block});
                 conditionalBlock->setParent(ifStatement);
-                Node<>::setParent<p_Base>(block, (p_Base&) conditionalBlock);
-                Node<>::setParent<p_Base>(conditionalBlock, (p_Base&) ifStatement);
+                Node::setParent(block, (p_Base&) conditionalBlock);
+                Node::setParent(conditionalBlock, (p_Base&) ifStatement);
                 list.push_back(conditionalBlock);
             }
 
@@ -716,17 +723,17 @@ public:
             assert(expectPeek("end"), "expected end in while stat");
             consume();
 
-            auto whileStatement = std::make_shared<Node<p_Base>>();
+            auto whileStatement = std::make_shared<Node>();
             whileStatement->setKind(Kind::WhileStatement);
             whileStatement->setSize(1);
 
-            auto conditionalBlock = std::make_shared<Node<p_Base, p_Base>>();
+            auto conditionalBlock = std::make_shared<Node>();
             conditionalBlock->setKind(Kind::ConditionalBlock);
             conditionalBlock->setSize(2);
             conditionalBlock->setChildren({expression, block});
             conditionalBlock->setParent(whileStatement);
-            Node<>::setParent<p_Base>(expression, (p_Base&) conditionalBlock);
-            Node<>::setParent<p_Base>(block, (p_Base&) conditionalBlock);
+            Node::setParent(expression, (p_Base&) conditionalBlock);
+            Node::setParent(block, (p_Base&) conditionalBlock);
 
 
             whileStatement->setChildren({conditionalBlock});
@@ -744,17 +751,17 @@ public:
             auto expression = getExpression();
             assert(expression, "expected expression in repeat stat");
 
-            auto repeatStatement = std::make_shared<Node<p_Base>>();
+            auto repeatStatement = std::make_shared<Node>();
             repeatStatement->setKind(Kind::RepeatStatement);
             repeatStatement->setSize(1);
 
-            auto conditionalBlock = std::make_shared<Node<p_Base, p_Base>>();
+            auto conditionalBlock = std::make_shared<Node>();
             conditionalBlock->setKind(Kind::ConditionalBlock);
             conditionalBlock->setSize(2);
             conditionalBlock->setChildren({expression, block});
             conditionalBlock->setParent(repeatStatement);
-            Node<>::setParent<p_Base>(expression, (p_Base&) conditionalBlock);
-            Node<>::setParent<p_Base>(block, (p_Base&) conditionalBlock);
+            Node::setParent(expression, (p_Base&) conditionalBlock);
+            Node::setParent(block, (p_Base&) conditionalBlock);
 
             repeatStatement->setChildren({conditionalBlock});
             return repeatStatement;
@@ -768,11 +775,11 @@ public:
             assert(expectPeek("end"), "expected end in do statement");
             consume();
 
-            auto doStatement = std::make_shared<Node<p_Base>>();
+            auto doStatement = std::make_shared<Node>();
             doStatement->setKind(Kind::DoStatement);
             doStatement->setSize(1);
             doStatement->setChildren({block});
-            Node<>::setParent<p_Base>(block, (p_Base&) doStatement);
+            Node::setParent(block, (p_Base&) doStatement);
             return doStatement;
         }
         else if (expectPeek("local"))
@@ -789,24 +796,24 @@ public:
                 auto body = getFunctionBody();
                 assert(body, "expected function body in local function");
 
-                auto localStatement = std::make_shared<Node<p_Base>>();
+                auto localStatement = std::make_shared<Node>();
                 localStatement->setKind(Kind::LocalStatement);
                 localStatement->setSize(1);
 
-                auto functionDefinition = std::make_shared<Node<p_Base, p_Base>>();
+                auto functionDefinition = std::make_shared<Node>();
                 functionDefinition->setKind(Kind::FunctionDefinition);
                 functionDefinition->setSize(2);
                 functionDefinition->setChildren({name, body});
                 functionDefinition->setParent(localStatement);
-                Node<>::setParent<p_Base>(name, (p_Base&) functionDefinition);
-                Node<>::setParent<p_Base>(body, (p_Base&) functionDefinition);
+                Node::setParent(name, (p_Base&) functionDefinition);
+                Node::setParent(body, (p_Base&) functionDefinition);
 
                 localStatement->setChildren({functionDefinition});
                 return localStatement;
             }
             else
             {
-                auto localStatement = std::make_shared<Node<p_Base>>();
+                auto localStatement = std::make_shared<Node>();
                 localStatement->setKind(Kind::LocalStatement);
                 localStatement->setSize(1);
 
@@ -820,20 +827,20 @@ public:
                     auto expressionList = getExpressionList();
                     assert(expressionList, "expected expression list in local stat");
 
-                    auto assignmentStatement = std::make_shared<Node<p_Base, p_Base>>();
+                    auto assignmentStatement = std::make_shared<Node>();
                     assignmentStatement->setKind(Kind::AssignmentStatement);
                     assignmentStatement->setSize(2);
                     assignmentStatement->setChildren({attributeNameList, expressionList});
                     assignmentStatement->setParent(localStatement);
-                    Node<>::setParent<p_Base>(attributeNameList, (p_Base&) assignmentStatement);
-                    Node<>::setParent<p_Base>(expressionList, (p_Base&) assignmentStatement);
+                    Node::setParent(attributeNameList, (p_Base&) assignmentStatement);
+                    Node::setParent(expressionList, (p_Base&) assignmentStatement);
 
                     localStatement->setChildren({assignmentStatement});
                     return localStatement;
                 }
 
                 localStatement->setChildren({attributeNameList});
-                Node<>::setParent<p_Base>(attributeNameList, (p_Base&) localStatement);
+                Node::setParent(attributeNameList, (p_Base&) localStatement);
                 return localStatement;
             }
         }
@@ -847,12 +854,12 @@ public:
             auto body = getFunctionBody();
             assert(body, "expected function body in function");
 
-            auto functionDefinition = std::make_shared<Node<p_Base, p_Base>>();
+            auto functionDefinition = std::make_shared<Node>();
             functionDefinition->setKind(Kind::FunctionDefinition);
             functionDefinition->setSize(2);
             functionDefinition->setChildren({name, body});
-            Node<>::setParent<p_Base>(name, (p_Base&) functionDefinition);
-            Node<>::setParent<p_Base>(body, (p_Base&) functionDefinition);
+            Node::setParent(name, (p_Base&) functionDefinition);
+            Node::setParent(body, (p_Base&) functionDefinition);
             return functionDefinition;
         }
         else if (expectPeek("for"))
@@ -894,15 +901,15 @@ public:
                 assert(expectPeek("end"), "expected do in numeric for stat");
                 consume();
 
-                auto forStatement = std::make_shared<Node<p_Base, p_Base, p_Base, p_Base, p_Base>>();
+                auto forStatement = std::make_shared<Node>();
                 forStatement->setKind(Kind::ForStatement);
                 forStatement->setSize(5);
                 forStatement->setChildren({name, init, goal, step, block});
-                Node<>::setParent<p_Base>(name, (p_Base&) forStatement);
-                Node<>::setParent<p_Base>(init, (p_Base&) forStatement);
-                Node<>::setParent<p_Base>(goal, (p_Base&) forStatement);
-                Node<>::setParent<p_Base>(step, (p_Base&) forStatement);
-                Node<>::setParent<p_Base>(block, (p_Base&) forStatement);
+                Node::setParent(name, (p_Base&) forStatement);
+                Node::setParent(init, (p_Base&) forStatement);
+                Node::setParent(goal, (p_Base&) forStatement);
+                Node::setParent(step, (p_Base&) forStatement);
+                Node::setParent(block, (p_Base&) forStatement);
                 return forStatement;
             }
             else
@@ -924,13 +931,13 @@ public:
                 assert(expectPeek("end"), "expected end in generic for stat");
                 consume();
 
-                auto forStatement = std::make_shared<Node<p_Base, p_Base, p_Base>>();
+                auto forStatement = std::make_shared<Node>();
                 forStatement->setKind(Kind::ForStatement);
                 forStatement->setSize(3);
                 forStatement->setChildren({nameList, expressionList, block});
-                Node<>::setParent<p_Base>(nameList, (p_Base&) forStatement);
-                Node<>::setParent<p_Base>(expressionList, (p_Base&) forStatement);
-                Node<>::setParent<p_Base>(block, (p_Base&) forStatement);
+                Node::setParent(nameList, (p_Base&) forStatement);
+                Node::setParent(expressionList, (p_Base&) forStatement);
+                Node::setParent(block, (p_Base&) forStatement);
                 return forStatement;
             }
         }
@@ -941,11 +948,11 @@ public:
             auto name = getName();
             assert(name, "expected name in goto stat");
 
-            auto gotoStatement = std::make_shared<Node<p_Base>>();
+            auto gotoStatement = std::make_shared<Node>();
             gotoStatement->setKind(Kind::GotoStatement);
             gotoStatement->setSize(1);
             gotoStatement->setChildren({name});
-            Node<>::setParent<p_Base>(name, (p_Base&) gotoStatement);
+            Node::setParent(name, (p_Base&) gotoStatement);
             return gotoStatement;
         }
         else if (expectPeek("::"))
@@ -958,11 +965,11 @@ public:
             assert(expectPeek("::"), "expected :: after :: in label");
             consume();
 
-            auto label = std::make_shared<Node<p_Base>>();
+            auto label = std::make_shared<Node>();
             label->setKind(Kind::Label);
             label->setSize(1);
             label->setChildren({name});
-            Node<>::setParent<p_Base>(name, (p_Base&) label);
+            Node::setParent(name, (p_Base&) label);
             return label;
         }
 
@@ -974,12 +981,12 @@ public:
             auto expressionList = getExpressionList();
             assert(expressionList, "expected expression list in assignment stat");
 
-            auto assignmentStatement = std::make_shared<Node<p_Base, p_Base>>();
+            auto assignmentStatement = std::make_shared<Node>();
             assignmentStatement->setKind(Kind::AssignmentStatement);
             assignmentStatement->setSize(2);
             assignmentStatement->setChildren({variableList, expressionList});
-            Node<>::setParent<p_Base>(variableList, (p_Base&) assignmentStatement);
-            Node<>::setParent<p_Base>(expressionList, (p_Base&) assignmentStatement);
+            Node::setParent(variableList, (p_Base&) assignmentStatement);
+            Node::setParent(expressionList, (p_Base&) assignmentStatement);
             return assignmentStatement;
         }
         else if (auto function_call = getFunctionCall())
@@ -992,20 +999,20 @@ public:
 
     p_Base getBlock()
     {
-        auto block = std::make_shared<Node<p_BaseArray>>();
+        auto block = std::make_shared<Node>();
         block->setKind(Kind::Block);
         block->setSize(1);
         p_BaseArray list;
 
         while (auto stat = getStatement())
         {
-            Node<>::setParent<p_Base>(stat, (p_Base&) block);
+            Node::setParent(stat, (p_Base&) block);
             list.push_back(stat);
         }
 
         if (auto stat = getReturnStatement())
         {
-            Node<>::setParent<p_Base>(stat, (p_Base&) block);
+            Node::setParent(stat, (p_Base&) block);
             list.push_back(stat);
         }
 
@@ -1111,21 +1118,21 @@ public:
         #endif
 
         std::string path = "../tests/output.lua";
-        auto ptr = getPrimaryExpression();
+        auto ptr = getBlock();
         assert(ptr, "failed to parse");
 
-        // {
-        //     std::ofstream file(path);
-        //     assert(file.is_open(), "Failed to open the file.");
-        //     file << ptr->tostring();
-        //     file.close();
-        // }
-        std::cout << ptr->toString() << std::endl;
+        {
+            std::ofstream file(path);
+            assert(file.is_open(), "Failed to open the file.");
+            file << ptr->toString(0);
+            file.close();
+        }
+        // std::cout << ptr->toString(0) << std::endl;
         return ptr;
     }
 
 
-    static std::size_t getPrecedence(const token& currentToken, bool isUnaryOperation = false)
+    static int getPrecedence(const token& currentToken, bool isUnaryOperation = false)
     {
         static const std::vector<std::vector<std::string>> priority = {
             {"or"},
@@ -1144,10 +1151,10 @@ public:
 
         if (isUnaryOperation)
         {
-            return priority.size() - 1;
+            return static_cast<int>(priority.size()) - 1;
         }
 
-        for (std::size_t i = 0; i < priority.size(); i++)
+        for (int i = 0; i < priority.size(); i++)
         {
             for (auto& e: priority[i])
             {
@@ -1157,7 +1164,7 @@ public:
                 }
             }
         }
-        return 0;
+        return -1;
     }
 
     p_Base getPrimaryExpression()
@@ -1173,7 +1180,7 @@ public:
         {
             case token_type::IDENTIFIER:
             {
-                auto identifier = std::make_shared<Node<std::string>>();
+                auto identifier = std::make_shared<Node>();
                 identifier->setChildren({consume().literal});
                 identifier->setKind(Kind::Identifier);
                 identifier->setSize(1);
@@ -1182,7 +1189,7 @@ public:
             case token_type::STRING_RAW:
             case token_type::STRING:
             {
-                auto string = std::make_shared<Node<std::string>>();
+                auto string = std::make_shared<Node>();
                 string->setChildren({consume().literal});
                 string->setKind(Kind::String);
                 string->setSize(1);
@@ -1197,7 +1204,7 @@ public:
             case token_type::NUMBER_BINARY:
             case token_type::NUMBER:
             {
-                auto number = std::make_shared<Node<std::string>>();
+                auto number = std::make_shared<Node>();
                 number->setChildren({consume().literal});
                 number->setKind(Kind::Numeric);
                 number->setSize(1);
@@ -1207,7 +1214,7 @@ public:
             {
                 if (isBoolean(currentToken))
                 {
-                    auto boolean = std::make_shared<Node<std::string>>();
+                    auto boolean = std::make_shared<Node>();
                     boolean->setChildren({consume().literal});
                     boolean->setKind(Kind::Boolean);
                     boolean->setSize(1);
@@ -1219,15 +1226,15 @@ public:
                     auto expr = getExpression(getPrecedence(currentToken, true));
                     assert(expr, "expected expression after " + currentToken.literal);
 
-                    auto unaryOperation = std::make_shared<Node<std::string, p_Base>>();
-                    unaryOperation->setChildren({consume().literal, expr});
+                    auto unaryOperation = std::make_shared<Node>();
+                    unaryOperation->setChildren({currentToken.literal, expr});
                     unaryOperation->setKind(Kind::UnaryOperation);
                     unaryOperation->setSize(2);
                     return unaryOperation;
                 }
                 else if (isNull(currentToken))
                 {
-                    auto null = std::make_shared<Node<std::string>>();
+                    auto null = std::make_shared<Node>();
                     null->setChildren({consume().literal});
                     null->setKind(Kind::Null);
                     null->setSize(1);
@@ -1239,7 +1246,7 @@ public:
             {
                 if (currentToken.is("..."))
                 {
-                    auto varargs = std::make_shared<Node<std::string>>();
+                    auto varargs = std::make_shared<Node>();
                     varargs->setChildren({consume().literal});
                     varargs->setKind(Kind::Varargs);
                     varargs->setSize(1);
@@ -1267,8 +1274,8 @@ public:
                     auto expr = getExpression(getPrecedence(currentToken, true));
                     assert(expr, "expected expression after " + currentToken.literal);
 
-                    auto unaryOperation = std::make_shared<Node<std::string, p_Base>>();
-                    unaryOperation->setChildren({consume().literal, expr});
+                    auto unaryOperation = std::make_shared<Node>();
+                    unaryOperation->setChildren({currentToken.literal, expr});
                     unaryOperation->setKind(Kind::UnaryOperation);
                     unaryOperation->setSize(2);
                     return unaryOperation;
@@ -1279,7 +1286,7 @@ public:
         return nullptr;
     }
 
-    p_Base getExpression(std::size_t precedence = 0)
+    p_Base getExpression(int precedence = 0)
     {
         if (auto lhsExpression = getFunctionDefinition())
         {
@@ -1298,14 +1305,14 @@ public:
         return nullptr;
     }
 
-    p_Base getRhsExpression(std::size_t minPrecedence, p_Base lhs)
+    p_Base getRhsExpression(int minPrecedence, p_Base lhs)
     {
         while (next())
         {
             token currentToken = peek();
-            std::size_t currentPrecedence = getPrecedence(currentToken);
+            int currentPrecedence = getPrecedence(currentToken);
 
-            if (currentPrecedence <= minPrecedence)
+            if (currentPrecedence < minPrecedence)
             {
                 return lhs;
             }
@@ -1334,7 +1341,7 @@ public:
 
             if (next())
             {
-                std::size_t next_precedence = getPrecedence(peek());
+                int next_precedence = getPrecedence(peek());
                 if (currentPrecedence < next_precedence)
                 {
                     rhs = getRhsExpression(currentPrecedence + 1, std::move(rhs));
@@ -1347,12 +1354,12 @@ public:
 
             if (isBinaryOperator(currentToken))
             {
-                auto binaryOperation = std::make_shared<Node<std::string, p_Base, p_Base>>();
+                auto binaryOperation = std::make_shared<Node>();
                 binaryOperation->setKind(Kind::BinaryOperation);
                 binaryOperation->setSize(3);
                 binaryOperation->setChildren({currentToken.literal, lhs, rhs});
-                Node<>::setParent<p_Base>(lhs, (p_Base&) binaryOperation);
-                Node<>::setParent<p_Base>(rhs, (p_Base&) binaryOperation);
+                Node::setParent(lhs, (p_Base&) binaryOperation);
+                Node::setParent(rhs, (p_Base&) binaryOperation);
                 lhs = binaryOperation;
             }
         }

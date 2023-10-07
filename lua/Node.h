@@ -2,42 +2,47 @@
 #define LUA_NODE_H
 
 #include <iostream>
+#include <variant>
+#include <vector>
+#include <string>
+#include <format>
 #include "Kind.h"
 #include "Base.h"
 
+using NodeVariant = std::variant<std::monostate, std::string, p_Base, std::vector<p_Base>>;
 
-template <typename ...Types>
+
 class Node : public Base
 {
 private:
-    std::tuple<Types...> m_Children;
+    std::vector<NodeVariant> m_Children;
     std::size_t m_Size = 0;
 public:
     explicit Node() = default;
 
     #pragma region node_methods
 
-    void setChildren(std::tuple<Types...> children)
+    void setChildren(std::vector<NodeVariant> children)
     {
         m_Children = children;
     }
 
-    std::tuple<Types...> getChildren()
+    std::vector<NodeVariant> getChildren()
     {
         return m_Children;
     }
 
-    template <std::size_t Position, typename T>
+    /*template <std::size_t Position, typename T>
     void setChild(T child)
     {
         std::get<Position>(m_Children) = child;
     }
 
-    template <std::size_t Position>
-    auto getChild()
+
+    auto getChild(std::size_t position)
     {
-        return std::get<Position>(m_Children);
-    }
+        return std::get<std::string>(m_Children[0]);
+    }*/
 
     void setSize(std::size_t size)
     {
@@ -54,26 +59,91 @@ public:
         this->m_Parent = parent;
     }
 
-    template <typename ...ParentTypes>
-    Node<ParentTypes...>* getParent()
+    Node* getParent()
     {
-        return dynamic_cast<Node<ParentTypes...>*>(m_Parent.get());
+        return dynamic_cast<Node*>(m_Parent.get());
     }
 
     #pragma endregion
 
-    template <typename ...NodeTypes>
-    static void setParent(const p_Base& baseNode, const p_Base& parent) {
-        if (baseNode != nullptr)
+
+    static void setParent(const p_Base& baseNode, const p_Base& parentNode) {
+        if (auto node = getNode(baseNode))
         {
-            auto node = dynamic_cast<Node<NodeTypes...>*>(baseNode.get());
-            node->setParent(parent);
+            node->setParent(parentNode);
         }
+    }
+
+    static Node* getNode(const p_Base& baseNode) {
+        if (!baseNode) {
+            return nullptr;
+        }
+        return dynamic_cast<Node*>(baseNode.get());
     }
 
     std::string toString(std::size_t depth = 0) const override
     {
-        return getKindName(m_Kind);
+        std::string str;
+        std::size_t mul = 4;
+        // str += std::string(depth * mul, ' ');
+        str += "{\n";
+        depth++;
+        str += std::string(depth * mul, ' ');
+        str += "Kind: " + getKindName(m_Kind) + "\n";
+
+        for (int i = 0; i < m_Size; i++) {
+            if (std::holds_alternative<std::string>(m_Children[i])) {
+                auto value = std::get<std::string>(m_Children[i]);
+
+                if (m_Kind == Kind::String) {
+                    str += std::format(
+                        "{0}[{1}] = {2}\n",
+                        std::string(depth * mul, ' '),
+                        std::to_string(i),
+                        value
+                    );
+                }
+                else {
+                    str += std::format(
+                        "{0}[{1}] = '{2}'\n",
+                        std::string(depth * mul, ' '),
+                        std::to_string(i),
+                        value
+                    );
+                }
+            }
+            else if (std::holds_alternative<p_Base>(m_Children[i])) {
+                auto value = std::get<p_Base>(m_Children[i]);
+                if (auto node = getNode(value)) {
+                    str += std::format(
+                        "{0}[{1}] = {2}\n",
+                        std::string(depth * mul, ' '),
+                        std::to_string(i),
+                        node->toString(depth)
+                    );
+                }
+            }
+            else if (std::holds_alternative<p_BaseArray>(m_Children[i])) {
+                auto array = std::get<p_BaseArray>(m_Children[i]);
+
+                for (int j = 0; j < array.size(); j++) {
+                    if (auto node = getNode(array[j])) {
+                        str += std::format(
+                            "{0}[{1}] = {2}\n",
+                            std::string(depth * mul, ' '),
+                            std::to_string(j),
+                            node->toString(depth)
+                        );
+                    }
+                }
+            }
+        }
+
+        depth--;
+        str += std::string(depth * mul, ' ');
+        str += "}";
+
+        return str;
     }
 };
 

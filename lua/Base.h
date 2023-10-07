@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "Kind.h"
+#include "Node.h"
 
 class Base;
 using p_Base = std::shared_ptr<Base>;
@@ -18,9 +19,6 @@ public:
     Kind m_Kind = Kind::Unknown;
 
     explicit Base() = default;
-
-    // template <typename ...T>
-    // auto get(Kind kind) -> Node<T...>*;
 
     void setKind(Kind kind)
     {
