@@ -3,8 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "Parser.h"
-#include "Generation.h"
+#include <Parser.h>
+#include <Generation.h>
 
 #define f_assert(condition, message)                        \
 do {                                                      \

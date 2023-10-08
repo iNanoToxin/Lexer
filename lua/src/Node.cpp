@@ -1,5 +1,5 @@
 #include "Node.h"
-// /*
+
 void Node::setChildren(std::vector<NodeVariant> children)
 {
     m_Children = children;
@@ -29,4 +29,3 @@ p_Node Node::getParent()
 {
     return std::static_pointer_cast<Node>(m_Parent);
 }
-// */

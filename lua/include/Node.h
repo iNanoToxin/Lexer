@@ -6,8 +6,8 @@
 #include <vector>
 #include <string>
 #include <format>
-#include "Kind.h"
-#include "Base.h"
+#include <Kind.h>
+#include <Base.h>
 
 using NodeVariant = std::variant<std::string, p_Base, p_BaseArray>;
 

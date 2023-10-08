@@ -1,10 +1,5 @@
 module("resty.sha256", package.seeall)
 _VERSION = '0.06'
-local sha = require("resty.sha")
-local ffi = require("ffi")
-local ffi_new = ffi.new
-local ffi_str = ffi.string
-local C = ffi.C
 local mt = {
     __index = resty.sha256
 }

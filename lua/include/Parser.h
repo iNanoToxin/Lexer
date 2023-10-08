@@ -7,9 +7,9 @@
 #include <tuple>
 #include <vector>
 #include <fstream>
-#include "Tokenizer.h"
+#include <Tokenizer.h>
 
-#include "Node.h"
+#include <Node.h>
 
 
 bool isBinaryOperator(const Token& currentToken);
