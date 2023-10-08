@@ -7,21 +7,34 @@
 
 class Generator
 {
-public:
+private:
+    std::vector<char> variableChars;
+    unsigned int variableCount = 0;
 
+    std::string createVariable(unsigned int id)
+    {
+        std::string str = "";
+
+        while (id > 0)
+        {
+            id--;
+            str = variableChars[id % variableChars.size()] + str;
+            id /= variableChars.size();
+        }
+        return str;
+    }
+public:
     std::string generate(const std::string& source) {
         Parser parser;
-        std::cout << "yes 3" << std::endl;
         auto chunk = parser.parse(source);
-        std::cout << "yes 4" << std::endl;
 
-        // auto generatedString = toString(chunk, 0);
+        auto generatedString = toString(chunk, 0);
 
-        // if (!generatedString.empty() && generatedString.back() == '\n')
-        // {
-        //     generatedString.pop_back();
-        // }
-        return "generatedString";
+        if (!generatedString.empty() && generatedString.back() == '\n')
+        {
+            generatedString.pop_back();
+        }
+        return generatedString;
     }
 
     std::string concat(p_BaseArray array, const std::string& separator, std::size_t depth, bool skip_last = true)
@@ -53,9 +66,7 @@ public:
             return "";
         }
 
-        std::cout << "yes 1" << std::endl;
         auto node = Node::getNode(base);
-        std::cout << "yes 2" << std::endl;
 
         switch (base->getKind())
         {
@@ -213,11 +224,38 @@ public:
                 auto list = node->getChild<p_BaseArray>(0);
                 return concat(list, ", ", depth);
             }
-
             case Kind::FieldList:
             {
                 auto list = node->getChild<p_BaseArray>(0);
                 return concat(list, ",\n", depth);
+            }
+
+            case Kind::Block:
+            {
+                auto statements = node->getChild<p_BaseArray>(0);
+
+                std::string statementString;
+
+                for (auto& statement: statements)
+                {
+                    std::string string = toString(statement, depth);
+
+                    if (string == ";" && !statementString.empty() && statementString.back() == '\n')
+                    {
+                        statementString.pop_back();
+                    }
+                    else
+                    {
+                        statementString += space(depth);
+                    }
+                    statementString += string;
+                    statementString += "\n";
+                }
+                return statementString;
+            }
+            case Kind::Chunk: {
+                auto block = node->getChild<p_Base>(0);
+                return block ? toString(block) : "";
             }
 
             case Kind::FunctionCall:
@@ -269,29 +307,6 @@ public:
                     "({0})",
                     toString(arguments, depth)
                 );
-            }
-            case Kind::Block:
-            {
-                auto statements = node->getChild<p_BaseArray>(0);
-
-                std::string statementString;
-
-                for (auto it = statements.begin(); it != statements.end(); it++)
-                {
-                    std::string string = toString(*it, depth);
-
-                    if (string == ";" && !statementString.empty() && statementString.back() == '\n')
-                    {
-                        statementString.pop_back();
-                    }
-                    else
-                    {
-                        statementString += space(depth);
-                    }
-                    statementString += string;
-                    statementString += "\n";
-                }
-                return statementString;
             }
             case Kind::Semicolon:
             {
@@ -388,8 +403,7 @@ public:
                 std::string ifString;
                 for (int i = 0; i < statements.size(); i++)
                 {
-                    auto statement = Node::getNode(statements[i]);
-                    auto conditionalBlock = Node::getNode(statement->getChild<p_Base>(0));
+                    auto conditionalBlock = Node::getNode(statements[i]);
                     auto condition = conditionalBlock->getChild<p_Base>(0);
                     auto block = conditionalBlock->getChild<p_Base>(1);
 

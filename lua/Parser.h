@@ -96,20 +96,16 @@ public:
         attributeList->setKind(Kind::AttributeList);
         attributeList->setSize(1);
         p_BaseArray list;
-        std::cout << "13" << std::endl;
 
         if (auto attribute = getAttributeName())
         {
-            std::cout << "14" << std::endl;
             Node::setParent(attribute, attributeList);
-            std::cout << "21" << std::endl;
             list.push_back(attribute);
         }
         else
         {
             return nullptr;
         }
-        std::cout << "15" << std::endl;
 
         while (expectPeek(","))
         {
@@ -640,14 +636,13 @@ public:
         auto functionDefinition = std::make_shared<Node>();
         functionDefinition->setKind(Kind::FunctionDefinition);
         functionDefinition->setSize(2);
-        functionDefinition->setChildren({std::monostate{}, functionBody});
+        functionDefinition->setChildren({p_Base{nullptr}, functionBody});
         Node::setParent(functionBody, functionDefinition);
         return functionDefinition;
     }
 
     p_Base getStatement()
     {
-        std::cout << "2" << std::endl;
         if (expectPeek(";"))
         {
             consume();
@@ -731,7 +726,7 @@ public:
                 conditionalBlock = std::make_shared<Node>();
                 conditionalBlock->setKind(Kind::ConditionalBlock);
                 conditionalBlock->setSize(2);
-                conditionalBlock->setChildren({std::monostate{}, block});
+                conditionalBlock->setChildren({p_Base{nullptr}, block});
                 conditionalBlock->setParent(ifStatement);
                 Node::setParent(block, conditionalBlock);
                 Node::setParent(conditionalBlock, ifStatement);
@@ -849,14 +844,11 @@ public:
             }
             else
             {
-                std::cout << "3" << std::endl;
                 auto localStatement = std::make_shared<Node>();
                 localStatement->setKind(Kind::LocalStatement);
                 localStatement->setSize(1);
-                std::cout << "11" << std::endl;
 
                 auto attributeNameList = getAttributeList();
-                std::cout << "12" << std::endl;
                 assert(attributeNameList, "expected attribute name list in local stat");
 
                 if (expectPeek("="))
@@ -879,9 +871,7 @@ public:
                 }
 
                 localStatement->setChildren({attributeNameList});
-                std::cout << "4" << std::endl;
                 Node::setParent(attributeNameList, localStatement);
-                std::cout << "5" << std::endl;
                 return localStatement;
             }
         }
@@ -946,7 +936,7 @@ public:
                 forStatement->setKind(Kind::ForStatement);
                 forStatement->setSize(5);
                 if (step == nullptr) {
-                    forStatement->setChildren({name, init, goal, std::monostate{}, block});
+                    forStatement->setChildren({name, init, goal, p_Base{nullptr}, block});
                 }
                 else {
                     forStatement->setChildren({name, init, goal, step, block});
@@ -1076,15 +1066,13 @@ public:
         chunk->setKind(Kind::Chunk);
         chunk->setSize(1);
 
-        std::cout << "1" << std::endl;
         if (auto block = getBlock()) {
             Node::setParent(block, chunk);
             chunk->setChildren({block});
         }
         else {
-            chunk->setChildren({std::monostate{}});
+            chunk->setChildren({p_Base{nullptr}});
         }
-        std::cout << "1 end" << std::endl;
         return chunk;
     }
 
@@ -1183,8 +1171,12 @@ public:
         auto ptr = getChunk();
         assert(ptr, "failed to parse");
 
-        std::cout << (ptr == nullptr) << std::endl;
-
+        {
+            std::ofstream file(path);
+            assert(file.is_open(), "Failed to open the file.");
+            file << ptr->toString(0);
+            file.close();
+        }
         // std::cout << ptr->toString(0) << std::endl;
         return ptr;
     }

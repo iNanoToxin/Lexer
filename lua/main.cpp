@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "Parser.h"
 #include "Generation.h"
 
 #define f_assert(condition, message)                        \
@@ -32,10 +33,12 @@ int main() {
         file.close();
     }
 
-    // Generator g;
-    // std::string generated = g.generate(luaSource);
-    Parser p;
-    std::string generated = p.parse(luaSource)->toString(0);
+    Generator g;
+    std::string generated = g.generate(luaSource);
+    // std::cout << "START!!!" << std::endl;
+    // Parser p;
+    // std::string generated = p.parse(luaSource)->toString(0);
+    // std::cout << "END!!!" << std::endl;
 
     {
         std::ofstream file("../tests/output.lua");

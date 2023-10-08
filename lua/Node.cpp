@@ -1,5 +1,5 @@
 #include "Node.h"
-
+// /*
 void Node::setChildren(std::vector<NodeVariant> children)
 {
     m_Children = children;
@@ -25,7 +25,8 @@ std::size_t Node::getSize() const
     return m_Size;
 }
 
-Node* Node::getParent()
+p_Node Node::getParent()
 {
-    return dynamic_cast<Node*>(m_Parent.get());
+    return std::static_pointer_cast<Node>(m_Parent);
 }
+// */

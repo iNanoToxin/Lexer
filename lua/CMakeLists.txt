@@ -6,8 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(lua main.cpp
         Tokenizer.cpp
         Tokenizer.h
-#        parser_old.h
-        generation_old.h
+
         Parser.cpp
         Parser.h
         Node.cpp

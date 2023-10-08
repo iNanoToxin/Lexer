@@ -9,7 +9,7 @@
 #include "Kind.h"
 #include "Base.h"
 
-using NodeVariant = std::variant<std::monostate, std::string, p_Base, std::vector<p_Base>>;
+using NodeVariant = std::variant<std::string, p_Base, p_BaseArray>;
 
 class Node;
 using p_Node = std::shared_ptr<Node>;
@@ -29,28 +29,26 @@ public:
     void setParent(const p_Base& parent);
     std::vector<NodeVariant> getChildren();
     std::size_t getSize() const;
-    Node* getParent();
+    p_Node getParent();
 
     #pragma endregion
 
     template <typename Type>
     Type& getChild(const std::size_t& index) {
+        // std::cout << "KIND `" + getKindName(m_Kind) + "` ACCESSED " + std::to_string(index) << std::endl;
         return std::get<Type>(m_Children[index]);
     }
 
 
     static void setParent(const p_Base& baseNode, const p_Base& parentNode) {
-        // if (auto node = getNode(baseNode))
-        // {
-        //     node->setParent(parentNode);
-        // }
+        if (auto node = getNode(baseNode))
+        {
+            node->setParent(parentNode);
+        }
     }
 
     static p_Node getNode(const p_Base& baseNode) {
-        if (!baseNode) {
-            return nullptr;
-        }
-        return p_Node{dynamic_cast<Node*>(baseNode.get())};
+        return std::static_pointer_cast<Node>(baseNode);
     }
 
     std::string toString(std::size_t depth = 0) const override
@@ -86,7 +84,15 @@ public:
             }
             else if (std::holds_alternative<p_Base>(m_Children[i])) {
                 auto value = std::get<p_Base>(m_Children[i]);
-                if (auto node = getNode(value)) {
+
+                if (!value) {
+                    str += std::format(
+                        "{0}[{1}] = nullptr\n",
+                        std::string(depth * mul, ' '),
+                        std::to_string(i)
+                    );
+                }
+                else if (auto node = getNode(value)) {
                     str += std::format(
                         "{0}[{1}] = {2}\n",
                         std::string(depth * mul, ' '),
@@ -108,13 +114,6 @@ public:
                         );
                     }
                 }
-            }
-            else if (std::holds_alternative<std::monostate>(m_Children[i])) {
-                str += std::format(
-                    "{0}[{1}] = nullptr\n",
-                    std::string(depth * mul, ' '),
-                    std::to_string(i)
-                );
             }
         }
 
