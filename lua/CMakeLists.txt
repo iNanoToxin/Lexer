@@ -7,7 +7,7 @@ add_executable(lua main.cpp
         Tokenizer.cpp
         Tokenizer.h
 #        parser_old.h
-#        generation.h
+        generation_old.h
         Parser.cpp
         Parser.h
         Node.cpp
@@ -16,6 +16,8 @@ add_executable(lua main.cpp
         Base.h
         Kind.cpp
         Kind.h
+        Generation.cpp
+        Generation.h
 )
 
 #target_include_directories(lua PUBLIC include)

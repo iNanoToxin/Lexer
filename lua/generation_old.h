@@ -1,5 +1,5 @@
-#ifndef LUA_GENERATION_H
-#define LUA_GENERATION_H
+#ifndef LUA_GENERATION_OLD_H
+#define LUA_GENERATION_OLD_H
 
 #include <format>
 #include <map>

@@ -11,6 +11,8 @@
 
 using NodeVariant = std::variant<std::monostate, std::string, p_Base, std::vector<p_Base>>;
 
+class Node;
+using p_Node = std::shared_ptr<Node>;
 
 class Node : public Base
 {
@@ -22,47 +24,12 @@ public:
 
     #pragma region node_methods
 
-    void setChildren(std::vector<NodeVariant> children)
-    {
-        m_Children = children;
-    }
-
-    std::vector<NodeVariant> getChildren()
-    {
-        return m_Children;
-    }
-
-    /*template <std::size_t Position, typename T>
-    void setChild(T child)
-    {
-        std::get<Position>(m_Children) = child;
-    }
-
-
-    auto getChild(std::size_t position)
-    {
-        return std::get<std::string>(m_Children[0]);
-    }*/
-
-    void setSize(std::size_t size)
-    {
-        m_Size = size;
-    }
-
-    std::size_t getSize()
-    {
-        return m_Size;
-    }
-
-    void setParent(const p_Base& parent)
-    {
-        this->m_Parent = parent;
-    }
-
-    Node* getParent()
-    {
-        return dynamic_cast<Node*>(m_Parent.get());
-    }
+    void setChildren(std::vector<NodeVariant> children);
+    void setSize(std::size_t size);
+    void setParent(const p_Base& parent);
+    std::vector<NodeVariant> getChildren();
+    std::size_t getSize() const;
+    Node* getParent();
 
     #pragma endregion
 
@@ -85,7 +52,7 @@ public:
     {
         std::string str;
         std::size_t mul = 4;
-        // str += std::string(depth * mul, ' ');
+
         str += "{\n";
         depth++;
         str += std::string(depth * mul, ' ');
