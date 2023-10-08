@@ -96,16 +96,20 @@ public:
         attributeList->setKind(Kind::AttributeList);
         attributeList->setSize(1);
         p_BaseArray list;
+        std::cout << "13" << std::endl;
 
         if (auto attribute = getAttributeName())
         {
+            std::cout << "14" << std::endl;
             Node::setParent(attribute, attributeList);
+            std::cout << "21" << std::endl;
             list.push_back(attribute);
         }
         else
         {
             return nullptr;
         }
+        std::cout << "15" << std::endl;
 
         while (expectPeek(","))
         {
@@ -643,6 +647,7 @@ public:
 
     p_Base getStatement()
     {
+        std::cout << "2" << std::endl;
         if (expectPeek(";"))
         {
             consume();
@@ -844,11 +849,14 @@ public:
             }
             else
             {
+                std::cout << "3" << std::endl;
                 auto localStatement = std::make_shared<Node>();
                 localStatement->setKind(Kind::LocalStatement);
                 localStatement->setSize(1);
+                std::cout << "11" << std::endl;
 
                 auto attributeNameList = getAttributeList();
+                std::cout << "12" << std::endl;
                 assert(attributeNameList, "expected attribute name list in local stat");
 
                 if (expectPeek("="))
@@ -871,7 +879,9 @@ public:
                 }
 
                 localStatement->setChildren({attributeNameList});
+                std::cout << "4" << std::endl;
                 Node::setParent(attributeNameList, localStatement);
+                std::cout << "5" << std::endl;
                 return localStatement;
             }
         }
@@ -1066,6 +1076,7 @@ public:
         chunk->setKind(Kind::Chunk);
         chunk->setSize(1);
 
+        std::cout << "1" << std::endl;
         if (auto block = getBlock()) {
             Node::setParent(block, chunk);
             chunk->setChildren({block});
@@ -1073,6 +1084,7 @@ public:
         else {
             chunk->setChildren({std::monostate{}});
         }
+        std::cout << "1 end" << std::endl;
         return chunk;
     }
 
@@ -1171,12 +1183,8 @@ public:
         auto ptr = getChunk();
         assert(ptr, "failed to parse");
 
-        {
-            std::ofstream file(path);
-            assert(file.is_open(), "Failed to open the file.");
-            file << ptr->toString(0);
-            file.close();
-        }
+        std::cout << (ptr == nullptr) << std::endl;
+
         // std::cout << ptr->toString(0) << std::endl;
         return ptr;
     }

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "Parser.h"
+#include "Generation.h"
 
 #define f_assert(condition, message)                        \
 do {                                                      \
@@ -21,30 +21,28 @@ do {                                                      \
 int main() {
 
 
-    std::string source;
+    std::string luaSource;
     {
         std::ifstream file("../tests/test_2.lua");
         f_assert(file.is_open(), "failed to open file");
 
         std::stringstream stream;
         stream << file.rdbuf();
-        source = stream.str();
+        luaSource = stream.str();
         file.close();
     }
-    //
-    // generator generator;
-    // std::string generated = generator.generate(m_Source);
-    //
-    // {
-    //     std::ofstream file("../tests/output.lua");
-    //     assert(file.is_open(), "Failed to open the file.");
-    //     file << generated;
-    //     file.close();
-    // }
-    // std::cout << generated;
 
+    // Generator g;
+    // std::string generated = g.generate(luaSource);
     Parser p;
-    p.parse(source);
+    std::string generated = p.parse(luaSource)->toString(0);
 
+    {
+        std::ofstream file("../tests/output.lua");
+        f_assert(file.is_open(), "Failed to open the file.");
+        file << generated;
+        file.close();
+    }
+    // std::cout << generated;
     return 0;
 }

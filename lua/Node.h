@@ -33,19 +33,24 @@ public:
 
     #pragma endregion
 
-
-    static void setParent(const p_Base& baseNode, const p_Base& parentNode) {
-        if (auto node = getNode(baseNode))
-        {
-            node->setParent(parentNode);
-        }
+    template <typename Type>
+    Type& getChild(const std::size_t& index) {
+        return std::get<Type>(m_Children[index]);
     }
 
-    static Node* getNode(const p_Base& baseNode) {
+
+    static void setParent(const p_Base& baseNode, const p_Base& parentNode) {
+        // if (auto node = getNode(baseNode))
+        // {
+        //     node->setParent(parentNode);
+        // }
+    }
+
+    static p_Node getNode(const p_Base& baseNode) {
         if (!baseNode) {
             return nullptr;
         }
-        return dynamic_cast<Node*>(baseNode.get());
+        return p_Node{dynamic_cast<Node*>(baseNode.get())};
     }
 
     std::string toString(std::size_t depth = 0) const override
