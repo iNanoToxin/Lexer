@@ -2,6 +2,7 @@
 #define LUA_GENERATION_H
 
 #include <string_view>
+#include <fmt/core.h>
 #include <Parser.h>
 
 #define NEW_LINE "\n"
@@ -57,7 +58,7 @@ public:
 
     template <typename... Args>
     std::string format(std::string_view fmtString, Args&&... args) {
-        return std::vformat(fmtString, std::make_format_args(args...));
+        return fmt::vformat(fmtString, fmt::make_format_args(args...));
     }
 
     static std::string space(const std::size_t& depth)
