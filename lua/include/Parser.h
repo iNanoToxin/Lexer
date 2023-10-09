@@ -189,7 +189,6 @@ public:
         {
             return nullptr;
         }
-        Node::setParent(root, functionName);
 
         while (expectPeek("."))
         {
@@ -202,7 +201,8 @@ public:
             memberExpression->setKind(Kind::Member);
             memberExpression->setSize(2);
             memberExpression->setChildren({root, name});
-            memberExpression->setParent(root);
+            Node::setParent(root, memberExpression);
+            Node::setParent(name, memberExpression);
             root = memberExpression;
         }
 
@@ -217,9 +217,12 @@ public:
             methodExpression->setKind(Kind::Method);
             methodExpression->setSize(2);
             methodExpression->setChildren({root, name});
-            methodExpression->setParent(root);
+            Node::setParent(root, methodExpression);
+            Node::setParent(name, methodExpression);
             root = methodExpression;
         }
+
+        Node::setParent(root, functionName);
 
         functionName->setChildren({root});
         return functionName;
@@ -459,37 +462,37 @@ public:
             {
                 consume();
 
-                auto indexExpression = std::make_shared<Node>();
-                indexExpression->setKind(Kind::Index);
-                indexExpression->setSize(2);
-
                 auto expression = getExpression();
                 assert(expression, "expected expression in var");
 
                 assert(expectPeek("]"), "expected ] after [ in var");
                 consume();
+
+                auto indexExpression = std::make_shared<Node>();
+                indexExpression->setKind(Kind::Index);
+                indexExpression->setSize(2);
+                indexExpression->setChildren({root, expression});
                 Node::setParent(root, indexExpression);
                 Node::setParent(expression, indexExpression);
-
-                indexExpression->setChildren({root, expression});
                 root = indexExpression;
+
                 isValidExpression = true;
             }
             else if (expectPeek("."))
             {
                 consume();
 
+                auto name = getName();
+                assert(name, "expected name in var");
+
                 auto memberExpression = std::make_shared<Node>();
                 memberExpression->setKind(Kind::Member);
                 memberExpression->setSize(2);
-
-                auto name = getName();
-                assert(name, "expected name in var");
+                memberExpression->setChildren({root, name});
                 Node::setParent(root, memberExpression);
                 Node::setParent(name, memberExpression);
-
-                memberExpression->setChildren({root, name});
                 root = memberExpression;
+
                 isValidExpression = true;
             }
             else if (expectPeek(":"))
@@ -567,16 +570,17 @@ public:
 
     p_Base getVariableList()
     {
-        auto variableList = std::make_shared<Node>();
-        variableList->setKind(Kind::VariableList);
-        variableList->setSize(1);
-        p_BaseArray list;
-
         auto variable = getVariable();
         if (!variable)
         {
             return nullptr;
         }
+
+        p_BaseArray list;
+        auto variableList = std::make_shared<Node>();
+        variableList->setKind(Kind::VariableList);
+        variableList->setSize(1);
+
         Node::setParent(variable, variableList);
         list.push_back(variable);
 

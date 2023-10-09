@@ -1,6 +1,7 @@
 #ifndef LUA_GENERATION_H
 #define LUA_GENERATION_H
 
+#include <string_view>
 #include <Parser.h>
 
 #define NEW_LINE "\n"
@@ -54,6 +55,11 @@ public:
         return merged_string;
     }
 
+    template <typename... Args>
+    std::string format(std::string_view fmtString, Args&&... args) {
+        return std::vformat(fmtString, std::make_format_args(args...));
+    }
+
     static std::string space(const std::size_t& depth)
     {
         return std::string(depth * 4, ' ');
@@ -66,74 +72,74 @@ public:
             return "";
         }
 
-        auto node = Node::getNode(base);
+        auto node = Node::get(base);
 
         switch (base->getKind())
         {
-            case Kind::TableConstructor:
-            {
-                if (auto child = node->getChild<p_Base>(0))
-                {
-                    return std::format(
-                        "{{{0}{1}{2}{3}}}",
-                        NEW_LINE,
-                        toString(child, depth + 1),
-                        NEW_LINE,
-                        space(depth)
-                    );
-                }
-                return "{}";
-            }
             case Kind::BinaryOperation:
             {
-                std::string operationString;
-
                 auto binaryOperator = node->getChild<std::string>(0);
                 auto lhs = node->getChild<p_Base>(1);
                 auto rhs = node->getChild<p_Base>(2);
 
+                std::string lhsFmt = "{0}";
+                std::string rhsFmt = "{0}";
+
                 if (lhs && lhs->getKind() == Kind::BinaryOperation)
                 {
-                    operationString += std::format(
-                        "({0})",
-                        toString(lhs, depth)
-                    );
+                    lhsFmt = "({0})";
                 }
-                else
-                {
-                    operationString += toString(lhs, depth);
-                }
-
-                operationString += " " + binaryOperator + " ";
-
                 if (rhs && rhs->getKind() == Kind::BinaryOperation)
                 {
-                    operationString += std::format(
-                        "({0})",
+                    rhsFmt = "({0})";
+                }
+
+                return format(
+                    "{0} {1} {2}",
+                    format(
+                        lhsFmt,
+                        toString(lhs, depth)
+                    ),
+                    binaryOperator,
+                    format(
+                        rhsFmt,
                         toString(rhs, depth)
-                    );
-                }
-                else
-                {
-                    operationString += toString(rhs, depth);
-                }
-                return operationString;
+                    )
+                );
             }
             case Kind::UnaryOperation:
             {
                 auto unaryOperator = node->getChild<std::string>(0);
                 auto expression = node->getChild<p_Base>(1);
 
-                return std::format(
-                    "{0}{1}{2}",
+                std::string fmt = "{0}{1}{2}";
+
+                if (expression->getKind() == Kind::BinaryOperation)
+                {
+                    fmt = "{0}{1}({2})";
+                }
+                return format(
+                    fmt,
                     unaryOperator,
                     unaryOperator == "not" ? " " : "",
                     toString(expression, depth)
                 );
             }
 
-            case Kind::Numeric:
             case Kind::Identifier:
+            {
+                // std::cout << "VARIABLE: " << node->getChild<std::string>(0) << std::endl;
+                // auto curr = node;
+                // for (int i = 0; curr != nullptr; i++) {
+                //     std::cout << i << ": " << getKindName(curr->getKind()) << std::endl;
+                //     curr = curr->getParent();
+                // }
+                //
+                // std::cout << node->getChildren().size() << std::endl;
+                //
+                // std::cout << std::endl;
+            }
+            case Kind::Numeric:
             case Kind::Boolean:
             case Kind::Varargs:
             case Kind::String:
@@ -142,11 +148,12 @@ public:
                 return node->getChild<std::string>(0);
             }
 
+
             case Kind::Attribute:
             {
                 auto name = node->getChild<p_Base>(0);
                 auto attribute = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "{0}<{1}>",
                     toString(name, depth),
                     toString(attribute, depth)
@@ -156,7 +163,7 @@ public:
             {
                 auto root = node->getChild<p_Base>(0);
                 auto index = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "{0}.{1}",
                     toString(root, depth),
                     toString(index, depth)
@@ -166,7 +173,7 @@ public:
             {
                 auto root = node->getChild<p_Base>(0);
                 auto index = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "{0}:{1}",
                     toString(root, depth),
                     toString(index, depth)
@@ -176,7 +183,7 @@ public:
             {
                 auto root = node->getChild<p_Base>(0);
                 auto index = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "{0}[{1}]",
                     toString(root, depth),
                     toString(index, depth)
@@ -187,7 +194,7 @@ public:
             {
                 auto index = node->getChild<p_Base>(0);
                 auto value = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "{0}[{1}] = {2}",
                     space(depth),
                     toString(index, depth),
@@ -198,7 +205,7 @@ public:
             {
                 auto index = node->getChild<p_Base>(0);
                 auto value = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "{0}{1} = {2}",
                     space(depth),
                     toString(index, depth),
@@ -208,15 +215,29 @@ public:
             case Kind::TableValue:
             {
                 auto value = node->getChild<p_Base>(0);
-                return std::format(
+                return format(
                     "{0}{1}",
                     space(depth),
                     toString(value, depth)
                 );
             }
+            case Kind::TableConstructor:
+            {
+                if (auto child = node->getChild<p_Base>(0))
+                {
+                    return format(
+                        "{{{0}{1}{2}{3}}}",
+                        NEW_LINE,
+                        toString(child, depth + 1),
+                        NEW_LINE,
+                        space(depth)
+                    );
+                }
+                return "{}";
+            }
 
-            case Kind::AttributeList:
             case Kind::ExpressionList:
+            case Kind::AttributeList:
             case Kind::ParameterList:
             case Kind::VariableList:
             case Kind::NameList:
@@ -228,6 +249,14 @@ public:
             {
                 auto list = node->getChild<p_BaseArray>(0);
                 return concat(list, ",\n", depth);
+            }
+            case Kind::ArgumentList:
+            {
+                auto arguments = node->getChild<p_Base>(0);
+                return format(
+                    "({0})",
+                    toString(arguments, depth)
+                );
             }
 
             case Kind::Block:
@@ -255,7 +284,7 @@ public:
             }
             case Kind::Chunk: {
                 auto block = node->getChild<p_Base>(0);
-                return block ? toString(block) : "";
+                return toString(block);
             }
 
             case Kind::FunctionCall:
@@ -268,7 +297,7 @@ public:
             {
                 auto name = node->getChild<p_Base>(0);
                 auto body = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "function{0}{1}{2}",
                     !name ? "" : " ",
                     toString(name, depth),
@@ -284,7 +313,7 @@ public:
             {
                 auto parameters = node->getChild<p_Base>(0);
                 auto block = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "({0}){1}{2}{3}end",
                     toString(parameters, depth),
                     NEW_LINE,
@@ -295,17 +324,9 @@ public:
             case Kind::Label:
             {
                 auto name = node->getChild<p_Base>(0);
-                return std::format(
+                return format(
                     "::{0}::",
                     toString(name, depth)
-                );
-            }
-            case Kind::ArgumentList:
-            {
-                auto arguments = node->getChild<p_Base>(0);
-                return std::format(
-                    "({0})",
-                    toString(arguments, depth)
                 );
             }
             case Kind::Semicolon:
@@ -321,10 +342,11 @@ public:
                     auto expressions = node->getChild<p_Base>(1);
                     auto block = node->getChild<p_Base>(2);
 
-                    return std::format(
-                        "for {0} in {1} do\n{2}{3}end",
+                    return format(
+                        "for {0} in {1} do{2}{3}{4}end",
                         toString(names, depth),
                         toString(expressions, depth),
+                        NEW_LINE,
                         toString(block, depth + 1),
                         space(depth)
                     );
@@ -337,24 +359,18 @@ public:
                     auto step = node->getChild<p_Base>(3);
                     auto block = node->getChild<p_Base>(4);
 
-                    if (step)
-                    {
-                        return std::format(
-                            "for {0} = {1}, {2}, {3} do{4}{5}{6}end",
-                            toString(name, 0),
-                            toString(init, depth),
-                            toString(goal, depth),
-                            toString(step, depth),
-                            NEW_LINE,
-                            toString(block, depth + 1),
-                            space(depth)
-                        );
+                    std::string fmt = "for {0} = {1}, {2}, {3} do{4}{5}{6}end";
+
+                    if (!step) {
+                        fmt = "for {0} = {1}, {2} do{4}{5}{6}end";
                     }
-                    return std::format(
-                        "for {0} = {1}, {2} do{3}{4}{5}end",
+
+                    return format(
+                        fmt,
                         toString(name, 0),
                         toString(init, depth),
                         toString(goal, depth),
+                        toString(step, depth),
                         NEW_LINE,
                         toString(block, depth + 1),
                         space(depth)
@@ -364,18 +380,18 @@ public:
             case Kind::ReturnStatement:
             {
                 auto expressions = node->getChild<p_Base>(0);
-                return std::format(
+                return format(
                     "return {0}",
                     toString(expressions, depth)
                 );
             }
             case Kind::RepeatStatement:
             {
-                auto conditionalBlock = Node::getNode(node->getChild<p_Base>(0));
+                auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
                 auto condition = conditionalBlock->getChild<p_Base>(0);
                 auto block = conditionalBlock->getChild<p_Base>(1);
 
-                return std::format(
+                return format(
                     "repeat{0}{1}{2}until {3}",
                     NEW_LINE,
                     toString(block, depth + 1),
@@ -385,13 +401,14 @@ public:
             }
             case Kind::WhileStatement:
             {
-                auto conditionalBlock = Node::getNode(node->getChild<p_Base>(0));
+                auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
                 auto condition = conditionalBlock->getChild<p_Base>(0);
                 auto block = conditionalBlock->getChild<p_Base>(1);
 
-                return std::format(
-                    "while {0} do\n{1}{2}end",
+                return format(
+                    "while {0} do{1}{2}{3}end",
                     toString(condition, depth),
+                    NEW_LINE,
                     toString(block, depth + 1),
                     space(depth)
                 );
@@ -403,46 +420,35 @@ public:
                 std::string ifString;
                 for (int i = 0; i < statements.size(); i++)
                 {
-                    auto conditionalBlock = Node::getNode(statements[i]);
+                    auto conditionalBlock = Node::get(statements[i]);
                     auto condition = conditionalBlock->getChild<p_Base>(0);
                     auto block = conditionalBlock->getChild<p_Base>(1);
 
-                    if (i == 0) {
-                        ifString += std::format(
-                            "if {0} then{1}{2}",
-                            toString(condition, depth),
-                            NEW_LINE,
-                            toString(block, depth + 1)
-                        );
+                    std::string fmt = "if {1} then{2}{3}";
+
+                    if (!condition) {
+                        fmt = "{0}else{2}{3}";
                     }
-                    else if (condition)
-                    {
-                        ifString += std::format(
-                            "{0}elseif {1} then{2}{3}",
-                            space(depth),
-                            toString(condition, depth),
-                            NEW_LINE,
-                            toString(block, depth + 1)
-                        );
+                    else if (i > 0) {
+                        fmt = "{0}elseif {1} then{2}{3}";
                     }
-                    else
-                    {
-                        ifString += std::format(
-                            "{0}else{1}{2}",
-                            space(depth),
-                            NEW_LINE,
-                            toString(block, depth + 1)
-                        );
-                    }
+
+                    ifString += format(
+                        fmt,
+                        space(depth),
+                        toString(condition, depth),
+                        NEW_LINE,
+                        toString(block, depth + 1)
+                    );
                 }
 
-                ifString += std::format("{0}end", space(depth));
+                ifString += format("{0}end", space(depth));
                 return ifString;
             }
             case Kind::DoStatement:
             {
                 auto block = node->getChild<p_Base>(0);
-                return std::format(
+                return format(
                     "do{0}{1}{2}end",
                     NEW_LINE,
                     toString(block, depth + 1),
@@ -452,7 +458,7 @@ public:
             case Kind::GotoStatement:
             {
                 auto name = node->getChild<p_Base>(0);
-                return std::format(
+                return format(
                     "goto {0}",
                     toString(name, depth)
                 );
@@ -464,7 +470,7 @@ public:
             case Kind::LocalStatement:
             {
                 auto statement = node->getChild<p_Base>(0);
-                return std::format(
+                return format(
                     "local {0}",
                     toString(statement, depth)
                 );
@@ -473,7 +479,7 @@ public:
             {
                 auto lhs = node->getChild<p_Base>(0);
                 auto rhs = node->getChild<p_Base>(1);
-                return std::format(
+                return format(
                     "{0} = {1}",
                     toString(lhs, depth),
                     toString(rhs, depth)

@@ -1,45 +1,21 @@
-module("resty.sha256", package.seeall)
-_VERSION = '0.06'
-local mt = {
-    __index = resty.sha256
-}
-ffi.cdef([[
-typedef struct SHA256state_st
-        {
-        SHA_LONG h[8];
-        SHA_LONG Nl,Nh;
-        SHA_LONG data[SHA_LBLOCK];
-        unsigned int num,md_len;
-        } SHA256_CTX;
-
-int SHA256_Init(SHA256_CTX *c);
-int SHA256_Update(SHA256_CTX *c, const void *data, size_t len);
-int SHA256_Final(unsigned char *md, SHA256_CTX *c);
-]])
-local digest_len = 32
-local buf = ffi_new("char[?]", digest_len)
-local ctx_ptr_type = ffi.typeof("SHA256_CTX[1]")
-function new(self)
-    local ctx = ffi_new(ctx_ptr_type)
-    if C.SHA256_Init(ctx) == 0 then
-        return nil
+Stack = {}
+function Stack:new()
+    local o = {
+        stack = {}
+    }
+    self.__index = self
+    setmetatable(o, self)
+    return o
+end
+function Stack:push(x)
+    self.stack[#self.stack + 1] = x
+end
+function Stack:top()
+    return self.stack[#self.stack]
+end
+function Stack:pop()
+    if #self.stack == 0 then
+        error("Nothing on the stack")
     end
-    return setmetatable({
-        _ctx = ctx
-    }, mt)
-end
-function update(self, s)
-    return C.SHA256_Update(self._ctx, s, #s) == 1
-end
-function final(self)
-    if C.SHA256_Final(buf, self._ctx) == 1 then
-        return ffi_str(buf, digest_len)
-    end
-    return nil
-end
-function reset(self)
-    return C.SHA256_Init(self._ctx) == 1
-end
-getmetatable(resty.sha256).__newindex = function(table, key, val)
-    error((('attempt to write to undeclared variable "' .. key) .. '": ') .. debug.traceback())
+    self.stack[#self.stack] = nil
 end
