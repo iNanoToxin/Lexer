@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include "Kind.h"
-#include "Node.h"
+#include <Kind.h>
+// #include <Node.h>
 
 class Base;
 using p_Base = std::shared_ptr<Base>;
@@ -25,11 +25,11 @@ public:
         m_Kind = kind;
     }
 
-    Kind getKind() {
+    [[nodiscard]] Kind getKind() const {
         return m_Kind;
     }
 
-    virtual std::string toString(std::size_t depth = 0) const {
+    [[nodiscard]] virtual std::string toString(std::size_t depth) const {
         return "";
     }
 };

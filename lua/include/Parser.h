@@ -7,9 +7,9 @@
 #include <tuple>
 #include <vector>
 #include <fstream>
-#include "Tokenizer.h"
+#include <Tokenizer.h>
 
-#include "Node.h"
+#include <Node.h>
 
 
 bool isBinaryOperator(const Token& currentToken);
@@ -81,8 +81,8 @@ public:
             assert(attributeType, "expected attribute type");
             assert(expectPeek(">"), "expected > after < in attrib");
             consume();
-            Node::setParent(name, (p_Base&) attribute);
-            Node::setParent(attributeType, (p_Base&) attribute);
+            Node::setParent(name, attribute);
+            Node::setParent(attributeType, attribute);
 
             attribute->setChildren({name, attributeType});
             return attribute;
@@ -99,7 +99,7 @@ public:
 
         if (auto attribute = getAttributeName())
         {
-            Node::setParent(attribute, (p_Base&) attributeList);
+            Node::setParent(attribute, attributeList);
             list.push_back(attribute);
         }
         else
@@ -114,7 +114,7 @@ public:
             auto attribute = getAttributeName();
             assert(attribute, "expected attribute variable");
 
-            Node::setParent(attribute, (p_Base&) attributeList);
+            Node::setParent(attribute, attributeList);
             list.push_back(attribute);
         }
 
@@ -131,7 +131,7 @@ public:
 
         if (auto expression = getExpression())
         {
-            Node::setParent(expression, (p_Base&) expressionList);
+            Node::setParent(expression, expressionList);
             list.push_back(std::move(expression));
         }
         else
@@ -146,7 +146,7 @@ public:
             auto expression = getExpression();
             assert(expression, "expression expected");
 
-            Node::setParent(expression, (p_Base&) expressionList);
+            Node::setParent(expression, expressionList);
             list.push_back(std::move(expression));
         }
 
@@ -167,7 +167,7 @@ public:
         returnStatement->setSize(1);
 
         auto expressionList = getExpressionList();
-        Node::setParent(expressionList, (p_Base&) returnStatement);
+        Node::setParent(expressionList, returnStatement);
 
         if (expectPeek(";"))
         {
@@ -189,7 +189,6 @@ public:
         {
             return nullptr;
         }
-        Node::setParent(root, (p_Base&) functionName);
 
         while (expectPeek("."))
         {
@@ -202,7 +201,8 @@ public:
             memberExpression->setKind(Kind::Member);
             memberExpression->setSize(2);
             memberExpression->setChildren({root, name});
-            memberExpression->setParent(root);
+            Node::setParent(root, memberExpression);
+            Node::setParent(name, memberExpression);
             root = memberExpression;
         }
 
@@ -217,9 +217,12 @@ public:
             methodExpression->setKind(Kind::Method);
             methodExpression->setSize(2);
             methodExpression->setChildren({root, name});
-            methodExpression->setParent(root);
+            Node::setParent(root, methodExpression);
+            Node::setParent(name, methodExpression);
             root = methodExpression;
         }
+
+        Node::setParent(root, functionName);
 
         functionName->setChildren({root});
         return functionName;
@@ -233,13 +236,13 @@ public:
 
         if (auto name = getName())
         {
-            Node::setParent(name, (p_Base&) nameList);
+            Node::setParent(name, nameList);
             list.push_back(name);
         }
         else if (isParameterList && expectPeek("..."))
         {
             auto varargs = getPrimaryExpression();
-            Node::setParent(varargs, (p_Base&) nameList);
+            Node::setParent(varargs, nameList);
             list.push_back(varargs);
 
             nameList->setKind(Kind::ParameterList);
@@ -258,14 +261,14 @@ public:
             if (isParameterList && expectPeek("..."))
             {
                 auto varargs = getPrimaryExpression();
-                Node::setParent(varargs, (p_Base&) nameList);
+                Node::setParent(varargs, nameList);
                 list.push_back(varargs);
                 break;
             }
 
             auto name = getName();
             assert(name, "expected name");
-            Node::setParent(name, (p_Base&) nameList);
+            Node::setParent(name, nameList);
             list.push_back(name);
         }
 
@@ -291,7 +294,7 @@ public:
 
             auto expression = getExpression();
             assert(expression, "expected m_Index in field");
-            Node::setParent(expression, (p_Base&) tableIndexValueExpression);
+            Node::setParent(expression, tableIndexValueExpression);
 
             assert(expectPeek("]"), "expected ] after [ in field");
             consume();
@@ -300,7 +303,7 @@ public:
 
             auto value = getExpression();
             assert(value, "expected value in field");
-            Node::setParent(value, (p_Base&) tableIndexValueExpression);
+            Node::setParent(value, tableIndexValueExpression);
 
 
             tableIndexValueExpression->setChildren({expression, value});
@@ -313,7 +316,7 @@ public:
             tableNameValueExpression->setSize(2);
 
             auto name = getName();
-            Node::setParent(name, (p_Base&) tableNameValueExpression);
+            Node::setParent(name, tableNameValueExpression);
 
 
             assert(expectPeek("="), "expected = after name in field");
@@ -321,7 +324,7 @@ public:
 
             auto value = getExpression();
             assert(value, "expected value in field");
-            Node::setParent(value, (p_Base&) tableNameValueExpression);
+            Node::setParent(value, tableNameValueExpression);
 
             tableNameValueExpression->setChildren({name, value});
             return tableNameValueExpression;
@@ -347,7 +350,7 @@ public:
 
         while (auto field = getField())
         {
-            Node::setParent(field, (p_Base&) fieldList);
+            Node::setParent(field, fieldList);
             list.push_back(field);
 
             if (expectPeek(",") || expectPeek(";"))
@@ -415,7 +418,7 @@ public:
         tableConstructorExpression->setSize(1);
 
         auto fieldList = getFieldList();
-        Node::setParent(fieldList, (p_Base&) tableConstructorExpression);
+        Node::setParent(fieldList, tableConstructorExpression);
 
         assert(expectPeek("}"), "expected } after { in table constructor");
         consume();
@@ -459,37 +462,37 @@ public:
             {
                 consume();
 
-                auto indexExpression = std::make_shared<Node>();
-                indexExpression->setKind(Kind::Index);
-                indexExpression->setSize(2);
-
                 auto expression = getExpression();
                 assert(expression, "expected expression in var");
 
                 assert(expectPeek("]"), "expected ] after [ in var");
                 consume();
-                Node::setParent(root, (p_Base&) indexExpression);
-                Node::setParent(expression, (p_Base&) indexExpression);
 
+                auto indexExpression = std::make_shared<Node>();
+                indexExpression->setKind(Kind::Index);
+                indexExpression->setSize(2);
                 indexExpression->setChildren({root, expression});
+                Node::setParent(root, indexExpression);
+                Node::setParent(expression, indexExpression);
                 root = indexExpression;
+
                 isValidExpression = true;
             }
             else if (expectPeek("."))
             {
                 consume();
 
+                auto name = getName();
+                assert(name, "expected name in var");
+
                 auto memberExpression = std::make_shared<Node>();
                 memberExpression->setKind(Kind::Member);
                 memberExpression->setSize(2);
-
-                auto name = getName();
-                assert(name, "expected name in var");
-                Node::setParent(root, (p_Base&) memberExpression);
-                Node::setParent(name, (p_Base&) memberExpression);
-
                 memberExpression->setChildren({root, name});
+                Node::setParent(root, memberExpression);
+                Node::setParent(name, memberExpression);
                 root = memberExpression;
+
                 isValidExpression = true;
             }
             else if (expectPeek(":"))
@@ -503,8 +506,8 @@ public:
                 methodExpression->setKind(Kind::Method);
                 methodExpression->setSize(2);
                 methodExpression->setChildren({root, name});
-                Node::setParent(root, (p_Base&) methodExpression);
-                Node::setParent(name, (p_Base&) methodExpression);
+                Node::setParent(root, methodExpression);
+                Node::setParent(name, methodExpression);
                 root = methodExpression;
 
                 auto argumentList = getArgumentList();
@@ -514,8 +517,8 @@ public:
                 functionCall->setKind(Kind::FunctionCall);
                 functionCall->setSize(2);
                 functionCall->setChildren({root, argumentList});
-                Node::setParent(root, (p_Base&) functionCall);
-                Node::setParent(argumentList, (p_Base&) functionCall);
+                Node::setParent(root, functionCall);
+                Node::setParent(argumentList, functionCall);
                 root = functionCall;
 
                 isValidExpression = false;
@@ -526,8 +529,8 @@ public:
                 functionCall->setKind(Kind::FunctionCall);
                 functionCall->setSize(2);
                 functionCall->setChildren({root, args});
-                Node::setParent(root, (p_Base&) functionCall);
-                Node::setParent(args, (p_Base&) functionCall);
+                Node::setParent(root, functionCall);
+                Node::setParent(args, functionCall);
                 root = functionCall;
 
 
@@ -567,17 +570,18 @@ public:
 
     p_Base getVariableList()
     {
-        auto variableList = std::make_shared<Node>();
-        variableList->setKind(Kind::VariableList);
-        variableList->setSize(1);
-        p_BaseArray list;
-
         auto variable = getVariable();
         if (!variable)
         {
             return nullptr;
         }
-        Node::setParent(variable, (p_Base&) variableList);
+
+        p_BaseArray list;
+        auto variableList = std::make_shared<Node>();
+        variableList->setKind(Kind::VariableList);
+        variableList->setSize(1);
+
+        Node::setParent(variable, variableList);
         list.push_back(variable);
 
         while (expectPeek(","))
@@ -587,7 +591,7 @@ public:
             variable = getVariable();
             assert(variable, "expression expected in variable list");
 
-            Node::setParent(variable, (p_Base&) variableList);
+            Node::setParent(variable, variableList);
             list.push_back(variable);
         }
 
@@ -617,8 +621,8 @@ public:
         functionBody->setKind(Kind::FunctionBody);
         functionBody->setSize(2);
         functionBody->setChildren({parameterList, block});
-        Node::setParent(parameterList, (p_Base&) functionBody);
-        Node::setParent(block, (p_Base&) functionBody);
+        Node::setParent(parameterList, functionBody);
+        Node::setParent(block, functionBody);
         return functionBody;
     }
 
@@ -636,8 +640,8 @@ public:
         auto functionDefinition = std::make_shared<Node>();
         functionDefinition->setKind(Kind::FunctionDefinition);
         functionDefinition->setSize(2);
-        functionDefinition->setChildren({std::monostate{}, functionBody});
-        Node::setParent(functionBody, (p_Base&) functionDefinition);
+        functionDefinition->setChildren({p_Base{nullptr}, functionBody});
+        Node::setParent(functionBody, functionDefinition);
         return functionDefinition;
     }
 
@@ -691,8 +695,8 @@ public:
             conditionalBlock->setSize(2);
             conditionalBlock->setChildren({expression, block});
             conditionalBlock->setParent(ifStatement);
-            Node::setParent(expression, (p_Base&) conditionalBlock);
-            Node::setParent(block, (p_Base&) conditionalBlock);
+            Node::setParent(expression, conditionalBlock);
+            Node::setParent(block, conditionalBlock);
             list.push_back(conditionalBlock);
 
             while (expectPeek("elseif"))
@@ -712,8 +716,8 @@ public:
                 conditionalBlock->setSize(2);
                 conditionalBlock->setChildren({expression, block});
                 conditionalBlock->setParent(ifStatement);
-                Node::setParent(expression, (p_Base&) conditionalBlock);
-                Node::setParent(block, (p_Base&) conditionalBlock);
+                Node::setParent(expression, conditionalBlock);
+                Node::setParent(block, conditionalBlock);
                 list.push_back(conditionalBlock);
             }
 
@@ -726,10 +730,10 @@ public:
                 conditionalBlock = std::make_shared<Node>();
                 conditionalBlock->setKind(Kind::ConditionalBlock);
                 conditionalBlock->setSize(2);
-                conditionalBlock->setChildren({std::monostate{}, block});
+                conditionalBlock->setChildren({p_Base{nullptr}, block});
                 conditionalBlock->setParent(ifStatement);
-                Node::setParent(block, (p_Base&) conditionalBlock);
-                Node::setParent(conditionalBlock, (p_Base&) ifStatement);
+                Node::setParent(block, conditionalBlock);
+                Node::setParent(conditionalBlock, ifStatement);
                 list.push_back(conditionalBlock);
             }
 
@@ -763,8 +767,8 @@ public:
             conditionalBlock->setSize(2);
             conditionalBlock->setChildren({expression, block});
             conditionalBlock->setParent(whileStatement);
-            Node::setParent(expression, (p_Base&) conditionalBlock);
-            Node::setParent(block, (p_Base&) conditionalBlock);
+            Node::setParent(expression, conditionalBlock);
+            Node::setParent(block, conditionalBlock);
 
 
             whileStatement->setChildren({conditionalBlock});
@@ -791,8 +795,8 @@ public:
             conditionalBlock->setSize(2);
             conditionalBlock->setChildren({expression, block});
             conditionalBlock->setParent(repeatStatement);
-            Node::setParent(expression, (p_Base&) conditionalBlock);
-            Node::setParent(block, (p_Base&) conditionalBlock);
+            Node::setParent(expression, conditionalBlock);
+            Node::setParent(block, conditionalBlock);
 
             repeatStatement->setChildren({conditionalBlock});
             return repeatStatement;
@@ -810,7 +814,7 @@ public:
             doStatement->setKind(Kind::DoStatement);
             doStatement->setSize(1);
             doStatement->setChildren({block});
-            Node::setParent(block, (p_Base&) doStatement);
+            Node::setParent(block, doStatement);
             return doStatement;
         }
         else if (expectPeek("local"))
@@ -836,8 +840,8 @@ public:
                 functionDefinition->setSize(2);
                 functionDefinition->setChildren({name, body});
                 functionDefinition->setParent(localStatement);
-                Node::setParent(name, (p_Base&) functionDefinition);
-                Node::setParent(body, (p_Base&) functionDefinition);
+                Node::setParent(name, functionDefinition);
+                Node::setParent(body, functionDefinition);
 
                 localStatement->setChildren({functionDefinition});
                 return localStatement;
@@ -863,15 +867,15 @@ public:
                     assignmentStatement->setSize(2);
                     assignmentStatement->setChildren({attributeNameList, expressionList});
                     assignmentStatement->setParent(localStatement);
-                    Node::setParent(attributeNameList, (p_Base&) assignmentStatement);
-                    Node::setParent(expressionList, (p_Base&) assignmentStatement);
+                    Node::setParent(attributeNameList, assignmentStatement);
+                    Node::setParent(expressionList, assignmentStatement);
 
                     localStatement->setChildren({assignmentStatement});
                     return localStatement;
                 }
 
                 localStatement->setChildren({attributeNameList});
-                Node::setParent(attributeNameList, (p_Base&) localStatement);
+                Node::setParent(attributeNameList, localStatement);
                 return localStatement;
             }
         }
@@ -889,8 +893,8 @@ public:
             functionDefinition->setKind(Kind::FunctionDefinition);
             functionDefinition->setSize(2);
             functionDefinition->setChildren({name, body});
-            Node::setParent(name, (p_Base&) functionDefinition);
-            Node::setParent(body, (p_Base&) functionDefinition);
+            Node::setParent(name, functionDefinition);
+            Node::setParent(body, functionDefinition);
             return functionDefinition;
         }
         else if (expectPeek("for"))
@@ -936,16 +940,16 @@ public:
                 forStatement->setKind(Kind::ForStatement);
                 forStatement->setSize(5);
                 if (step == nullptr) {
-                    forStatement->setChildren({name, init, goal, std::monostate{}, block});
+                    forStatement->setChildren({name, init, goal, p_Base{nullptr}, block});
                 }
                 else {
                     forStatement->setChildren({name, init, goal, step, block});
                 }
-                Node::setParent(name, (p_Base&) forStatement);
-                Node::setParent(init, (p_Base&) forStatement);
-                Node::setParent(goal, (p_Base&) forStatement);
-                Node::setParent(step, (p_Base&) forStatement);
-                Node::setParent(block, (p_Base&) forStatement);
+                Node::setParent(name, forStatement);
+                Node::setParent(init, forStatement);
+                Node::setParent(goal, forStatement);
+                Node::setParent(step, forStatement);
+                Node::setParent(block, forStatement);
                 return forStatement;
             }
             else
@@ -971,9 +975,9 @@ public:
                 forStatement->setKind(Kind::ForStatement);
                 forStatement->setSize(3);
                 forStatement->setChildren({nameList, expressionList, block});
-                Node::setParent(nameList, (p_Base&) forStatement);
-                Node::setParent(expressionList, (p_Base&) forStatement);
-                Node::setParent(block, (p_Base&) forStatement);
+                Node::setParent(nameList, forStatement);
+                Node::setParent(expressionList, forStatement);
+                Node::setParent(block, forStatement);
                 return forStatement;
             }
         }
@@ -988,7 +992,7 @@ public:
             gotoStatement->setKind(Kind::GotoStatement);
             gotoStatement->setSize(1);
             gotoStatement->setChildren({name});
-            Node::setParent(name, (p_Base&) gotoStatement);
+            Node::setParent(name, gotoStatement);
             return gotoStatement;
         }
         else if (expectPeek("::"))
@@ -1005,7 +1009,7 @@ public:
             label->setKind(Kind::Label);
             label->setSize(1);
             label->setChildren({name});
-            Node::setParent(name, (p_Base&) label);
+            Node::setParent(name, label);
             return label;
         }
 
@@ -1021,8 +1025,8 @@ public:
             assignmentStatement->setKind(Kind::AssignmentStatement);
             assignmentStatement->setSize(2);
             assignmentStatement->setChildren({variableList, expressionList});
-            Node::setParent(variableList, (p_Base&) assignmentStatement);
-            Node::setParent(expressionList, (p_Base&) assignmentStatement);
+            Node::setParent(variableList, assignmentStatement);
+            Node::setParent(expressionList, assignmentStatement);
             return assignmentStatement;
         }
         else if (auto function_call = getFunctionCall())
@@ -1042,13 +1046,13 @@ public:
 
         while (auto stat = getStatement())
         {
-            Node::setParent(stat, (p_Base&) block);
+            Node::setParent(stat, block);
             list.push_back(stat);
         }
 
         if (auto stat = getReturnStatement())
         {
-            Node::setParent(stat, (p_Base&) block);
+            Node::setParent(stat, block);
             list.push_back(stat);
         }
 
@@ -1067,11 +1071,11 @@ public:
         chunk->setSize(1);
 
         if (auto block = getBlock()) {
-            Node::setParent(block, (p_Base&) chunk);
+            Node::setParent(block, chunk);
             chunk->setChildren({block});
         }
         else {
-            chunk->setChildren({std::monostate{}});
+            chunk->setChildren({p_Base{nullptr}});
         }
         return chunk;
     }
@@ -1408,8 +1412,8 @@ public:
                 binaryOperation->setKind(Kind::BinaryOperation);
                 binaryOperation->setSize(3);
                 binaryOperation->setChildren({currentToken.literal, lhs, rhs});
-                Node::setParent(lhs, (p_Base&) binaryOperation);
-                Node::setParent(rhs, (p_Base&) binaryOperation);
+                Node::setParent(lhs, binaryOperation);
+                Node::setParent(rhs, binaryOperation);
                 lhs = binaryOperation;
             }
         }
