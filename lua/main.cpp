@@ -5,6 +5,7 @@
 #include <string>
 #include <Parser.h>
 #include <Generation.h>
+#include <fmt/core.h>
 
 #define f_assert(condition, message)                        \
 do {                                                      \

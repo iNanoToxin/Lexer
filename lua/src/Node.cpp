@@ -1,6 +1,5 @@
 #include "Node.h"
 
-#include <utility>
 
 void Node::setChildren(v_Variant children)
 {
@@ -60,7 +59,7 @@ std::string Node::toString(std::size_t depth) const
             auto value = std::get<std::string>(m_Children[i]);
 
             if (m_Kind == Kind::String || m_Kind == Kind::Numeric) {
-                str += std::format(
+                str += fmt::format(
                     "{0}[{1}] = {2}\n",
                     std::string(depth * mul, ' '),
                     std::to_string(i),
@@ -68,7 +67,7 @@ std::string Node::toString(std::size_t depth) const
                 );
             }
             else {
-                str += std::format(
+                str += fmt::format(
                     "{0}[{1}] = '{2}'\n",
                     std::string(depth * mul, ' '),
                     std::to_string(i),
@@ -80,14 +79,14 @@ std::string Node::toString(std::size_t depth) const
             auto value = std::get<p_Base>(m_Children[i]);
 
             if (!value) {
-                str += std::format(
+                str += fmt::format(
                     "{0}[{1}] = nullptr\n",
                     std::string(depth * mul, ' '),
                     std::to_string(i)
                 );
             }
             else if (auto node = get(value)) {
-                str += std::format(
+                str += fmt::format(
                     "{0}[{1}] = {2}\n",
                     std::string(depth * mul, ' '),
                     std::to_string(i),
@@ -100,7 +99,7 @@ std::string Node::toString(std::size_t depth) const
 
             for (int j = 0; j < array.size(); j++) {
                 if (auto node = get(array[j])) {
-                    str += std::format(
+                    str += fmt::format(
                         "{0}[{1}] = {2}\n",
                         std::string(depth * mul, ' '),
                         std::to_string(j),
