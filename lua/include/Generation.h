@@ -32,6 +32,8 @@ public:
         Parser parser;
         auto chunk = parser.parse(source);
 
+        getUsages(chunk);
+
         auto generatedString = toString(chunk, 0);
 
         if (!generatedString.empty() && generatedString.back() == '\n')
@@ -70,9 +72,10 @@ public:
     }
 
 
-
-    bool canIgetVariable(const p_Node& node) {
-        if (auto parent = node->getParent()) {
+    static bool isUsedLocalVariable(const p_Node& node)
+    {
+        if (auto parent = node->getParent())
+        {
             switch (parent->getKind())
             {
                 case Kind::Member:
@@ -81,7 +84,9 @@ public:
                     auto lhsChild = parent->getChild<p_Base>(0);
                     auto rhsChild = parent->getChild<p_Base>(1);
 
-                    if (lhsChild->getKind() != Kind::Identifier || rhsChild->getKind() != Kind::Identifier || Node::get(lhsChild) != node)
+                    if (lhsChild->getKind() != Kind::Identifier || rhsChild->getKind() != Kind::Identifier || Node::get(
+                        lhsChild
+                    ) != node)
                     {
                         break;
                     }
@@ -95,7 +100,36 @@ public:
         return false;
     }
 
+    static bool isLocalVariable(const p_Node& node)
+    {
+        if (auto parent = node->getParent())
+        {
+            switch (parent->getKind())
+            {
+                case Kind::Attribute:
+                {
+                    if (parent->getChild<p_Base>(0) != node)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                case Kind::NameList:
+                case Kind::ParameterList:
+                case Kind::AttributeList:
+                case Kind::VariableList:
+                case Kind::FunctionDefinition:
+                {
+                    return true;
+                }
 
+                default:
+                {
+                    return false;
+                }
+            }
+        }
+    }
 
     std::string toString(const p_Base& base, std::size_t depth = 0)
     {
@@ -159,116 +193,6 @@ public:
             }
 
             case Kind::Identifier:
-            {
-                /*std::cout << "VARIABLE: " << node->getChild<std::string>(0) << std::endl;
-                auto curr = node;
-                for (int i = 0; curr != nullptr; i++) {
-                    std::cout << i << ": " << getKindName(curr->getKind()) << std::endl;
-                    curr = curr->getParent();
-                }
-
-                std::cout << node->getChildren().size() << std::endl;
-
-                std::cout << std::endl;*/
-
-                auto parent1 = node->getParent(0);
-                auto parent2 = node->getParent(1);
-                auto parent3 = node->getParent(2);
-
-                // if (parent1 && (parent1->getKind() == Kind::VariableList || parent1->getKind() == Kind::AttributeList)) {
-                //     std::cout << node->getChild<std::string>(0) << " : " << getKindName(parent1->getKind()) << '\n';
-                //     std::cout << '\n';
-                //     return "__ASSIGNED__";
-                // }
-
-                /*if (parent1)
-                {
-                    switch (parent1->getKind())
-                    {
-                        case Kind::NameList:
-                        {
-                            if (parent2 && parent2->getKind() == Kind::ForStatement)
-                            {
-                                return "__FVAR__";
-                            }
-                            break;
-                        }
-                        case Kind::FunctionCall:
-                        {
-                            return "__CALL__";
-                        }
-                        case Kind::ParameterList:
-                        {
-                            return "__PARAM__";
-                        }
-                        case Kind::VariableList:
-                        {
-                            return "__GVAR__";
-                        }
-                        case Kind::AttributeList:
-                        {
-                            return "__LVAR__";
-                        }
-                        case Kind::Attribute:
-                        {
-                            if (parent1->getChild<p_Base>(0) == node)
-                            {
-                                return "__LVAR__";
-                            }
-                            break;
-                        }
-                        case Kind::FunctionName:
-                        {
-                            return "__FUNC__";
-                        }
-
-                        case Kind::Member:
-                        case Kind::Method:
-                        case Kind::Index:
-                        {
-                            auto lhsChild = parent1->getChild<p_Base>(0);
-                            auto rhsChild = parent1->getChild<p_Base>(1);
-
-                            if (lhsChild->getKind() == Kind::Identifier && rhsChild->getKind() == Kind::Identifier)
-                            {
-                                if (Node::get(lhsChild) == node)
-                                {
-                                    return "__MEMBER__";
-                                }
-                            }
-                            break;
-                        }
-                        default:
-                        {
-                            // return "ALSO_FIRST";
-                            break;
-                        }
-                    }
-                }*/
-
-                if (parent1) {
-                    switch (parent1->getKind())
-                    {
-                        case Kind::Attribute:
-                        {
-                            if (parent1->getChild<p_Base>(0) != node)
-                            {
-                                break;
-                            }
-                        }
-                        case Kind::AttributeList:
-                        case Kind::VariableList:
-                        {
-                            return "__VAR__";
-                        }
-
-                        default:
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
             case Kind::Numeric:
             case Kind::Boolean:
             case Kind::Varargs:
@@ -512,6 +436,11 @@ public:
             case Kind::ReturnStatement:
             {
                 auto expressions = node->getChild<p_Base>(0);
+
+                if (!expressions)
+                {
+                    return "return";
+                }
                 return format(
                     "return {0}",
                     toString(expressions, depth)
@@ -628,223 +557,33 @@ public:
     }
 
 
-    std::string ding(const p_Base& base, std::size_t depth = 0)
+    void getUsages(const p_Base& base, std::size_t depth = 0)
     {
         if (!base)
         {
-            return "";
+            return;
         }
 
         auto node = Node::get(base);
 
-        switch (base->getKind())
+        if (node->getKind() == Kind::Identifier)
         {
+            std::cout << node->getChild<std::string>(0) << std::endl;
+        }
 
-            case Kind::FunctionCall:
-            {
-                auto root = node->getChild<p_Base>(0);
-                auto args = node->getChild<p_Base>(1);
-                return toString(root, depth) + toString(args, depth);
-            }
-            case Kind::FunctionDefinition:
-            {
-                auto name = node->getChild<p_Base>(0);
-                auto body = node->getChild<p_Base>(1);
-                return format(
-                    "function{0}{1}{2}",
-                    !name ? "" : " ",
-                    toString(name, depth),
-                    toString(body, depth)
-                );
-            }
-            case Kind::FunctionName:
-            {
-                auto name = node->getChild<p_Base>(0);
-                return toString(name, depth);
-            }
-            case Kind::FunctionBody:
-            {
-                auto parameters = node->getChild<p_Base>(0);
-                auto block = node->getChild<p_Base>(1);
-                return format(
-                    "({0}){1}{2}{3}end",
-                    toString(parameters, depth),
-                    NEW_LINE,
-                    toString(block, depth + 1),
-                    space(depth)
-                );
-            }
-            case Kind::Label:
-            {
-                auto name = node->getChild<p_Base>(0);
-                return format(
-                    "::{0}::",
-                    toString(name, depth)
-                );
-            }
-            case Kind::Semicolon:
-            {
-                return ";";
-            }
 
-            case Kind::ForStatement:
+        for (int i = 0; i < node->getSize(); i++)
+        {
+            if (std::holds_alternative<p_Base>(node->getChildren()[i]))
             {
-                if (node->getSize() == 3)
+                getUsages(node->getChild<p_Base>(i));
+            }
+            else if (std::holds_alternative<p_BaseArray>(node->getChildren()[i]))
+            {
+                for (auto& childNode: node->getChild<p_BaseArray>(i))
                 {
-                    auto names = node->getChild<p_Base>(0);
-                    auto expressions = node->getChild<p_Base>(1);
-                    auto block = node->getChild<p_Base>(2);
-
-                    return format(
-                        "for {0} in {1} do{2}{3}{4}end",
-                        toString(names, depth),
-                        toString(expressions, depth),
-                        NEW_LINE,
-                        toString(block, depth + 1),
-                        space(depth)
-                    );
+                    getUsages(childNode);
                 }
-                else
-                {
-                    auto name = node->getChild<p_Base>(0);
-                    auto init = node->getChild<p_Base>(1);
-                    auto goal = node->getChild<p_Base>(2);
-                    auto step = node->getChild<p_Base>(3);
-                    auto block = node->getChild<p_Base>(4);
-
-                    std::string fmt = "for {0} = {1}, {2}, {3} do{4}{5}{6}end";
-
-                    if (!step)
-                    {
-                        fmt = "for {0} = {1}, {2} do{4}{5}{6}end";
-                    }
-
-                    return format(
-                        fmt,
-                        toString(name, 0),
-                        toString(init, depth),
-                        toString(goal, depth),
-                        toString(step, depth),
-                        NEW_LINE,
-                        toString(block, depth + 1),
-                        space(depth)
-                    );
-                }
-            }
-            case Kind::ReturnStatement:
-            {
-                auto expressions = node->getChild<p_Base>(0);
-                return format(
-                    "return {0}",
-                    toString(expressions, depth)
-                );
-            }
-            case Kind::RepeatStatement:
-            {
-                auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
-                auto condition = conditionalBlock->getChild<p_Base>(0);
-                auto block = conditionalBlock->getChild<p_Base>(1);
-
-                return format(
-                    "repeat{0}{1}{2}until {3}",
-                    NEW_LINE,
-                    toString(block, depth + 1),
-                    space(depth),
-                    toString(condition, depth)
-                );
-            }
-            case Kind::WhileStatement:
-            {
-                auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
-                auto condition = conditionalBlock->getChild<p_Base>(0);
-                auto block = conditionalBlock->getChild<p_Base>(1);
-
-                return format(
-                    "while {0} do{1}{2}{3}end",
-                    toString(condition, depth),
-                    NEW_LINE,
-                    toString(block, depth + 1),
-                    space(depth)
-                );
-            }
-            case Kind::IfStatement:
-            {
-                auto statements = node->getChild<p_BaseArray>(0);
-
-                std::string ifString;
-                for (int i = 0; i < statements.size(); i++)
-                {
-                    auto conditionalBlock = Node::get(statements[i]);
-                    auto condition = conditionalBlock->getChild<p_Base>(0);
-                    auto block = conditionalBlock->getChild<p_Base>(1);
-
-                    std::string fmt = "if {1} then{2}{3}";
-
-                    if (!condition)
-                    {
-                        fmt = "{0}else{2}{3}";
-                    }
-                    else if (i > 0)
-                    {
-                        fmt = "{0}elseif {1} then{2}{3}";
-                    }
-
-                    ifString += format(
-                        fmt,
-                        space(depth),
-                        toString(condition, depth),
-                        NEW_LINE,
-                        toString(block, depth + 1)
-                    );
-                }
-
-                ifString += format("{0}end", space(depth));
-                return ifString;
-            }
-            case Kind::DoStatement:
-            {
-                auto block = node->getChild<p_Base>(0);
-                return format(
-                    "do{0}{1}{2}end",
-                    NEW_LINE,
-                    toString(block, depth + 1),
-                    space(depth)
-                );
-            }
-            case Kind::GotoStatement:
-            {
-                auto name = node->getChild<p_Base>(0);
-                return format(
-                    "goto {0}",
-                    toString(name, depth)
-                );
-            }
-            case Kind::BreakStatement:
-            {
-                return "break";
-            }
-            case Kind::LocalStatement:
-            {
-                auto statement = node->getChild<p_Base>(0);
-                return format(
-                    "local {0}",
-                    toString(statement, depth)
-                );
-            }
-            case Kind::AssignmentStatement:
-            {
-                auto lhs = node->getChild<p_Base>(0);
-                auto rhs = node->getChild<p_Base>(1);
-                return format(
-                    "{0} = {1}",
-                    toString(lhs, depth),
-                    toString(rhs, depth)
-                );
-            }
-
-            default:
-            {
-                return "";
             }
         }
     }

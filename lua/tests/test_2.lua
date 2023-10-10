@@ -28,7 +28,7 @@ function getTrainSamplesForSpeaker(trainPath, speaker)
    return files
 end
 
-function mungeToFeatures(wavFileName)
+local function mungeToFeatures(wavFileName)
    local x, fs = audio.load(wavFileName)
    local x = x[{{},1}]
    return table.pack(world.doAll(x, fs))
