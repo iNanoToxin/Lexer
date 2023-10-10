@@ -3,11 +3,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <Parser.h>
 #include <Generation.h>
-#include <fmt/core.h>
 
-#define f_assert(condition, message)                        \
+#define f_assert(condition, message)                      \
 do {                                                      \
     if (!(condition)) {                                   \
         std::cerr << "Assertion `" #condition "` failed." \
@@ -21,8 +19,6 @@ do {                                                      \
 } while (false)
 
 int main() {
-
-
     std::string luaSource;
     {
         std::ifstream file("../tests/test_2.lua");
@@ -36,10 +32,8 @@ int main() {
 
     Generator g;
     std::string generated = g.generate(luaSource);
-    // std::cout << "START!!!" << std::endl;
     // Parser p;
     // std::string generated = p.parse(luaSource)->toString(0);
-    // std::cout << "END!!!" << std::endl;
 
     {
         std::ofstream file("../tests/output.lua");

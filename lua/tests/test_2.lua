@@ -21,3 +21,7 @@ function Stack:pop()
 	end
 	self.stack[#self.stack] = nil
 end
+
+function a.x.x.x.x.x:x()
+
+end

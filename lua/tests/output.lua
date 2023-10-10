@@ -1,21 +1,23 @@
-Stack = {}
-function Stack:new()
-    local o = {
-        stack = {}
+ALSO_FIRST = {}
+function FIRST_VAR:new()
+    local ALSO_FIRST = {
+        ALSO_FIRST = {}
     }
-    self.__index = self
-    setmetatable(o, self)
-    return o
+    FIRST_VAR.__index = ALSO_FIRST
+    ALSO_FIRST(ALSO_FIRST, ALSO_FIRST)
+    return ALSO_FIRST
 end
-function Stack:push(x)
-    self.stack[#self.stack + 1] = x
+function FIRST_VAR:push(ALSO_FIRST)
+    FIRST_VAR.stack[#FIRST_VAR.stack + 1] = ALSO_FIRST
 end
-function Stack:top()
-    return self.stack[#self.stack]
+function FIRST_VAR:top()
+    return FIRST_VAR.stack[#FIRST_VAR.stack]
 end
-function Stack:pop()
-    if #self.stack == 0 then
-        error("Nothing on the stack")
+function FIRST_VAR:pop()
+    if #FIRST_VAR.stack == 0 then
+        ALSO_FIRST("Nothing on the stack")
     end
-    self.stack[#self.stack] = nil
+    FIRST_VAR.stack[#FIRST_VAR.stack] = nil
+end
+function FIRST_VAR.x.x.x.x.x:x()
 end

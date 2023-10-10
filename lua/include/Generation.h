@@ -25,8 +25,10 @@ private:
         }
         return str;
     }
+
 public:
-    std::string generate(const std::string& source) {
+    std::string generate(const std::string& source)
+    {
         Parser parser;
         auto chunk = parser.parse(source);
 
@@ -57,7 +59,8 @@ public:
     }
 
     template <typename... Args>
-    std::string format(std::string_view fmtString, Args&&... args) {
+    std::string format(std::string_view fmtString, Args&& ... args)
+    {
         return fmt::vformat(fmtString, fmt::make_format_args(args...));
     }
 
@@ -139,6 +142,32 @@ public:
                 // std::cout << node->getChildren().size() << std::endl;
                 //
                 // std::cout << std::endl;
+
+                if (auto parent = node->getParent())
+                {
+                    switch (parent->getKind())
+                    {
+                        case Kind::Member:
+                        case Kind::Method:
+                        case Kind::Index:
+                        {
+                            auto lhsChild = parent->getChild<p_Base>(0);
+                            auto rhsChild = parent->getChild<p_Base>(1);
+
+                            if (lhsChild->getKind() == Kind::Identifier && rhsChild->getKind() == Kind::Identifier) {
+                                // return "LOL";
+                                if (Node::get(lhsChild) == node) {
+                                    return "FIRST_VAR";
+                                }
+                            }
+                            break;
+                        }
+                        default:
+                        {
+                            return "ALSO_FIRST";
+                        }
+                    }
+                }
             }
             case Kind::Numeric:
             case Kind::Boolean:
@@ -283,7 +312,8 @@ public:
                 }
                 return statementString;
             }
-            case Kind::Chunk: {
+            case Kind::Chunk:
+            {
                 auto block = node->getChild<p_Base>(0);
                 return toString(block);
             }
@@ -362,7 +392,8 @@ public:
 
                     std::string fmt = "for {0} = {1}, {2}, {3} do{4}{5}{6}end";
 
-                    if (!step) {
+                    if (!step)
+                    {
                         fmt = "for {0} = {1}, {2} do{4}{5}{6}end";
                     }
 
@@ -427,10 +458,12 @@ public:
 
                     std::string fmt = "if {1} then{2}{3}";
 
-                    if (!condition) {
+                    if (!condition)
+                    {
                         fmt = "{0}else{2}{3}";
                     }
-                    else if (i > 0) {
+                    else if (i > 0)
+                    {
                         fmt = "{0}elseif {1} then{2}{3}";
                     }
 
