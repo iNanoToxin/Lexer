@@ -26,9 +26,13 @@ std::size_t Node::getSize() const
     return m_Size;
 }
 
-p_Node Node::getParent()
+p_Node Node::getParent(const std::size_t& depth)
 {
-    return std::static_pointer_cast<Node>(m_Parent);
+    p_Node parent = std::static_pointer_cast<Node>(m_Parent);
+    if (parent && depth > 0) {
+        return parent->getParent(depth - 1);
+    }
+    return parent;
 }
 
 void Node::setParent(const p_Base& baseNode, const p_Base& parentNode)

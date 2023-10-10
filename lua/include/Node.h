@@ -30,7 +30,7 @@ public:
     [[nodiscard]] std::size_t getSize() const;
 
     void setParent(const p_Base& parent);
-    p_Node getParent();
+    p_Node getParent(const std::size_t& depth = 0);
 
     template <typename Type>
     Type& getChild(const size_t& index)
