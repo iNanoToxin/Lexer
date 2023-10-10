@@ -69,6 +69,34 @@ public:
         return std::string(depth * 4, ' ');
     }
 
+
+
+    bool canIgetVariable(const p_Node& node) {
+        if (auto parent = node->getParent()) {
+            switch (parent->getKind())
+            {
+                case Kind::Member:
+                case Kind::Method:
+                {
+                    auto lhsChild = parent->getChild<p_Base>(0);
+                    auto rhsChild = parent->getChild<p_Base>(1);
+
+                    if (lhsChild->getKind() != Kind::Identifier || rhsChild->getKind() != Kind::Identifier || Node::get(lhsChild) != node)
+                    {
+                        break;
+                    }
+                }
+                default:
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
     std::string toString(const p_Base& base, std::size_t depth = 0)
     {
         if (!base)
@@ -153,10 +181,22 @@ public:
                 //     return "__ASSIGNED__";
                 // }
 
-                if (parent1)
+                /*if (parent1)
                 {
                     switch (parent1->getKind())
                     {
+                        case Kind::NameList:
+                        {
+                            if (parent2 && parent2->getKind() == Kind::ForStatement)
+                            {
+                                return "__FVAR__";
+                            }
+                            break;
+                        }
+                        case Kind::FunctionCall:
+                        {
+                            return "__CALL__";
+                        }
                         case Kind::ParameterList:
                         {
                             return "__PARAM__";
@@ -171,7 +211,8 @@ public:
                         }
                         case Kind::Attribute:
                         {
-                            if (parent1->getChild<p_Base>(0) == node) {
+                            if (parent1->getChild<p_Base>(0) == node)
+                            {
                                 return "__LVAR__";
                             }
                             break;
@@ -188,8 +229,10 @@ public:
                             auto lhsChild = parent1->getChild<p_Base>(0);
                             auto rhsChild = parent1->getChild<p_Base>(1);
 
-                            if (lhsChild->getKind() == Kind::Identifier && rhsChild->getKind() == Kind::Identifier) {
-                                if (Node::get(lhsChild) == node) {
+                            if (lhsChild->getKind() == Kind::Identifier && rhsChild->getKind() == Kind::Identifier)
+                            {
+                                if (Node::get(lhsChild) == node)
+                                {
                                     return "__MEMBER__";
                                 }
                             }
@@ -198,6 +241,29 @@ public:
                         default:
                         {
                             // return "ALSO_FIRST";
+                            break;
+                        }
+                    }
+                }*/
+
+                if (parent1) {
+                    switch (parent1->getKind())
+                    {
+                        case Kind::Attribute:
+                        {
+                            if (parent1->getChild<p_Base>(0) != node)
+                            {
+                                break;
+                            }
+                        }
+                        case Kind::AttributeList:
+                        case Kind::VariableList:
+                        {
+                            return "__VAR__";
+                        }
+
+                        default:
+                        {
                             break;
                         }
                     }

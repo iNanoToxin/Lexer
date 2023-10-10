@@ -1249,11 +1249,13 @@ public:
                 string->setSize(1);
                 return string;
             }
+
             case TokenType::COMMENT_RAW:
             case TokenType::COMMENT:
             {
                 break;
             }
+
             case TokenType::NUMBER_HEXADECIMAL:
             case TokenType::NUMBER_BINARY:
             case TokenType::NUMBER:
@@ -1264,6 +1266,7 @@ public:
                 number->setSize(1);
                 return number;
             }
+
             case TokenType::KEYWORD:
             {
                 if (isBoolean(currentToken))
@@ -1281,9 +1284,10 @@ public:
                     assert(expr, "expected expression after " + currentToken.literal);
 
                     auto unaryOperation = std::make_shared<Node>();
-                    unaryOperation->setChildren({currentToken.literal, expr});
                     unaryOperation->setKind(Kind::UnaryOperation);
                     unaryOperation->setSize(2);
+                    unaryOperation->setChildren({currentToken.literal, expr});
+                    Node::setParent(expr, unaryOperation);
                     return unaryOperation;
                 }
                 else if (isNull(currentToken))
@@ -1329,9 +1333,10 @@ public:
                     assert(expr, "expected expression after " + currentToken.literal);
 
                     auto unaryOperation = std::make_shared<Node>();
-                    unaryOperation->setChildren({currentToken.literal, expr});
                     unaryOperation->setKind(Kind::UnaryOperation);
                     unaryOperation->setSize(2);
+                    unaryOperation->setChildren({currentToken.literal, expr});
+                    Node::setParent(expr, unaryOperation);
                     return unaryOperation;
                 }
                 break;

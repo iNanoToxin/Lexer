@@ -6,16 +6,18 @@ local trainPath = "vcc2016_training"
 require 'code.dtw.dtw'
 require 'code.world'
 
-a, b, c = 1, 2, 3
+a.x, b.y, c.z = 1, 2, 3
 local x<X>, y<Y>, z<Z> = 4, 5, 6
 
 function table.ofIterator(...)
    local arr = {}
-   for v in ... do
+   for v in g, h, j do
       arr[#arr + 1] = v
    end
    return arr
 end
+
+dog(a[X], b, c)
 
 function getTrainSamplesForSpeaker(trainPath, speaker)
    local dir = paths.concat(trainPath, speaker)
