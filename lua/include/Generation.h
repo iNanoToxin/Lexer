@@ -78,6 +78,14 @@ public:
         {
             switch (parent->getKind())
             {
+                case Kind::Attribute:
+                {
+                    if (parent->getChild<p_Base>(1) == node)
+                    {
+                        return false;
+                    }
+                    break;
+                }
                 case Kind::Member:
                 case Kind::Method:
                 {
@@ -557,7 +565,7 @@ public:
     }
 
 
-    void getUsages(const p_Base& base, std::size_t depth = 0)
+    void getUsages(p_Base& base, std::size_t depth = 0)
     {
         if (!base)
         {
@@ -568,7 +576,15 @@ public:
 
         if (node->getKind() == Kind::Identifier)
         {
-            std::cout << node->getChild<std::string>(0) << std::endl;
+            variableCount++;
+            if (isLocalVariable(node))
+            {
+                node->getChild<std::string>(0) = "__" + std::to_string(variableCount);
+            }
+            else if (isUsedLocalVariable(node))
+            {
+                node->getChild<std::string>(0) = "__" + std::to_string(variableCount);
+            }
         }
 
 
