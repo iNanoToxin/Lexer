@@ -3,15 +3,79 @@
 
 #include <string_view>
 #include <fmt/core.h>
+#include <stack>
+#include <map>
 #include <Parser.h>
 
 #define NEW_LINE "\n"
 
-class Generator
+
+#define w_assert(condition, message)                      \
+do {                                                      \
+    if (!(condition)) {                                   \
+        std::cerr << "Assertion `" #condition "` failed." \
+        << "\n\tFile: " << __FILE__                       \
+        << "\n\tFunc: " << __FUNCTION__                   \
+        << "\n\tLine: " << __LINE__                       \
+        << "\n\tMessage: " << message                     \
+        << std::endl;                                     \
+        abort();                                          \
+    }                                                     \
+} while (false)
+
+class Scope : std::stack<std::map<std::string, std::string>>
 {
-private:
+
+    std::string& operator[](const std::string& string) {
+        auto& map = this->top();
+        return map[string];
+    }
+
+    bool contains(const std::string& string)
+    {
+        auto scopes = *this;
+
+        while (!scopes.empty())
+        {
+            if (scopes.top().find(string) != scopes.top().end())
+            {
+                return true;
+            }
+            scopes.pop();
+        }
+        return false;
+    }
+
+    void begin()
+    {
+        this->push({});
+    }
+
+    void end()
+    {
+        w_assert(!this->empty(), "scope is empty");
+        this->pop();
+    }
+};
+
+class Memory
+{
+public:
+    std::stack<std::map<std::string, std::string>> scope;
     std::vector<char> variableChars;
     unsigned int variableCount = 0;
+
+    Memory()
+    {
+        for (int i = 'a'; i < 'z'; i++)
+        {
+            variableChars.push_back(i);
+        }
+        for (int i = 'A'; i < 'Z'; i++)
+        {
+            variableChars.push_back(i);
+        }
+    }
 
     std::string createVariable(unsigned int id)
     {
@@ -26,54 +90,14 @@ private:
         return str;
     }
 
-public:
-    std::string generate(const std::string& source)
-    {
-        Parser parser;
-        auto chunk = parser.parse(source);
-
-        getUsages(chunk);
-
-        auto generatedString = toString(chunk, 0);
-
-        if (!generatedString.empty() && generatedString.back() == '\n')
-        {
-            generatedString.pop_back();
-        }
-        return generatedString;
-    }
-
-    std::string concat(p_BaseArray array, const std::string& separator, std::size_t depth, bool skip_last = true)
-    {
-        std::string merged_string;
-        auto it = array.begin();
-
-        while (it != array.end())
-        {
-            merged_string += toString(*it, depth);
-            it++;
-            if (!(skip_last && it == array.end()))
-            {
-                merged_string += separator;
-            }
-        }
-        return merged_string;
-    }
-
-    template <typename... Args>
-    std::string format(std::string_view fmtString, Args&& ... args)
-    {
-        return fmt::vformat(fmtString, fmt::make_format_args(args...));
-    }
-
-    static std::string space(const std::size_t& depth)
-    {
-        return std::string(depth * 4, ' ');
-    }
-
 
     static bool isUsedLocalVariable(const p_Node& node)
     {
+        if (!node)
+        {
+            return false;
+        }
+
         if (auto parent = node->getParent())
         {
             switch (parent->getKind())
@@ -110,6 +134,11 @@ public:
 
     static bool isLocalVariable(const p_Node& node)
     {
+        if (!node)
+        {
+            return false;
+        }
+
         if (auto parent = node->getParent())
         {
             switch (parent->getKind())
@@ -137,6 +166,424 @@ public:
                 }
             }
         }
+        return false;
+    }
+
+
+    /*void renameChildren(const p_Node& node)
+    {
+        for (int i = 0; i < node->getSize(); i++)
+        {
+            if (std::holds_alternative<p_Base>(node->getChildren()[i]))
+            {
+                renameNode(node->getChild<p_Base>(i));
+            }
+            else if (std::holds_alternative<p_BaseArray>(node->getChildren()[i]))
+            {
+                for (auto& childNode: node->getChild<p_BaseArray>(i))
+                {
+                    renameNode(childNode);
+                }
+            }
+        }
+    }
+
+    void renameNode(p_Base& base)
+    {
+        auto node = Node::get(base);
+
+        if (!node)
+        {
+            return;
+        }
+
+        switch (node->getKind())
+        {
+            case Kind::Identifier:
+            {
+                if (scope.empty())
+                {
+                    break;
+                }
+
+                auto name = node->getChild<std::string>(0);
+
+                if (isLocalVariable(node))
+                {
+
+                }
+                else if (isUsedLocalVariable(node))
+                {
+                    auto scopeCopy = scope;
+
+                    while (!scopeCopy.empty())
+                    {
+                        if (scopeCopy.top().find(name) != scopeCopy.top().end())
+                        {
+                            node->getChild<std::string>(0) = scopeCopy.top()[name];
+                            break;
+                        }
+                        scopeCopy.pop();
+                    }
+                }
+                break;
+            }
+
+            case Kind::FunctionBody:
+            case Kind::Block:
+            {
+                std::cout << "PUSHED" << '\n';
+                scope.push({});
+            }
+            default:
+            {
+                renameChildren(node);
+                break;
+            }
+        }
+
+        switch (node->getKind())
+        {
+
+            case Kind::Identifier:
+            {
+                if (scope.empty())
+                {
+                    break;
+                }
+
+                auto name = node->getChild<std::string>(0);
+
+                if (isLocalVariable(node))
+                {
+                    auto& s = scope.top();
+                    s[name] = createVariable(++variableCount);
+                    node->getChild<std::string>(0) = s[name];
+                }
+                break;
+            }
+
+            case Kind::FunctionBody:
+            case Kind::Block:
+            {
+                variableCount -= scope.top().size();
+                scope.pop();
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }*/
+
+    void renameNode(const p_Base& base)
+    {
+        auto node = Node::get(base);
+
+        if (!node)
+        {
+            return;
+        }
+
+        switch (base->getKind())
+        {
+            case Kind::BinaryOperation:
+            {
+                auto lhs = node->getChild<p_Base>(1);
+                auto rhs = node->getChild<p_Base>(2);
+                renameNode(lhs);
+                renameNode(rhs);
+                break;
+            }
+            case Kind::UnaryOperation:
+            {
+                auto expression = node->getChild<p_Base>(1);
+                renameNode(expression);
+                break;
+            }
+
+            case Kind::Identifier:
+            case Kind::Numeric:
+            case Kind::Boolean:
+            case Kind::Varargs:
+            case Kind::String:
+            case Kind::Null:
+            {
+                break;
+            }
+
+
+            case Kind::Attribute:
+            case Kind::Member:
+            case Kind::Method:
+            case Kind::Index:
+            {
+                auto lhs = node->getChild<p_Base>(0);
+                auto rhs = node->getChild<p_Base>(1);
+                renameNode(lhs);
+                renameNode(rhs);
+                break;
+            }
+
+            case Kind::TableIndexValue:
+            {
+                auto index = node->getChild<p_Base>(0);
+                auto value = node->getChild<p_Base>(1);
+                renameNode(index);
+                renameNode(value);
+                break;
+            }
+            case Kind::TableNameValue:
+            {
+                auto index = node->getChild<p_Base>(0);
+                auto value = node->getChild<p_Base>(1);
+                renameNode(index);
+                renameNode(value);
+                break;
+            }
+            case Kind::TableValue:
+            {
+                auto value = node->getChild<p_Base>(0);
+                renameNode(value);
+                break;
+            }
+            case Kind::TableConstructor:
+            {
+                auto fieldList = node->getChild<p_Base>(0);
+                renameNode(fieldList);
+                break;
+            }
+
+            case Kind::ExpressionList:
+            case Kind::AttributeList:
+            case Kind::ParameterList:
+            case Kind::VariableList:
+            case Kind::NameList:
+            case Kind::FieldList:
+            {
+                auto list = node->getChild<p_BaseArray>(0);
+
+                for (auto& baseNode: list)
+                {
+                    renameNode(baseNode);
+                }
+                break;
+            }
+            case Kind::ArgumentList:
+            {
+                auto arguments = node->getChild<p_Base>(0);
+                renameNode(arguments);
+                break;
+            }
+
+            case Kind::Block:
+            {
+                auto statements = node->getChild<p_BaseArray>(0);
+
+                for (auto& statement: statements)
+                {
+                    renameNode(statement);
+                }
+                break;
+            }
+            case Kind::Chunk:
+            {
+                auto block = node->getChild<p_Base>(0);
+                return renameNode(block);
+            }
+
+            case Kind::FunctionCall:
+            {
+                auto root = node->getChild<p_Base>(0);
+                auto args = node->getChild<p_Base>(1);
+                renameNode(root);
+                renameNode(args);
+                break;
+            }
+            case Kind::FunctionDefinition:
+            {
+                auto name = node->getChild<p_Base>(0);
+                auto body = node->getChild<p_Base>(1);
+                renameNode(name);
+                renameNode(body);
+                break;
+            }
+            case Kind::FunctionName:
+            {
+                auto name = node->getChild<p_Base>(0);
+                renameNode(name);
+                break;
+            }
+            case Kind::FunctionBody:
+            {
+                auto parameters = node->getChild<p_Base>(0);
+                auto block = node->getChild<p_Base>(1);
+                renameNode(parameters);
+                renameNode(block);
+                break;
+            }
+            case Kind::Label:
+            {
+                auto name = node->getChild<p_Base>(0);
+                renameNode(name);
+                break;
+            }
+            case Kind::Semicolon:
+            {
+                break;
+            }
+
+            case Kind::ForStatement:
+            {
+                if (node->getSize() == 3)
+                {
+                    auto names = node->getChild<p_Base>(0);
+                    auto expressions = node->getChild<p_Base>(1);
+                    auto block = node->getChild<p_Base>(2);
+                    renameNode(names);
+                    renameNode(expressions);
+                    renameNode(block);
+                }
+                else
+                {
+                    auto name = node->getChild<p_Base>(0);
+                    auto init = node->getChild<p_Base>(1);
+                    auto goal = node->getChild<p_Base>(2);
+                    auto step = node->getChild<p_Base>(3);
+                    auto block = node->getChild<p_Base>(4);
+                    renameNode(name);
+                    renameNode(init);
+                    renameNode(goal);
+                    renameNode(step);
+                    renameNode(block);
+                }
+                break;
+            }
+            case Kind::ReturnStatement:
+            {
+                auto expressions = node->getChild<p_Base>(0);
+                renameNode(expressions);
+                break;
+            }
+            case Kind::RepeatStatement:
+            {
+                auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
+                auto condition = conditionalBlock->getChild<p_Base>(0);
+                auto block = conditionalBlock->getChild<p_Base>(1);
+                renameNode(condition);
+                renameNode(block);
+                break;
+            }
+            case Kind::WhileStatement:
+            {
+                auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
+                auto condition = conditionalBlock->getChild<p_Base>(0);
+                auto block = conditionalBlock->getChild<p_Base>(1);
+                renameNode(condition);
+                renameNode(block);
+                break;
+            }
+            case Kind::IfStatement:
+            {
+                auto statements = node->getChild<p_BaseArray>(0);
+
+                for (int i = 0; i < statements.size(); i++)
+                {
+                    auto conditionalBlock = Node::get(statements[i]);
+                    auto condition = conditionalBlock->getChild<p_Base>(0);
+                    auto block = conditionalBlock->getChild<p_Base>(1);
+                    renameNode(condition);
+                    renameNode(block);
+                }
+                break;
+            }
+            case Kind::DoStatement:
+            {
+                auto block = node->getChild<p_Base>(0);
+                renameNode(block);
+                break;
+            }
+            case Kind::GotoStatement:
+            {
+                auto name = node->getChild<p_Base>(0);
+                renameNode(name);
+                break;
+            }
+            case Kind::BreakStatement:
+            {
+                break;
+            }
+            case Kind::LocalStatement:
+            {
+                auto statement = node->getChild<p_Base>(0);
+                renameNode(statement);
+                break;
+            }
+            case Kind::AssignmentStatement:
+            {
+                auto lhs = node->getChild<p_Base>(0);
+                auto rhs = node->getChild<p_Base>(1);
+                renameNode(lhs);
+                renameNode(rhs);
+                break;
+            }
+
+            default:
+            {
+                break;
+            }
+        }
+    }
+};
+
+
+class Generator
+{
+public:
+    std::string generate(const std::string& source)
+    {
+        Parser parser;
+        auto chunk = parser.parse(source);
+
+        Memory memory;
+        memory.renameNode(chunk);
+
+        auto generatedString = toString(chunk, 0);
+
+        if (!generatedString.empty() && generatedString.back() == '\n')
+        {
+            generatedString.pop_back();
+        }
+        return generatedString;
+    }
+
+    std::string concat(p_BaseArray array, const std::string& separator, std::size_t depth, bool skip_last = true)
+    {
+        std::string merged_string;
+        auto it = array.begin();
+
+        while (it != array.end())
+        {
+            merged_string += toString(*it, depth);
+            it++;
+            if (!(skip_last && it == array.end()))
+            {
+                merged_string += separator;
+            }
+        }
+        return merged_string;
+    }
+
+    template <typename... Args>
+    std::string format(std::string_view fmtString, Args&& ... args)
+    {
+        return fmt::vformat(fmtString, fmt::make_format_args(args...));
+    }
+
+    static std::string space(const std::size_t& depth)
+    {
+        return std::string(depth * 4, ' ');
     }
 
     std::string toString(const p_Base& base, std::size_t depth = 0)
@@ -560,46 +1007,6 @@ public:
             default:
             {
                 return "";
-            }
-        }
-    }
-
-
-    void getUsages(p_Base& base, std::size_t depth = 0)
-    {
-        if (!base)
-        {
-            return;
-        }
-
-        auto node = Node::get(base);
-
-        if (node->getKind() == Kind::Identifier)
-        {
-            variableCount++;
-            if (isLocalVariable(node))
-            {
-                node->getChild<std::string>(0) = "__" + std::to_string(variableCount);
-            }
-            else if (isUsedLocalVariable(node))
-            {
-                node->getChild<std::string>(0) = "__" + std::to_string(variableCount);
-            }
-        }
-
-
-        for (int i = 0; i < node->getSize(); i++)
-        {
-            if (std::holds_alternative<p_Base>(node->getChildren()[i]))
-            {
-                getUsages(node->getChild<p_Base>(i));
-            }
-            else if (std::holds_alternative<p_BaseArray>(node->getChildren()[i]))
-            {
-                for (auto& childNode: node->getChild<p_BaseArray>(i))
-                {
-                    getUsages(childNode);
-                }
             }
         }
     }
