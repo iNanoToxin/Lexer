@@ -664,14 +664,14 @@ public:
             return breakStatement;
         }
         // For Luau continue
-        /*else if (expectPeek("continue"))
+        else if (expectPeek("continue"))
         {
             consume();
             auto continueStatement = std::make_shared<Node>();
             continueStatement->setKind(Kind::BreakStatement);
             continueStatement->setSize(0);
             return continueStatement;
-        }*/
+        }
         else if (expectPeek("if"))
         {
             consume();

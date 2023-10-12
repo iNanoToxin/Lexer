@@ -23,12 +23,22 @@ do {                                                      \
     }                                                     \
 } while (false)
 
-class Scope : std::stack<std::map<std::string, std::string>>
+class Scope : std::stack<std::map<std::string, std::pair<std::string, int>>>
 {
-
-    std::string& operator[](const std::string& string) {
-        auto& map = this->top();
-        return map[string];
+private:
+    std::vector<char> variableChars;
+    unsigned int variableCount = 0;
+public:
+    Scope()
+    {
+        for (int i = 'a'; i <= 'z'; i++)
+        {
+            variableChars.push_back(i);
+        }
+        for (int i = 'A'; i <= 'Z'; i++)
+        {
+            variableChars.push_back(i);
+        }
     }
 
     bool contains(const std::string& string)
@@ -37,13 +47,28 @@ class Scope : std::stack<std::map<std::string, std::string>>
 
         while (!scopes.empty())
         {
-            if (scopes.top().find(string) != scopes.top().end())
+            if (scopes.top().contains(string))
             {
                 return true;
             }
             scopes.pop();
         }
         return false;
+    }
+
+    std::string get(const std::string& string)
+    {
+        auto scopes = *this;
+
+        while (!scopes.empty())
+        {
+            if (scopes.top().contains(string))
+            {
+                return scopes.top()[string].first;
+            }
+            scopes.pop();
+        }
+        return std::string{};
     }
 
     void begin()
@@ -54,30 +79,15 @@ class Scope : std::stack<std::map<std::string, std::string>>
     void end()
     {
         w_assert(!this->empty(), "scope is empty");
+
+        for (auto& var: this->top())
+        {
+            variableCount -= var.second.second;
+        }
         this->pop();
     }
-};
 
-class Memory
-{
-public:
-    std::stack<std::map<std::string, std::string>> scope;
-    std::vector<char> variableChars;
-    unsigned int variableCount = 0;
-
-    Memory()
-    {
-        for (int i = 'a'; i < 'z'; i++)
-        {
-            variableChars.push_back(i);
-        }
-        for (int i = 'A'; i < 'Z'; i++)
-        {
-            variableChars.push_back(i);
-        }
-    }
-
-    std::string createVariable(unsigned int id)
+    std::string getVariable(unsigned int id)
     {
         std::string str = "";
 
@@ -90,6 +100,26 @@ public:
         return str;
     }
 
+    std::string nextVariable()
+    {
+        return getVariable(++variableCount);
+        // return "VAR_" + std::to_string(variableCount++);
+    }
+
+    void addVariable(const std::string& string)
+    {
+        auto& map = this->top();
+        auto& var = map[string];
+        var.first = nextVariable();
+        var.second++;
+    }
+};
+
+
+class Memory
+{
+public:
+    Scope scope;
 
     static bool isUsedLocalVariable(const p_Node& node)
     {
@@ -277,6 +307,49 @@ public:
         }
     }*/
 
+    void handle(const p_Base& base)
+    {
+        auto node = Node::get(base);
+
+        if (!node)
+        {
+            return;
+        }
+
+        switch (node->getKind())
+        {
+            case Kind::Attribute:
+            {
+                handle(node->getChild<p_Base>(0));
+                break;
+            }
+
+            case Kind::AttributeList:
+            case Kind::NameList:
+            case Kind::ParameterList:
+            {
+                auto list = node->getChild<p_BaseArray>(0);
+
+                for (auto& var: list)
+                {
+                    handle(var);
+                }
+                break;
+            }
+
+            case Kind::Identifier:
+            {
+                scope.addVariable(node->getChild<std::string>(0));
+                break;
+            }
+
+            default:
+            {
+                break;
+            }
+        }
+    }
+
     void renameNode(const p_Base& base)
     {
         auto node = Node::get(base);
@@ -304,6 +377,13 @@ public:
             }
 
             case Kind::Identifier:
+            {
+                auto& name = node->getChild<std::string>(0);
+                if (scope.contains(name))
+                {
+                    name = scope.get(name);
+                }
+            }
             case Kind::Numeric:
             case Kind::Boolean:
             case Kind::Varargs:
@@ -381,10 +461,12 @@ public:
             {
                 auto statements = node->getChild<p_BaseArray>(0);
 
+                scope.begin();
                 for (auto& statement: statements)
                 {
                     renameNode(statement);
                 }
+                scope.end();
                 break;
             }
             case Kind::Chunk:
@@ -405,6 +487,7 @@ public:
             {
                 auto name = node->getChild<p_Base>(0);
                 auto body = node->getChild<p_Base>(1);
+                handle(name);
                 renameNode(name);
                 renameNode(body);
                 break;
@@ -419,8 +502,11 @@ public:
             {
                 auto parameters = node->getChild<p_Base>(0);
                 auto block = node->getChild<p_Base>(1);
+                scope.begin();
+                handle(parameters);
                 renameNode(parameters);
                 renameNode(block);
+                scope.end();
                 break;
             }
             case Kind::Label:
@@ -436,11 +522,13 @@ public:
 
             case Kind::ForStatement:
             {
+                scope.begin();
                 if (node->getSize() == 3)
                 {
                     auto names = node->getChild<p_Base>(0);
                     auto expressions = node->getChild<p_Base>(1);
                     auto block = node->getChild<p_Base>(2);
+                    handle(names);
                     renameNode(names);
                     renameNode(expressions);
                     renameNode(block);
@@ -452,12 +540,14 @@ public:
                     auto goal = node->getChild<p_Base>(2);
                     auto step = node->getChild<p_Base>(3);
                     auto block = node->getChild<p_Base>(4);
+                    handle(name);
                     renameNode(name);
                     renameNode(init);
                     renameNode(goal);
                     renameNode(step);
                     renameNode(block);
                 }
+                scope.end();
                 break;
             }
             case Kind::ReturnStatement:
@@ -516,7 +606,8 @@ public:
             }
             case Kind::LocalStatement:
             {
-                auto statement = node->getChild<p_Base>(0);
+                auto statement = Node::get(node->getChild<p_Base>(0));
+                handle(statement);
                 renameNode(statement);
                 break;
             }
@@ -524,8 +615,13 @@ public:
             {
                 auto lhs = node->getChild<p_Base>(0);
                 auto rhs = node->getChild<p_Base>(1);
-                renameNode(lhs);
+
                 renameNode(rhs);
+                if (node->getParent()->getKind() == Kind::LocalStatement)
+                {
+                    handle(lhs);
+                }
+                renameNode(lhs);
                 break;
             }
 
