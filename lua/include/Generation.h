@@ -682,14 +682,59 @@ public:
         return std::string(depth * 4, ' ');
     }
 
+    static int getPrecedence(const std::string& binaryOperator, bool isUnaryOperation = false)
+    {
+        static const std::vector<std::vector<std::string>> priority = {
+            {"or"},
+            {"and"},
+            {"<", ">", "<=", ">=", "~=", "=="},
+            {"|"},
+            {"~"},
+            {"&"},
+            {"<<", ">>"},
+            {".."},
+            {"+", "-"},
+            {"*", "/", "//", "%"},
+            {"not", "#", "-", "~"},
+            {"^"}
+        };
+
+        if (isUnaryOperation)
+        {
+            return static_cast<int>(priority.size()) - 1;
+        }
+
+        for (int i = 0; i < priority.size(); i++)
+        {
+            for (auto& e: priority[i])
+            {
+                if (binaryOperator == e)
+                {
+                    return i + 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    static bool isBinaryPrecedenceHigher(const p_Node& lhs, const p_Node& rhs)
+    {
+        if (!lhs) return false;
+        if (!rhs) return false;
+        if (lhs->getKind() != Kind::BinaryOperation) return false;
+        if (rhs->getKind() != Kind::BinaryOperation) return false;
+
+        return getPrecedence(lhs->getChild<std::string>(0)) > getPrecedence(rhs->getChild<std::string>(0));
+    }
+
     std::string toString(const p_Base& base, std::size_t depth = 0)
     {
-        if (!base)
+        auto node = Node::get(base);
+
+        if (!node)
         {
             return "";
         }
-
-        auto node = Node::get(base);
 
         switch (base->getKind())
         {
@@ -702,14 +747,32 @@ public:
                 std::string lhsFmt = "{0}";
                 std::string rhsFmt = "{0}";
 
-                if (lhs && lhs->getKind() == Kind::BinaryOperation)
+                if (isBinaryPrecedenceHigher(node, Node::get(lhs)))
                 {
                     lhsFmt = "({0})";
                 }
-                if (rhs && rhs->getKind() == Kind::BinaryOperation)
+                if (isBinaryPrecedenceHigher(node, Node::get(rhs)))
                 {
                     rhsFmt = "({0})";
                 }
+
+                /*if (lhs && lhs->getKind() == Kind::BinaryOperation)
+                {
+                    auto lhsOperator = Node::get(lhs)->getChild<std::string>(0);
+
+                    if (getPrecedence(binaryOperator) > getPrecedence(lhsOperator))
+                    {
+                        lhsFmt = "({0})";
+                    }
+                }
+                if (rhs && rhs->getKind() == Kind::BinaryOperation)
+                {
+                    auto rhsOperator = Node::get(rhs)->getChild<std::string>(0);
+                    if (getPrecedence(binaryOperator) > getPrecedence(rhsOperator))
+                    {
+                        rhsFmt = "({0})";
+                    }
+                }*/
 
                 return format(
                     "{0} {1} {2}",
@@ -897,7 +960,30 @@ public:
             {
                 auto root = node->getChild<p_Base>(0);
                 auto args = node->getChild<p_Base>(1);
-                return toString(root, depth) + toString(args, depth);
+                std::string fmt;
+
+                switch (root->getKind())
+                {
+                    case Kind::Member:
+                    case Kind::Method:
+                    case Kind::Index:
+                    case Kind::FunctionCall:
+                    {
+                        fmt = "{0}{1}";
+                        break;
+                    }
+                    default:
+                    {
+                        fmt = "({0}){1}";
+                        break;
+                    }
+                }
+
+                return format(
+                    fmt,
+                    toString(root, depth),
+                    toString(args, depth)
+                );
             }
             case Kind::FunctionDefinition:
             {
@@ -919,8 +1005,15 @@ public:
             {
                 auto parameters = node->getChild<p_Base>(0);
                 auto block = node->getChild<p_Base>(1);
+                std::string fmt = "({0}){1}{2}{3}end";
+
+                if (!block)
+                {
+                    fmt = "({0}) end";
+                }
+
                 return format(
-                    "({0}){1}{2}{3}end",
+                    fmt,
                     toString(parameters, depth),
                     NEW_LINE,
                     toString(block, depth + 1),
