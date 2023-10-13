@@ -1,1 +1,2 @@
-local x = - - - - - - - - - - - - -a
+  a = b + c
+     (print or io.write)('done')

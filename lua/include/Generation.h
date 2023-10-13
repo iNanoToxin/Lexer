@@ -959,6 +959,7 @@ public:
 
                 switch (root->getKind())
                 {
+                    case Kind::Identifier:
                     case Kind::Member:
                     case Kind::Method:
                     case Kind::Index:
