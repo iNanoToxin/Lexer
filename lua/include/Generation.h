@@ -756,24 +756,6 @@ public:
                     rhsFmt = "({0})";
                 }
 
-                /*if (lhs && lhs->getKind() == Kind::BinaryOperation)
-                {
-                    auto lhsOperator = Node::get(lhs)->getChild<std::string>(0);
-
-                    if (getPrecedence(binaryOperator) > getPrecedence(lhsOperator))
-                    {
-                        lhsFmt = "({0})";
-                    }
-                }
-                if (rhs && rhs->getKind() == Kind::BinaryOperation)
-                {
-                    auto rhsOperator = Node::get(rhs)->getChild<std::string>(0);
-                    if (getPrecedence(binaryOperator) > getPrecedence(rhsOperator))
-                    {
-                        rhsFmt = "({0})";
-                    }
-                }*/
-
                 return format(
                     "{0} {1} {2}",
                     format(
@@ -794,10 +776,23 @@ public:
 
                 std::string fmt = "{0}{1}{2}";
 
-                if (expression->getKind() == Kind::BinaryOperation)
+                switch (expression->getKind())
                 {
-                    fmt = "{0}{1}({2})";
+                    case Kind::UnaryOperation:
+                    {
+                        auto innerOperator = Node::get(expression)->getChild<std::string>(0);
+                        if (unaryOperator == "-" && unaryOperator == innerOperator)
+                        {
+                            fmt = "{0}{1}({2})";
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
                 }
+
                 return format(
                     fmt,
                     unaryOperator,
