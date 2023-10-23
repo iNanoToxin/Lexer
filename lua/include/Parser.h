@@ -5,6 +5,7 @@
 #include <memory>
 #include <utility>
 #include <tuple>
+#include <ranges>
 #include <vector>
 #include <fstream>
 #include <Tokenizer.h>
@@ -1260,8 +1261,19 @@ public:
             case TokenType::NUMBER_BINARY:
             case TokenType::NUMBER:
             {
+                double value = 0;
+
+                try
+                {
+                    value = std::stod(consume().literal);
+                }
+                catch (std::out_of_range e)
+                {
+                    value = std::numeric_limits<double>::infinity();
+                }
+
                 auto number = std::make_shared<Node>();
-                number->setChildren({consume().literal});
+                number->setChildren({Number(value)});
                 number->setKind(Kind::Numeric);
                 number->setSize(1);
                 return number;

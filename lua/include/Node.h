@@ -7,12 +7,13 @@
 #include <string>
 #include <Kind.h>
 #include <Base.h>
+#include <Number.h>
 #include <fmt/core.h>
 
 
 class Node;
 using p_Node = std::shared_ptr<Node>;
-using v_Variant = std::vector<std::variant<std::string, p_Base, p_BaseArray>>;
+using v_Variant = std::vector<std::variant<Number, std::string, p_Base, p_BaseArray>>;
 
 
 class Node : public Base

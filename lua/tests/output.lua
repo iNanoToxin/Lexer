@@ -1,1 +1,2 @@
-local a = -(-(-(-(-(-(-(-(-(-(-(-(-a))))))))))))
+local a = inf
+local b = -inf

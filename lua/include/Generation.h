@@ -6,6 +6,7 @@
 #include <stack>
 #include <map>
 #include <Parser.h>
+#include <cmath>
 
 #define NEW_LINE "\n"
 
@@ -199,115 +200,46 @@ public:
         return false;
     }
 
-
-    /*void renameChildren(const p_Node& node)
+    static void performBinaryOperation(
+        const std::string& binaryOperator,
+        const p_Node& lhs,
+        const p_Node& rhs,
+        p_Node& node
+    )
     {
-        for (int i = 0; i < node->getSize(); i++)
+        auto lhsN = lhs->getChild<Number>(0);
+        auto rhsN = rhs->getChild<Number>(0);
+
+        double value;
+
+        if (binaryOperator == "+")
         {
-            if (std::holds_alternative<p_Base>(node->getChildren()[i]))
-            {
-                renameNode(node->getChild<p_Base>(i));
-            }
-            else if (std::holds_alternative<p_BaseArray>(node->getChildren()[i]))
-            {
-                for (auto& childNode: node->getChild<p_BaseArray>(i))
-                {
-                    renameNode(childNode);
-                }
-            }
+            value = lhsN.value + rhsN.value;
         }
+        else if (binaryOperator == "-")
+        {
+            value = lhsN.value - rhsN.value;
+        }
+        else if (binaryOperator == "*")
+        {
+            value = lhsN.value * rhsN.value;
+        }
+        else if (binaryOperator == "/")
+        {
+            value = lhsN.value / rhsN.value;
+        }
+        else if (binaryOperator == "%")
+        {
+            value = std::fmod(lhsN.value, rhsN.value);
+        }
+
+        node->setKind(Kind::Numeric);
+        node->setSize(1);
+        node->setChildren({Number(value)});
     }
 
-    void renameNode(p_Base& base)
-    {
-        auto node = Node::get(base);
 
-        if (!node)
-        {
-            return;
-        }
-
-        switch (node->getKind())
-        {
-            case Kind::Identifier:
-            {
-                if (scope.empty())
-                {
-                    break;
-                }
-
-                auto name = node->getChild<std::string>(0);
-
-                if (isLocalVariable(node))
-                {
-
-                }
-                else if (isUsedLocalVariable(node))
-                {
-                    auto scopeCopy = scope;
-
-                    while (!scopeCopy.empty())
-                    {
-                        if (scopeCopy.top().find(name) != scopeCopy.top().end())
-                        {
-                            node->getChild<std::string>(0) = scopeCopy.top()[name];
-                            break;
-                        }
-                        scopeCopy.pop();
-                    }
-                }
-                break;
-            }
-
-            case Kind::FunctionBody:
-            case Kind::Block:
-            {
-                std::cout << "PUSHED" << '\n';
-                scope.push({});
-            }
-            default:
-            {
-                renameChildren(node);
-                break;
-            }
-        }
-
-        switch (node->getKind())
-        {
-
-            case Kind::Identifier:
-            {
-                if (scope.empty())
-                {
-                    break;
-                }
-
-                auto name = node->getChild<std::string>(0);
-
-                if (isLocalVariable(node))
-                {
-                    auto& s = scope.top();
-                    s[name] = createVariable(++variableCount);
-                    node->getChild<std::string>(0) = s[name];
-                }
-                break;
-            }
-
-            case Kind::FunctionBody:
-            case Kind::Block:
-            {
-                variableCount -= scope.top().size();
-                scope.pop();
-                break;
-            }
-            default:
-            {
-                break;
-            }
-        }
-    }*/
-
-    void handle(const p_Base& base)
+    void rename(const p_Base& base)
     {
         auto node = Node::get(base);
 
@@ -320,7 +252,7 @@ public:
         {
             case Kind::Attribute:
             {
-                handle(node->getChild<p_Base>(0));
+                rename(node->getChild<p_Base>(0));
                 break;
             }
 
@@ -332,7 +264,7 @@ public:
 
                 for (auto& var: list)
                 {
-                    handle(var);
+                    rename(var);
                 }
                 break;
             }
@@ -350,7 +282,7 @@ public:
         }
     }
 
-    void renameNode(const p_Base& base)
+    void refactor(const p_Base& base)
     {
         auto node = Node::get(base);
 
@@ -363,16 +295,29 @@ public:
         {
             case Kind::BinaryOperation:
             {
+                auto binaryOperator = node->getChild<std::string>(0);
                 auto lhs = node->getChild<p_Base>(1);
                 auto rhs = node->getChild<p_Base>(2);
-                renameNode(lhs);
-                renameNode(rhs);
+
+                refactor(lhs);
+                refactor(rhs);
+
+                if (lhs->getKind() == Kind::Numeric && rhs->getKind() == Kind::Numeric)
+                {
+                    performBinaryOperation(
+                        binaryOperator,
+                        Node::get(lhs),
+                        Node::get(rhs),
+                        node
+                    );
+                }
+
                 break;
             }
             case Kind::UnaryOperation:
             {
                 auto expression = node->getChild<p_Base>(1);
-                renameNode(expression);
+                refactor(expression);
                 break;
             }
 
@@ -401,8 +346,8 @@ public:
             {
                 auto lhs = node->getChild<p_Base>(0);
                 auto rhs = node->getChild<p_Base>(1);
-                renameNode(lhs);
-                renameNode(rhs);
+                refactor(lhs);
+                refactor(rhs);
                 break;
             }
 
@@ -410,28 +355,28 @@ public:
             {
                 auto index = node->getChild<p_Base>(0);
                 auto value = node->getChild<p_Base>(1);
-                renameNode(index);
-                renameNode(value);
+                refactor(index);
+                refactor(value);
                 break;
             }
             case Kind::TableNameValue:
             {
                 auto index = node->getChild<p_Base>(0);
                 auto value = node->getChild<p_Base>(1);
-                renameNode(index);
-                renameNode(value);
+                refactor(index);
+                refactor(value);
                 break;
             }
             case Kind::TableValue:
             {
                 auto value = node->getChild<p_Base>(0);
-                renameNode(value);
+                refactor(value);
                 break;
             }
             case Kind::TableConstructor:
             {
                 auto fieldList = node->getChild<p_Base>(0);
-                renameNode(fieldList);
+                refactor(fieldList);
                 break;
             }
 
@@ -446,14 +391,14 @@ public:
 
                 for (auto& baseNode: list)
                 {
-                    renameNode(baseNode);
+                    refactor(baseNode);
                 }
                 break;
             }
             case Kind::ArgumentList:
             {
                 auto arguments = node->getChild<p_Base>(0);
-                renameNode(arguments);
+                refactor(arguments);
                 break;
             }
 
@@ -464,7 +409,7 @@ public:
                 scope.begin();
                 for (auto& statement: statements)
                 {
-                    renameNode(statement);
+                    refactor(statement);
                 }
                 scope.end();
                 break;
@@ -472,30 +417,30 @@ public:
             case Kind::Chunk:
             {
                 auto block = node->getChild<p_Base>(0);
-                return renameNode(block);
+                return refactor(block);
             }
 
             case Kind::FunctionCall:
             {
                 auto root = node->getChild<p_Base>(0);
                 auto args = node->getChild<p_Base>(1);
-                renameNode(root);
-                renameNode(args);
+                refactor(root);
+                refactor(args);
                 break;
             }
             case Kind::FunctionDefinition:
             {
                 auto name = node->getChild<p_Base>(0);
                 auto body = node->getChild<p_Base>(1);
-                handle(name);
-                renameNode(name);
-                renameNode(body);
+                rename(name);
+                refactor(name);
+                refactor(body);
                 break;
             }
             case Kind::FunctionName:
             {
                 auto name = node->getChild<p_Base>(0);
-                renameNode(name);
+                refactor(name);
                 break;
             }
             case Kind::FunctionBody:
@@ -503,16 +448,16 @@ public:
                 auto parameters = node->getChild<p_Base>(0);
                 auto block = node->getChild<p_Base>(1);
                 scope.begin();
-                handle(parameters);
-                renameNode(parameters);
-                renameNode(block);
+                rename(parameters);
+                refactor(parameters);
+                refactor(block);
                 scope.end();
                 break;
             }
             case Kind::Label:
             {
                 auto name = node->getChild<p_Base>(0);
-                renameNode(name);
+                refactor(name);
                 break;
             }
             case Kind::Semicolon:
@@ -528,10 +473,10 @@ public:
                     auto names = node->getChild<p_Base>(0);
                     auto expressions = node->getChild<p_Base>(1);
                     auto block = node->getChild<p_Base>(2);
-                    handle(names);
-                    renameNode(names);
-                    renameNode(expressions);
-                    renameNode(block);
+                    rename(names);
+                    refactor(names);
+                    refactor(expressions);
+                    refactor(block);
                 }
                 else
                 {
@@ -540,12 +485,12 @@ public:
                     auto goal = node->getChild<p_Base>(2);
                     auto step = node->getChild<p_Base>(3);
                     auto block = node->getChild<p_Base>(4);
-                    handle(name);
-                    renameNode(name);
-                    renameNode(init);
-                    renameNode(goal);
-                    renameNode(step);
-                    renameNode(block);
+                    rename(name);
+                    refactor(name);
+                    refactor(init);
+                    refactor(goal);
+                    refactor(step);
+                    refactor(block);
                 }
                 scope.end();
                 break;
@@ -553,7 +498,7 @@ public:
             case Kind::ReturnStatement:
             {
                 auto expressions = node->getChild<p_Base>(0);
-                renameNode(expressions);
+                refactor(expressions);
                 break;
             }
             case Kind::RepeatStatement:
@@ -561,8 +506,8 @@ public:
                 auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
                 auto condition = conditionalBlock->getChild<p_Base>(0);
                 auto block = conditionalBlock->getChild<p_Base>(1);
-                renameNode(condition);
-                renameNode(block);
+                refactor(condition);
+                refactor(block);
                 break;
             }
             case Kind::WhileStatement:
@@ -570,8 +515,8 @@ public:
                 auto conditionalBlock = Node::get(node->getChild<p_Base>(0));
                 auto condition = conditionalBlock->getChild<p_Base>(0);
                 auto block = conditionalBlock->getChild<p_Base>(1);
-                renameNode(condition);
-                renameNode(block);
+                refactor(condition);
+                refactor(block);
                 break;
             }
             case Kind::IfStatement:
@@ -583,21 +528,21 @@ public:
                     auto conditionalBlock = Node::get(statements[i]);
                     auto condition = conditionalBlock->getChild<p_Base>(0);
                     auto block = conditionalBlock->getChild<p_Base>(1);
-                    renameNode(condition);
-                    renameNode(block);
+                    refactor(condition);
+                    refactor(block);
                 }
                 break;
             }
             case Kind::DoStatement:
             {
                 auto block = node->getChild<p_Base>(0);
-                renameNode(block);
+                refactor(block);
                 break;
             }
             case Kind::GotoStatement:
             {
                 auto name = node->getChild<p_Base>(0);
-                renameNode(name);
+                refactor(name);
                 break;
             }
             case Kind::BreakStatement:
@@ -607,8 +552,8 @@ public:
             case Kind::LocalStatement:
             {
                 auto statement = Node::get(node->getChild<p_Base>(0));
-                handle(statement);
-                renameNode(statement);
+                rename(statement);
+                refactor(statement);
                 break;
             }
             case Kind::AssignmentStatement:
@@ -616,12 +561,12 @@ public:
                 auto lhs = node->getChild<p_Base>(0);
                 auto rhs = node->getChild<p_Base>(1);
 
-                renameNode(rhs);
+                refactor(rhs);
                 if (node->getParent()->getKind() == Kind::LocalStatement)
                 {
-                    handle(lhs);
+                    rename(lhs);
                 }
-                renameNode(lhs);
+                refactor(lhs);
                 break;
             }
 
@@ -643,7 +588,7 @@ public:
         auto chunk = parser.parse(source);
 
         Memory memory;
-        memory.renameNode(chunk);
+        memory.refactor(chunk);
 
         auto generatedString = toString(chunk, 0);
 
@@ -802,13 +747,16 @@ public:
             }
 
             case Kind::Identifier:
-            case Kind::Numeric:
             case Kind::Boolean:
             case Kind::Varargs:
             case Kind::String:
             case Kind::Null:
             {
                 return node->getChild<std::string>(0);
+            }
+            case Kind::Numeric:
+            {
+                return std::to_string(node->getChild<Number>(0).value);
             }
 
 
