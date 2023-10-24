@@ -5,7 +5,6 @@
 #include <memory>
 #include <utility>
 #include <tuple>
-#include <ranges>
 #include <vector>
 #include <fstream>
 #include <Tokenizer.h>
@@ -1172,7 +1171,7 @@ public:
         return;
         #endif
 
-        std::string path = "../tests/output.lua";
+        std::string path = "../tests/output_ast.lua";
         auto ptr = getChunk();
         assert(ptr, "failed to parse");
 

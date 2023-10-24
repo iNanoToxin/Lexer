@@ -1,2 +1,4 @@
-local a = inf
-local b = -inf
+local x = 5000.000000 * 4.000000 * -1.000000
+local y = c / 3.000000 * -3.000000 * -3232.000000 * a
+local z = -(a + b)
+local d = #-5.000000

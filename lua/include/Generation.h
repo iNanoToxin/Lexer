@@ -238,6 +238,21 @@ public:
         node->setChildren({Number(value)});
     }
 
+    static void performUnaryOperation(
+        const std::string& binaryOperator,
+        const p_Node& expression,
+        p_Node& node
+    )
+    {
+        auto n = expression->getChild<Number>(0);
+
+        if (binaryOperator == "-")
+        {
+            node->setKind(Kind::Numeric);
+            node->setSize(1);
+            node->setChildren({Number(-n.value)});
+        }
+    }
 
     void rename(const p_Base& base)
     {
@@ -311,13 +326,26 @@ public:
                         node
                     );
                 }
-
                 break;
             }
             case Kind::UnaryOperation:
             {
+                auto unaryOperator = node->getChild<std::string>(0);
                 auto expression = node->getChild<p_Base>(1);
+                auto expressionNode = Node::get(expression);
+
                 refactor(expression);
+
+                if (expression->getKind() == Kind::Numeric && unaryOperator == "-")
+                {
+                    performUnaryOperation(
+                        unaryOperator,
+                        Node::get(expression),
+                        node
+                    );
+                }
+
+
                 break;
             }
 
@@ -587,8 +615,8 @@ public:
         Parser parser;
         auto chunk = parser.parse(source);
 
-        Memory memory;
-        memory.refactor(chunk);
+        // Memory memory;
+        // memory.refactor(chunk);
 
         auto generatedString = toString(chunk, 0);
 
@@ -730,6 +758,11 @@ public:
                         {
                             fmt = "{0}{1}({2})";
                         }
+                        break;
+                    }
+                    case Kind::BinaryOperation:
+                    {
+                        fmt = "{0}{1}({2})";
                         break;
                     }
                     default:
