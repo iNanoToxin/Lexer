@@ -109,6 +109,11 @@ public:
 
     void addVariable(const std::string& string)
     {
+        if (!get(string).empty())
+        {
+            return;
+        }
+
         auto& map = this->top();
         auto& var = map[string];
         var.first = nextVariable();
@@ -271,6 +276,7 @@ public:
                 break;
             }
 
+            case Kind::VariableList:
             case Kind::AttributeList:
             case Kind::NameList:
             case Kind::ParameterList:
@@ -351,6 +357,16 @@ public:
 
             case Kind::Identifier:
             {
+                if (node->getParent() && node->getParent()->getKind() == Kind::TableNameValue)
+                {
+                    return;
+                }
+
+                if (!node->getParent())
+                {
+                    std::cout << node->getChild<std::string>(0) << std::endl;
+                }
+
                 auto& name = node->getChild<std::string>(0);
                 if (scope.contains(name))
                 {
@@ -590,7 +606,7 @@ public:
                 auto rhs = node->getChild<p_Base>(1);
 
                 refactor(rhs);
-                if (node->getParent()->getKind() == Kind::LocalStatement)
+                // if (node->getParent()->getKind() == Kind::LocalStatement)
                 {
                     rename(lhs);
                 }
@@ -615,8 +631,8 @@ public:
         Parser parser;
         auto chunk = parser.parse(source);
 
-        // Memory memory;
-        // memory.refactor(chunk);
+        Memory memory;
+        memory.refactor(chunk);
 
         auto generatedString = toString(chunk, 0);
 
@@ -789,7 +805,7 @@ public:
             }
             case Kind::Numeric:
             {
-                return std::to_string(node->getChild<Number>(0).value);
+                return node->getChild<Number>(0).toString();
             }
 
 
@@ -869,10 +885,19 @@ public:
             {
                 if (auto child = node->getChild<p_Base>(0))
                 {
+                    std::string fmt = "{{{0}{1}{2}{3}}}";
+                    std::string str = toString(child, depth + 1);
+
+                    if (str.find('\n') == std::string::npos)
+                    {
+                        fmt = "{{{1}}}";
+                        str = toString(child, 0);
+                    }
+
                     return format(
-                        "{{{0}{1}{2}{3}}}",
+                        fmt,
                         NEW_LINE,
-                        toString(child, depth + 1),
+                        str,
                         NEW_LINE,
                         space(depth)
                     );

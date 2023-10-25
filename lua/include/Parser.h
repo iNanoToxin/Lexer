@@ -1175,12 +1175,12 @@ public:
         auto ptr = getChunk();
         assert(ptr, "failed to parse");
 
-        {
+        /*{
             std::ofstream file(path);
             assert(file.is_open(), "Failed to open the file.");
             file << ptr->toString(0);
             file.close();
-        }
+        }*/
         // std::cout << ptr->toString(0) << std::endl;
         return ptr;
     }
