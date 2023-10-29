@@ -311,22 +311,21 @@ public:
         }
         else if (expectPeek(TokenType::IDENTIFIER) && expectPeek("=", 1))
         {
-            auto tableNameValueExpression = std::make_shared<Node>();
-            tableNameValueExpression->setKind(Kind::TableNameValue);
-            tableNameValueExpression->setSize(2);
-
             auto name = getName();
-            Node::setParent(name, tableNameValueExpression);
-
 
             assert(expectPeek("="), "expected = after name in field");
             consume();
 
             auto value = getExpression();
             assert(value, "expected value in field");
-            Node::setParent(value, tableNameValueExpression);
 
+            auto tableNameValueExpression = std::make_shared<Node>();
+            tableNameValueExpression->setKind(Kind::TableNameValue);
+            tableNameValueExpression->setSize(2);
             tableNameValueExpression->setChildren({name, value});
+
+            Node::setParent(name, tableNameValueExpression);
+            Node::setParent(value, tableNameValueExpression);
             return tableNameValueExpression;
         }
         else if (auto expression = getExpression())
@@ -335,6 +334,8 @@ public:
             tableValueExpression->setKind(Kind::TableValue);
             tableValueExpression->setSize(1);
             tableValueExpression->setChildren({expression});
+
+            Node::setParent(expression, tableValueExpression);
             return tableValueExpression;
         }
         return nullptr;
@@ -373,25 +374,29 @@ public:
         if (expectPeek("("))
         {
             consume();
+            auto expressionList = getExpressionList();
 
             auto argumentList = std::make_shared<Node>();
             argumentList->setKind(Kind::ArgumentList);
             argumentList->setSize(1);
-
-            auto expressionList = getExpressionList();
+            argumentList->setChildren({expressionList});
 
             assert(expectPeek(")"), "expected ) after ( in args");
             consume();
 
-            argumentList->setChildren({expressionList});
+            Node::setParent(expressionList, argumentList);
             return argumentList;
         }
         else if (expectPeek(TokenType::STRING) || expectPeek(TokenType::STRING_RAW))
         {
+            auto expression = getPrimaryExpression();
+
             auto argumentList = std::make_shared<Node>();
             argumentList->setKind(Kind::ArgumentList);
             argumentList->setSize(1);
-            argumentList->setChildren({getPrimaryExpression()});
+            argumentList->setChildren({expression});
+
+            Node::setParent(expression, argumentList);
             return argumentList;
         }
         else if (auto tableConstructor = getTableConstructor())
@@ -400,6 +405,8 @@ public:
             argumentList->setKind(Kind::ArgumentList);
             argumentList->setSize(1);
             argumentList->setChildren({tableConstructor});
+
+            Node::setParent(tableConstructor, argumentList);
             return argumentList;
         }
         return nullptr;
@@ -413,17 +420,17 @@ public:
         }
         consume();
 
+        auto fieldList = getFieldList();
+
         auto tableConstructorExpression = std::make_shared<Node>();
         tableConstructorExpression->setKind(Kind::TableConstructor);
         tableConstructorExpression->setSize(1);
-
-        auto fieldList = getFieldList();
-        Node::setParent(fieldList, tableConstructorExpression);
+        tableConstructorExpression->setChildren({fieldList});
 
         assert(expectPeek("}"), "expected } after { in table constructor");
         consume();
 
-        tableConstructorExpression->setChildren({fieldList});
+        Node::setParent(fieldList, tableConstructorExpression);
         return tableConstructorExpression;
     }
 
@@ -532,7 +539,6 @@ public:
                 Node::setParent(root, functionCall);
                 Node::setParent(args, functionCall);
                 root = functionCall;
-
 
                 isValidExpression = false;
             }

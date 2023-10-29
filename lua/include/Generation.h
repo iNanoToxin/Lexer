@@ -303,7 +303,7 @@ public:
         }
     }
 
-    void refactor(const p_Base& base)
+    void refactor(p_Base& base)
     {
         auto node = Node::get(base);
 
@@ -346,12 +346,28 @@ public:
                 {
                     performUnaryOperation(
                         unaryOperator,
-                        Node::get(expression),
+                        expressionNode,
                         node
                     );
                 }
+                else if (unaryOperator == "not")
+                {
+                    switch (expression->getKind())
+                    {
+                        case Kind::Boolean:
+                        {
+                            auto& boolean = expressionNode->getChild<std::string>(0);
 
-
+                            Node::Swap(base, expression);
+                            Node::Reset(expression);
+                            boolean = (boolean == "true" ? "false" : "true");
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
 
@@ -595,7 +611,7 @@ public:
             }
             case Kind::LocalStatement:
             {
-                auto statement = Node::get(node->getChild<p_Base>(0));
+                auto statement = node->getChild<p_Base>(0);
                 rename(statement);
                 refactor(statement);
                 break;
