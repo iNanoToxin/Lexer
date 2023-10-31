@@ -45,6 +45,7 @@ std::string getKindName(const Kind& kind) {
         case Kind::Block: return "Block";
         case Kind::BinaryOperation: return "BinaryOperation";
         case Kind::Chunk: return "Chunk";
+        case Kind::BreakStatement: return "BreakStatement";
         default: return "UNKNOWN_KIND";
     }
 }

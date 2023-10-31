@@ -237,7 +237,6 @@ public:
         }
 
         node->setKind(Kind::Numeric);
-        node->setSize(1);
         node->setChildren({Number(value)});
     }
 
@@ -252,7 +251,6 @@ public:
         if (binaryOperator == "-")
         {
             node->setKind(Kind::Numeric);
-            node->setSize(1);
             node->setChildren({Number(-n.value)});
         }
     }

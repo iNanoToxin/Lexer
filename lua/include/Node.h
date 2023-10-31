@@ -31,19 +31,19 @@ using p_NodeArray = std::vector<p_Node>;
 using v_Variant = std::vector<std::variant<Number, std::string, p_Node, p_NodeArray>>;
 
 
-class Node
+class Node : public std::enable_shared_from_this<Node>
 {
 private:
     v_Variant m_Children;
     p_Node m_Parent;
     Kind m_Kind;
-    p_Node m_Pointer;
-    std::size_t m_Size;
 
     static std::size_t getSize(Kind kind)
     {
         switch (kind)
         {
+            case Kind::BreakStatement:
+            case Kind::Semicolon:
             case Kind::Unknown:
             {
                 return 0;
@@ -64,14 +64,13 @@ private:
             case Kind::Null:
             case Kind::Varargs:
             case Kind::Identifier:
-            case Kind::Semicolon:
             case Kind::Chunk:
             case Kind::Block:
             case Kind::Label:
             case Kind::IfStatement:
             case Kind::DoStatement:
             case Kind::GotoStatement:
-            case Kind::BreakStatement:
+
             case Kind::LocalStatement:
             case Kind::WhileStatement:
             case Kind::ReturnStatement:
@@ -104,21 +103,15 @@ private:
 
 
 public:
-    explicit Node() : Node(Kind::Unknown, 0)
+    explicit Node() : Node(Kind::Unknown)
     {
     }
 
-    explicit Node(Kind kind) : Node(kind, getSize(kind))
-    {
-    }
-
-    explicit Node(Kind kind, std::size_t size)
+    explicit Node(Kind kind)
     {
         m_Kind = kind;
         m_Parent = nullptr;
-        m_Size = size;
         m_Children = {};
-        m_Pointer = nullptr;
     }
 
     [[nodiscard]] static p_Node create()
@@ -129,16 +122,11 @@ public:
     {
         return std::make_shared<Node>(kind);
     }
-    [[nodiscard]] static p_Node create(Kind kind, std::size_t size)
-    {
-        return std::make_shared<Node>(kind, size);
-    }
 
 
     void setChildren(v_Variant children);
     void setParent(const p_Node& parent);
     void setKind(Kind kind);
-    void setSize(const std::size_t& size);
 
     template <typename T>
     [[nodiscard]] T& getChild(const std::size_t& index)
@@ -146,12 +134,12 @@ public:
         return std::get<T>(m_Children[index]);
     }
     [[nodiscard]] p_Node getParent(const std::size_t& depth = 0);
-    [[nodiscard]] std::size_t getSize() const;
     [[nodiscard]] Kind getKind() const;
+    [[nodiscard]] std::size_t getSize() const;
     [[nodiscard]] v_Variant getChildren();
     [[nodiscard]] p_Node getPointer()
     {
-        return nullptr;
+        return shared_from_this();
     }
     [[nodiscard]] std::string toString(std::size_t depth) const;
 
@@ -160,7 +148,6 @@ public:
     static void reset(const p_Node& node)
     {
         node->setParent(nullptr);
-        node->setSize(0);
         node->setChildren({});
         node->setKind(Kind::Unknown);
     }
@@ -168,7 +155,6 @@ public:
     static void swap(const p_Node& lhs, const p_Node& rhs)
     {
         std::swap(lhs->m_Parent, rhs->m_Parent);
-        std::swap(lhs->m_Size, rhs->m_Size);
         std::swap(lhs->m_Kind, rhs->m_Kind);
         std::swap(lhs->m_Children, rhs->m_Children);
     }

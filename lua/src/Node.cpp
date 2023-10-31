@@ -3,19 +3,17 @@
 
 void Node::setChildren(v_Variant children)
 {
-    // for (auto& elem: children)
-    // {
-    //     if (std::holds_alternative<p_Node>(elem))
-    //     {
-    //         std::get<p_Node>(elem)->setParent(getPointer());
-    //     }
-    // }
+    for (auto& elem: children)
+    {
+        if (std::holds_alternative<p_Node>(elem))
+        {
+            if (auto node = std::get<p_Node>(elem))
+            {
+                node->setParent(getPointer());
+            }
+        }
+    }
     m_Children = std::move(children);
-}
-
-void Node::setSize(const std::size_t& size)
-{
-    m_Size = size;
 }
 
 void Node::setParent(const p_Node& parent)
@@ -26,11 +24,6 @@ void Node::setParent(const p_Node& parent)
 v_Variant Node::getChildren()
 {
     return m_Children;
-}
-
-std::size_t Node::getSize() const
-{
-    return m_Size;
 }
 
 p_Node Node::getParent(const std::size_t& depth)
@@ -46,10 +39,6 @@ p_Node Node::getParent(const std::size_t& depth)
 
 std::string Node::toString(std::size_t depth) const
 {
-    {
-        return "";
-    }
-
     std::string str;
     std::size_t mul = 4;
 
@@ -58,7 +47,7 @@ std::string Node::toString(std::size_t depth) const
     str += std::string(depth * mul, ' ');
     str += "Kind: " + getKindName(m_Kind) + "\n";
 
-    for (int i = 0; i < m_Size; i++)
+    for (int i = 0; i < m_Children.size(); i++)
     {
         if (std::holds_alternative<std::string>(m_Children[i]))
         {
@@ -139,4 +128,9 @@ void Node::setKind(Kind kind)
 Kind Node::getKind() const
 {
     return m_Kind;
+}
+
+std::size_t Node::getSize() const
+{
+    return m_Children.size();
 }
