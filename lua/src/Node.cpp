@@ -46,6 +46,10 @@ p_Node Node::getParent(const std::size_t& depth)
 
 std::string Node::toString(std::size_t depth) const
 {
+    {
+        return "";
+    }
+
     std::string str;
     std::size_t mul = 4;
 

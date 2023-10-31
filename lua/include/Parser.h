@@ -34,7 +34,7 @@ do {                                                      \
         << "\n\tLine: " << __LINE__                       \
         << "\n\tMessage: " << message                     \
         << std::endl;                                     \
-\
+                                                          \
         for (int i = -5; i <= 5; i++) {                   \
             if (next(i)) {                                \
                 std::string literal = peek(i).literal;    \
@@ -957,7 +957,7 @@ public:
     p_Node getBlock()
     {
         auto block = Node::create(Kind::Block);
-        /*p_NodeArray list;
+        p_NodeArray list;
 
         while (auto stat = getStatement())
         {
@@ -976,7 +976,7 @@ public:
             return nullptr;
         }
 
-        block->setChildren({list});*/
+        block->setChildren({list});
         return block;
     }
 
