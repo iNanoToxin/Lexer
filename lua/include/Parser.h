@@ -123,7 +123,7 @@ public:
         if (auto expression = getExpression())
         {
             expression->setParent(expressionList);
-            list.push_back(std::move(expression));
+            list.push_back(expression);
         }
         else
         {
@@ -138,7 +138,7 @@ public:
             assert(expression, "expression expected");
 
             expression->setParent(expressionList);
-            list.push_back(std::move(expression));
+            list.push_back(expression);
         }
 
         expressionList->setChildren({list});
@@ -1116,7 +1116,7 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                 if (isBoolean(currentToken))
                 {
                     auto boolean = Node::create(Kind::Boolean);
-                    boolean->setChildren({consume().literal});
+                    boolean->setChildren({consume().literal == "true"});
                     return boolean;
                 }
                 else if (isUnaryOperator(currentToken))
@@ -1181,17 +1181,17 @@ std::cout << Token.literal << " -> " << (type) << "\n";
     {
         if (auto lhsExpression = getFunctionDefinition())
         {
-            return getRhsExpression(precedence, std::move(lhsExpression));
+            return getRhsExpression(precedence, lhsExpression);
         }
 
         if (auto lhsExpression = getPrefixExpression())
         {
-            return getRhsExpression(precedence, std::move(lhsExpression));
+            return getRhsExpression(precedence, lhsExpression);
         }
 
         if (auto lhsExpression = getPrimaryExpression())
         {
-            return getRhsExpression(precedence, std::move(lhsExpression));
+            return getRhsExpression(precedence, lhsExpression);
         }
         return nullptr;
     }
@@ -1235,7 +1235,7 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                 int next_precedence = getPrecedence(peek());
                 if (currentPrecedence < next_precedence)
                 {
-                    rhs = getRhsExpression(currentPrecedence + 1, std::move(rhs));
+                    rhs = getRhsExpression(currentPrecedence + 1, rhs);
                     if (rhs == nullptr)
                     {
                         return rhs;

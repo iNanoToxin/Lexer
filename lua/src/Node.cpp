@@ -72,6 +72,28 @@ std::string Node::toString(std::size_t depth) const
                 );
             }
         }
+        else if (std::holds_alternative<bool>(m_Children[i]))
+        {
+            auto value = std::get<bool>(m_Children[i]);
+
+            str += fmt::format(
+                "{0}[{1}] = {2}\n",
+                std::string(depth * mul, ' '),
+                std::to_string(i),
+                std::to_string(value)
+            );
+        }
+        else if (std::holds_alternative<Number>(m_Children[i]))
+        {
+            auto value = std::get<Number>(m_Children[i]);
+
+            str += fmt::format(
+                "{0}[{1}] = {2}\n",
+                std::string(depth * mul, ' '),
+                std::to_string(i),
+                value.toString()
+            );
+        }
         else if (std::holds_alternative<p_Node>(m_Children[i]))
         {
             auto value = std::get<p_Node>(m_Children[i]);

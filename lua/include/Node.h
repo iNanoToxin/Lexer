@@ -28,7 +28,7 @@ class Node;
 
 using p_Node = std::shared_ptr<Node>;
 using p_NodeArray = std::vector<p_Node>;
-using v_Variant = std::vector<std::variant<Number, std::string, p_Node, p_NodeArray>>;
+using v_Variant = std::vector<std::variant<Number, bool, std::string, p_Node, p_NodeArray>>;
 
 
 class Node : public std::enable_shared_from_this<Node>

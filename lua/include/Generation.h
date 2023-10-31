@@ -213,7 +213,7 @@ public:
         auto lhsN = lhs->getChild<Number>(0);
         auto rhsN = rhs->getChild<Number>(0);
 
-        double value;
+        double value = 0;
 
         if (binaryOperator == "+")
         {
@@ -234,6 +234,14 @@ public:
         else if (binaryOperator == "%")
         {
             value = std::fmod(lhsN.value, rhsN.value);
+        }
+        else if (binaryOperator == "^")
+        {
+            value = std::pow(lhsN.value, rhsN.value);
+        }
+        else
+        {
+            return;
         }
 
         node->setKind(Kind::Numeric);
@@ -637,11 +645,14 @@ class Generator
 public:
     std::string generate(const std::string& source)
     {
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
         Parser parser;
         auto chunk = parser.parse(source);
 
         Memory memory;
         // memory.refactor(chunk);
+
 
         auto generatedString = toString(chunk, 0);
 
@@ -649,6 +660,11 @@ public:
         {
             generatedString.pop_back();
         }
+
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
+        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
         return generatedString;
     }
 
@@ -723,6 +739,22 @@ public:
         if (rhs->getKind() != Kind::BinaryOperation) return false;
 
         return getPrecedence(lhs->getChild<std::string>(0)) > getPrecedence(rhs->getChild<std::string>(0));
+    }
+
+    static std::string trim(const std::string& string)
+    {
+        auto lit = string.begin();
+        while (lit != string.end() && isspace(*lit))
+        {
+            lit++;
+        }
+
+        auto rit = string.rbegin();
+        while (rit.base() != lit && isspace(*rit))
+        {
+            rit++;
+        }
+        return {lit, rit.base()};
     }
 
     std::string toString(const p_Node& node, std::size_t depth = 0)
@@ -803,7 +835,6 @@ public:
             }
 
             case Kind::Identifier:
-            case Kind::Boolean:
             case Kind::Varargs:
             case Kind::String:
             case Kind::Null:
@@ -813,6 +844,10 @@ public:
             case Kind::Numeric:
             {
                 return node->getChild<Number>(0).toString();
+            }
+            case Kind::Boolean:
+            {
+                return node->getChild<bool>(0) ? "true" : "false";
             }
 
 
@@ -898,7 +933,7 @@ public:
                     if (str.find('\n') == std::string::npos)
                     {
                         fmt = "{{{1}}}";
-                        str = toString(child, 0);
+                        str = trim(str);
                     }
 
                     return format(
@@ -938,16 +973,33 @@ public:
             case Kind::Block:
             {
                 auto statements = node->getChild<p_NodeArray>(0);
-
                 std::string statementString;
 
-                for (auto& statement: statements)
+                auto n = statements.size();
+                for (std::size_t i = 0; i < n; i++)
                 {
-                    std::string string = toString(statement, depth);
+                    auto& statement = statements[i];
+                    auto string = toString(statement, depth);
 
-                    if (string == ";" && !statementString.empty() && statementString.back() == '\n')
+                    if (statement->getKind() == Kind::Semicolon)
                     {
-                        statementString.pop_back();
+                        {continue;}
+
+                        auto j = i;
+                        while (i + 1 < n && statements[i + 1]->getKind() == Kind::Semicolon)
+                        {
+                            i++;
+                        }
+
+                        if (j == 0)
+                        {
+                            continue;
+                        }
+
+                        if (!statementString.empty() && statementString.back() == '\n')
+                        {
+                            statementString.pop_back();
+                        }
                     }
                     else
                     {
