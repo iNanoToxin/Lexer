@@ -143,7 +143,10 @@ public:
     }
     [[nodiscard]] std::string toString(std::size_t depth) const;
 
-
+    [[nodiscard]] bool isKind(Kind kind) const
+    {
+        return m_Kind == kind;
+    }
 
     static void reset(const p_Node& node)
     {

@@ -24,6 +24,8 @@ bool isConditional(const Token& currentToken);
 
 bool isNull(const Token& currentToken);
 
+bool isRhsAssociative(const Token& token);
+
 
 #define assert(condition, message)                        \
 do {                                                      \
@@ -1225,34 +1227,19 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                 rhs = getPrimaryExpression();
             }
 
-            if (rhs == nullptr)
+            assert(rhs, "expected rhs expression");
+
+            if (expectPeek(TokenType::PUNCTUATION))
             {
-                return rhs;
-            }
-
-            std::cout << currentToken.literal << std::endl;
-
-            /*if (currentToken.literal == "^")
-            {
-                rhs = getRhsExpression(minPrecedence + 1, rhs);
-
-                auto binaryOperation = Node::create(Kind::BinaryOperation);
-                binaryOperation->setChildren({currentToken.literal, lhs, rhs});
-                lhs = binaryOperation;
-                continue;
-            }*/
-
-            if (next())
-            {
-                int next_precedence = getPrecedence(peek());
-                if (currentPrecedence < next_precedence)
+                if (isRhsAssociative(currentToken))
                 {
-                    std::cout << "called?" << std::endl;
+                    rhs = getRhsExpression(currentPrecedence, rhs);
+                    assert(rhs, "expected rhs expression");
+                }
+                else if (currentPrecedence < getPrecedence(peek()))
+                {
                     rhs = getRhsExpression(currentPrecedence + 1, rhs);
-                    if (rhs == nullptr)
-                    {
-                        return rhs;
-                    }
+                    assert(rhs, "expected rhs expression");
                 }
             }
 
@@ -1265,7 +1252,6 @@ std::cout << Token.literal << " -> " << (type) << "\n";
         }
         return lhs;
     }
-
 
     bool next(std::size_t offset = 0) const;
 

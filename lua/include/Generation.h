@@ -205,41 +205,74 @@ public:
     }
 
     static void performBinaryOperation(
-        const std::string& binaryOperator,
+        const std::string& binOp,
         const p_Node& lhs,
         const p_Node& rhs,
         p_Node& node
     )
     {
-        auto lhsN = lhs->getChild<Number>(0);
-        auto rhsN = rhs->getChild<Number>(0);
+        auto lhsN = lhs->getChild<Number>(0).value;
+        auto rhsN = rhs->getChild<Number>(0).value;
 
         double value = 0;
 
-        if (binaryOperator == "+")
+        if (binOp == "+")
         {
-            value = lhsN.value + rhsN.value;
+            value = lhsN + rhsN;
         }
-        else if (binaryOperator == "-")
+        else if (binOp == "-")
         {
-            value = lhsN.value - rhsN.value;
+            value = lhsN - rhsN;
         }
-        else if (binaryOperator == "*")
+        else if (binOp == "*")
         {
-            value = lhsN.value * rhsN.value;
+            value = lhsN * rhsN;
         }
-        else if (binaryOperator == "/")
+        else if (binOp == "/")
         {
-            value = lhsN.value / rhsN.value;
+            value = lhsN / rhsN;
         }
-        else if (binaryOperator == "%")
+        else if (binOp == "%")
         {
-            value = std::fmod(lhsN.value, rhsN.value);
+            value = std::fmod(lhsN, rhsN);
         }
-        else if (binaryOperator == "^")
+        else if (binOp == "^")
         {
-            value = std::pow(lhsN.value, rhsN.value);
+            value = std::pow(lhsN, rhsN);
         }
+        else if (binOp == "&")
+        {
+            if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+            {
+                value = (int) lhsN & (int) rhsN;
+            }
+            else
+            {
+                return;
+            }
+        }
+        else if (binOp == "|")
+        {
+            if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+            {
+                value = (int) lhsN | (int) rhsN;
+            }
+            else
+            {
+                return;
+            }
+        }
+        /*else if (binOp == "~")
+        {
+            if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+            {
+                value = (int) lhsN & (int) rhsN;
+            }
+            else
+            {
+                return;
+            }
+        }*/
         else
         {
             return;
@@ -652,7 +685,7 @@ public:
         auto chunk = parser.parse(source);
 
         Memory memory;
-        // memory.refactor(chunk);
+        memory.refactor(chunk);
 
 
         auto generatedString = toString(chunk, 0);
@@ -697,7 +730,7 @@ public:
         return std::string(depth * 4, ' ');
     }
 
-    static int getPrecedence(const std::string& binaryOperator, bool isUnaryOperation = false)
+    static int getPrecedence(const std::string& binOp, bool isUnOp = false)
     {
         static const std::vector<std::vector<std::string>> priority = {
             {"or"},
@@ -714,16 +747,16 @@ public:
             {"^"}
         };
 
-        if (isUnaryOperation)
+        if (isUnOp)
         {
-            return static_cast<int>(priority.size()) - 1;
+            return priority.size() - 1;
         }
 
         for (int i = 0; i < priority.size(); i++)
         {
             for (auto& e: priority[i])
             {
-                if (binaryOperator == e)
+                if (e == binOp)
                 {
                     return i + 1;
                 }
@@ -732,15 +765,6 @@ public:
         return -1;
     }
 
-    static bool isBinaryPrecedenceHigher(const p_Node& lhs, const p_Node& rhs)
-    {
-        if (!lhs) return false;
-        if (!rhs) return false;
-        if (lhs->getKind() != Kind::BinaryOperation) return false;
-        if (rhs->getKind() != Kind::BinaryOperation) return false;
-
-        return getPrecedence(lhs->getChild<std::string>(0)) > getPrecedence(rhs->getChild<std::string>(0));
-    }
 
     static std::string trim(const std::string& string)
     {
@@ -769,29 +793,45 @@ public:
         {
             case Kind::BinaryOperation:
             {
-                auto binaryOperator = node->getChild<std::string>(0);
+                auto binOp = node->getChild<std::string>(0);
                 auto lhs = node->getChild<p_Node>(1);
                 auto rhs = node->getChild<p_Node>(2);
 
                 std::string lhsFmt = "{0}";
                 std::string rhsFmt = "{0}";
 
-                if (isBinaryPrecedenceHigher(node, lhs))
+
+                if (lhs->isKind(Kind::BinaryOperation))
                 {
-                    lhsFmt = "({0})";
+                    auto lhsOp = lhs->getChild<std::string>(0);
+
+                    if (getPrecedence(lhsOp) < getPrecedence(binOp))
+                    {
+                        lhsFmt = "({0})";
+                    }
+                    else if (binOp == "^" || binOp == "..")
+                    {
+                        lhsFmt = "({0})";
+                    }
                 }
-                if (isBinaryPrecedenceHigher(node, rhs))
+
+                if (rhs->isKind(Kind::BinaryOperation))
                 {
-                    rhsFmt = "({0})";
+                    auto rhsOp = rhs->getChild<std::string>(0);
+
+                    if (getPrecedence(rhsOp) < getPrecedence(binOp))
+                    {
+                        rhsFmt = "({0})";
+                    }
                 }
 
                 return format(
-                    "({0} {1} {2})",
+                    "{0} {1} {2}",
                     format(
                         lhsFmt,
                         toString(lhs, depth)
                     ),
-                    binaryOperator,
+                    binOp,
                     format(
                         rhsFmt,
                         toString(rhs, depth)
@@ -800,7 +840,7 @@ public:
             }
             case Kind::UnaryOperation:
             {
-                auto unaryOperator = node->getChild<std::string>(0);
+                auto unOp = node->getChild<std::string>(0);
                 auto expression = node->getChild<p_Node>(1);
 
                 std::string fmt = "{0}{1}{2}";
@@ -810,7 +850,7 @@ public:
                     case Kind::UnaryOperation:
                     {
                         auto innerOperator = expression->getChild<std::string>(0);
-                        if (unaryOperator == "-" && unaryOperator == innerOperator)
+                        if (unOp == "-" && unOp == innerOperator)
                         {
                             fmt = "{0}{1}({2})";
                         }
@@ -818,7 +858,11 @@ public:
                     }
                     case Kind::BinaryOperation:
                     {
-                        fmt = "{0}{1}({2})";
+                        auto binOp = expression->getChild<std::string>(0);
+                        if (getPrecedence(binOp) < getPrecedence(unOp, true))
+                        {
+                            fmt = "{0}{1}({2})";
+                        }
                         break;
                     }
                     default:
@@ -829,8 +873,8 @@ public:
 
                 return format(
                     fmt,
-                    unaryOperator,
-                    unaryOperator == "not" ? " " : "",
+                    unOp,
+                    unOp == "not" ? " " : "",
                     toString(expression, depth)
                 );
             }
