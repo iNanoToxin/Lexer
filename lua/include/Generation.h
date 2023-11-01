@@ -7,6 +7,7 @@
 #include <map>
 #include <Parser.h>
 #include <cmath>
+#include <chrono>
 
 #define NEW_LINE "\n"
 
@@ -785,7 +786,7 @@ public:
                 }
 
                 return format(
-                    "{0} {1} {2}",
+                    "({0} {1} {2})",
                     format(
                         lhsFmt,
                         toString(lhs, depth)

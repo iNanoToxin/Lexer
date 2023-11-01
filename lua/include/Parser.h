@@ -1230,11 +1230,24 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                 return rhs;
             }
 
+            std::cout << currentToken.literal << std::endl;
+
+            /*if (currentToken.literal == "^")
+            {
+                rhs = getRhsExpression(minPrecedence + 1, rhs);
+
+                auto binaryOperation = Node::create(Kind::BinaryOperation);
+                binaryOperation->setChildren({currentToken.literal, lhs, rhs});
+                lhs = binaryOperation;
+                continue;
+            }*/
+
             if (next())
             {
                 int next_precedence = getPrecedence(peek());
                 if (currentPrecedence < next_precedence)
                 {
+                    std::cout << "called?" << std::endl;
                     rhs = getRhsExpression(currentPrecedence + 1, rhs);
                     if (rhs == nullptr)
                     {
