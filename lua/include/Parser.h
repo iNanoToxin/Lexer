@@ -1174,8 +1174,23 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                     assert(expr, "expected expression after " + currentToken.literal);
 
                     auto unaryOperation = Node::create(Kind::UnaryOperation);
+                    OperatorKind opKind;
+
+                    if (currentToken.is("-"))
+                    {
+                        opKind = OperatorKind::UNM;
+                    }
+                    else if (currentToken.is("~"))
+                    {
+                        opKind = OperatorKind::BNOT;
+                    }
+                    else
+                    {
+                        opKind = Util::getOperator(currentToken.literal);
+                    }
+
                     unaryOperation->setChildren({
-                        Util::getOperator(currentToken.literal),
+                        opKind,
                         expr
                     });
                     return unaryOperation;

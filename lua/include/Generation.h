@@ -123,6 +123,35 @@ public:
 };
 
 
+namespace Arithmetic {
+    template <typename T>
+    double op(const p_Node& lhs, const p_Node& rhs, T&& func)
+    {
+        double n, m;
+
+        if (lhs->isKind(Kind::Numeric))
+        {
+            n = lhs->getChild<Number>(0).value;
+        }
+        else if (lhs->isKind(Kind::String))
+        {
+            auto s = lhs->getChild<std::string>(0);
+            n = std::stod(std::string(s.begin() + 1, s.end() - 1));
+        }
+
+        if (rhs->isKind(Kind::Numeric))
+        {
+            m = rhs->getChild<Number>(0).value;
+        }
+        else if (rhs->isKind(Kind::String))
+        {
+            auto s = rhs->getChild<std::string>(0);
+            m = std::stod(std::string(s.begin() + 1, s.end() - 1));
+        }
+        return func(n, m);
+    }
+}
+
 class Memory
 {
 public:
@@ -205,82 +234,108 @@ public:
     }
 
     static void performBinaryOperation(
-        const std::string& binOp,
+        const OperatorKind& opKind,
         const p_Node& lhs,
         const p_Node& rhs,
         p_Node& node
     )
     {
-        auto lhsN = lhs->getChild<Number>(0).value;
-        auto rhsN = rhs->getChild<Number>(0).value;
 
         double value = 0;
 
-        if (binOp == "+")
+        switch (opKind)
         {
-            value = lhsN + rhsN;
-        }
-        else if (binOp == "-")
-        {
-            value = lhsN - rhsN;
-        }
-        else if (binOp == "*")
-        {
-            value = lhsN * rhsN;
-        }
-        else if (binOp == "/")
-        {
-            value = lhsN / rhsN;
-        }
-        else if (binOp == "%")
-        {
-            value = std::fmod(lhsN, rhsN);
-        }
-        else if (binOp == "^")
-        {
-            value = std::pow(lhsN, rhsN);
-        }
-        else if (binOp == "&")
-        {
-            if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+            case OperatorKind::ADD:
             {
-                value = (int) lhsN & (int) rhsN;
-            }
-            else
-            {
+                if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::Numeric))
+                {
+                    value = Arithmetic::op(lhs, rhs, std::plus<double>());
+                    break;
+                }
+                else if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::String))
+                {
+                    value = Arithmetic::op(lhs, rhs, std::plus<double>());
+                    break;
+                }
                 return;
             }
-        }
-        else if (binOp == "|")
-        {
-            if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+            case OperatorKind::SUB:
             {
-                value = (int) lhsN | (int) rhsN;
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                value = lhsN - rhsN;
+                break;
             }
-            else
+            case OperatorKind::MUL:
             {
-                return;
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                value = lhsN * rhsN;
+                break;
             }
-        }
-        else if (binOp == "~")
-        {
-            if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+            case OperatorKind::DIV:
             {
-                value = (int) lhsN ^ (int) rhsN;
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                value = lhsN / rhsN;
+                break;
             }
-            else
+            case OperatorKind::MOD:
             {
-                return;
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                value = std::fmod(lhsN, rhsN);
+                break;
             }
-        }
-        else if (binOp == "//")
-        {
-            value = std::floor(lhsN / rhsN);
-        }
+            case OperatorKind::POW:
+            {
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                value = std::pow(lhsN, rhsN);
+                break;
+            }
+            case OperatorKind::BAND:
+            {
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+                {
+                    value = (int) lhsN & (int) rhsN;
+                    break;
+                }
+            }
+            case OperatorKind::BOR:
+            {
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+                {
+                    value = (int) lhsN | (int) rhsN;
+                    break;
+                }
+            }
+            case OperatorKind::BXOR:
+            {
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+                {
+                    value = (int) lhsN ^ (int) rhsN;
+                    break;
+                }
+            }
+            case OperatorKind::IDIV:
+            {
+                auto lhsN = lhs->getChild<Number>(0).value;
+                auto rhsN = rhs->getChild<Number>(0).value;
+                value = std::floor(lhsN / rhsN);
+                break;
+            }
 
-        else
-        {
-            return;
+            default:
+            {
+                return;
+            }
         }
 
 
@@ -290,14 +345,14 @@ public:
     }
 
     static void performUnaryOperation(
-        const std::string& binaryOperator,
+        const OperatorKind& opKind,
         const p_Node& expression,
         p_Node& node
     )
     {
         auto n = expression->getChild<Number>(0);
 
-        if (binaryOperator == "-")
+        if (opKind == OperatorKind::UNM)
         {
             node->setKind(Kind::Numeric);
             node->setChildren({Number(-n.value)});
@@ -358,14 +413,14 @@ public:
         {
             case Kind::BinaryOperation:
             {
-                auto binaryOperator = node->getChild<std::string>(0);
+                auto binaryOperator = node->getChild<OperatorKind>(0);
                 auto lhs = node->getChild<p_Node>(1);
                 auto rhs = node->getChild<p_Node>(2);
 
                 refactor(lhs);
                 refactor(rhs);
 
-                if (lhs->getKind() == Kind::Numeric && rhs->getKind() == Kind::Numeric)
+                // if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::Numeric))
                 {
                     performBinaryOperation(
                         binaryOperator,
@@ -378,13 +433,15 @@ public:
             }
             case Kind::UnaryOperation:
             {
-                auto unaryOperator = node->getChild<std::string>(0);
+                auto unaryOperator = node->getChild<OperatorKind>(0);
                 auto expression = node->getChild<p_Node>(1);
                 auto expressionNode = expression;
 
                 refactor(expression);
 
-                if (expression->getKind() == Kind::Numeric && unaryOperator == "-")
+                std::cout << (int) unaryOperator << std::endl;
+
+                if (expression->getKind() == Kind::Numeric && unaryOperator == OperatorKind::UNM)
                 {
                     performUnaryOperation(
                         unaryOperator,
@@ -392,7 +449,7 @@ public:
                         node
                     );
                 }
-                else if (unaryOperator == "not")
+                else if (unaryOperator == OperatorKind::LNOT)
                 {
                     switch (expression->getKind())
                     {
@@ -692,7 +749,7 @@ public:
         auto chunk = parser.parse(source);
 
         Memory memory;
-        // memory.refactor(chunk);
+        memory.refactor(chunk);
 
 
         auto generatedString = toString(chunk, 0);
