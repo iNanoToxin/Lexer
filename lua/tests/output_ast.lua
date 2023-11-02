@@ -311,95 +311,66 @@
             }
         }
         [14] = {
-            Kind: AssignmentStatement
+            Kind: FunctionCall
             [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
+                Kind: Identifier
+                [0] = 'assert'
             }
             [1] = {
-                Kind: ExpressionList
+                Kind: ArgumentList
                 [0] = {
-                    Kind: UnaryOperation
-                    [0] = '#'
-                    [1] = {
+                    Kind: ExpressionList
+                    [0] = {
                         Kind: BinaryOperation
-                        [0] = '^'
+                        [0] = '=='
                         [1] = {
-                            Kind: Numeric
-                            [0] = 2
+                            Kind: BinaryOperation
+                            [0] = '^'
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 2
+                            }
+                            [2] = {
+                                Kind: BinaryOperation
+                                [0] = '^'
+                                [1] = {
+                                    Kind: Numeric
+                                    [0] = 3
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 2
+                                }
+                            }
                         }
                         [2] = {
-                            Kind: Numeric
-                            [0] = 2
+                            Kind: BinaryOperation
+                            [0] = '^'
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 2
+                            }
+                            [2] = {
+                                Kind: BinaryOperation
+                                [0] = '^'
+                                [1] = {
+                                    Kind: Numeric
+                                    [0] = 3
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 2
+                                }
+                            }
                         }
                     }
                 }
             }
         }
         [15] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = '=='
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = '^'
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = '^'
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = '^'
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = '^'
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            Kind: Semicolon
         }
         [16] = {
-            Kind: Semicolon
-        }
-        [17] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -456,10 +427,10 @@
                 }
             }
         }
-        [18] = {
+        [17] = {
             Kind: Semicolon
         }
-        [19] = {
+        [18] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -552,10 +523,10 @@
                 }
             }
         }
-        [20] = {
+        [19] = {
             Kind: Semicolon
         }
-        [21] = {
+        [20] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -620,10 +591,10 @@
                 }
             }
         }
-        [22] = {
+        [21] = {
             Kind: Semicolon
         }
-        [23] = {
+        [22] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -684,10 +655,10 @@
                 }
             }
         }
-        [24] = {
+        [23] = {
             Kind: Semicolon
         }
-        [25] = {
+        [24] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -796,10 +767,10 @@
                 }
             }
         }
-        [26] = {
+        [25] = {
             Kind: Semicolon
         }
-        [27] = {
+        [26] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -864,7 +835,7 @@
                 }
             }
         }
-        [28] = {
+        [27] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -953,10 +924,10 @@
                 }
             }
         }
-        [29] = {
+        [28] = {
             Kind: Semicolon
         }
-        [30] = {
+        [29] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1025,8 +996,57 @@
                 }
             }
         }
-        [31] = {
+        [30] = {
             Kind: Semicolon
+        }
+        [31] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'assert'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = '=='
+                        [1] = {
+                            Kind: BinaryOperation
+                            [0] = '|'
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 240
+                            }
+                            [2] = {
+                                Kind: BinaryOperation
+                                [0] = '~'
+                                [1] = {
+                                    Kind: Numeric
+                                    [0] = 204
+                                }
+                                [2] = {
+                                    Kind: BinaryOperation
+                                    [0] = '&'
+                                    [1] = {
+                                        Kind: Numeric
+                                        [0] = 170
+                                    }
+                                    [2] = {
+                                        Kind: Numeric
+                                        [0] = 253
+                                    }
+                                }
+                            }
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 244
+                        }
+                    }
+                }
+            }
         }
         [32] = {
             Kind: FunctionCall
@@ -1045,28 +1065,28 @@
                             Kind: BinaryOperation
                             [0] = '|'
                             [1] = {
-                                Kind: Numeric
-                                [0] = 240
-                            }
-                            [2] = {
                                 Kind: BinaryOperation
                                 [0] = '~'
                                 [1] = {
-                                    Kind: Numeric
-                                    [0] = 204
-                                }
-                                [2] = {
                                     Kind: BinaryOperation
                                     [0] = '&'
                                     [1] = {
                                         Kind: Numeric
-                                        [0] = 170
+                                        [0] = 253
                                     }
                                     [2] = {
                                         Kind: Numeric
-                                        [0] = 253
+                                        [0] = 170
                                     }
                                 }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 204
+                                }
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 240
                             }
                         }
                         [2] = {
@@ -1078,55 +1098,6 @@
             }
         }
         [33] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = '=='
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = '|'
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = '~'
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = '&'
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 253
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 170
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 204
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 240
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 244
-                        }
-                    }
-                }
-            }
-        }
-        [34] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1167,7 +1138,7 @@
                 }
             }
         }
-        [35] = {
+        [34] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1224,7 +1195,7 @@
                 }
             }
         }
-        [36] = {
+        [35] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1401,7 +1372,7 @@
                 }
             }
         }
-        [37] = {
+        [36] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1438,7 +1409,7 @@
                 }
             }
         }
-        [38] = {
+        [37] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1471,7 +1442,7 @@
                 }
             }
         }
-        [39] = {
+        [38] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1520,7 +1491,7 @@
                 }
             }
         }
-        [40] = {
+        [39] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1569,7 +1540,7 @@
                 }
             }
         }
-        [41] = {
+        [40] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -1597,10 +1568,10 @@
                 }
             }
         }
-        [42] = {
+        [41] = {
             Kind: Semicolon
         }
-        [43] = {
+        [42] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1689,10 +1660,10 @@
                 }
             }
         }
-        [44] = {
+        [43] = {
             Kind: Semicolon
         }
-        [45] = {
+        [44] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -1768,10 +1739,10 @@
                 }
             }
         }
-        [46] = {
+        [45] = {
             Kind: Semicolon
         }
-        [47] = {
+        [46] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1788,10 +1759,10 @@
                 }
             }
         }
-        [48] = {
+        [47] = {
             Kind: Semicolon
         }
-        [49] = {
+        [48] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -1864,10 +1835,10 @@
                 }
             }
         }
-        [50] = {
+        [49] = {
             Kind: Semicolon
         }
-        [51] = {
+        [50] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1884,10 +1855,10 @@
                 }
             }
         }
-        [52] = {
+        [51] = {
             Kind: Semicolon
         }
-        [53] = {
+        [52] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -1915,10 +1886,10 @@
                 }
             }
         }
-        [54] = {
+        [53] = {
             Kind: Semicolon
         }
-        [55] = {
+        [54] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1967,10 +1938,10 @@
                 }
             }
         }
-        [56] = {
+        [55] = {
             Kind: Semicolon
         }
-        [57] = {
+        [56] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -1995,10 +1966,10 @@
                 }
             }
         }
-        [58] = {
+        [57] = {
             Kind: Semicolon
         }
-        [59] = {
+        [58] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -2047,10 +2018,10 @@
                 }
             }
         }
-        [60] = {
+        [59] = {
             Kind: Semicolon
         }
-        [61] = {
+        [60] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -2112,7 +2083,7 @@
                 }
             }
         }
-        [62] = {
+        [61] = {
             Kind: DoStatement
             [0] = {
                 Kind: Block
@@ -3021,7 +2992,7 @@
                 }
             }
         }
-        [63] = {
+        [62] = {
             Kind: RepeatStatement
             [0] = {
                 Kind: ConditionalBlock
@@ -3032,10 +3003,10 @@
                 [1] = nullptr
             }
         }
-        [64] = {
+        [63] = {
             Kind: Semicolon
         }
-        [65] = {
+        [64] = {
             Kind: RepeatStatement
             [0] = {
                 Kind: ConditionalBlock
@@ -3046,10 +3017,10 @@
                 [1] = nullptr
             }
         }
-        [66] = {
+        [65] = {
             Kind: Semicolon
         }
-        [67] = {
+        [66] = {
             Kind: WhileStatement
             [0] = {
                 Kind: ConditionalBlock
@@ -3060,10 +3031,10 @@
                 [1] = nullptr
             }
         }
-        [68] = {
+        [67] = {
             Kind: Semicolon
         }
-        [69] = {
+        [68] = {
             Kind: WhileStatement
             [0] = {
                 Kind: ConditionalBlock
@@ -3074,10 +3045,10 @@
                 [1] = nullptr
             }
         }
-        [70] = {
+        [69] = {
             Kind: Semicolon
         }
-        [71] = {
+        [70] = {
             Kind: DoStatement
             [0] = {
                 Kind: Block
@@ -3215,7 +3186,7 @@
                 }
             }
         }
-        [72] = {
+        [71] = {
             Kind: DoStatement
             [0] = {
                 Kind: Block
@@ -3619,7 +3590,7 @@
                 }
             }
         }
-        [73] = {
+        [72] = {
             Kind: LocalStatement
             [0] = {
                 Kind: FunctionDefinition
@@ -3752,7 +3723,7 @@
                 }
             }
         }
-        [74] = {
+        [73] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -3831,10 +3802,10 @@
                 }
             }
         }
-        [75] = {
+        [74] = {
             Kind: Semicolon
         }
-        [76] = {
+        [75] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -3958,10 +3929,10 @@
                 }
             }
         }
-        [77] = {
+        [76] = {
             Kind: Semicolon
         }
-        [78] = {
+        [77] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -3993,7 +3964,7 @@
                 }
             }
         }
-        [79] = {
+        [78] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -4053,10 +4024,10 @@
                 }
             }
         }
-        [80] = {
+        [79] = {
             Kind: Semicolon
         }
-        [81] = {
+        [80] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -4134,10 +4105,10 @@
                 }
             }
         }
-        [82] = {
+        [81] = {
             Kind: Semicolon
         }
-        [83] = {
+        [82] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -4181,10 +4152,10 @@
                 }
             }
         }
-        [84] = {
+        [83] = {
             Kind: Semicolon
         }
-        [85] = {
+        [84] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -4216,7 +4187,7 @@
                 }
             }
         }
-        [86] = {
+        [85] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -4252,7 +4223,7 @@
                 }
             }
         }
-        [87] = {
+        [86] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -4320,7 +4291,7 @@
                 }
             }
         }
-        [88] = {
+        [87] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -4443,7 +4414,7 @@
                 }
             }
         }
-        [89] = {
+        [88] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -4568,7 +4539,7 @@
                 }
             }
         }
-        [90] = {
+        [89] = {
             Kind: ForStatement
             [0] = {
                 Kind: Identifier
@@ -4593,10 +4564,10 @@
                 }
             }
         }
-        [91] = {
+        [90] = {
             Kind: Semicolon
         }
-        [92] = {
+        [91] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -4616,10 +4587,10 @@
                 }
             }
         }
-        [93] = {
+        [92] = {
             Kind: Semicolon
         }
-        [94] = {
+        [93] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -4639,10 +4610,10 @@
                 }
             }
         }
-        [95] = {
+        [94] = {
             Kind: Semicolon
         }
-        [96] = {
+        [95] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -4662,10 +4633,10 @@
                 }
             }
         }
-        [97] = {
+        [96] = {
             Kind: Semicolon
         }
-        [98] = {
+        [97] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -4685,7 +4656,7 @@
                 }
             }
         }
-        [99] = {
+        [98] = {
             Kind: WhileStatement
             [0] = {
                 Kind: ConditionalBlock
@@ -4828,7 +4799,7 @@
                 }
             }
         }
-        [100] = {
+        [99] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -4893,10 +4864,10 @@
                 }
             }
         }
-        [101] = {
+        [100] = {
             Kind: Semicolon
         }
-        [102] = {
+        [101] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -4981,7 +4952,7 @@
                 }
             }
         }
-        [103] = {
+        [102] = {
             Kind: FunctionDefinition
             [0] = {
                 Kind: FunctionName
@@ -5313,10 +5284,10 @@
                 }
             }
         }
-        [104] = {
+        [103] = {
             Kind: Semicolon
         }
-        [105] = {
+        [104] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -5441,7 +5412,7 @@
                 }
             }
         }
-        [106] = {
+        [105] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -5578,7 +5549,7 @@
                 }
             }
         }
-        [107] = {
+        [106] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -5703,7 +5674,7 @@
                 }
             }
         }
-        [108] = {
+        [107] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -5731,7 +5702,7 @@
                 }
             }
         }
-        [109] = {
+        [108] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -5817,7 +5788,7 @@
                 }
             }
         }
-        [110] = {
+        [109] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -5872,7 +5843,7 @@
                 }
             }
         }
-        [111] = {
+        [110] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -5937,7 +5908,7 @@
                 }
             }
         }
-        [112] = {
+        [111] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -5992,7 +5963,7 @@
                 }
             }
         }
-        [113] = {
+        [112] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -6022,7 +5993,7 @@
                 }
             }
         }
-        [114] = {
+        [113] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -6055,7 +6026,7 @@
                 }
             }
         }
-        [115] = {
+        [114] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6087,7 +6058,7 @@
                 }
             }
         }
-        [116] = {
+        [115] = {
             Kind: LocalStatement
             [0] = {
                 Kind: FunctionDefinition
@@ -6189,10 +6160,10 @@
                 }
             }
         }
-        [117] = {
+        [116] = {
             Kind: Semicolon
         }
-        [118] = {
+        [117] = {
             Kind: LocalStatement
             [0] = {
                 Kind: FunctionDefinition
@@ -6285,7 +6256,7 @@
                 }
             }
         }
-        [119] = {
+        [118] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6302,10 +6273,10 @@
                 }
             }
         }
-        [120] = {
+        [119] = {
             Kind: Semicolon
         }
-        [121] = {
+        [120] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6322,10 +6293,10 @@
                 }
             }
         }
-        [122] = {
+        [121] = {
             Kind: Semicolon
         }
-        [123] = {
+        [122] = {
             Kind: DoStatement
             [0] = {
                 Kind: Block
@@ -6553,7 +6524,7 @@
                 }
             }
         }
-        [124] = {
+        [123] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -6592,10 +6563,10 @@
                 }
             }
         }
-        [125] = {
+        [124] = {
             Kind: Semicolon
         }
-        [126] = {
+        [125] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6636,7 +6607,7 @@
                 }
             }
         }
-        [127] = {
+        [126] = {
             Kind: FunctionDefinition
             [0] = {
                 Kind: FunctionName
@@ -6671,10 +6642,10 @@
                 }
             }
         }
-        [128] = {
+        [127] = {
             Kind: Semicolon
         }
-        [129] = {
+        [128] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6706,7 +6677,7 @@
                 }
             }
         }
-        [130] = {
+        [129] = {
             Kind: FunctionDefinition
             [0] = {
                 Kind: FunctionName
@@ -6748,7 +6719,7 @@
                 }
             }
         }
-        [131] = {
+        [130] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -6776,7 +6747,7 @@
                 }
             }
         }
-        [132] = {
+        [131] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6817,7 +6788,7 @@
                 }
             }
         }
-        [133] = {
+        [132] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6831,10 +6802,10 @@
                 }
             }
         }
-        [134] = {
+        [133] = {
             Kind: Semicolon
         }
-        [135] = {
+        [134] = {
             Kind: DoStatement
             [0] = {
                 Kind: Block
@@ -6962,7 +6933,7 @@
                 }
             }
         }
-        [136] = {
+        [135] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -6984,7 +6955,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [137] = {
+        [136] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -7029,10 +7000,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [138] = {
+        [137] = {
             Kind: Semicolon
         }
-        [139] = {
+        [138] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -7073,10 +7044,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [140] = {
+        [139] = {
             Kind: Semicolon
         }
-        [141] = {
+        [140] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -7123,7 +7094,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [142] = {
+        [141] = {
             Kind: FunctionDefinition
             [0] = {
                 Kind: FunctionName
@@ -7249,7 +7220,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [143] = {
+        [142] = {
             Kind: LocalStatement
             [0] = {
                 Kind: FunctionDefinition
@@ -7364,10 +7335,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [144] = {
+        [143] = {
             Kind: Semicolon
         }
-        [145] = {
+        [144] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -7475,7 +7446,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [146] = {
+        [145] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -7595,7 +7566,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [147] = {
+        [146] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -7645,7 +7616,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [148] = {
+        [147] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -7765,7 +7736,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [149] = {
+        [148] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -7909,7 +7880,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [150] = {
+        [149] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -8053,7 +8024,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [151] = {
+        [150] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -8197,7 +8168,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [152] = {
+        [151] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -8278,7 +8249,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [153] = {
+        [152] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -8315,10 +8286,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [154] = {
+        [153] = {
             Kind: Semicolon
         }
-        [155] = {
+        [154] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -8343,7 +8314,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [156] = {
+        [155] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -8392,10 +8363,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [157] = {
+        [156] = {
             Kind: Semicolon
         }
-        [158] = {
+        [157] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -8420,7 +8391,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [159] = {
+        [158] = {
             Kind: DoStatement
             [0] = {
                 Kind: Block
@@ -8527,7 +8498,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [160] = {
+        [159] = {
             Kind: LocalStatement
             [0] = {
                 Kind: FunctionDefinition
@@ -8624,7 +8595,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [161] = {
+        [160] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -8666,10 +8637,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [162] = {
+        [161] = {
             Kind: Semicolon
         }
-        [163] = {
+        [162] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -8710,10 +8681,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [164] = {
+        [163] = {
             Kind: Semicolon
         }
-        [165] = {
+        [164] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -8755,10 +8726,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [166] = {
+        [165] = {
             Kind: Semicolon
         }
-        [167] = {
+        [166] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -8799,7 +8770,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [168] = {
+        [167] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -8847,7 +8818,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [169] = {
+        [168] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -8999,7 +8970,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [170] = {
+        [169] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AttributeList
@@ -9009,7 +8980,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [171] = {
+        [170] = {
             Kind: IfStatement
             [0] = {
                 Kind: ConditionalBlock
@@ -9148,7 +9119,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [172] = {
+        [171] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -9188,7 +9159,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [173] = {
+        [172] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -9381,7 +9352,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [174] = {
+        [173] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -9408,7 +9379,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [175] = {
+        [174] = {
             Kind: LocalStatement
             [0] = {
                 Kind: FunctionDefinition
@@ -9862,7 +9833,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [176] = {
+        [175] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -9898,7 +9869,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [177] = {
+        [176] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -9922,7 +9893,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [178] = {
+        [177] = {
             Kind: ForStatement
             [0] = {
                 Kind: Identifier
@@ -9978,7 +9949,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [179] = {
+        [178] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -9995,7 +9966,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [180] = {
+        [179] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -10015,7 +9986,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [181] = {
+        [180] = {
             Kind: ForStatement
             [0] = {
                 Kind: Identifier
@@ -10328,7 +10299,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [182] = {
+        [181] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -10345,7 +10316,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [183] = {
+        [182] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
@@ -10369,7 +10340,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [184] = {
+        [183] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -10390,7 +10361,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [185] = {
+        [184] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -10411,7 +10382,7 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 }
             }
         }
-        [186] = {
+        [185] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier

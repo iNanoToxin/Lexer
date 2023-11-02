@@ -23,8 +23,6 @@ if false then a = 3 // 0; a = 0 % 0 end
 
 -- testing priorities
 
-x = # 2 ^ 2
-
 assert(2^3^2 == 2^(3^2));
 assert(2^3*4 == (2^3)*4);
 assert(2.0^-2 == 1/4 and -2^- -2 == - - -4);

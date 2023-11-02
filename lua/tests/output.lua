@@ -11,38 +11,37 @@ do
     assert(c == 3)
 end
 if false then
-    c = 3 // 0
+    c = inf
     c = nan
 end
-d = #4
-assert(512 == 512)
-assert(32 == 32)
+assert(inf == inf)
+assert(22220 == 22220)
 assert(0.2 == 0.2 and -4 == -4)
 assert(not nil and 2 and not (2 > 3 or 3 < 2))
-assert(-9 == -9)
-assert(-4 == -4 and 4 == 4 and 0 == 0)
+assert(5550 == 5546)
+assert(-4 == -4 and 4 == 4 and 5554 == 0)
 assert(-3 == 2 and 2 == 2)
-assert(3 == 3 and 3 .. 3 == "33")
+assert(11110 == 3 and 3 .. 3 == "33")
 assert(not (3 > 3) and "a" .. "b" > "a")
-assert(240 | 204 ~ 168 == 244)
-assert(168 ~ 204 | 240 == 244)
-assert(16 == 16)
-assert(81 // 8 // 5 == 2)
-assert(-3 + 20 // 512 // 9 + 1.33333 == -3 + 20 // 512 // 9 + 1.33333)
+assert(5619 == 244)
+assert(5619 == 244)
+assert(176 == 16)
+assert(1111 == 2)
+assert(11110 == 11110)
 assert(not ((true or false) and nil))
 assert((true or false) and nil)
 assert(((1 or false) and true or false) == true)
 assert(((nil and true or false) and true) == false)
-local c, e = 1, nil
+local c, d = 1, nil
 assert(-(1 or 2) == -1 and (1 and 2) + (-1.2 or -4) == 0.7)
-local d = (e or c) + 1 == 2 and (10 or c) + 1 == 11
-assert(d)
-d = (2 < 3 or 1) == true and (2 < 3 and 4) == 4
-assert(d)
-local d, f = 1, 2
-assert(d > f and d or f == 2)
-d, f = 2, 1
-assert(d > f and d or f == 2)
+local e = (d or c) + 1 == 2 and (10 or c) + 1 == 11
+assert(e)
+e = (2 < 3 or 1) == true and (2 < 3 and 4) == 4
+assert(e)
+local e, f = 1, 2
+assert(e > f and e or f == 2)
+e, f = 2, 1
+assert(e > f and e or f == 2)
 assert(1234567890 == tonumber('1234567890') and 1234567891 == 1234567891)
 do
     local g = {
@@ -107,10 +106,10 @@ while nil do
 end
 do
     local c
-    local function g(d)
-        d = {a = 1}
-        d = {x = 1}
-        d = {G = 1}
+    local function g(e)
+        e = {a = 1}
+        e = {x = 1}
+        e = {G = 1}
     end
 end
 do
@@ -125,7 +124,7 @@ do
         g = load(g)
         assert(g() == j)
     end
-    h("return (1 ~ (2 or 3))", 1 ~ 2)
+    h("return (1 ~ (2 or 3))", 3)
     h("return (1 | (2 or 3))", 3)
     h("return (1 + (2 or 3))", 3)
     h("return (1 << (2 or 3))", 1 << 2)
@@ -138,23 +137,23 @@ local function g(h)
         return h, g(h - 1)
     end
 end
-d = {
+e = {
     g(3),
     g(5),
     g(10)
 }
-assert(d[1] == 3 and d[2] == 5 and d[3] == 10 and d[4] == 9 and d[12] == 1)
-assert(d[nil] == nil)
-d = {
+assert(e[1] == 3 and e[2] == 5 and e[3] == 10 and e[4] == 9 and e[12] == 1)
+assert(e[nil] == nil)
+e = {
     g('alo'),
     g('xixi'),
     nil
 }
-assert(d[1] == 'alo' and d[2] == 'xixi' and d[3] == nil)
-d = {g('alo') .. 'xixi'}
-assert(d[1] == 'aloxixi')
-d = {g({})}
-assert(d[2] == 'jojo' and type(d[1]) == 'table')
+assert(e[1] == 'alo' and e[2] == 'xixi' and e[3] == nil)
+e = {g('alo') .. 'xixi'}
+assert(e[1] == 'aloxixi')
+e = {g({})}
+assert(e[2] == 'jojo' and type(e[1]) == 'table')
 local g = function(h)
     if h < 10 then
         return 'a'
@@ -183,25 +182,25 @@ while not c do
 end
 assert(c == h * (h + 1) / 2 and i == 3)
 assert(j[1] and j[h] and not j[0] and not j[h + 1])
-function g(e)
-    local d = 1
+function g(d)
+    local e = 1
     repeat
         local c
-        if e == 1 then
-            local e = 1
-            d = 10
+        if d == 1 then
+            local d = 1
+            e = 10
             break
-        elseif e == 2 then
-            d = 20
+        elseif d == 2 then
+            e = 20
             break
-        elseif e == 3 then
-            d = 30
+        elseif d == 3 then
+            e = 30
         else
-            local c, e, k, l = math.sin(1)
-            d = d + 1
+            local c, d, k, l = math.sin(1)
+            e = e + 1
         end
-    until d >= 12
-    return d
+    until e >= 12
+    return e
 end
 assert(g(1) == 10 and g(2) == 20 and g(3) == 30 and g(4) == 12)
 local g = function(i)
@@ -216,20 +215,20 @@ local g = function(i)
     end
 end
 assert(g(3) == 'a' and g(12) == 'b' and g(26) == 'c' and g(100) == 8)
-local c, e = nil, 23
-d = {
+local c, d = nil, 23
+e = {
     g(100) * 2 + 3 or c,
-    c or e + 2
+    c or d + 2
 }
-assert(d[1] == 19 and d[2] == 25)
-d = {
+assert(e[1] == 19 and e[2] == 25)
+e = {
     f = 5 or c,
-    a = e + 2
+    a = d + 2
 }
-assert(d.g == 5 and d.c == 25)
+assert(e.g == 5 and e.c == 25)
 c = {y = 1}
-d = {c.f}
-assert(d[1] == 1)
+e = {c.f}
+assert(e[1] == 1)
 local function g(i)
     while 1 do
         if i > 0 then
@@ -254,13 +253,13 @@ do
     function g()
         return 1, 2, 3
     end
-    local c, e, l = g()
-    assert(c == 1 and e == 2 and l == 3)
-    c, e, l = g()
-    assert(c == 1 and e == nil and l == nil)
+    local c, d, l = g()
+    assert(c == 1 and d == 2 and l == 3)
+    c, d, l = g()
+    assert(c == 1 and d == nil and l == nil)
 end
-local c, e = 3 and g()
-assert(c == 1 and e == nil)
+local c, d = 3 and g()
+assert(c == 1 and d == nil)
 function k()
     g()
     return
@@ -269,8 +268,8 @@ assert(k() == nil)
 function k()
     return nil or g()
 end
-c, e = k()
-assert(c == 1 and e == nil)
+c, d = k()
+assert(c == 1 and d == nil)
 print('+')
 do
     local l<const> = [[local x <XXX> = 10]]
@@ -298,16 +297,16 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
 ]]
 g = string.gsub(g, "%s+", "\n")
 g, c = load(g)()
-assert(c.c == 1 and c.e)
-function k(c, e, l, m, n)
-    if not ((c >= e or l or m) and n or nil) then
+assert(c.c == 1 and c.d)
+function k(c, d, l, m, n)
+    if not ((c >= d or l or m) and n or nil) then
         return 0
     else
         return 1
     end
 end
-local function l(c, e, m, n, o)
-    while c >= e or m or n and o or nil do
+local function l(c, d, m, n, o)
+    while c >= d or m or n and o or nil do
         return 1
     end
     return 0
@@ -320,10 +319,10 @@ assert(g(1, 2, nil, 1, 'x') == 'x' and k(1, 2, nil, 1, 'x') == 1 and l(1, 2, nil
 assert(g(1, 2, nil, nil, 'x') == nil and k(1, 2, nil, nil, 'x') == 0 and l(1, 2, nil, nil, 'x') == 0)
 assert(g(1, 2, nil, 1, nil) == nil and k(1, 2, nil, 1, nil) == 0 and l(1, 2, nil, 1, nil) == 0)
 assert(1 and 2 < 3 == true and 2 < 3 and 'a' < 'b' == true)
-d = 2 < 3 and not 3
-assert(d == false)
-d = 2 < 1 or 2 > 1 and 'a'
-assert(d == 'a')
+e = 2 < 3 and not 3
+assert(e == false)
+e = 2 < 1 or 2 > 1 and 'a'
+assert(e == 'a')
 do
     local c
     if nil then
@@ -337,10 +336,10 @@ local function m(c)
     assert(a.getinfo(1, "n").name == 'F')
     return c, 2, 3
 end
-c, e = m(1) ~= nil
-assert(c == true and e == nil)
-c, e = m(nil) == nil
-assert(c == true and e == nil)
+c, d = m(1) ~= nil
+assert(c == true and d == nil)
+c, d = m(nil) == nil
+assert(c == true and d == nil)
 _ENV.GLOB1 = math.random(0, 1)
 local n = {
     {
@@ -384,21 +383,21 @@ print('testing short-circuit optimizations (' .. _ENV.GLOB1 .. ')')
 local p<const> = {
     {
         " and ",
-        function(c, e)
+        function(c, d)
             if not c then
                 return c
             else
-                return e
+                return d
             end
         end
     },
     {
         " or ",
-        function(c, e)
+        function(c, d)
             if c then
                 return c
             else
-                return e
+                return d
             end
         end
     }

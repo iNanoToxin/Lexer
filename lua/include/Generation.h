@@ -262,21 +262,28 @@ public:
                 return;
             }
         }
-        /*else if (binOp == "~")
+        else if (binOp == "~")
         {
             if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
             {
-                value = (int) lhsN & (int) rhsN;
+                value = (int) lhsN ^ (int) rhsN;
             }
             else
             {
                 return;
             }
-        }*/
+        }
+        else if (binOp == "//")
+        {
+            value = std::floor(lhsN / rhsN);
+        }
+
         else
         {
             return;
         }
+
+
 
         node->setKind(Kind::Numeric);
         node->setChildren({Number(value)});
