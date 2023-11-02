@@ -91,3 +91,8 @@ bool isNull(const Token& currentToken)
 {
     return currentToken.is("nil");
 }
+
+bool isRhsAssociative(const Token& token)
+{
+    return token.literal == "^" || token.literal == "..";
+}
