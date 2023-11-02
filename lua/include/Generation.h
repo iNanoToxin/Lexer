@@ -692,7 +692,7 @@ public:
         auto chunk = parser.parse(source);
 
         Memory memory;
-        memory.refactor(chunk);
+        // memory.refactor(chunk);
 
 
         auto generatedString = toString(chunk, 0);
@@ -737,39 +737,74 @@ public:
         return std::string(depth * 4, ' ');
     }
 
-    static int getPrecedence(const std::string& binOp, bool isUnOp = false)
+    static int getPrecedence(const OperatorKind& opKind, bool isUnOp = false)
     {
-        static const std::vector<std::vector<std::string>> priority = {
-            {"or"},
-            {"and"},
-            {"<", ">", "<=", ">=", "~=", "=="},
-            {"|"},
-            {"~"},
-            {"&"},
-            {"<<", ">>"},
-            {".."},
-            {"+", "-"},
-            {"*", "/", "//", "%"},
-            {"not", "#", "-", "~"},
-            {"^"}
-        };
-
         if (isUnOp)
         {
-            return priority.size() - 1;
+            return 11;
         }
 
-        for (int i = 0; i < priority.size(); i++)
+        switch (opKind)
         {
-            for (auto& e: priority[i])
+            case OperatorKind::LOR:
             {
-                if (e == binOp)
-                {
-                    return i + 1;
-                }
+                return 1;
+            }
+            case OperatorKind::LAND:
+            {
+                return 2;
+            }
+            case OperatorKind::LT:
+            case OperatorKind::GT:
+            case OperatorKind::LE:
+            case OperatorKind::GE:
+            case OperatorKind::INEQ:
+            case OperatorKind::EQ:
+            {
+                return 3;
+            }
+            case OperatorKind::BOR:
+            {
+                return 4;
+            }
+            case OperatorKind::BXOR:
+            {
+                return 5;
+            }
+            case OperatorKind::BAND:
+            {
+                return 6;
+            }
+            case OperatorKind::SHL:
+            case OperatorKind::SHR:
+            {
+                return 7;
+            }
+            case OperatorKind::CONCAT:
+            {
+                return 8;
+            }
+            case OperatorKind::ADD:
+            case OperatorKind::SUB:
+            {
+                return 9;
+            }
+            case OperatorKind::MUL:
+            case OperatorKind::DIV:
+            case OperatorKind::IDIV:
+            case OperatorKind::MOD:
+            {
+                return 10;
+            }
+            case OperatorKind::POW:
+            {
+                return 12;
+            }
+            default:
+            {
+                return -1;
             }
         }
-        return -1;
     }
 
 
@@ -800,7 +835,7 @@ public:
         {
             case Kind::BinaryOperation:
             {
-                auto binOp = node->getChild<std::string>(0);
+                auto binOp = node->getChild<OperatorKind>(0);
                 auto lhs = node->getChild<p_Node>(1);
                 auto rhs = node->getChild<p_Node>(2);
 
@@ -810,13 +845,13 @@ public:
 
                 if (lhs->isKind(Kind::BinaryOperation))
                 {
-                    auto lhsOp = lhs->getChild<std::string>(0);
+                    auto lhsOp = lhs->getChild<OperatorKind>(0);
 
                     if (getPrecedence(lhsOp) < getPrecedence(binOp))
                     {
                         lhsFmt = "({0})";
                     }
-                    else if (binOp == "^" || binOp == "..")
+                    else if (Util::getOperator(binOp) == "^" || Util::getOperator(binOp) == "..")
                     {
                         lhsFmt = "({0})";
                     }
@@ -824,7 +859,7 @@ public:
 
                 if (rhs->isKind(Kind::BinaryOperation))
                 {
-                    auto rhsOp = rhs->getChild<std::string>(0);
+                    auto rhsOp = rhs->getChild<OperatorKind>(0);
 
                     if (getPrecedence(rhsOp) < getPrecedence(binOp))
                     {
@@ -838,7 +873,7 @@ public:
                         lhsFmt,
                         toString(lhs, depth)
                     ),
-                    binOp,
+                    Util::getOperator(binOp),
                     format(
                         rhsFmt,
                         toString(rhs, depth)
@@ -847,7 +882,7 @@ public:
             }
             case Kind::UnaryOperation:
             {
-                auto unOp = node->getChild<std::string>(0);
+                auto unOp = node->getChild<OperatorKind>(0);
                 auto expression = node->getChild<p_Node>(1);
 
                 std::string fmt = "{0}{1}{2}";
@@ -856,8 +891,8 @@ public:
                 {
                     case Kind::UnaryOperation:
                     {
-                        auto innerOperator = expression->getChild<std::string>(0);
-                        if (unOp == "-" && unOp == innerOperator)
+                        auto innerOperator = expression->getChild<OperatorKind>(0);
+                        if (unOp == OperatorKind::UNM && unOp == innerOperator)
                         {
                             fmt = "{0}{1}({2})";
                         }
@@ -865,7 +900,7 @@ public:
                     }
                     case Kind::BinaryOperation:
                     {
-                        auto binOp = expression->getChild<std::string>(0);
+                        auto binOp = expression->getChild<OperatorKind>(0);
                         if (getPrecedence(binOp) < getPrecedence(unOp, true))
                         {
                             fmt = "{0}{1}({2})";
@@ -880,8 +915,8 @@ public:
 
                 return format(
                     fmt,
-                    unOp,
-                    unOp == "not" ? " " : "",
+                    Util::getOperator(unOp),
+                    unOp == OperatorKind::LNOT ? " " : "",
                     toString(expression, depth)
                 );
             }

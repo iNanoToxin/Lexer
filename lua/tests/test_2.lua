@@ -113,7 +113,7 @@ do   -- bug since 5.4.0
     code[#code + 1] = i .. ".1,"
   end
   code[#code + 1] = "};"
-  code = table.concat(code)
+  code = table.CONCAT(code)
 
   -- add "ret" to the end of that code and checks that
   -- it produces the expected value "val"

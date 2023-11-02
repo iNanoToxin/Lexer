@@ -223,7 +223,6 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'a'
@@ -267,7 +266,6 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = '//'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 3
@@ -295,7 +293,6 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = '%'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 0
@@ -322,17 +319,14 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '^'
                             [1] = {
                                 Kind: Numeric
                                 [0] = 2
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '^'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 3
@@ -345,14 +339,12 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '^'
                             [1] = {
                                 Kind: Numeric
                                 [0] = 2
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '^'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 3
@@ -382,13 +374,10 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '*'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '^'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 2
@@ -405,10 +394,8 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '*'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '^'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 2
@@ -442,20 +429,16 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '^'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 2
                                 }
                                 [2] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 2
@@ -464,7 +447,6 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '/'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1
@@ -477,23 +459,18 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: UnaryOperation
-                                [0] = '-'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '^'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 2
                                     }
                                     [2] = {
                                         Kind: UnaryOperation
-                                        [0] = '-'
                                         [1] = {
                                             Kind: UnaryOperation
-                                            [0] = '-'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 2
@@ -504,13 +481,10 @@
                             }
                             [2] = {
                                 Kind: UnaryOperation
-                                [0] = '-'
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: UnaryOperation
-                                        [0] = '-'
                                         [1] = {
                                             Kind: Numeric
                                             [0] = 4
@@ -538,13 +512,10 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: UnaryOperation
-                                [0] = 'not'
                                 [1] = {
                                     Kind: Null
                                     [0] = 'nil'
@@ -557,13 +528,10 @@
                         }
                         [2] = {
                             Kind: UnaryOperation
-                            [0] = 'not'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'or'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '>'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 2
@@ -575,7 +543,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '<'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -606,16 +573,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '-'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '-'
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -633,10 +596,8 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '-'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 0
@@ -670,19 +631,14 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '^'
                                         [1] = {
                                             Kind: Numeric
                                             [0] = 2
@@ -695,7 +651,6 @@
                                 }
                                 [2] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 4
@@ -704,13 +659,10 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '^'
                                     [1] = {
                                         Kind: UnaryOperation
-                                        [0] = '-'
                                         [1] = {
                                             Kind: Numeric
                                             [0] = 2
@@ -729,16 +681,12 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '-'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '*'
                                         [1] = {
                                             Kind: Numeric
                                             [0] = 2
@@ -782,16 +730,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '%'
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -809,13 +753,10 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -847,16 +788,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '*'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 2
@@ -868,7 +805,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '/'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -886,13 +822,10 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '..'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '+'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 1
@@ -904,7 +837,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '*'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -939,16 +871,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: UnaryOperation
-                            [0] = 'not'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '>'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '+'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 2
@@ -960,7 +888,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '*'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -974,10 +901,8 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '>'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '..'
                                 [1] = {
                                     Kind: String
                                     [0] = "a"
@@ -1011,24 +936,20 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '|'
                             [1] = {
                                 Kind: Numeric
                                 [0] = 240
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '~'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 204
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '&'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 170
@@ -1060,16 +981,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '|'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '~'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '&'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 253
@@ -1109,17 +1026,14 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '&'
                             [1] = {
                                 Kind: Numeric
                                 [0] = 240
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 15
@@ -1150,16 +1064,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '//'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '//'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '^'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -1171,7 +1081,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '^'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 2
@@ -1207,16 +1116,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '+'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -1224,13 +1129,10 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '//'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '//'
                                         [1] = {
                                             Kind: BinaryOperation
-                                            [0] = '*'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 4
@@ -1242,14 +1144,12 @@
                                         }
                                         [2] = {
                                             Kind: BinaryOperation
-                                            [0] = '^'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 2
                                             }
                                             [2] = {
                                                 Kind: BinaryOperation
-                                                [0] = '^'
                                                 [1] = {
                                                     Kind: Numeric
                                                     [0] = 3
@@ -1269,10 +1169,8 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '/'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '%'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 4
@@ -1290,13 +1188,10 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '+'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 3
@@ -1304,13 +1199,10 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '//'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '//'
                                         [1] = {
                                             Kind: BinaryOperation
-                                            [0] = '*'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 4
@@ -1322,14 +1214,12 @@
                                         }
                                         [2] = {
                                             Kind: BinaryOperation
-                                            [0] = '^'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 2
                                             }
                                             [2] = {
                                                 Kind: BinaryOperation
-                                                [0] = '^'
                                                 [1] = {
                                                     Kind: Numeric
                                                     [0] = 3
@@ -1349,10 +1239,8 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '/'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '%'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 4
@@ -1384,13 +1272,10 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: UnaryOperation
-                        [0] = 'not'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'or'
                                 [1] = {
                                     Kind: Boolean
                                     [0] = 1
@@ -1421,10 +1306,8 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'or'
                             [1] = {
                                 Kind: Boolean
                                 [0] = 1
@@ -1454,16 +1337,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'or'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'or'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 1
@@ -1503,16 +1382,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'or'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'and'
                                     [1] = {
                                         Kind: Null
                                         [0] = 'nil'
@@ -1583,16 +1458,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: UnaryOperation
-                                [0] = '-'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'or'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 1
@@ -1605,7 +1476,6 @@
                             }
                             [2] = {
                                 Kind: UnaryOperation
-                                [0] = '-'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1
@@ -1614,13 +1484,10 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'and'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 1
@@ -1632,10 +1499,8 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = 'or'
                                     [1] = {
                                         Kind: UnaryOperation
-                                        [0] = '-'
                                         [1] = {
                                             Kind: Numeric
                                             [0] = 1.2
@@ -1643,7 +1508,6 @@
                                     }
                                     [2] = {
                                         Kind: UnaryOperation
-                                        [0] = '-'
                                         [1] = {
                                             Kind: Numeric
                                             [0] = 4
@@ -1678,16 +1542,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'or'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'b'
@@ -1709,13 +1569,10 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'or'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 10
@@ -1775,16 +1632,12 @@
                 Kind: ExpressionList
                 [0] = {
                     Kind: BinaryOperation
-                    [0] = 'and'
                     [1] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'or'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '<'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 2
@@ -1806,13 +1659,10 @@
                     }
                     [2] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '<'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 2
@@ -1901,13 +1751,10 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'or'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '>'
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'x'
@@ -1924,7 +1771,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'y'
@@ -1981,13 +1827,10 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'or'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '>'
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'x'
@@ -2004,7 +1847,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'y'
@@ -2033,10 +1875,8 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Numeric
                                 [0] = 1234567890
@@ -2061,10 +1901,8 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1234567890
@@ -2129,7 +1967,6 @@
                                         Kind: TableValue
                                         [0] = {
                                             Kind: UnaryOperation
-                                            [0] = '-'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 10
@@ -2140,7 +1977,6 @@
                                         Kind: TableValue
                                         [0] = {
                                             Kind: UnaryOperation
-                                            [0] = '-'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 5
@@ -2158,7 +1994,6 @@
                                         Kind: TableValue
                                         [0] = {
                                             Kind: UnaryOperation
-                                            [0] = '-'
                                             [1] = {
                                                 Kind: Numeric
                                                 [0] = 10000
@@ -2679,7 +2514,6 @@
                                                     Kind: ExpressionList
                                                     [0] = {
                                                         Kind: BinaryOperation
-                                                        [0] = '=='
                                                         [1] = {
                                                             Kind: Identifier
                                                             [0] = 'res'
@@ -2823,7 +2657,6 @@
                                                     Kind: ExpressionList
                                                     [0] = {
                                                         Kind: BinaryOperation
-                                                        [0] = '=='
                                                         [1] = {
                                                             Kind: Identifier
                                                             [0] = 'res'
@@ -2947,7 +2780,6 @@
                                                     Kind: ExpressionList
                                                     [0] = {
                                                         Kind: BinaryOperation
-                                                        [0] = '=='
                                                         [1] = {
                                                             Kind: Identifier
                                                             [0] = 'res'
@@ -3248,10 +3080,8 @@
                                     }
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '+'
                                         [1] = {
                                             Kind: UnaryOperation
-                                            [0] = '#'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'code'
@@ -3268,7 +3098,6 @@
                                 Kind: ExpressionList
                                 [0] = {
                                     Kind: BinaryOperation
-                                    [0] = '..'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'i'
@@ -3294,10 +3123,8 @@
                             }
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = '#'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'code'
@@ -3339,7 +3166,7 @@
                                 }
                                 [1] = {
                                     Kind: Identifier
-                                    [0] = 'concat'
+                                    [0] = 'CONCAT'
                                 }
                             }
                             [1] = {
@@ -3393,7 +3220,6 @@
                                             Kind: ExpressionList
                                             [0] = {
                                                 Kind: BinaryOperation
-                                                [0] = '..'
                                                 [1] = {
                                                     Kind: Identifier
                                                     [0] = 'code'
@@ -3448,7 +3274,6 @@
                                             Kind: ExpressionList
                                             [0] = {
                                                 Kind: BinaryOperation
-                                                [0] = '=='
                                                 [1] = {
                                                     Kind: FunctionCall
                                                     [0] = {
@@ -3488,7 +3313,6 @@
                             }
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '~'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1
@@ -3517,7 +3341,6 @@
                             }
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '|'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1
@@ -3546,7 +3369,6 @@
                             }
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1
@@ -3575,7 +3397,6 @@
                             }
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '<<'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1
@@ -3615,7 +3436,6 @@
                                 Kind: ConditionalBlock
                                 [0] = {
                                     Kind: BinaryOperation
-                                    [0] = '~='
                                     [1] = {
                                         Kind: FunctionCall
                                         [0] = {
@@ -3666,7 +3486,6 @@
                                 Kind: ConditionalBlock
                                 [0] = {
                                     Kind: BinaryOperation
-                                    [0] = '>'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'i'
@@ -3698,7 +3517,6 @@
                                                         Kind: ExpressionList
                                                         [0] = {
                                                             Kind: BinaryOperation
-                                                            [0] = '-'
                                                             [1] = {
                                                                 Kind: Identifier
                                                                 [0] = 'i'
@@ -3817,19 +3635,14 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'and'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '=='
                                         [1] = {
                                             Kind: Index
                                             [0] = {
@@ -3848,7 +3661,6 @@
                                     }
                                     [2] = {
                                         Kind: BinaryOperation
-                                        [0] = '=='
                                         [1] = {
                                             Kind: Index
                                             [0] = {
@@ -3868,7 +3680,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: Index
                                         [0] = {
@@ -3888,7 +3699,6 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: Index
                                     [0] = {
@@ -3908,7 +3718,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Index
                                 [0] = {
@@ -3944,7 +3753,6 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: Index
                             [0] = {
@@ -4039,13 +3847,10 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: Index
                                     [0] = {
@@ -4064,7 +3869,6 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: Index
                                     [0] = {
@@ -4084,7 +3888,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Index
                                 [0] = {
@@ -4127,7 +3930,6 @@
                             Kind: TableValue
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = '..'
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -4167,7 +3969,6 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: Index
                             [0] = {
@@ -4235,10 +4036,8 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Index
                                 [0] = {
@@ -4257,7 +4056,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -4324,7 +4122,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '<'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'i'
@@ -4352,7 +4149,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '<'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'i'
@@ -4380,7 +4176,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '<'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'i'
@@ -4426,16 +4221,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: FunctionCall
                                         [0] = {
@@ -4460,7 +4251,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: FunctionCall
                                         [0] = {
@@ -4486,7 +4276,6 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -4512,7 +4301,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -4662,7 +4450,6 @@
                 Kind: ConditionalBlock
                 [0] = {
                     Kind: UnaryOperation
-                    [0] = 'not'
                     [1] = {
                         Kind: Identifier
                         [0] = 'a'
@@ -4723,7 +4510,6 @@
                                 }
                                 [3] = {
                                     Kind: UnaryOperation
-                                    [0] = '-'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 1
@@ -4744,7 +4530,6 @@
                                             Kind: ExpressionList
                                             [0] = {
                                                 Kind: BinaryOperation
-                                                [0] = '+'
                                                 [1] = {
                                                     Kind: Identifier
                                                     [0] = 'a'
@@ -4811,27 +4596,22 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'a'
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '/'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '*'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'n'
                                     }
                                     [2] = {
                                         Kind: BinaryOperation
-                                        [0] = '+'
                                         [1] = {
                                             Kind: Identifier
                                             [0] = 'n'
@@ -4850,7 +4630,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'i'
@@ -4879,13 +4658,10 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: Index
                                     [0] = {
@@ -4911,7 +4687,6 @@
                             }
                             [2] = {
                                 Kind: UnaryOperation
-                                [0] = 'not'
                                 [1] = {
                                     Kind: Index
                                     [0] = {
@@ -4927,7 +4702,6 @@
                         }
                         [2] = {
                             Kind: UnaryOperation
-                            [0] = 'not'
                             [1] = {
                                 Kind: Index
                                 [0] = {
@@ -4936,7 +4710,6 @@
                                 }
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '+'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'n'
@@ -5001,7 +4774,6 @@
                             Kind: ConditionalBlock
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = '>='
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'x'
@@ -5032,7 +4804,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '=='
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'b'
@@ -5096,7 +4867,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '=='
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'b'
@@ -5140,7 +4910,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '=='
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'b'
@@ -5247,7 +5016,6 @@
                                                     Kind: ExpressionList
                                                     [0] = {
                                                         Kind: BinaryOperation
-                                                        [0] = '+'
                                                         [1] = {
                                                             Kind: Identifier
                                                             [0] = 'x'
@@ -5299,16 +5067,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: FunctionCall
                                         [0] = {
@@ -5333,7 +5097,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: FunctionCall
                                         [0] = {
@@ -5359,7 +5122,6 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -5385,7 +5147,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -5445,7 +5206,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '<'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'i'
@@ -5473,7 +5233,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '<'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'i'
@@ -5501,7 +5260,6 @@
                                         Kind: ConditionalBlock
                                         [0] = {
                                             Kind: BinaryOperation
-                                            [0] = '<'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'i'
@@ -5561,16 +5319,12 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: FunctionCall
                                         [0] = {
@@ -5595,7 +5349,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: FunctionCall
                                         [0] = {
@@ -5621,7 +5374,6 @@
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -5647,7 +5399,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -5721,13 +5472,10 @@
                             Kind: TableValue
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = 'or'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '+'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '*'
                                         [1] = {
                                             Kind: FunctionCall
                                             [0] = {
@@ -5765,14 +5513,12 @@
                             Kind: TableValue
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = 'or'
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'a'
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '+'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'b'
@@ -5800,10 +5546,8 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Index
                                 [0] = {
@@ -5822,7 +5566,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Index
                                 [0] = {
@@ -5866,10 +5609,8 @@
                             }
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'or'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = '+'
                                     [1] = {
                                         Kind: Numeric
                                         [0] = 2
@@ -5893,7 +5634,6 @@
                             }
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '+'
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'b'
@@ -5920,10 +5660,8 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Member
                                 [0] = {
@@ -5942,7 +5680,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Member
                                 [0] = {
@@ -6038,7 +5775,6 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: Index
                             [0] = {
@@ -6093,7 +5829,6 @@
                                             Kind: ConditionalBlock
                                             [0] = {
                                                 Kind: BinaryOperation
-                                                [0] = '>'
                                                 [1] = {
                                                     Kind: Identifier
                                                     [0] = 'i'
@@ -6118,7 +5853,6 @@
                                                         Kind: ExpressionList
                                                         [0] = {
                                                             Kind: BinaryOperation
-                                                            [0] = '-'
                                                             [1] = {
                                                                 Kind: Identifier
                                                                 [0] = 'i'
@@ -6198,7 +5932,6 @@
                                             Kind: ConditionalBlock
                                             [0] = {
                                                 Kind: BinaryOperation
-                                                [0] = '>'
                                                 [1] = {
                                                     Kind: Identifier
                                                     [0] = 'i'
@@ -6223,7 +5956,6 @@
                                                         Kind: ExpressionList
                                                         [0] = {
                                                             Kind: BinaryOperation
-                                                            [0] = '-'
                                                             [1] = {
                                                                 Kind: Identifier
                                                                 [0] = 'i'
@@ -6385,13 +6117,10 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'and'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '=='
                                         [1] = {
                                             Kind: Identifier
                                             [0] = 'a'
@@ -6403,7 +6132,6 @@
                                     }
                                     [2] = {
                                         Kind: BinaryOperation
-                                        [0] = '=='
                                         [1] = {
                                             Kind: Identifier
                                             [0] = 'b'
@@ -6416,7 +6144,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'c'
@@ -6477,13 +6204,10 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'and'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '=='
                                         [1] = {
                                             Kind: Identifier
                                             [0] = 'a'
@@ -6495,7 +6219,6 @@
                                     }
                                     [2] = {
                                         Kind: BinaryOperation
-                                        [0] = '=='
                                         [1] = {
                                             Kind: Identifier
                                             [0] = 'b'
@@ -6508,7 +6231,6 @@
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'c'
@@ -6543,7 +6265,6 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: Numeric
                             [0] = 3
@@ -6578,10 +6299,8 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'a'
@@ -6593,7 +6312,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'b'
@@ -6657,7 +6375,6 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: FunctionCall
                             [0] = {
@@ -6697,7 +6414,6 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = 'or'
                                 [1] = {
                                     Kind: Null
                                     [0] = 'nil'
@@ -6759,10 +6475,8 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'a'
@@ -6774,7 +6488,6 @@
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'b'
@@ -7059,10 +6772,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Member
                                 [0] = {
@@ -7136,22 +6847,16 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             Kind: ConditionalBlock
                             [0] = {
                                 Kind: UnaryOperation
-                                [0] = 'not'
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = 'or'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = 'and'
                                         [1] = {
                                             Kind: BinaryOperation
-                                            [0] = 'or'
                                             [1] = {
                                                 Kind: BinaryOperation
-                                                [0] = 'or'
                                                 [1] = {
                                                     Kind: BinaryOperation
-                                                    [0] = '>='
                                                     [1] = {
                                                         Kind: Identifier
                                                         [0] = 'a'
@@ -7261,16 +6966,12 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                 Kind: ConditionalBlock
                                 [0] = {
                                     Kind: BinaryOperation
-                                    [0] = 'or'
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = 'or'
                                         [1] = {
                                             Kind: BinaryOperation
-                                            [0] = 'or'
                                             [1] = {
                                                 Kind: BinaryOperation
-                                                [0] = '>='
                                                 [1] = {
                                                     Kind: Identifier
                                                     [0] = 'a'
@@ -7287,7 +6988,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                         }
                                         [2] = {
                                             Kind: BinaryOperation
-                                            [0] = 'and'
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'd'
@@ -7350,13 +7050,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7385,7 +7082,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7415,7 +7111,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -7458,13 +7153,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7497,7 +7189,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7531,7 +7222,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -7578,7 +7268,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '~='
                         [1] = {
                             Kind: FunctionCall
                             [0] = {
@@ -7628,13 +7317,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7667,7 +7353,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7701,7 +7386,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -7748,13 +7432,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7795,7 +7476,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7837,7 +7517,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -7892,13 +7571,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7939,7 +7615,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -7981,7 +7656,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -8036,13 +7710,10 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -8083,7 +7754,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: FunctionCall
                                     [0] = {
@@ -8125,7 +7795,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: FunctionCall
                                 [0] = {
@@ -8180,23 +7849,18 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = 'and'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 1
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '<'
                                         [1] = {
                                             Kind: Numeric
                                             [0] = 2
@@ -8214,7 +7878,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '<'
                                 [1] = {
                                     Kind: Numeric
                                     [0] = 2
@@ -8227,10 +7890,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: BinaryOperation
-                                [0] = '<'
                                 [1] = {
                                     Kind: String
                                     [0] = 'a'
@@ -8262,10 +7923,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 Kind: ExpressionList
                 [0] = {
                     Kind: BinaryOperation
-                    [0] = 'and'
                     [1] = {
                         Kind: BinaryOperation
-                        [0] = '<'
                         [1] = {
                             Kind: Numeric
                             [0] = 2
@@ -8277,7 +7936,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     }
                     [2] = {
                         Kind: UnaryOperation
-                        [0] = 'not'
                         [1] = {
                             Kind: Numeric
                             [0] = 3
@@ -8301,7 +7959,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: Identifier
                             [0] = 'x'
@@ -8327,10 +7984,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 Kind: ExpressionList
                 [0] = {
                     Kind: BinaryOperation
-                    [0] = 'or'
                     [1] = {
                         Kind: BinaryOperation
-                        [0] = '<'
                         [1] = {
                             Kind: Numeric
                             [0] = 2
@@ -8342,10 +7997,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     }
                     [2] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '>'
                             [1] = {
                                 Kind: Numeric
                                 [0] = 2
@@ -8378,7 +8031,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '=='
                         [1] = {
                             Kind: Identifier
                             [0] = 'x'
@@ -8483,7 +8135,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = '=='
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'a'
@@ -8529,7 +8180,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                     Kind: ExpressionList
                                     [0] = {
                                         Kind: BinaryOperation
-                                        [0] = '=='
                                         [1] = {
                                             Kind: Member
                                             [0] = {
@@ -8612,7 +8262,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 Kind: ExpressionList
                 [0] = {
                     Kind: BinaryOperation
-                    [0] = '~='
                     [1] = {
                         Kind: FunctionCall
                         [0] = {
@@ -8652,10 +8301,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'a'
@@ -8667,7 +8314,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'b'
@@ -8701,7 +8347,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 Kind: ExpressionList
                 [0] = {
                     Kind: BinaryOperation
-                    [0] = '=='
                     [1] = {
                         Kind: FunctionCall
                         [0] = {
@@ -8741,10 +8386,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'and'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'a'
@@ -8756,7 +8399,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '=='
                             [1] = {
                                 Kind: Identifier
                                 [0] = 'b'
@@ -8944,7 +8586,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                             Kind: TableValue
                                             [0] = {
                                                 Kind: BinaryOperation
-                                                [0] = '=='
                                                 [1] = {
                                                     Kind: Numeric
                                                     [0] = 0
@@ -8986,7 +8627,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                 Kind: ConditionalBlock
                 [0] = {
                     Kind: BinaryOperation
-                    [0] = '=='
                     [1] = {
                         Kind: Member
                         [0] = {
@@ -9131,14 +8771,12 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = '..'
                         [1] = {
                             Kind: String
                             [0] = 'testing short-circuit optimizations ('
                         }
                         [2] = {
                             Kind: BinaryOperation
-                            [0] = '..'
                             [1] = {
                                 Kind: Member
                                 [0] = {
@@ -9222,7 +8860,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                 Kind: ConditionalBlock
                                                                 [0] = {
                                                                     Kind: UnaryOperation
-                                                                    [0] = 'not'
                                                                     [1] = {
                                                                         Kind: Identifier
                                                                         [0] = 'a'
@@ -9430,7 +9067,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                             }
                             [2] = {
                                 Kind: BinaryOperation
-                                [0] = '-'
                                 [1] = {
                                     Kind: Identifier
                                     [0] = 'n'
@@ -9518,7 +9154,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                 }
                                                                 [1] = {
                                                                     Kind: BinaryOperation
-                                                                    [0] = '-'
                                                                     [1] = {
                                                                         Kind: Identifier
                                                                         [0] = 'n'
@@ -9591,14 +9226,12 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                                 Kind: TableValue
                                                                                 [0] = {
                                                                                     Kind: BinaryOperation
-                                                                                    [0] = '..'
                                                                                     [1] = {
                                                                                         Kind: String
                                                                                         [0] = "("
                                                                                     }
                                                                                     [2] = {
                                                                                         Kind: BinaryOperation
-                                                                                        [0] = '..'
                                                                                         [1] = {
                                                                                             Kind: Index
                                                                                             [0] = {
@@ -9612,7 +9245,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                                         }
                                                                                         [2] = {
                                                                                             Kind: BinaryOperation
-                                                                                            [0] = '..'
                                                                                             [1] = {
                                                                                                 Kind: Index
                                                                                                 [0] = {
@@ -9626,7 +9258,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                                             }
                                                                                             [2] = {
                                                                                                 Kind: BinaryOperation
-                                                                                                [0] = '..'
                                                                                                 [1] = {
                                                                                                     Kind: Index
                                                                                                     [0] = {
@@ -9709,10 +9340,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                     }
                                                                     [1] = {
                                                                         Kind: BinaryOperation
-                                                                        [0] = '+'
                                                                         [1] = {
                                                                             Kind: UnaryOperation
-                                                                            [0] = '#'
                                                                             [1] = {
                                                                                 Kind: Identifier
                                                                                 [0] = 'res'
@@ -9745,10 +9374,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                     }
                                                                     [1] = {
                                                                         Kind: BinaryOperation
-                                                                        [0] = '+'
                                                                         [1] = {
                                                                             Kind: UnaryOperation
-                                                                            [0] = '#'
                                                                             [1] = {
                                                                                 Kind: Identifier
                                                                                 [0] = 'res'
@@ -9771,7 +9398,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                             Kind: TableValue
                                                                             [0] = {
                                                                                 Kind: BinaryOperation
-                                                                                [0] = '..'
                                                                                 [1] = {
                                                                                     Kind: String
                                                                                     [0] = "not"
@@ -9793,7 +9419,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                                                             Kind: TableValue
                                                                             [0] = {
                                                                                 Kind: UnaryOperation
-                                                                                [0] = 'not'
                                                                                 [1] = {
                                                                                     Kind: Index
                                                                                     [0] = {
@@ -9848,10 +9473,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = 'or'
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = 'and'
                             [1] = {
                                 Kind: Identifier
                                 [0] = '_soft'
@@ -10166,10 +9789,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                     Kind: ExpressionList
                                     [0] = {
                                         Kind: BinaryOperation
-                                        [0] = 'and'
                                         [1] = {
                                             Kind: BinaryOperation
-                                            [0] = '=='
                                             [1] = {
                                                 Kind: FunctionCall
                                                 [0] = {
@@ -10195,17 +9816,14 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                         }
                                         [2] = {
                                             Kind: BinaryOperation
-                                            [0] = '=='
                                             [1] = {
                                                 Kind: Identifier
                                                 [0] = 'IX'
                                             }
                                             [2] = {
                                                 Kind: UnaryOperation
-                                                [0] = 'not'
                                                 [1] = {
                                                     Kind: UnaryOperation
-                                                    [0] = 'not'
                                                     [1] = {
                                                         Kind: Index
                                                         [0] = {
@@ -10237,7 +9855,6 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                 Kind: ExpressionList
                                 [0] = {
                                     Kind: BinaryOperation
-                                    [0] = '+'
                                     [1] = {
                                         Kind: Identifier
                                         [0] = 'i'
@@ -10255,10 +9872,8 @@ end , { a = 1 , b = 2 >= 1 , } or { 1 };
                                 Kind: ConditionalBlock
                                 [0] = {
                                     Kind: BinaryOperation
-                                    [0] = '=='
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = '%'
                                         [1] = {
                                             Kind: Identifier
                                             [0] = 'i'

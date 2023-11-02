@@ -1,50 +1,50 @@
 print("testing syntax")
-local a = require("debug")
-local function b(c, d)
-    assert(string.find(select(2, load(c)), d))
+local debug = require("debug")
+local function checkload(s, msg)
+    assert(string.find(select(2, load(s)), msg))
 end
-local c
+local a
 do
 end
 do
-    c = 3
-    assert(c == 3)
+    a = 3
+    assert(a == 3)
 end
 if false then
-    c = inf
-    c = nan
+    a = 3 // 0
+    a = 0 % 0
 end
-assert(inf == inf)
-assert(22220 == 22220)
-assert(0.2 == 0.2 and -4 == -4)
+assert(2 ^ 3 ^ 2 == 2 ^ 3 ^ 2)
+assert(2 ^ 3 * 4 == 2 ^ 3 * 4)
+assert(2 ^ -2 == 1 / 4 and -2 ^ --2 == ---4)
 assert(not nil and 2 and not (2 > 3 or 3 < 2))
-assert(5550 == 5546)
-assert(-4 == -4 and 4 == 4 and 5554 == 0)
-assert(-3 == 2 and 2 == 2)
-assert(11110 == 3 and 3 .. 3 == "33")
-assert(not (3 > 3) and "a" .. "b" > "a")
-assert(5619 == 244)
-assert(5619 == 244)
-assert(176 == 16)
-assert(1111 == 2)
-assert(11110 == 11110)
+assert(-3 - 1 - 5 == 0 + 0 - 9)
+assert(-2 ^ 2 == -4 and -2 ^ 2 == 4 and 2 * 2 - 3 - 1 == 0)
+assert(-3 % 5 == 2 and -3 + 5 == 2)
+assert(2 * 1 + 3 / 3 == 3 and (1 + 2) .. 3 * 1 == "33")
+assert(not (2 + 1 > 3 * 1) and "a" .. "b" > "a")
+assert(240 | 204 ~ 170 & 253 == 244)
+assert(253 & 170 ~ 204 | 240 == 244)
+assert(240 & 15 + 1 == 16)
+assert(3 ^ 4 // 2 ^ 3 // 5 == 2)
+assert(-3 + 4 * 5 // 2 ^ 3 ^ 2 // 9 + 4 % 10 / 3 == -3 + 4 * 5 // 2 ^ 3 ^ 2 // 9 + 4 % 10 / 3)
 assert(not ((true or false) and nil))
 assert((true or false) and nil)
 assert(((1 or false) and true or false) == true)
 assert(((nil and true or false) and true) == false)
-local c, d = 1, nil
+local a, b = 1, nil
 assert(-(1 or 2) == -1 and (1 and 2) + (-1.2 or -4) == 0.7)
-local e = (d or c) + 1 == 2 and (10 or c) + 1 == 11
-assert(e)
-e = (2 < 3 or 1) == true and (2 < 3 and 4) == 4
-assert(e)
-local e, f = 1, 2
-assert(e > f and e or f == 2)
-e, f = 2, 1
-assert(e > f and e or f == 2)
-assert(1234567890 == tonumber('1234567890') and 1234567891 == 1234567891)
+local x = (b or a) + 1 == 2 and (10 or a) + 1 == 11
+assert(x)
+x = (2 < 3 or 1) == true and (2 < 3 and 4) == 4
+assert(x)
+local x, y = 1, 2
+assert(x > y and x or y == 2)
+x, y = 2, 1
+assert(x > y and x or y == 2)
+assert(1234567890 == tonumber('1234567890') and 1234567890 + 1 == 1234567891)
 do
-    local g = {
+    local operand = {
         3,
         100,
         5,
@@ -53,7 +53,7 @@ do
         10000,
         -10000
     }
-    local h = {
+    local operator = {
         "+",
         "-",
         "*",
@@ -73,24 +73,24 @@ do
         "<=",
         ">="
     }
-    for i, j in ipairs(h) do
-        local k = assert(load(string.format([[return function (x,y)
+    for _, op in ipairs(operator) do
+        local f = assert(load(string.format([[return function (x,y)
                 return x %s y
-              end]], j)))()
-        for i, l in ipairs(g) do
-            for i, m in ipairs(g) do
-                local n = k(l, m)
-                _ENV.XX = l
-                local o = string.format("return XX %s %s", j, m)
-                local p = assert(load(o))()
-                assert(p == n)
-                _ENV.XX = m
-                o = string.format("return (%s) %s XX", l, j)
-                p = assert(load(o))()
-                assert(p == n)
-                o = string.format("return (%s) %s %s", l, j, m)
-                p = assert(load(o))()
-                assert(p == n)
+              end]], op)))()
+        for _, o1 in ipairs(operand) do
+            for _, o2 in ipairs(operand) do
+                local gab = f(o1, o2)
+                _ENV.XX = o1
+                local code = string.format("return XX %s %s", op, o2)
+                local res = assert(load(code))()
+                assert(res == gab)
+                _ENV.XX = o2
+                code = string.format("return (%s) %s XX", o1, op)
+                res = assert(load(code))()
+                assert(res == gab)
+                code = string.format("return (%s) %s %s", o1, op, o2)
+                res = assert(load(code))()
+                assert(res == gab)
             end
         end
     end
@@ -105,105 +105,105 @@ end
 while nil do
 end
 do
-    local c
-    local function g(e)
-        e = {a = 1}
-        e = {x = 1}
-        e = {G = 1}
+    local a
+    local function f(x)
+        x = {a = 1}
+        x = {x = 1}
+        x = {G = 1}
     end
 end
 do
-    local g = {"local x = {"}
-    for h = 1, 257 do
-        g[#g + 1] = h .. ".1,"
+    local code = {"local x = {"}
+    for i = 1, 257 do
+        code[#code + 1] = i .. ".1,"
     end
-    g[#g + 1] = "};"
-    g = table.concat(g)
-    local function h(i, j)
-        local g = g .. i
-        g = load(g)
-        assert(g() == j)
+    code[#code + 1] = "};"
+    code = table.CONCAT(code)
+    local function check(ret, val)
+        local code = code .. ret
+        code = load(code)
+        assert(code() == val)
     end
-    h("return (1 ~ (2 or 3))", 3)
-    h("return (1 | (2 or 3))", 3)
-    h("return (1 + (2 or 3))", 3)
-    h("return (1 << (2 or 3))", 1 << 2)
+    check("return (1 ~ (2 or 3))", 1 ~ 2)
+    check("return (1 | (2 or 3))", 1 | 2)
+    check("return (1 + (2 or 3))", 1 + 2)
+    check("return (1 << (2 or 3))", 1 << 2)
 end
-local function g(h)
-    if type(h) ~= 'number' then
-        return h, 'jojo'
+local function f(i)
+    if type(i) ~= 'number' then
+        return i, 'jojo'
     end
-    if h > 0 then
-        return h, g(h - 1)
+    if i > 0 then
+        return i, f(i - 1)
     end
 end
-e = {
-    g(3),
-    g(5),
-    g(10)
+x = {
+    f(3),
+    f(5),
+    f(10)
 }
-assert(e[1] == 3 and e[2] == 5 and e[3] == 10 and e[4] == 9 and e[12] == 1)
-assert(e[nil] == nil)
-e = {
-    g('alo'),
-    g('xixi'),
+assert(x[1] == 3 and x[2] == 5 and x[3] == 10 and x[4] == 9 and x[12] == 1)
+assert(x[nil] == nil)
+x = {
+    f('alo'),
+    f('xixi'),
     nil
 }
-assert(e[1] == 'alo' and e[2] == 'xixi' and e[3] == nil)
-e = {g('alo') .. 'xixi'}
-assert(e[1] == 'aloxixi')
-e = {g({})}
-assert(e[2] == 'jojo' and type(e[1]) == 'table')
-local g = function(h)
-    if h < 10 then
+assert(x[1] == 'alo' and x[2] == 'xixi' and x[3] == nil)
+x = {f('alo') .. 'xixi'}
+assert(x[1] == 'aloxixi')
+x = {f({})}
+assert(x[2] == 'jojo' and type(x[1]) == 'table')
+local f = function(i)
+    if i < 10 then
         return 'a'
-    elseif h < 20 then
+    elseif i < 20 then
         return 'b'
-    elseif h < 30 then
+    elseif i < 30 then
         return 'c'
     end
 end
-assert(g(3) == 'a' and g(12) == 'b' and g(26) == 'c' and g(100) == nil)
-for h = 1, 1000 do
+assert(f(3) == 'a' and f(12) == 'b' and f(26) == 'c' and f(100) == nil)
+for i = 1, 1000 do
     break
 end
-local h = 100
+local n = 100
 local i = 3
-local j = {}
-local c = nil
-while not c do
-    c = 0
-    for i = 1, h do
+local t = {}
+local a = nil
+while not a do
+    a = 0
+    for i = 1, n do
         for i = i, 1, -1 do
-            c = c + 1
-            j[i] = 1
+            a = a + 1
+            t[i] = 1
         end
     end
 end
-assert(c == h * (h + 1) / 2 and i == 3)
-assert(j[1] and j[h] and not j[0] and not j[h + 1])
-function g(d)
-    local e = 1
+assert(a == n * (n + 1) / 2 and i == 3)
+assert(t[1] and t[n] and not t[0] and not t[n + 1])
+function f(b)
+    local x = 1
     repeat
-        local c
-        if d == 1 then
-            local d = 1
-            e = 10
+        local a
+        if b == 1 then
+            local b = 1
+            x = 10
             break
-        elseif d == 2 then
-            e = 20
+        elseif b == 2 then
+            x = 20
             break
-        elseif d == 3 then
-            e = 30
+        elseif b == 3 then
+            x = 30
         else
-            local c, d, k, l = math.sin(1)
-            e = e + 1
+            local a, b, c, d = math.sin(1)
+            x = x + 1
         end
-    until e >= 12
-    return e
+    until x >= 12
+    return x
 end
-assert(g(1) == 10 and g(2) == 20 and g(3) == 30 and g(4) == 12)
-local g = function(i)
+assert(f(1) == 10 and f(2) == 20 and f(3) == 30 and f(4) == 12)
+local f = function(i)
     if i < 10 then
         return 'a'
     elseif i < 20 then
@@ -214,21 +214,30 @@ local g = function(i)
         return 8
     end
 end
-assert(g(3) == 'a' and g(12) == 'b' and g(26) == 'c' and g(100) == 8)
-local c, d = nil, 23
-e = {
-    g(100) * 2 + 3 or c,
-    c or d + 2
+assert(f(3) == 'a' and f(12) == 'b' and f(26) == 'c' and f(100) == 8)
+local a, b = nil, 23
+x = {
+    f(100) * 2 + 3 or a,
+    a or b + 2
 }
-assert(e[1] == 19 and e[2] == 25)
-e = {
-    f = 5 or c,
-    a = d + 2
+assert(x[1] == 19 and x[2] == 25)
+x = {
+    f = 2 + 3 or a,
+    a = b + 2
 }
-assert(e.g == 5 and e.c == 25)
-c = {y = 1}
-e = {c.f}
-assert(e[1] == 1)
+assert(x.f == 5 and x.a == 25)
+a = {y = 1}
+x = {a.y}
+assert(x[1] == 1)
+local function f(i)
+    while 1 do
+        if i > 0 then
+            i = i - 1
+        else
+            return
+        end
+    end
+end
 local function g(i)
     while 1 do
         if i > 0 then
@@ -238,44 +247,35 @@ local function g(i)
         end
     end
 end
-local function k(i)
-    while 1 do
-        if i > 0 then
-            i = i - 1
-        else
-            return
-        end
-    end
-end
+f(10)
 g(10)
-k(10)
 do
-    function g()
+    function f()
         return 1, 2, 3
     end
-    local c, d, l = g()
-    assert(c == 1 and d == 2 and l == 3)
-    c, d, l = g()
-    assert(c == 1 and d == nil and l == nil)
+    local a, b, c = f()
+    assert(a == 1 and b == 2 and c == 3)
+    a, b, c = f()
+    assert(a == 1 and b == nil and c == nil)
 end
-local c, d = 3 and g()
-assert(c == 1 and d == nil)
-function k()
-    g()
+local a, b = 3 and f()
+assert(a == 1 and b == nil)
+function g()
+    f()
     return
 end
-assert(k() == nil)
-function k()
-    return nil or g()
+assert(g() == nil)
+function g()
+    return nil or f()
 end
-c, d = k()
-assert(c == 1 and d == nil)
+a, b = g()
+assert(a == 1 and b == nil)
 print('+')
 do
-    local l<const> = [[local x <XXX> = 10]]
-    b(l, "unknown attribute 'XXX'")
-    b([[local xxx <const> = 20; xxx = 10]], ":1: attempt to assign to const variable 'xxx'")
-    b([[
+    local prog<const> = [[local x <XXX> = 10]]
+    checkload(prog, "unknown attribute 'XXX'")
+    checkload([[local xxx <const> = 20; xxx = 10]], ":1: attempt to assign to const variable 'xxx'")
+    checkload([[
     local xx;
     local xxx <const> = 20;
     local yyy;
@@ -284,64 +284,64 @@ do
       return function () return function () xxx = yyy end end
     end
   ]], ":6: attempt to assign to const variable 'xxx'")
-    b([[
+    checkload([[
     local x <close> = nil
     x = io.open()
   ]], ":2: attempt to assign to const variable 'x'")
 end
-g = [[
+f = [[
 return function ( a , b , c , d , e )
   local x = a >= b or c or ( d and e ) or nil
   return x
 end , { a = 1 , b = 2 >= 1 , } or { 1 };
 ]]
-g = string.gsub(g, "%s+", "\n")
-g, c = load(g)()
-assert(c.c == 1 and c.d)
-function k(c, d, l, m, n)
-    if not ((c >= d or l or m) and n or nil) then
+f = string.gsub(f, "%s+", "\n")
+f, a = load(f)()
+assert(a.a == 1 and a.b)
+function g(a, b, c, d, e)
+    if not ((a >= b or c or d) and e or nil) then
         return 0
     else
         return 1
     end
 end
-local function l(c, d, m, n, o)
-    while c >= d or m or n and o or nil do
+local function h(a, b, c, d, e)
+    while a >= b or c or d and e or nil do
         return 1
     end
     return 0
 end
-assert(g(2, 1) == true and k(2, 1) == 1 and l(2, 1) == 1)
-assert(g(1, 2, 'a') == 'a' and k(1, 2, 'a') == 1 and l(1, 2, 'a') == 1)
-assert(g(1, 2, 'a') ~= nil, "")
-assert(g(1, 2, 'a') == 'a' and k(1, 2, 'a') == 1 and l(1, 2, 'a') == 1)
-assert(g(1, 2, nil, 1, 'x') == 'x' and k(1, 2, nil, 1, 'x') == 1 and l(1, 2, nil, 1, 'x') == 1)
-assert(g(1, 2, nil, nil, 'x') == nil and k(1, 2, nil, nil, 'x') == 0 and l(1, 2, nil, nil, 'x') == 0)
-assert(g(1, 2, nil, 1, nil) == nil and k(1, 2, nil, 1, nil) == 0 and l(1, 2, nil, 1, nil) == 0)
+assert(f(2, 1) == true and g(2, 1) == 1 and h(2, 1) == 1)
+assert(f(1, 2, 'a') == 'a' and g(1, 2, 'a') == 1 and h(1, 2, 'a') == 1)
+assert(f(1, 2, 'a') ~= nil, "")
+assert(f(1, 2, 'a') == 'a' and g(1, 2, 'a') == 1 and h(1, 2, 'a') == 1)
+assert(f(1, 2, nil, 1, 'x') == 'x' and g(1, 2, nil, 1, 'x') == 1 and h(1, 2, nil, 1, 'x') == 1)
+assert(f(1, 2, nil, nil, 'x') == nil and g(1, 2, nil, nil, 'x') == 0 and h(1, 2, nil, nil, 'x') == 0)
+assert(f(1, 2, nil, 1, nil) == nil and g(1, 2, nil, 1, nil) == 0 and h(1, 2, nil, 1, nil) == 0)
 assert(1 and 2 < 3 == true and 2 < 3 and 'a' < 'b' == true)
-e = 2 < 3 and not 3
-assert(e == false)
-e = 2 < 1 or 2 > 1 and 'a'
-assert(e == 'a')
+x = 2 < 3 and not 3
+assert(x == false)
+x = 2 < 1 or 2 > 1 and 'a'
+assert(x == 'a')
 do
-    local c
+    local a
     if nil then
-        c = 1
+        a = 1
     else
-        c = 2
+        a = 2
     end
-    assert(c == 2)
+    assert(a == 2)
 end
-local function m(c)
-    assert(a.getinfo(1, "n").name == 'F')
-    return c, 2, 3
+local function F(a)
+    assert(debug.getinfo(1, "n").name == 'F')
+    return a, 2, 3
 end
-c, d = m(1) ~= nil
-assert(c == true and d == nil)
-c, d = m(nil) == nil
-assert(c == true and d == nil)
+a, b = F(1) ~= nil
+assert(a == true and b == nil)
+a, b = F(nil) == nil
+assert(a == true and b == nil)
 _ENV.GLOB1 = math.random(0, 1)
-local n = {
+local basiccases = {
     {
         "nil",
         nil
@@ -363,88 +363,88 @@ local n = {
         0 == _ENV.GLOB1
     }
 }
-local o
+local prog
 if _ENV.GLOB1 == 0 then
-    n[2][1] = "F"
-    o = [[
+    basiccases[2][1] = "F"
+    prog = [[
     local F <const> = false
     if %s then IX = true end
     return %s
 ]]
 else
-    n[4][1] = "k10"
-    o = [[
+    basiccases[4][1] = "k10"
+    prog = [[
     local k10 <const> = 10
     if %s then IX = true end
     return %s
   ]]
 end
 print('testing short-circuit optimizations (' .. _ENV.GLOB1 .. ')')
-local p<const> = {
+local binops<const> = {
     {
         " and ",
-        function(c, d)
-            if not c then
-                return c
+        function(a, b)
+            if not a then
+                return a
             else
-                return d
+                return b
             end
         end
     },
     {
         " or ",
-        function(c, d)
-            if c then
-                return c
+        function(a, b)
+            if a then
+                return a
             else
-                return d
+                return b
             end
         end
     }
 }
-local q<const> = {}
-local function r(h)
-    local s = {}
-    for i = 1, h - 1 do
-        for t, u in ipairs(q[i]) do
-            for t, v in ipairs(q[h - i]) do
-                for t, w in ipairs(p) do
-                    local j = {
-                        "(" .. u[1] .. w[1] .. v[1] .. ")",
-                        w[2](u[2], v[2])
+local cases<const> = {}
+local function createcases(n)
+    local res = {}
+    for i = 1, n - 1 do
+        for _, v1 in ipairs(cases[i]) do
+            for _, v2 in ipairs(cases[n - i]) do
+                for _, op in ipairs(binops) do
+                    local t = {
+                        "(" .. v1[1] .. op[1] .. v2[1] .. ")",
+                        op[2](v1[2], v2[2])
                     }
-                    s[#s + 1] = j
-                    s[#s + 1] = {
-                        "not" .. j[1],
-                        not j[2]
+                    res[#res + 1] = t
+                    res[#res + 1] = {
+                        "not" .. t[1],
+                        not t[2]
                     }
                 end
             end
         end
     end
-    return s
+    return res
 end
-local s = _soft and 3 or 4
-q[1] = n
-for i = 2, s do
-    q[i] = r(i)
+local level = _soft and 3 or 4
+cases[1] = basiccases
+for i = 2, level do
+    cases[i] = createcases(i)
 end
 print("+")
 local i = 0
-for h = 1, s do
-    for t, u in pairs(q[h]) do
-        local v = u[1]
-        local w = load(string.format(o, v, v), "")
-        x = false
-        assert(w() == u[2] and x == not not u[2])
+for n = 1, level do
+    for _, v in pairs(cases[n]) do
+        local s = v[1]
+        local p = load(string.format(prog, s, s), "")
+        IX = false
+        assert(p() == v[2] and IX == not not v[2])
         i = i + 1
         if i % 60000 == 0 then
             print('+')
         end
     end
 end
-t = nil
+IX = nil
 _G.GLOB1 = nil
-b("for x do", "expected")
-b("x:call", "expected")
+checkload("for x do", "expected")
+checkload("x:call", "expected")
 print('OK')

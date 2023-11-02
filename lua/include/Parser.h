@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <Tokenizer.h>
+#include <Util.h>
 
 #include <Node.h>
 
@@ -1128,7 +1129,10 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                     assert(expr, "expected expression after " + currentToken.literal);
 
                     auto unaryOperation = Node::create(Kind::UnaryOperation);
-                    unaryOperation->setChildren({currentToken.literal, expr});
+                    unaryOperation->setChildren({
+                        Util::getOperator(currentToken.literal),
+                        expr
+                    });
                     return unaryOperation;
                 }
                 else if (isNull(currentToken))
@@ -1170,7 +1174,10 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                     assert(expr, "expected expression after " + currentToken.literal);
 
                     auto unaryOperation = Node::create(Kind::UnaryOperation);
-                    unaryOperation->setChildren({currentToken.literal, expr});
+                    unaryOperation->setChildren({
+                        Util::getOperator(currentToken.literal),
+                        expr
+                    });
                     return unaryOperation;
                 }
                 break;
@@ -1245,8 +1252,14 @@ std::cout << Token.literal << " -> " << (type) << "\n";
 
             if (isBinaryOperator(currentToken))
             {
+
+
                 auto binaryOperation = Node::create(Kind::BinaryOperation);
-                binaryOperation->setChildren({currentToken.literal, lhs, rhs});
+                binaryOperation->setChildren({
+                    Util::getOperator(currentToken.literal),
+                    lhs,
+                    rhs
+                });
                 lhs = binaryOperation;
             }
         }
