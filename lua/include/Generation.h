@@ -8,6 +8,7 @@
 #include <Parser.h>
 #include <cmath>
 #include <chrono>
+#include <functional>
 
 #define NEW_LINE "\n"
 
@@ -123,9 +124,9 @@ public:
 };
 
 
-namespace Arithmetic {
+namespace Operation {
     template <typename T>
-    double op(const p_Node& lhs, const p_Node& rhs, T&& func)
+    std::optional<double> arithmetic(const p_Node& lhs, const p_Node& rhs, T&& func)
     {
         double n, m;
 
@@ -138,6 +139,10 @@ namespace Arithmetic {
             auto s = lhs->getChild<std::string>(0);
             n = std::stod(std::string(s.begin() + 1, s.end() - 1));
         }
+        else
+        {
+            return std::nullopt;
+        }
 
         if (rhs->isKind(Kind::Numeric))
         {
@@ -148,9 +153,65 @@ namespace Arithmetic {
             auto s = rhs->getChild<std::string>(0);
             m = std::stod(std::string(s.begin() + 1, s.end() - 1));
         }
+        else
+        {
+            return std::nullopt;
+        }
         return func(n, m);
     }
+
+    template <typename T>
+    std::optional<double> bitwise(const p_Node& lhs, const p_Node& rhs, T&& func)
+    {
+        int n, m;
+
+        if (lhs->isKind(Kind::Numeric) && std::fmod(lhs->getChild<Number>(0).value, 1.0) == 0.0)
+        {
+            n = static_cast<int>(lhs->getChild<Number>(0).value);
+        }
+        else
+        {
+            return std::nullopt;
+        }
+
+        if (rhs->isKind(Kind::Numeric) && std::fmod(rhs->getChild<Number>(0).value, 1.0) == 0.0)
+        {
+            m = static_cast<int>(rhs->getChild<Number>(0).value);
+        }
+        else
+        {
+            return std::nullopt;
+        }
+        return func(n, m);
+    }
+
+    template <typename T>
+    std::optional<double> unaryArithmetic(const p_Node& lhs, T&& func)
+    {
+        if (lhs->isKind(Kind::Numeric))
+        {
+            return func(lhs->getChild<Number>(0).value);
+        }
+        else if (lhs->isKind(Kind::String))
+        {
+            auto s = lhs->getChild<std::string>(0);
+            auto n = std::stod(std::string(s.begin() + 1, s.end() - 1));
+            return func(n);
+        }
+        return std::nullopt;
+    }
+
+    template <typename T>
+    std::optional<double> unaryBitwise(const p_Node& lhs, T&& func)
+    {
+        if (lhs->isKind(Kind::Numeric) && std::fmod(lhs->getChild<Number>(0).value, 1.0) == 0.0)
+        {
+            return func(static_cast<int>(lhs->getChild<Number>(0).value));
+        }
+        return std::nullopt;
+    }
 }
+
 
 class Memory
 {
@@ -233,129 +294,267 @@ public:
         return false;
     }
 
-    static void performBinaryOperation(
-        const OperatorKind& opKind,
-        const p_Node& lhs,
-        const p_Node& rhs,
-        p_Node& node
-    )
-    {
+    bool Y = true;
 
-        double value = 0;
+    static void performBinaryOperation(const p_Node& node)
+    {
+        auto opKind = node->getChild<OperatorKind>(0);
+        auto lhs = node->getChild<p_Node>(1);
+        auto rhs = node->getChild<p_Node>(2);
 
         switch (opKind)
         {
             case OperatorKind::ADD:
             {
-                if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::Numeric))
+                if (auto value = Operation::arithmetic(lhs, rhs, std::plus<>()))
                 {
-                    value = Arithmetic::op(lhs, rhs, std::plus<double>());
-                    break;
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
                 }
-                else if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::String))
-                {
-                    value = Arithmetic::op(lhs, rhs, std::plus<double>());
-                    break;
-                }
-                return;
+                break;
             }
             case OperatorKind::SUB:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                value = lhsN - rhsN;
+                if (auto value = Operation::arithmetic(lhs, rhs, std::minus<>()))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
                 break;
             }
             case OperatorKind::MUL:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                value = lhsN * rhsN;
+                if (auto value = Operation::arithmetic(lhs, rhs, std::multiplies<>()))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
                 break;
             }
             case OperatorKind::DIV:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                value = lhsN / rhsN;
+                if (auto value = Operation::arithmetic(lhs, rhs, std::divides<>()))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
+                break;
+            }
+            case OperatorKind::IDIV:
+            {
+                auto idiv = [](double x, double y) {
+                    return std::floor(x / y);
+                };
+                if (auto value = Operation::arithmetic(lhs, rhs, idiv))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
                 break;
             }
             case OperatorKind::MOD:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                value = std::fmod(lhsN, rhsN);
+                auto mod = [](double x, double y) {
+                    return std::fmod(x, y);
+                };
+                if (auto value = Operation::arithmetic(lhs, rhs, mod))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
                 break;
             }
             case OperatorKind::POW:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                value = std::pow(lhsN, rhsN);
+                auto pow = [](double x, double y) {
+                    return std::pow(x, y);
+                };
+                if (auto value = Operation::arithmetic(lhs, rhs, pow))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
                 break;
             }
             case OperatorKind::BAND:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+                if (auto value = Operation::bitwise(lhs, rhs, std::bit_and<>()))
                 {
-                    value = (int) lhsN & (int) rhsN;
-                    break;
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
                 }
+                break;
             }
             case OperatorKind::BOR:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+                if (auto value = Operation::bitwise(lhs, rhs, std::bit_or<>()))
                 {
-                    value = (int) lhsN | (int) rhsN;
-                    break;
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
                 }
+                break;
             }
             case OperatorKind::BXOR:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                if (std::fmod(lhsN, 1.0) == 0.0 && std::fmod(rhsN, 1.0) == 0.0)
+                if (auto value = Operation::bitwise(lhs, rhs, std::bit_xor<>()))
                 {
-                    value = (int) lhsN ^ (int) rhsN;
-                    break;
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
                 }
+                break;
             }
-            case OperatorKind::IDIV:
+            case OperatorKind::SHL:
             {
-                auto lhsN = lhs->getChild<Number>(0).value;
-                auto rhsN = rhs->getChild<Number>(0).value;
-                value = std::floor(lhsN / rhsN);
+                auto shl = [](int x, int y) {
+                    return x << y;
+                };
+                if (auto value = Operation::bitwise(lhs, rhs, shl))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
+                break;
+            }
+            case OperatorKind::SHR:
+            {
+                auto shr = [](int x, int y) {
+                    return x >> y;
+                };
+                if (auto value = Operation::bitwise(lhs, rhs, shr))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
                 break;
             }
 
             default:
             {
-                return;
+                break;
             }
         }
-
-
-
-        node->setKind(Kind::Numeric);
-        node->setChildren({Number(value)});
     }
 
-    static void performUnaryOperation(
-        const OperatorKind& opKind,
-        const p_Node& expression,
-        p_Node& node
-    )
+    void performUnaryOperation(const p_Node& node)
     {
-        auto n = expression->getChild<Number>(0);
+        auto opKind = node->getChild<OperatorKind>(0);
+        auto lhs = node->getChild<p_Node>(1);
 
-        if (opKind == OperatorKind::UNM)
+        switch (opKind)
         {
-            node->setKind(Kind::Numeric);
-            node->setChildren({Number(-n.value)});
+            case OperatorKind::UNM:
+            {
+                if (auto value = Operation::unaryArithmetic(lhs, std::negate<>()))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
+                break;
+            }
+            case OperatorKind::LEN:
+            {
+                if (lhs->isKind(Kind::String))
+                {
+                    auto s = lhs->getChild<std::string>(0);
+                    auto i = 1;
+
+                    if (s.starts_with("["))
+                    {
+                        while (i < s.size() && s[i] == '=')
+                        {
+                            i++;
+                        }
+                        i++;
+                    }
+
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(s.size() - i * 2)});
+                }
+                break;
+            }
+            case OperatorKind::LNOT:
+            {
+                switch (lhs->getKind())
+                {
+                    case Kind::FunctionDefinition:
+                    case Kind::TableConstructor:
+                    case Kind::Numeric:
+                    case Kind::String:
+                    {
+                        node->setKind(Kind::Boolean);
+                        node->setChildren({false});
+                        break;
+                    }
+                    case Kind::Null:
+                    {
+                        node->setKind(Kind::Boolean);
+                        node->setChildren({true});
+                        break;
+                    }
+                    case Kind::Boolean:
+                    {
+                        bool boolean = lhs->getChild<bool>(0);
+                        node->setKind(Kind::Boolean);
+                        node->setChildren({!boolean});
+                        break;
+                    }
+                    default:
+                    {
+                        if (!Y) break;
+
+                        auto curr = node;
+                        auto par = node->getParent();
+                        auto i = 0;
+
+                        while (curr->isKind(Kind::UnaryOperation))
+                        {
+                            curr = curr->getChild<p_Node>(1);
+                            i++;
+                        }
+
+                        if (i > 3)
+                        {
+                            curr = node;
+                            for (i = 0; i < 3; i++)
+                            {
+                                auto t = curr;
+                                curr = curr->getChild<p_Node>(1);
+                                // Node::reset(t);
+                            }
+
+                            for (auto& e: par->getChildren())
+                            {
+                                if (std::holds_alternative<p_Node>(e) && std::get<p_Node>(e) == node)
+                                {
+                                    std::get<p_Node>(e) = curr;
+                                    break;
+                                }
+                            }
+
+                            curr->setParent(par);
+                            Y = false;
+                        }
+
+                        std::cout << i << std::endl;
+
+                        break;
+                    }
+                }
+                break;
+            }
+            case OperatorKind::BNOT:
+            {
+                if (auto value = Operation::unaryBitwise(lhs, std::bit_not<>()))
+                {
+                    node->setKind(Kind::Numeric);
+                    node->setChildren({Number(*value)});
+                }
+                break;
+            }
+            default:
+            {
+                break;
+            }
         }
     }
 
@@ -401,7 +600,7 @@ public:
         }
     }
 
-    void refactor(p_Node& node)
+    void refactor(const p_Node& node)
     {
         if (!node)
         {
@@ -413,41 +612,25 @@ public:
         {
             case Kind::BinaryOperation:
             {
-                auto binaryOperator = node->getChild<OperatorKind>(0);
                 auto lhs = node->getChild<p_Node>(1);
                 auto rhs = node->getChild<p_Node>(2);
 
                 refactor(lhs);
                 refactor(rhs);
-
-                // if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::Numeric))
-                {
-                    performBinaryOperation(
-                        binaryOperator,
-                        lhs,
-                        rhs,
-                        node
-                    );
-                }
+                performBinaryOperation(node);
                 break;
             }
             case Kind::UnaryOperation:
             {
-                auto unaryOperator = node->getChild<OperatorKind>(0);
                 auto expression = node->getChild<p_Node>(1);
-                auto expressionNode = expression;
 
                 refactor(expression);
+                performUnaryOperation(node);
 
-                std::cout << (int) unaryOperator << std::endl;
 
-                if (expression->getKind() == Kind::Numeric && unaryOperator == OperatorKind::UNM)
+                /*if (expression->getKind() == Kind::Numeric && unaryOperator == OperatorKind::UNM)
                 {
-                    performUnaryOperation(
-                        unaryOperator,
-                        expressionNode,
-                        node
-                    );
+                    performUnaryOperation(node);
                 }
                 else if (unaryOperator == OperatorKind::LNOT)
                 {
@@ -455,7 +638,7 @@ public:
                     {
                         case Kind::Boolean:
                         {
-                            auto& boolean = expressionNode->getChild<std::string>(0);
+                            auto& boolean = expression->getChild<std::string>(0);
 
                             Node::swap(node, expression);
                             Node::reset(expression);
@@ -466,7 +649,7 @@ public:
                             break;
                         }
                     }
-                }
+                }*/
                 break;
             }
 

@@ -1,3 +1,6 @@
-local x = 1 + 221
 
-local y = 1 + {}
+x = not 1342
+
+x = not nil
+
+x = not not not not not a

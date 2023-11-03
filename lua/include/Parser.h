@@ -1129,10 +1129,7 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                     assert(expr, "expected expression after " + currentToken.literal);
 
                     auto unaryOperation = Node::create(Kind::UnaryOperation);
-                    unaryOperation->setChildren({
-                        Util::getOperator(currentToken.literal),
-                        expr
-                    });
+                    unaryOperation->setChildren({OperatorKind::LNOT, expr});
                     return unaryOperation;
                 }
                 else if (isNull(currentToken))
@@ -1184,9 +1181,9 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                     {
                         opKind = OperatorKind::BNOT;
                     }
-                    else
+                    else if (currentToken.is("#"))
                     {
-                        opKind = Util::getOperator(currentToken.literal);
+                        opKind = OperatorKind::LEN;
                     }
 
                     unaryOperation->setChildren({

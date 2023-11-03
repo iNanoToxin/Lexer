@@ -59,7 +59,10 @@ public:
             {
                 str.pop_back();
             }
-            str.pop_back();
+            if (str.back() == '.')
+            {
+                str.pop_back();
+            }
         }
         return str;
     }

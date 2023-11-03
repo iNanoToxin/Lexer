@@ -3,54 +3,79 @@
     [0] = {
         Kind: Block
         [0] = {
-            Kind: LocalStatement
+            Kind: AssignmentStatement
             [0] = {
-                Kind: AssignmentStatement
+                Kind: VariableList
                 [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'x'
-                    }
+                    Kind: Identifier
+                    [0] = 'x'
                 }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [1] = {
-                            Kind: Numeric
-                            [0] = 1
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 221
-                        }
+            }
+            [1] = {
+                Kind: ExpressionList
+                [0] = {
+                    Kind: UnaryOperation
+                    [0] = "not"
+                    [1] = {
+                        Kind: Numeric
+                        [0] = 1342
                     }
                 }
             }
         }
         [1] = {
-            Kind: LocalStatement
+            Kind: AssignmentStatement
             [0] = {
-                Kind: AssignmentStatement
+                Kind: VariableList
                 [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'y'
+                    Kind: Identifier
+                    [0] = 'x'
+                }
+            }
+            [1] = {
+                Kind: ExpressionList
+                [0] = {
+                    Kind: UnaryOperation
+                    [0] = "not"
+                    [1] = {
+                        Kind: Null
+                        [0] = 'nil'
                     }
                 }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
+            }
+        }
+        [2] = {
+            Kind: AssignmentStatement
+            [0] = {
+                Kind: VariableList
+                [0] = {
+                    Kind: Identifier
+                    [0] = 'x'
+                }
+            }
+            [1] = {
+                Kind: ExpressionList
+                [0] = {
+                    Kind: UnaryOperation
+                    [0] = "not"
+                    [1] = {
+                        Kind: UnaryOperation
+                        [0] = "not"
                         [1] = {
-                            Kind: Numeric
-                            [0] = 1
-                        }
-                        [2] = {
-                            Kind: TableConstructor
-                            [0] = nullptr
+                            Kind: UnaryOperation
+                            [0] = "not"
+                            [1] = {
+                                Kind: UnaryOperation
+                                [0] = "not"
+                                [1] = {
+                                    Kind: UnaryOperation
+                                    [0] = "not"
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 'a'
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -1,2 +1,3 @@
-local a = 222
-local b = 1 + {}
+a = false
+a = true
+a = not not not not not a

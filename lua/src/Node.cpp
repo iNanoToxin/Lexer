@@ -1,5 +1,5 @@
-#include "Node.h"
-
+#include <Node.h>
+#include <Util.h>
 
 void Node::setChildren(v_Variant children)
 {
@@ -92,6 +92,17 @@ std::string Node::toString(std::size_t depth) const
                 std::string(depth * mul, ' '),
                 std::to_string(i),
                 value.toString()
+            );
+        }
+        else if (std::holds_alternative<OperatorKind>(m_Children[i]))
+        {
+            auto value = std::get<OperatorKind>(m_Children[i]);
+
+            str += fmt::format(
+                "{0}[{1}] = \"{2}\"\n",
+                std::string(depth * mul, ' '),
+                std::to_string(i),
+                Util::getOperator(value)
             );
         }
         else if (std::holds_alternative<p_Node>(m_Children[i]))
