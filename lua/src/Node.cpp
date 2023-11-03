@@ -3,8 +3,9 @@
 
 void Node::setChildren(v_Variant children)
 {
-    for (auto& elem: children)
+    for (std::size_t i = 0; i < children.size(); i++)
     {
+        auto& elem = children[i];
         if (std::holds_alternative<p_Node>(elem))
         {
             if (auto node = std::get<p_Node>(elem))
@@ -21,7 +22,7 @@ void Node::setParent(const p_Node& parent)
     this->m_Parent = parent;
 }
 
-v_Variant Node::getChildren()
+v_Variant& Node::getChildren()
 {
     return m_Children;
 }
@@ -158,7 +159,7 @@ void Node::setKind(Kind kind)
     m_Kind = kind;
 }
 
-Kind Node::getKind() const
+Kind& Node::getKind()
 {
     return m_Kind;
 }

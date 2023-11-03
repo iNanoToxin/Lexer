@@ -71,8 +71,65 @@
                                     Kind: UnaryOperation
                                     [0] = "not"
                                     [1] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
+                                        Kind: UnaryOperation
+                                        [0] = "not"
+                                        [1] = {
+                                            Kind: UnaryOperation
+                                            [0] = "not"
+                                            [1] = {
+                                                Kind: UnaryOperation
+                                                [0] = "not"
+                                                [1] = {
+                                                    Kind: UnaryOperation
+                                                    [0] = "not"
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'a'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [3] = {
+            Kind: AssignmentStatement
+            [0] = {
+                Kind: VariableList
+                [0] = {
+                    Kind: Identifier
+                    [0] = 'x'
+                }
+            }
+            [1] = {
+                Kind: ExpressionList
+                [0] = {
+                    Kind: UnaryOperation
+                    [0] = "not"
+                    [1] = {
+                        Kind: UnaryOperation
+                        [0] = "not"
+                        [1] = {
+                            Kind: UnaryOperation
+                            [0] = "not"
+                            [1] = {
+                                Kind: UnaryOperation
+                                [0] = "not"
+                                [1] = {
+                                    Kind: UnaryOperation
+                                    [0] = "not"
+                                    [1] = {
+                                        Kind: UnaryOperation
+                                        [0] = "not"
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'a'
+                                        }
                                     }
                                 }
                             }

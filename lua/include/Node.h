@@ -70,6 +70,7 @@ using v_Variant = std::vector<std::variant<
 class Node : public std::enable_shared_from_this<Node>
 {
 private:
+    std::size_t m_Index;
     v_Variant m_Children;
     p_Node m_Parent;
     Kind m_Kind;
@@ -80,6 +81,7 @@ public:
 
     explicit Node(Kind kind)
     {
+        m_Index = 0;
         m_Kind = kind;
         m_Parent = nullptr;
         m_Children = {};
@@ -105,9 +107,9 @@ public:
         return std::get<T>(m_Children[index]);
     }
     [[nodiscard]] p_Node getParent(const std::size_t& depth = 0);
-    [[nodiscard]] Kind getKind() const;
+    [[nodiscard]] Kind& getKind();
     [[nodiscard]] std::size_t getSize() const;
-    [[nodiscard]] v_Variant getChildren();
+    [[nodiscard]] v_Variant& getChildren();
     [[nodiscard]] p_Node getPointer()
     {
         return shared_from_this();
@@ -117,6 +119,22 @@ public:
     [[nodiscard]] bool isKind(Kind kind) const
     {
         return m_Kind == kind;
+    }
+
+    [[nodiscard]] p_Node& findNode(const p_Node& node)
+    {
+        for (std::size_t i = 0; i < m_Children.size(); i++)
+        {
+            if (std::holds_alternative<p_Node>(m_Children[i]))
+            {
+                if (getChild<p_Node>(i) == node)
+                {
+                    std::cout << "found: " << i << std::endl;
+                    return getChild<p_Node>(i);
+                }
+                break;
+            }
+        }
     }
 
     static void reset(const p_Node& node)

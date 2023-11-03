@@ -8,7 +8,7 @@
 #include <Parser.h>
 #include <cmath>
 #include <chrono>
-#include <functional>
+#include <variant>
 
 #define NEW_LINE "\n"
 
@@ -92,14 +92,15 @@ public:
 
     std::string getVariable(unsigned int id)
     {
-        std::string str = "";
+        std::string str;
 
         while (id > 0)
         {
             id--;
-            str = variableChars[id % variableChars.size()] + str;
+            str += variableChars[id % variableChars.size()];
             id /= variableChars.size();
         }
+        std::reverse(str.begin(), str.end());
         return str;
     }
 
@@ -294,7 +295,6 @@ public:
         return false;
     }
 
-    bool Y = true;
 
     static void performBinaryOperation(const p_Node& node)
     {
@@ -435,7 +435,7 @@ public:
         }
     }
 
-    void performUnaryOperation(const p_Node& node)
+    static void performUnaryOperation(const p_Node& node)
     {
         auto opKind = node->getChild<OperatorKind>(0);
         auto lhs = node->getChild<p_Node>(1);
@@ -500,9 +500,7 @@ public:
                     }
                     default:
                     {
-                        if (!Y) break;
-
-                        auto curr = node;
+                        /*auto curr = node;
                         auto par = node->getParent();
                         auto i = 0;
 
@@ -512,30 +510,43 @@ public:
                             i++;
                         }
 
-                        if (i > 3)
+                        if (i % 2 == 0 && i > 2)
                         {
                             curr = node;
-                            for (i = 0; i < 3; i++)
+                            for (int j = 0; j < i - 1; j++)
                             {
                                 auto t = curr;
                                 curr = curr->getChild<p_Node>(1);
-                                // Node::reset(t);
+                                Node::reset(t);
                             }
-
-                            for (auto& e: par->getChildren())
-                            {
-                                if (std::holds_alternative<p_Node>(e) && std::get<p_Node>(e) == node)
-                                {
-                                    std::get<p_Node>(e) = curr;
-                                    break;
-                                }
-                            }
-
+                            par->findNode(node) = curr;
                             curr->setParent(par);
-                            Y = false;
+                        }*/
+
+                        auto curr = lhs;
+                        int i = 0;
+
+                        while (
+                            curr->getParent()
+                            && curr->getParent()->isKind(Kind::UnaryOperation)
+                            && curr->getChild<OperatorKind>(0) == OperatorKind::LNOT)
+                        {
+                            curr = curr->getChild<p_Node>(1);
+                            i++;
                         }
 
                         std::cout << i << std::endl;
+
+                        // if (node->getParent())
+                        // {
+                        //     std::swap(node->getChildren(), lhs->getChildren());
+                        //     std::swap(node->getKind(), lhs->getKind());
+                        // }
+
+
+
+
+
 
                         break;
                     }
@@ -865,9 +876,8 @@ public:
             {
                 auto statements = node->getChild<p_NodeArray>(0);
 
-                for (int i = 0; i < statements.size(); i++)
+                for (const auto& conditionalBlock : statements)
                 {
-                    auto conditionalBlock = statements[i];
                     auto condition = conditionalBlock->getChild<p_Node>(0);
                     auto block = conditionalBlock->getChild<p_Node>(1);
                     refactor(condition);
@@ -1087,11 +1097,7 @@ public:
                 {
                     auto lhsOp = lhs->getChild<OperatorKind>(0);
 
-                    if (getPrecedence(lhsOp) < getPrecedence(binOp))
-                    {
-                        lhsFmt = "({0})";
-                    }
-                    else if (Util::getOperator(binOp) == "^" || Util::getOperator(binOp) == "..")
+                    if (Util::getOperator(binOp) == "^" || Util::getOperator(binOp) == ".." || getPrecedence(lhsOp) < getPrecedence(binOp))
                     {
                         lhsFmt = "({0})";
                     }
