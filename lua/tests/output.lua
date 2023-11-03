@@ -1,4 +1,5 @@
-a = not 1342
-a = not nil
+a = false
+a = true
 a = not a
-a = not not a
+a = a
+b = false

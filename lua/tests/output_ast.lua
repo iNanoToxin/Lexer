@@ -138,5 +138,38 @@
                 }
             }
         }
+        [4] = {
+            Kind: AssignmentStatement
+            [0] = {
+                Kind: VariableList
+                [0] = {
+                    Kind: Identifier
+                    [0] = 'a'
+                }
+            }
+            [1] = {
+                Kind: ExpressionList
+                [0] = {
+                    Kind: UnaryOperation
+                    [0] = "not"
+                    [1] = {
+                        Kind: UnaryOperation
+                        [0] = "not"
+                        [1] = {
+                            Kind: UnaryOperation
+                            [0] = "not"
+                            [1] = {
+                                Kind: UnaryOperation
+                                [0] = "not"
+                                [1] = {
+                                    Kind: Boolean
+                                    [0] = 0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

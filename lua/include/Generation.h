@@ -125,7 +125,8 @@ public:
 };
 
 
-namespace Operation {
+namespace Operation
+{
     template <typename T>
     std::optional<double> arithmetic(const p_Node& lhs, const p_Node& rhs, T&& func)
     {
@@ -342,7 +343,8 @@ public:
             }
             case OperatorKind::IDIV:
             {
-                auto idiv = [](double x, double y) {
+                auto idiv = [](double x, double y)
+                {
                     return std::floor(x / y);
                 };
                 if (auto value = Operation::arithmetic(lhs, rhs, idiv))
@@ -354,7 +356,8 @@ public:
             }
             case OperatorKind::MOD:
             {
-                auto mod = [](double x, double y) {
+                auto mod = [](double x, double y)
+                {
                     return std::fmod(x, y);
                 };
                 if (auto value = Operation::arithmetic(lhs, rhs, mod))
@@ -366,7 +369,8 @@ public:
             }
             case OperatorKind::POW:
             {
-                auto pow = [](double x, double y) {
+                auto pow = [](double x, double y)
+                {
                     return std::pow(x, y);
                 };
                 if (auto value = Operation::arithmetic(lhs, rhs, pow))
@@ -405,7 +409,8 @@ public:
             }
             case OperatorKind::SHL:
             {
-                auto shl = [](int x, int y) {
+                auto shl = [](int x, int y)
+                {
                     return x << y;
                 };
                 if (auto value = Operation::bitwise(lhs, rhs, shl))
@@ -417,7 +422,8 @@ public:
             }
             case OperatorKind::SHR:
             {
-                auto shr = [](int x, int y) {
+                auto shr = [](int x, int y)
+                {
                     return x >> y;
                 };
                 if (auto value = Operation::bitwise(lhs, rhs, shr))
@@ -500,37 +506,14 @@ public:
                     }
                     default:
                     {
-                        /*auto curr = node;
-                        auto par = node->getParent();
-                        auto i = 0;
-
-                        while (curr->isKind(Kind::UnaryOperation))
-                        {
-                            curr = curr->getChild<p_Node>(1);
-                            i++;
-                        }
-
-                        if (i % 2 == 0 && i > 2)
-                        {
-                            curr = node;
-                            for (int j = 0; j < i - 1; j++)
-                            {
-                                auto t = curr;
-                                curr = curr->getChild<p_Node>(1);
-                                Node::reset(t);
-                            }
-                            par->findNode(node) = curr;
-                            curr->setParent(par);
-                        }*/
-
                         auto curr = node;
                         int i = 1;
 
                         while (
                             curr
-                            && curr->isKind(Kind::UnaryOperation)
-                            && curr->getChild<OperatorKind>(0) == OperatorKind::LNOT
-                        )
+                                && curr->isKind(Kind::UnaryOperation)
+                                && curr->getChild<OperatorKind>(0) == OperatorKind::LNOT
+                            )
                         {
                             curr = curr->getParent();
                             i++;
@@ -539,7 +522,7 @@ public:
                         std::cout << i << std::endl;
 
                         auto x = lhs;
-                        auto y = x->getParent();
+                        auto y = node;
 
                         bool odd = (i % 2 == 0);
 
@@ -552,13 +535,6 @@ public:
                             y = x->getParent();
                             i--;
                         }
-
-
-
-
-
-
-
 
 
                         break;
@@ -650,32 +626,10 @@ public:
 
                 refactor(expression);
 
-                if (expression->isKind(Kind::UnaryOperation))
-                performUnaryOperation(node);
-
-
-                /*if (expression->getKind() == Kind::Numeric && unaryOperator == OperatorKind::UNM)
+                if (node->isKind(Kind::UnaryOperation))
                 {
                     performUnaryOperation(node);
                 }
-                else if (unaryOperator == OperatorKind::LNOT)
-                {
-                    switch (expression->getKind())
-                    {
-                        case Kind::Boolean:
-                        {
-                            auto& boolean = expression->getChild<std::string>(0);
-
-                            Node::swap(node, expression);
-                            Node::reset(expression);
-                            boolean = (boolean == "true" ? "false" : "true");
-                        }
-                        default:
-                        {
-                            break;
-                        }
-                    }
-                }*/
                 break;
             }
 
@@ -683,12 +637,7 @@ public:
             {
                 if (node->getParent() && node->getParent()->getKind() == Kind::TableNameValue)
                 {
-                    return;
-                }
-
-                if (!node->getParent())
-                {
-                    std::cout << node->getChild<std::string>(0) << std::endl;
+                    break;
                 }
 
                 auto& name = node->getChild<std::string>(0);
@@ -891,7 +840,7 @@ public:
             {
                 auto statements = node->getChild<p_NodeArray>(0);
 
-                for (const auto& conditionalBlock : statements)
+                for (const auto& conditionalBlock: statements)
                 {
                     auto condition = conditionalBlock->getChild<p_Node>(0);
                     auto block = conditionalBlock->getChild<p_Node>(1);
@@ -1112,7 +1061,9 @@ public:
                 {
                     auto lhsOp = lhs->getChild<OperatorKind>(0);
 
-                    if (Util::getOperator(binOp) == "^" || Util::getOperator(binOp) == ".." || getPrecedence(lhsOp) < getPrecedence(binOp))
+                    if (Util::getOperator(binOp) == "^" || Util::getOperator(binOp) == ".." || getPrecedence(lhsOp) < getPrecedence(
+                        binOp
+                    ))
                     {
                         lhsFmt = "({0})";
                     }
@@ -1331,7 +1282,7 @@ public:
 
                     if (statement->getKind() == Kind::Semicolon)
                     {
-                        {continue;}
+                        { continue; }
 
                         auto j = i;
                         while (i + 1 < n && statements[i + 1]->getKind() == Kind::Semicolon)
