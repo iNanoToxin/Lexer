@@ -104,6 +104,7 @@ public:
     template <typename T>
     [[nodiscard]] T& getChild(const std::size_t& index)
     {
+        // std::cout << getKindName(m_Kind) << " : " << typeid(T).name() << std::endl;
         return std::get<T>(m_Children[index]);
     }
     [[nodiscard]] p_Node getParent(const std::size_t& depth = 0);

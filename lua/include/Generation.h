@@ -523,25 +523,38 @@ public:
                             curr->setParent(par);
                         }*/
 
-                        auto curr = lhs;
-                        int i = 0;
+                        auto curr = node;
+                        int i = 1;
 
                         while (
-                            curr->getParent()
-                            && curr->getParent()->isKind(Kind::UnaryOperation)
-                            && curr->getChild<OperatorKind>(0) == OperatorKind::LNOT)
+                            curr
+                            && curr->isKind(Kind::UnaryOperation)
+                            && curr->getChild<OperatorKind>(0) == OperatorKind::LNOT
+                        )
                         {
-                            curr = curr->getChild<p_Node>(1);
+                            curr = curr->getParent();
                             i++;
                         }
 
                         std::cout << i << std::endl;
 
-                        // if (node->getParent())
-                        // {
-                        //     std::swap(node->getChildren(), lhs->getChildren());
-                        //     std::swap(node->getKind(), lhs->getKind());
-                        // }
+                        auto x = lhs;
+                        auto y = x->getParent();
+
+                        bool odd = (i % 2 == 0);
+
+                        while (i > odd + 1 && x && y)
+                        {
+                            std::swap(x->getChildren(), y->getChildren());
+                            std::swap(x->getKind(), y->getKind());
+                            Node::reset(x);
+                            x = y;
+                            y = x->getParent();
+                            i--;
+                        }
+
+
+
 
 
 
@@ -636,6 +649,8 @@ public:
                 auto expression = node->getChild<p_Node>(1);
 
                 refactor(expression);
+
+                if (expression->isKind(Kind::UnaryOperation))
                 performUnaryOperation(node);
 
 

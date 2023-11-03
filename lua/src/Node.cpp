@@ -29,7 +29,7 @@ v_Variant& Node::getChildren()
 
 p_Node Node::getParent(const std::size_t& depth)
 {
-    p_Node parent = std::static_pointer_cast<Node>(m_Parent);
+    p_Node parent = m_Parent;
     if (parent && depth > 0)
     {
         return parent->getParent(depth - 1);
