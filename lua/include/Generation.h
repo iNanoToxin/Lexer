@@ -1,36 +1,38 @@
 #ifndef LUA_GENERATION_H
 #define LUA_GENERATION_H
 
-#include <string_view>
-#include <fmt/core.h>
-#include <stack>
-#include <map>
 #include <Parser.h>
-#include <cmath>
 #include <chrono>
+#include <cmath>
+#include <fmt/core.h>
+#include <map>
+#include <stack>
+#include <string_view>
 #include <variant>
 
 #define NEW_LINE "\n"
 
 
-#define w_assert(condition, message)                      \
-do {                                                      \
-    if (!(condition)) {                                   \
-        std::cerr << "Assertion `" #condition "` failed." \
-        << "\n\tFile: " << __FILE__                       \
-        << "\n\tFunc: " << __FUNCTION__                   \
-        << "\n\tLine: " << __LINE__                       \
-        << "\n\tMessage: " << message                     \
-        << std::endl;                                     \
-        abort();                                          \
-    }                                                     \
-} while (false)
+#define w_assert(condition, message)                                                                          \
+    do                                                                                                        \
+    {                                                                                                         \
+        if (!(condition))                                                                                     \
+        {                                                                                                     \
+            std::cerr << "Assertion `" #condition "` failed."                                                 \
+                      << "\n\tFile: " << __FILE__ << "\n\tFunc: " << __FUNCTION__ << "\n\tLine: " << __LINE__ \
+                      << "\n\tMessage: " << message << std::endl;                                             \
+            abort();                                                                                          \
+        }                                                                                                     \
+    }                                                                                                         \
+    while (false)
+
 
 class Scope : std::stack<std::map<std::string, std::pair<std::string, int>>>
 {
 private:
     std::vector<char> variableChars;
     unsigned int variableCount = 0;
+
 public:
     Scope()
     {
@@ -212,7 +214,7 @@ namespace Operation
         }
         return std::nullopt;
     }
-}
+} // namespace Operation
 
 
 class Memory
@@ -245,7 +247,9 @@ public:
                     auto lhsChild = parent->getChild<p_Node>(0);
                     auto rhsChild = parent->getChild<p_Node>(1);
 
-                    if (lhsChild->getKind() != Kind::Identifier || rhsChild->getKind() != Kind::Identifier || lhsChild != node)
+                    if (lhsChild->getKind() != Kind::Identifier
+                        || rhsChild->getKind() != Kind::Identifier
+                        || lhsChild != node)
                     {
                         break;
                     }
@@ -446,6 +450,19 @@ public:
         auto opKind = node->getChild<OperatorKind>(0);
         auto lhs = node->getChild<p_Node>(1);
 
+        auto getCount = [&node, &opKind]() -> int
+        {
+            auto curr = node;
+            int i = 0;
+
+            while (curr && curr->isKind(Kind::UnaryOperation) && curr->getChild<OperatorKind>(0) == opKind)
+            {
+                curr = curr->getParent();
+                i++;
+            }
+            return i;
+        };
+
         switch (opKind)
         {
             case OperatorKind::UNM:
@@ -489,12 +506,14 @@ public:
                     {
                         node->setKind(Kind::Boolean);
                         node->setChildren({false});
+                        Node::reset(lhs);
                         break;
                     }
                     case Kind::Null:
                     {
                         node->setKind(Kind::Boolean);
                         node->setChildren({true});
+                        Node::reset(lhs);
                         break;
                     }
                     case Kind::Boolean:
@@ -502,41 +521,23 @@ public:
                         bool boolean = lhs->getChild<bool>(0);
                         node->setKind(Kind::Boolean);
                         node->setChildren({!boolean});
+                        Node::reset(lhs);
                         break;
                     }
                     default:
                     {
-                        auto curr = node;
-                        int i = 1;
+                        auto count = getCount();
+                        auto curr = lhs;
+                        auto next = node;
 
-                        while (
-                            curr
-                                && curr->isKind(Kind::UnaryOperation)
-                                && curr->getChild<OperatorKind>(0) == OperatorKind::LNOT
-                            )
+                        for (int i = count - 1; i > (count % 2 == 0); i--)
                         {
-                            curr = curr->getParent();
-                            i++;
+                            std::swap(curr->getChildren(), next->getChildren());
+                            std::swap(curr->getKind(), next->getKind());
+                            Node::reset(curr);
+                            curr = next;
+                            next = next->getParent();
                         }
-
-                        std::cout << i << std::endl;
-
-                        auto x = lhs;
-                        auto y = node;
-
-                        bool odd = (i % 2 == 0);
-
-                        while (i > odd + 1 && x && y)
-                        {
-                            std::swap(x->getChildren(), y->getChildren());
-                            std::swap(x->getKind(), y->getKind());
-                            Node::reset(x);
-                            x = y;
-                            y = x->getParent();
-                            i--;
-                        }
-
-
                         break;
                     }
                 }
@@ -602,11 +603,7 @@ public:
 
     void refactor(const p_Node& node)
     {
-        if (!node)
-        {
-            return;
-        }
-
+        if (!node) return;
 
         switch (node->getKind())
         {
@@ -918,7 +915,8 @@ public:
 
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
-        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()
+                  << "[ms]" << std::endl;
 
         return generatedString;
     }
@@ -941,7 +939,7 @@ public:
     }
 
     template <typename... Args>
-    std::string format(std::string_view fmtString, Args&& ... args)
+    std::string format(std::string_view fmtString, Args&&... args)
     {
         return fmt::vformat(fmtString, fmt::make_format_args(args...));
     }
@@ -1061,9 +1059,7 @@ public:
                 {
                     auto lhsOp = lhs->getChild<OperatorKind>(0);
 
-                    if (Util::getOperator(binOp) == "^" || Util::getOperator(binOp) == ".." || getPrecedence(lhsOp) < getPrecedence(
-                        binOp
-                    ))
+                    if (Util::getOperator(binOp) == "^" || Util::getOperator(binOp) == ".." || getPrecedence(lhsOp) < getPrecedence(binOp))
                     {
                         lhsFmt = "({0})";
                     }
@@ -1081,15 +1077,9 @@ public:
 
                 return format(
                     "{0} {1} {2}",
-                    format(
-                        lhsFmt,
-                        toString(lhs, depth)
-                    ),
+                    format(lhsFmt, toString(lhs, depth)),
                     Util::getOperator(binOp),
-                    format(
-                        rhsFmt,
-                        toString(rhs, depth)
-                    )
+                    format(rhsFmt, toString(rhs, depth))
                 );
             }
             case Kind::UnaryOperation:
@@ -1154,73 +1144,43 @@ public:
             {
                 auto name = node->getChild<p_Node>(0);
                 auto attribute = node->getChild<p_Node>(1);
-                return format(
-                    "{0}<{1}>",
-                    toString(name, depth),
-                    toString(attribute, depth)
-                );
+                return format("{0}<{1}>", toString(name, depth), toString(attribute, depth));
             }
             case Kind::Member:
             {
                 auto root = node->getChild<p_Node>(0);
                 auto index = node->getChild<p_Node>(1);
-                return format(
-                    "{0}.{1}",
-                    toString(root, depth),
-                    toString(index, depth)
-                );
+                return format("{0}.{1}", toString(root, depth), toString(index, depth));
             }
             case Kind::Method:
             {
                 auto root = node->getChild<p_Node>(0);
                 auto index = node->getChild<p_Node>(1);
-                return format(
-                    "{0}:{1}",
-                    toString(root, depth),
-                    toString(index, depth)
-                );
+                return format("{0}:{1}", toString(root, depth), toString(index, depth));
             }
             case Kind::Index:
             {
                 auto root = node->getChild<p_Node>(0);
                 auto index = node->getChild<p_Node>(1);
-                return format(
-                    "{0}[{1}]",
-                    toString(root, depth),
-                    toString(index, depth)
-                );
+                return format("{0}[{1}]", toString(root, depth), toString(index, depth));
             }
 
             case Kind::TableIndexValue:
             {
                 auto index = node->getChild<p_Node>(0);
                 auto value = node->getChild<p_Node>(1);
-                return format(
-                    "{0}[{1}] = {2}",
-                    space(depth),
-                    toString(index, depth),
-                    toString(value, depth)
-                );
+                return format("{0}[{1}] = {2}", space(depth), toString(index, depth), toString(value, depth));
             }
             case Kind::TableNameValue:
             {
                 auto index = node->getChild<p_Node>(0);
                 auto value = node->getChild<p_Node>(1);
-                return format(
-                    "{0}{1} = {2}",
-                    space(depth),
-                    toString(index, depth),
-                    toString(value, depth)
-                );
+                return format("{0}{1} = {2}", space(depth), toString(index, depth), toString(value, depth));
             }
             case Kind::TableValue:
             {
                 auto value = node->getChild<p_Node>(0);
-                return format(
-                    "{0}{1}",
-                    space(depth),
-                    toString(value, depth)
-                );
+                return format("{0}{1}", space(depth), toString(value, depth));
             }
             case Kind::TableConstructor:
             {
@@ -1235,13 +1195,7 @@ public:
                         str = trim(str);
                     }
 
-                    return format(
-                        fmt,
-                        NEW_LINE,
-                        str,
-                        NEW_LINE,
-                        space(depth)
-                    );
+                    return format(fmt, NEW_LINE, str, NEW_LINE, space(depth));
                 }
                 return "{}";
             }
@@ -1263,10 +1217,7 @@ public:
             case Kind::ArgumentList:
             {
                 auto arguments = node->getChild<p_Node>(0);
-                return format(
-                    "({0})",
-                    toString(arguments, depth)
-                );
+                return format("({0})", toString(arguments, depth));
             }
 
             case Kind::Block:
@@ -1282,7 +1233,9 @@ public:
 
                     if (statement->getKind() == Kind::Semicolon)
                     {
-                        { continue; }
+                        {
+                            continue;
+                        }
 
                         auto j = i;
                         while (i + 1 < n && statements[i + 1]->getKind() == Kind::Semicolon)
@@ -1339,22 +1292,13 @@ public:
                     }
                 }
 
-                return format(
-                    fmt,
-                    toString(root, depth),
-                    toString(args, depth)
-                );
+                return format(fmt, toString(root, depth), toString(args, depth));
             }
             case Kind::FunctionDefinition:
             {
                 auto name = node->getChild<p_Node>(0);
                 auto body = node->getChild<p_Node>(1);
-                return format(
-                    "function{0}{1}{2}",
-                    !name ? "" : " ",
-                    toString(name, depth),
-                    toString(body, depth)
-                );
+                return format("function{0}{1}{2}", !name ? "" : " ", toString(name, depth), toString(body, depth));
             }
             case Kind::FunctionName:
             {
@@ -1372,21 +1316,12 @@ public:
                     fmt = "({0}) end";
                 }
 
-                return format(
-                    fmt,
-                    toString(parameters, depth),
-                    NEW_LINE,
-                    toString(block, depth + 1),
-                    space(depth)
-                );
+                return format(fmt, toString(parameters, depth), NEW_LINE, toString(block, depth + 1), space(depth));
             }
             case Kind::Label:
             {
                 auto name = node->getChild<p_Node>(0);
-                return format(
-                    "::{0}::",
-                    toString(name, depth)
-                );
+                return format("::{0}::", toString(name, depth));
             }
             case Kind::Semicolon:
             {
@@ -1445,10 +1380,7 @@ public:
                 {
                     return "return";
                 }
-                return format(
-                    "return {0}",
-                    toString(expressions, depth)
-                );
+                return format("return {0}", toString(expressions, depth));
             }
             case Kind::RepeatStatement:
             {
@@ -1500,13 +1432,8 @@ public:
                         fmt = "{0}elseif {1} then{2}{3}";
                     }
 
-                    ifString += format(
-                        fmt,
-                        space(depth),
-                        toString(condition, depth),
-                        NEW_LINE,
-                        toString(block, depth + 1)
-                    );
+                    ifString +=
+                        format(fmt, space(depth), toString(condition, depth), NEW_LINE, toString(block, depth + 1));
                 }
 
                 ifString += format("{0}end", space(depth));
@@ -1515,20 +1442,12 @@ public:
             case Kind::DoStatement:
             {
                 auto block = node->getChild<p_Node>(0);
-                return format(
-                    "do{0}{1}{2}end",
-                    NEW_LINE,
-                    toString(block, depth + 1),
-                    space(depth)
-                );
+                return format("do{0}{1}{2}end", NEW_LINE, toString(block, depth + 1), space(depth));
             }
             case Kind::GotoStatement:
             {
                 auto name = node->getChild<p_Node>(0);
-                return format(
-                    "goto {0}",
-                    toString(name, depth)
-                );
+                return format("goto {0}", toString(name, depth));
             }
             case Kind::BreakStatement:
             {
@@ -1537,20 +1456,13 @@ public:
             case Kind::LocalStatement:
             {
                 auto statement = node->getChild<p_Node>(0);
-                return format(
-                    "local {0}",
-                    toString(statement, depth)
-                );
+                return format("local {0}", toString(statement, depth));
             }
             case Kind::AssignmentStatement:
             {
                 auto lhs = node->getChild<p_Node>(0);
                 auto rhs = node->getChild<p_Node>(1);
-                return format(
-                    "{0} = {1}",
-                    toString(lhs, depth),
-                    toString(rhs, depth)
-                );
+                return format("{0} = {1}", toString(lhs, depth), toString(rhs, depth));
             }
 
             default:

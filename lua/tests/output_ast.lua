@@ -3,167 +3,134 @@
     [0] = {
         Kind: Block
         [0] = {
-            Kind: AssignmentStatement
+            Kind: LocalStatement
             [0] = {
-                Kind: VariableList
+                Kind: AssignmentStatement
                 [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: UnaryOperation
-                    [0] = "not"
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 1342
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'x'
                     }
                 }
-            }
-        }
-        [1] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: UnaryOperation
-                    [0] = "not"
-                    [1] = {
-                        Kind: Null
-                        [0] = 'nil'
-                    }
-                }
-            }
-        }
-        [2] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: UnaryOperation
-                    [0] = "not"
-                    [1] = {
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
                         Kind: UnaryOperation
-                        [0] = "not"
+                        [0] = "~"
                         [1] = {
                             Kind: UnaryOperation
-                            [0] = "not"
+                            [0] = "~"
                             [1] = {
                                 Kind: UnaryOperation
-                                [0] = "not"
+                                [0] = "~"
                                 [1] = {
                                     Kind: UnaryOperation
-                                    [0] = "not"
+                                    [0] = "~"
                                     [1] = {
                                         Kind: UnaryOperation
-                                        [0] = "not"
+                                        [0] = "~"
                                         [1] = {
                                             Kind: UnaryOperation
-                                            [0] = "not"
+                                            [0] = "~"
                                             [1] = {
                                                 Kind: UnaryOperation
-                                                [0] = "not"
+                                                [0] = "~"
                                                 [1] = {
                                                     Kind: UnaryOperation
-                                                    [0] = "not"
+                                                    [0] = "~"
                                                     [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'a'
+                                                        Kind: UnaryOperation
+                                                        [0] = "~"
+                                                        [1] = {
+                                                            Kind: UnaryOperation
+                                                            [0] = "~"
+                                                            [1] = {
+                                                                Kind: UnaryOperation
+                                                                [0] = "~"
+                                                                [1] = {
+                                                                    Kind: UnaryOperation
+                                                                    [0] = "~"
+                                                                    [1] = {
+                                                                        Kind: UnaryOperation
+                                                                        [0] = "~"
+                                                                        [1] = {
+                                                                            Kind: UnaryOperation
+                                                                            [0] = "~"
+                                                                            [1] = {
+                                                                                Kind: UnaryOperation
+                                                                                [0] = "~"
+                                                                                [1] = {
+                                                                                    Kind: UnaryOperation
+                                                                                    [0] = "~"
+                                                                                    [1] = {
+                                                                                        Kind: UnaryOperation
+                                                                                        [0] = "~"
+                                                                                        [1] = {
+                                                                                            Kind: UnaryOperation
+                                                                                            [0] = "~"
+                                                                                            [1] = {
+                                                                                                Kind: UnaryOperation
+                                                                                                [0] = "~"
+                                                                                                [1] = {
+                                                                                                    Kind: UnaryOperation
+                                                                                                    [0] = "~"
+                                                                                                    [1] = {
+                                                                                                        Kind: UnaryOperation
+                                                                                                        [0] = "~"
+                                                                                                        [1] = {
+                                                                                                            Kind: UnaryOperation
+                                                                                                            [0] = "~"
+                                                                                                            [1] = {
+                                                                                                                Kind: UnaryOperation
+                                                                                                                [0] = "~"
+                                                                                                                [1] = {
+                                                                                                                    Kind: UnaryOperation
+                                                                                                                    [0] = "~"
+                                                                                                                    [1] = {
+                                                                                                                        Kind: UnaryOperation
+                                                                                                                        [0] = "~"
+                                                                                                                        [1] = {
+                                                                                                                            Kind: UnaryOperation
+                                                                                                                            [0] = "~"
+                                                                                                                            [1] = {
+                                                                                                                                Kind: UnaryOperation
+                                                                                                                                [0] = "~"
+                                                                                                                                [1] = {
+                                                                                                                                    Kind: UnaryOperation
+                                                                                                                                    [0] = "~"
+                                                                                                                                    [1] = {
+                                                                                                                                        Kind: UnaryOperation
+                                                                                                                                        [0] = "~"
+                                                                                                                                        [1] = {
+                                                                                                                                            Kind: Identifier
+                                                                                                                                            [0] = 'BING'
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [3] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: UnaryOperation
-                    [0] = "not"
-                    [1] = {
-                        Kind: UnaryOperation
-                        [0] = "not"
-                        [1] = {
-                            Kind: UnaryOperation
-                            [0] = "not"
-                            [1] = {
-                                Kind: UnaryOperation
-                                [0] = "not"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "not"
-                                    [1] = {
-                                        Kind: UnaryOperation
-                                        [0] = "not"
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'a'
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [4] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'a'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: UnaryOperation
-                    [0] = "not"
-                    [1] = {
-                        Kind: UnaryOperation
-                        [0] = "not"
-                        [1] = {
-                            Kind: UnaryOperation
-                            [0] = "not"
-                            [1] = {
-                                Kind: UnaryOperation
-                                [0] = "not"
-                                [1] = {
-                                    Kind: Boolean
-                                    [0] = 0
                                 }
                             }
                         }
