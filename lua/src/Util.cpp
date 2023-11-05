@@ -140,22 +140,14 @@ std::optional<std::string> Util::toString(const p_Node& node)
 {
     if (node->isKind(Kind::Numeric))
     {
-        return node->getChild<Number>(0).toString();
+        return quote(node->getChild<Number>(0).toString());
     }
     else if (node->isKind(Kind::String))
     {
-        auto s = node->getChild<std::string>(0);
-        auto i = 1;
+        auto string = node->getChild<std::string>(0);
+        auto isRawString = string.starts_with('[');
 
-        if (s.starts_with("["))
-        {
-            while (i < s.size() && s[i] == '=')
-            {
-                i++;
-            }
-            i++;
-        }
-        return "\"" + toRawString(std::string(s.begin() + i, s.end() - i), s.starts_with("[")) + "\"";
+        return quote(toRawString(unquote(string), isRawString));
     }
     return std::nullopt;
 }
@@ -178,7 +170,7 @@ std::string Util::toRawString(const std::string& string, bool isRawString)
         }
         else
         {
-            if (c == '\\')
+            /*if (c == '\\')
             {
                 i++;
                 result << c;
@@ -187,7 +179,7 @@ std::string Util::toRawString(const std::string& string, bool isRawString)
                     result << string[i];
                 }
                 continue;
-            }
+            }*/
         }
 
         if (c < 32 || c > 126)
@@ -245,4 +237,24 @@ bool Util::isSequence(char c)
             return false;
         }
     }
+}
+
+std::string Util::quote(const std::string& string)
+{
+    return "\"" + string + "\"";
+}
+
+std::string Util::unquote(const std::string& string)
+{
+    auto i = 1;
+
+    if (string.starts_with("["))
+    {
+        while (i < string.size() && string[i] == '=')
+        {
+            i++;
+        }
+        i++;
+    }
+    return {string.begin() + i, string.end() - i};
 }

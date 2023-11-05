@@ -21,8 +21,8 @@ assert(true and 2 and not (2 > 3 or 3 < 2))
 assert(true)
 assert(true and true and true)
 assert(false and true)
-assert(true and 33 == "33")
-assert(not (3 > 3) and "a""b" > "a")
+assert(true and "33" == "33")
+assert(not (3 > 3) and "ab" > "a")
 assert(true)
 assert(true)
 assert(true)
@@ -281,10 +281,11 @@ do
     b(l, "unknown attribute 'XXX'")
     b("local xxx <const> = 20; xxx = 10", ":1: attempt to assign to const variable 'xxx'")
     b("\n    local xx; \\n\n    local xxx <const> = 20;\n    local yyy;\n    local function foo ()\n      local abc = xx + yyy + xxx;\n      return function () return function () xxx = yyy end end\n    end\n  ", ":6: attempt to assign to const variable 'xxx'")
-    b("\n      \-17\-65\-67  A\n    local x <close> = nil\n    x = io.open()\n  ", ":2: attempt to assign to const variable 'x'")
+    b("\n        A\n    local x <close> = nil\n    x = io.open()\n  ", ":2: attempt to assign to const variable 'x'")
 end
+d = "\255\233"
 g = "\nreturn function ( a , b , c , d , e )\n  local x = a >= b or c or ( d and e ) or nil\n  return x\nend , { a = 1 , b = 2 >= 1 , } or { 1 };\n"
-d = "\"
+d = "\ "
 g = string.gsub(g, "%s+", "\n")
 g, c = load(g)()
 assert(c.c == 1 and c.e)

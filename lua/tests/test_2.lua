@@ -264,11 +264,13 @@ do   -- testing constants
   ]], ":6: attempt to assign to const variable 'xxx'")
 
   checkload([[
-      �  A
+        A
     local x <close> = nil
     x = io.open()
   ]], ":2: attempt to assign to const variable 'x'")
 end
+
+x = "\255" .. "\233"
 
 f = [[
 return function ( a , b , c , d , e )

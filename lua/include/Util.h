@@ -74,6 +74,10 @@ namespace Util
 
     std::string toRawString(const std::string& string, bool isRawString);
 
+    std::string quote(const std::string& string);
+
+    std::string unquote(const std::string& string);
+
     std::optional<std::string> toString(const p_Node& node);
     std::optional<std::string> toString(const std::string& string);
 } // namespace Util
