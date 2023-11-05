@@ -1075,6 +1075,7 @@ public:
             {
                 auto string = Node::create(Kind::String);
                 string->setChildren({consume().literal});
+                string->setChildren({*Util::toString(string)});
                 return string;
             }
 

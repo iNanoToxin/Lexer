@@ -1,4 +1,5 @@
 #include "Util.h"
+#include <map>
 
 std::optional<double> Util::toNumber(const std::string& number)
 {
@@ -130,6 +131,11 @@ std::optional<double> Util::toNumber(const p_Node& node)
     return std::nullopt;
 }
 
+std::optional<std::string> Util::toString(const std::string& string)
+{
+    return "\"" + toRawString(string, false) + "\"";
+}
+
 std::optional<std::string> Util::toString(const p_Node& node)
 {
     if (node->isKind(Kind::Numeric))
@@ -149,7 +155,94 @@ std::optional<std::string> Util::toString(const p_Node& node)
             }
             i++;
         }
-        return std::string(s.begin() + i, s.end() - i);
+        return "\"" + toRawString(std::string(s.begin() + i, s.end() - i), s.starts_with("[")) + "\"";
     }
     return std::nullopt;
+}
+
+std::string Util::toRawString(const std::string& string, bool isRawString)
+{
+    std::stringstream result;
+
+    for (int i = 0; i < string.size(); i++)
+    {
+        char c = string[i];
+
+        if (isRawString)
+        {
+            if (auto value = getSequence(c))
+            {
+                result << *value;
+                continue;
+            }
+        }
+        else
+        {
+            if (c == '\\')
+            {
+                i++;
+                result << c;
+                if (i < string.size() && isSequence(string[i]))
+                {
+                    result << string[i];
+                }
+                continue;
+            }
+        }
+
+        if (c < 32 || c > 126)
+        {
+            result << "\\";
+            result << std::setfill('0');
+            result << std::setw(3);
+            result << static_cast<int>(c);
+        }
+        else
+        {
+            result << c;
+        }
+    }
+    return result.str();
+}
+
+std::optional<std::string> Util::getSequence(char c)
+{
+    switch (c)
+    {
+        case '\a': return "\\a";
+        case '\b': return "\\b";
+        case '\f': return "\\f";
+        case '\n': return "\\n";
+        case '\r': return "\\r";
+        case '\t': return "\\t";
+        case '\v': return "\\v";
+        case '\'': return "\\\'";
+        case '\"': return "\\\"";
+        case '\\': return "\\\\";
+        default: return std::nullopt;
+    }
+}
+
+bool Util::isSequence(char c)
+{
+    switch (c)
+    {
+        case 'a':
+        case 'b':
+        case 'f':
+        case 'n':
+        case 'r':
+        case 't':
+        case 'v':
+        case '\'':
+        case '\"':
+        case '\\':
+        {
+            return true;
+        }
+        default:
+        {
+            return false;
+        }
+    }
 }

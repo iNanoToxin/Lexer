@@ -66,10 +66,16 @@ namespace Util
         return operators[static_cast<int>(opKind)];
     }
 
+    std::optional<std::string> getSequence(char c);
+    bool isSequence(char c);
+
     std::optional<double> toNumber(const std::string& number);
     std::optional<double> toNumber(const p_Node& node);
 
+    std::string toRawString(const std::string& string, bool isRawString);
+
     std::optional<std::string> toString(const p_Node& node);
+    std::optional<std::string> toString(const std::string& string);
 } // namespace Util
 
 namespace Operation

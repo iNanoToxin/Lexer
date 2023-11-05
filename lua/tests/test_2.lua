@@ -51,6 +51,8 @@ x = 1 + "1e33333"
 x = 1.423E2
 x = 5E30000
 
+x = [[a]]
+
 -- old bug
 assert((((1 or false) and true) or false) == true)
 assert((((nil and true) or false) and true) == false)
@@ -252,7 +254,7 @@ do   -- testing constants
              ":1: attempt to assign to const variable 'xxx'")
 
   checkload([[
-    local xx;
+    local xx; \n
     local xxx <const> = 20;
     local yyy;
     local function foo ()
@@ -262,6 +264,7 @@ do   -- testing constants
   ]], ":6: attempt to assign to const variable 'xxx'")
 
   checkload([[
+      �  A
     local x <close> = nil
     x = io.open()
   ]], ":2: attempt to assign to const variable 'x'")
@@ -273,6 +276,7 @@ return function ( a , b , c , d , e )
   return x
 end , { a = 1 , b = 2 >= 1 , } or { 1 };
 ]]
+x = "\ "
 f = string.gsub(f, "%s+", "\n");   -- force a SETLINE between opcodes
 f,a = load(f)();
 assert(a.a == 1 and a.b)
