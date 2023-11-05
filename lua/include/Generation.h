@@ -310,8 +310,7 @@ public:
 
                 if (l && r)
                 {
-                    set(Kind::String, {Util::quote(Util::unquote(*l) + Util::unquote(*r)
-                                                   )});
+                    set(Kind::String, {Util::quote(Util::unquote(*l) + Util::unquote(*r))});
                 }
                 break;
             }
