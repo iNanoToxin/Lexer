@@ -1,14 +1,14 @@
 #ifndef LUA_PARSER_H
 #define LUA_PARSER_H
 
-#include <iostream>
-#include <memory>
-#include <utility>
-#include <tuple>
-#include <vector>
-#include <fstream>
 #include <Tokenizer.h>
 #include <Util.h>
+#include <fstream>
+#include <iostream>
+#include <memory>
+#include <tuple>
+#include <utility>
+#include <vector>
 
 #include <Node.h>
 
@@ -26,29 +26,6 @@ bool isConditional(const Token& currentToken);
 bool isNull(const Token& currentToken);
 
 bool isRhsAssociative(const Token& token);
-
-
-#define assert(condition, message)                        \
-do {                                                      \
-    if (!(condition)) {                                   \
-        std::cerr << "Assertion `" #condition "` failed." \
-        << "\n\tFile: " << __FILE__                       \
-        << "\n\tFunc: " << __FUNCTION__                   \
-        << "\n\tLine: " << __LINE__                       \
-        << "\n\tMessage: " << message                     \
-        << std::endl;                                     \
-                                                          \
-        for (int i = -5; i <= 5; i++) {                   \
-            if (next(i)) {                                \
-                std::string literal = peek(i).literal;    \
-                std::cout << literal << std::endl;        \
-            }                                             \
-        }                                                 \
-                                                          \
-                                                          \
-        abort();                                          \
-    }                                                     \
-} while (false)
 
 
 class Parser
@@ -584,7 +561,7 @@ public:
             auto breakStatement = Node::create(Kind::BreakStatement);
             return breakStatement;
         }
-            // For Luau continue
+        // For Luau continue
         else if (expectPeek("continue"))
         {
             consume();
@@ -933,58 +910,72 @@ public:
         // #define PRINT_TOKENS
         // #define RETURN_EARLY
 
-        #ifdef PRINT_TOKENS
+#ifdef PRINT_TOKENS
         {
             std::clog << "VIEW TOKENS: " << stream.m_Tokens.size() << "\n";
 
             std::size_t max_length = 0;
-            for (Token& Token: stream.m_Tokens) {
-                if (Token.literal.m_Length() <= 15) {
+            for (Token& Token: stream.m_Tokens)
+            {
+                if (Token.literal.m_Length() <= 15)
+                {
                     max_length = std::max(max_length, Token.literal.m_Length());
                 }
             }
 
-            for (Token& Token: stream.m_Tokens) {
+            for (Token& Token: stream.m_Tokens)
+            {
                 std::string type;
 
-                switch (Token.type) {
-                    case TokenType::IDENTIFIER: {
+                switch (Token.type)
+                {
+                    case TokenType::IDENTIFIER:
+                    {
                         type = "IDENTIFIER";
                         break;
                     }
-                    case TokenType::STRING_RAW: {
+                    case TokenType::STRING_RAW:
+                    {
                         type = "STRING_RAW";
                         break;
                     }
-                    case TokenType::STRING: {
+                    case TokenType::STRING:
+                    {
                         type = "STRING";
                         break;
                     }
-                    case TokenType::COMMENT_RAW: {
+                    case TokenType::COMMENT_RAW:
+                    {
                         type = "COMMENT_RAW";
                         break;
                     }
-                    case TokenType::COMMENT: {
+                    case TokenType::COMMENT:
+                    {
                         type = "COMMENT";
                         break;
                     }
-                    case TokenType::NUMBER_HEXADECIMAL: {
+                    case TokenType::NUMBER_HEXADECIMAL:
+                    {
                         type = "NUMBER_HEXADECIMAL";
                         break;
                     }
-                    case TokenType::NUMBER_BINARY: {
+                    case TokenType::NUMBER_BINARY:
+                    {
                         type = "NUMBER_BINARY";
                         break;
                     }
-                    case TokenType::NUMBER: {
+                    case TokenType::NUMBER:
+                    {
                         type = "NUMBER";
                         break;
                     }
-                    case TokenType::KEYWORD: {
+                    case TokenType::KEYWORD:
+                    {
                         type = "KEYWORD";
                         break;
                     }
-                    case TokenType::PUNCTUATION: {
+                    case TokenType::PUNCTUATION:
+                    {
                         type = "PUNCTUATION";
                         break;
                     }
@@ -994,24 +985,23 @@ public:
                 //     continue;
                 // }
 
-                if (Token.literal.m_Length() <= 15) {
-                    std::cout << Token.literal << std::string(
-                        max_length - Token.literal.m_Length(),
-                        ' '
-                    ) << " -> " << (type) << "\n";
+                if (Token.literal.m_Length() <= 15)
+                {
+                    std::cout << Token.literal << std::string(max_length - Token.literal.m_Length(), ' ') << " -> " << (type) << "\n";
                 }
-                else {
-std::cout << Token.literal << " -> " << (type) << "\n";
+                else
+                {
+                    std::cout << Token.literal << " -> " << (type) << "\n";
                 }
             }
 
             std::cout << "\n";
         }
-        #endif
+#endif
 
-        #ifdef RETURN_EARLY
+#ifdef RETURN_EARLY
         return;
-        #endif
+#endif
 
         std::string path = "../tests/output_ast.lua";
         auto ptr = getChunk();
@@ -1098,19 +1088,10 @@ std::cout << Token.literal << " -> " << (type) << "\n";
             case TokenType::NUMBER_BINARY:
             case TokenType::NUMBER:
             {
-                double value = 0;
-
-                try
-                {
-                    value = std::stod(consume().literal);
-                }
-                catch (std::out_of_range e)
-                {
-                    value = std::numeric_limits<double>::infinity();
-                }
+                auto value = Util::toNumber(consume().literal);
 
                 auto number = Node::create(Kind::Numeric);
-                number->setChildren({Number(value)});
+                number->setChildren({Number(*value)});
                 return number;
             }
 
@@ -1186,10 +1167,7 @@ std::cout << Token.literal << " -> " << (type) << "\n";
                         opKind = OperatorKind::LEN;
                     }
 
-                    unaryOperation->setChildren({
-                        opKind,
-                        expr
-                    });
+                    unaryOperation->setChildren({opKind, expr});
                     return unaryOperation;
                 }
                 break;
@@ -1267,11 +1245,7 @@ std::cout << Token.literal << " -> " << (type) << "\n";
 
 
                 auto binaryOperation = Node::create(Kind::BinaryOperation);
-                binaryOperation->setChildren({
-                    Util::getOperator(currentToken.literal),
-                    lhs,
-                    rhs
-                });
+                binaryOperation->setChildren({Util::getOperator(currentToken.literal), lhs, rhs});
                 lhs = binaryOperation;
             }
         }

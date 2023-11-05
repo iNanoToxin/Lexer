@@ -10,18 +10,7 @@
 #include <Number.h>
 #include <fmt/core.h>
 
-#define assert(condition, message)                        \
-do {                                                      \
-    if (!(condition)) {                                   \
-        std::cerr << "Assertion `" #condition "` failed." \
-        << "\n\tFile: " << __FILE__                       \
-        << "\n\tFunc: " << __FUNCTION__                   \
-        << "\n\tLine: " << __LINE__                       \
-        << "\n\tMessage: " << message                     \
-        << std::endl;                                     \
-        abort();                                          \
-    }                                                     \
-} while (false)
+
 
 enum class OperatorKind
 {

@@ -66,6 +66,11 @@ public:
         }
         return str;
     }
+
+    constexpr bool operator==(const Number& other) const
+    {
+        return value == other.value;
+    }
 };
 
 
