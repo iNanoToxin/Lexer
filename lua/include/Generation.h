@@ -204,7 +204,7 @@ public:
         auto lhs = node->getChild<p_Node>(1);
         auto rhs = node->getChild<p_Node>(2);
 
-        auto swapWith = [&](const p_Node& other) -> void
+        auto swapWith = [&](const p_Node& other)
         {
             std::swap(node->getKind(), other->getKind());
             std::swap(node->getChildren(), other->getChildren());
