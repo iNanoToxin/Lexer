@@ -16,32 +16,32 @@ if false then
 end
 assert(true)
 assert(true)
-assert(true and true)
-assert(true and 2 and not (2 > 3 or 3 < 2))
 assert(true)
-assert(true and true and true)
-assert(false and true)
-assert(true and "33" == "33")
+assert(not (2 > 3 or 3 < 2))
+assert(true)
+assert(true)
+assert(false)
+assert("33" == "33")
 assert(not (3 > 3) and "ab" > "a")
 assert(true)
 assert(true)
 assert(true)
 assert(true)
 assert(true)
-assert(not ((true or false) and nil))
-assert((true or false) and nil)
-d = false or false or false or true
+assert(true)
+assert(nil)
+d = true
 d = 2
 d = 1
 d = 1 + "1e33333"
 d = 142.3
 d = inf
 d = "a"
-assert(((1 or false) and true or false) == true)
-assert(((nil and true or false) and true) == false)
+assert(true)
+assert(true)
 local c, e = 1, nil
-assert(-(1 or 2) == -1 and (1 and 2) + (-1.25 or -4) == 0.75)
-local d = (e or c) + 1 == 2 and (10 or c) + 1 == 11
+assert(true)
+local d = (e or c) + 1 == 2 and true
 assert(d)
 d = (2 < 3 or 1) == true and (2 < 3 and 4) == 4
 assert(d)
@@ -227,7 +227,7 @@ d = {
 }
 assert(d[1] == 19 and d[2] == 25)
 d = {
-    f = 5 or c,
+    f = 5,
     a = e + 2
 }
 assert(d.g == 5 and d.c == 25)
@@ -263,7 +263,7 @@ do
     c, e, l = g()
     assert(c == 1 and e == nil and l == nil)
 end
-local c, e = 3 and g()
+local c, e = g()
 assert(c == 1 and e == nil)
 function k()
     g()
@@ -271,7 +271,7 @@ function k()
 end
 assert(k() == nil)
 function k()
-    return nil or g()
+    return g()
 end
 c, e = k()
 assert(c == 1 and e == nil)
@@ -309,7 +309,7 @@ assert(g(1, 2, "a") == "a" and k(1, 2, "a") == 1 and l(1, 2, "a") == 1)
 assert(g(1, 2, nil, 1, "x") == "x" and k(1, 2, nil, 1, "x") == 1 and l(1, 2, nil, 1, "x") == 1)
 assert(g(1, 2, nil, nil, "x") == nil and k(1, 2, nil, nil, "x") == 0 and l(1, 2, nil, nil, "x") == 0)
 assert(g(1, 2, nil, 1, nil) == nil and k(1, 2, nil, 1, nil) == 0 and l(1, 2, nil, 1, nil) == 0)
-assert(1 and 2 < 3 == true and 2 < 3 and "a" < "b" == true)
+assert(2 < 3 == true and 2 < 3 and "a" < "b" == true)
 d = 2 < 3 and false
 assert(d == false)
 d = 2 < 1 or 2 > 1 and "a"

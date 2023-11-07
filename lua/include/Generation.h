@@ -197,6 +197,51 @@ public:
         return false;
     }
 
+    static std::optional<bool> evaluate(const p_Node& node)
+    {
+        switch (node->getKind())
+        {
+            case Kind::Boolean:
+            {
+                return node->getChild<bool>(0);
+            }
+            case Kind::FunctionDefinition:
+            case Kind::TableConstructor:
+            case Kind::String:
+            case Kind::Numeric:
+            {
+                return true;
+            }
+            case Kind::Null:
+            {
+                return false;
+            }
+            default:
+            {
+                return std::nullopt;
+            }
+        }
+    };
+
+    static bool isALlowedComparison(const p_Node& node)
+    {
+        switch (node->getKind())
+        {
+            case Kind::FunctionDefinition:
+            case Kind::TableConstructor:
+            case Kind::String:
+            case Kind::Numeric:
+            case Kind::Boolean:
+            case Kind::Null:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    };
 
     static void performBinaryOperation(const p_Node& node)
     {
@@ -208,7 +253,8 @@ public:
         {
             std::swap(node->getKind(), other->getKind());
             std::swap(node->getChildren(), other->getChildren());
-            Node::reset(other);
+            Node::reset(lhs);
+            Node::reset(rhs);
         };
 
         auto computeArith = [&](auto func)
@@ -240,6 +286,8 @@ public:
             Node::reset(lhs);
             Node::reset(rhs);
         };
+
+
 
         switch (opKind)
         {
@@ -315,69 +363,29 @@ public:
                 break;
             }
 
-                /*case OperatorKind::LOR:
+            case OperatorKind::LAND:
             {
-                switch (lhs->getKind())
-                {
-                    case Kind::Numeric:
-                    case Kind::String:
-                    case Kind::TableConstructor:
-                    case Kind::FunctionDefinition:
-                    {
-                        swapWith(lhs);
-                        return;
-                    }
-                    case Kind::Boolean:
-                    {
-                        if (lhs->getChild<bool>(0))
-                        {
-                            swapWith(lhs);
-                            return;
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
-                }
+                auto lhsE = evaluate(lhs);
+                auto rhsE = evaluate(lhs);
 
-                switch (lhs->getKind())
+                if (lhsE && rhsE)
                 {
-                    case Kind::Numeric:
-                    case Kind::String:
-                    case Kind::TableConstructor:
-                    case Kind::FunctionDefinition:
-                    {
-                        std::swap(node->getKind(), lhs->getKind());
-                        std::swap(node->getChildren(), lhs->getChildren());
-                        Node::reset(lhs);
-                        return;
-                    }
-                    case Kind::Boolean:
-                    {
-                        if (lhs->getChild<bool>(0))
-                        {
-                            std::swap(node->getKind(), lhs->getKind());
-                            std::swap(node->getChildren(), lhs->getChildren());
-                            Node::reset(lhs);
-                            return;
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
+                    swapWith((*lhsE && *rhsE) ? rhs : lhs);
+                }
+                break;
+            }
+            case OperatorKind::LOR:
+            {
+                auto lhsE = evaluate(lhs);
+                auto rhsE = evaluate(lhs);
+
+                if (lhsE && rhsE)
+                {
+                    swapWith(*lhsE ? lhs : rhs);
                 }
 
                 break;
-            }*/
-
-            // case OperatorKind::INEQ:
-            // {
-            //     break;
-            // }
+            }
 
             case OperatorKind::EQ:
             {
