@@ -14,20 +14,22 @@ if false then
     c = inf
     c = nan
 end
+assert(512 == 512)
+assert(32 == 32)
+assert(0.25 == 0.25 and -4 == -4)
 assert(true)
-assert(true)
-assert(true)
-assert(not (2 > 3 or 3 < 2))
-assert(true)
+assert(-9 == -9)
+assert(-4 == -4 and 4 == 4 and 0 == 0)
+assert(-3 == 2 and 2 == 2)
+assert(3 == 3 and "33" == "33")
 assert(true)
 assert(false)
-assert("33" == "33")
-assert(not (3 > 3) and "ab" > "a")
 assert(true)
-assert(true)
-assert(true)
-assert(true)
-assert(true)
+assert(244 == 244)
+assert(244 == 244)
+assert(16 == 16)
+assert(2 == 2)
+assert(-1.666667 == -1.666667)
 assert(true)
 assert(nil)
 d = true
@@ -37,19 +39,19 @@ d = 1 + "1e33333"
 d = 142.3
 d = inf
 d = "a"
-assert(true)
-assert(true)
+assert(true == true)
+assert(false == false)
 local c, e = 1, nil
-assert(true)
-local d = (e or c) + 1 == 2 and true
+assert(-1 == -1 and 0.75 == 0.75)
+local d = (e or c) + 1 == 2 and 11 == 11
 assert(d)
-d = (2 < 3 or 1) == true and (2 < 3 and 4) == 4
+d = true == true and 4 == 4
 assert(d)
 local d, f = 1, 2
 assert(d > f and d or f == 2)
 d, f = 2, 1
 assert(d > f and d or f == 2)
-assert(1234567890 == tonumber("1234567890") and true)
+assert(1234567890 == tonumber("1234567890") and 1234567891 == 1234567891)
 do
     local g = {
         3,
@@ -309,10 +311,10 @@ assert(g(1, 2, "a") == "a" and k(1, 2, "a") == 1 and l(1, 2, "a") == 1)
 assert(g(1, 2, nil, 1, "x") == "x" and k(1, 2, nil, 1, "x") == 1 and l(1, 2, nil, 1, "x") == 1)
 assert(g(1, 2, nil, nil, "x") == nil and k(1, 2, nil, nil, "x") == 0 and l(1, 2, nil, nil, "x") == 0)
 assert(g(1, 2, nil, 1, nil) == nil and k(1, 2, nil, 1, nil) == 0 and l(1, 2, nil, 1, nil) == 0)
-assert(2 < 3 == true and 2 < 3 and "a" < "b" == true)
-d = 2 < 3 and false
+assert(true == true and true and true == true)
+d = false
 assert(d == false)
-d = 2 < 1 or 2 > 1 and "a"
+d = "a"
 assert(d == "a")
 do
     local c

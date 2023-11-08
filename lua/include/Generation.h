@@ -243,6 +243,21 @@ public:
         }
     };
 
+    static std::optional<bool> isLessThan(const p_Node& lhs, const p_Node& rhs)
+    {
+        if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::Numeric))
+        {
+            return lhs->getChild<Number>(0) < rhs->getChild<Number>(0);
+        }
+        else if (lhs->isKind(Kind::String) && rhs->isKind(Kind::String))
+        {
+            const std::string& a = lhs->getChild<std::string>(0);
+            const std::string& b = rhs->getChild<std::string>(0);
+            return a.compare(b) < 0;
+        }
+        return std::nullopt;
+    }
+
     static void performBinaryOperation(const p_Node& node)
     {
         auto opKind = node->getChild<OperatorKind>(0);
@@ -387,6 +402,24 @@ public:
                 break;
             }
 
+            case OperatorKind::LT:
+            {
+                if (auto value = isLessThan(lhs, rhs))
+                {
+                    set(Kind::Boolean, {*value});
+                }
+                break;
+            }
+
+            case OperatorKind::GT:
+            {
+                if (auto value = isLessThan(rhs, lhs))
+                {
+                    set(Kind::Boolean, {*value});
+                }
+                break;
+            }
+
             case OperatorKind::EQ:
             {
                 /*if (auto boolean = Operation::compare(lhs, rhs, std::equal_to<>()))
@@ -397,7 +430,7 @@ public:
                     Node::reset(rhs);
                 }*/
 
-                switch (lhs->getKind())
+                /*switch (lhs->getKind())
                 {
                     case Kind::String:
                     {
@@ -427,7 +460,7 @@ public:
                     {
                         break;
                     }
-                }
+                }*/
 
 
                 break;
