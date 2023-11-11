@@ -1,5 +1,6 @@
 #include "Util.h"
 #include <map>
+#include <sstream>
 
 std::optional<double> Util::toNumber(const std::string& number)
 {
@@ -126,7 +127,7 @@ std::optional<double> Util::toNumber(const p_Node& node)
     }
     else if (node->isKind(Kind::String))
     {
-        return toNumber(*toString(node));
+        return toNumber(unquote(*toString(node)));
     }
     return std::nullopt;
 }
@@ -158,7 +159,7 @@ std::string Util::toRawString(const std::string& string, bool isRawString)
 
     for (int i = 0; i < string.size(); i++)
     {
-        char c = string[i];
+        unsigned char c = string[i];
 
         if (isRawString)
         {
@@ -185,8 +186,8 @@ std::string Util::toRawString(const std::string& string, bool isRawString)
         if (c < 32 || c > 126)
         {
             result << "\\";
-            result << std::setfill('0');
-            result << std::setw(3);
+            // result << std::setfill('0');
+            // result << std::setw(3);
             result << static_cast<int>(c);
         }
         else

@@ -1,435 +1,235 @@
-print("testing syntax")
-local a = require("debug")
-local function b(c, d)
-    assert(string.find(select(2, load(c)), d))
+print("testing UTF-8 library")
+local a = require("utf8")
+local function b(c, d, ...)
+    local e, f = pcall(d, ...)
+    assert(not e and string.find(f, c))
 end
-local c
+local function c(d)
+    return #string.gsub(d, "[\x80-\xBF]", "")
+end
+local d = "^" .. a.charpattern .. "$"
+local function e(f, g)
+    local h = {"return '"}
+    for i = 1, #g do
+        h[i + 1] = string.format("\\u{%x}", g[i])
+    end
+    h[#g + 2] = "'"
+    h = table.concat(h)
+    assert(assert(load(h))() == f)
+end
+assert(not a.offset("alo", 5))
+assert(not a.offset("alo", -4))
+local function f(g, h, i)
+    local j = a.c(g, 1, -1, i)
+    assert(#h == j and c(g) == j)
+    assert(a.char(table.unpack(h)) == g)
+    assert(a.offset(g, 0) == 1)
+    e(g, h)
+    local k = {a.codepoint(g, 1, -1, i)}
+    assert(#h == #k)
+    for l = 1, #h do
+        assert(h[l] == k[l])
+    end
+    for l = 1, j do
+        local m = a.offset(g, l)
+        local n = a.offset(g, 2, m)
+        assert(string.find(string.sub(g, m, n - 1), d))
+        assert(a.offset(g, -1, n) == m)
+        assert(a.offset(g, l - j - 1) == m)
+        assert(n - m == #a.char(a.codepoint(g, m, m, i)))
+        for o = m, n - 1 do
+            assert(a.offset(g, 0, o) == m)
+        end
+        for o = m + 1, n - 1 do
+            assert(not a.c(g, o))
+        end
+        assert(a.c(g, m, m, i) == 1)
+        assert(a.c(g, m, n - 1, i) == 1)
+        assert(a.c(g, m, -1, i) == j - l + 1)
+        assert(a.c(g, n, -1, i) == j - l)
+        assert(a.c(g, 1, m, i) == l)
+    end
+    local l = 0
+    for m, n in a.codes(g, i) do
+        l = l + 1
+        assert(n == h[l] and m == a.offset(g, l))
+        assert(a.codepoint(g, m, m, i) == n)
+    end
+    assert(l == #h)
+    l = 0
+    for m in string.gmatch(g, a.charpattern) do
+        l = l + 1
+        assert(m == a.char(h[l]))
+    end
+    assert(l == #h)
+    for l = 1, j do
+        assert(a.offset(g, l) == a.offset(g, l - j - 1, #g + 1))
+    end
+end
 do
+    local function f(g, h)
+        local i, j = a.c(g)
+        assert(not i and j == h)
+    end
+    f("abc\xE3def", 4)
+    f("\xF4\x9F\xBF", 1)
+    f("\xF4\x9F\xBF\xBF", 1)
+    f("\230\177\137\229\173\151\x80", 25)
+    f("\x80hello", 1)
+    f("hel\x80lo", 4)
+    f("\230\177\137\229\173\151\xBF", 25)
+    f("\xBFhello", 1)
+    f("hel\xBFlo", 4)
 end
 do
-    c = 3
-    assert(c == 3)
-end
-if false then
-    c = inf
-    c = nan
-end
-assert(512 == 512)
-assert(32 == 32)
-assert(0.25 == 0.25 and -4 == -4)
-assert(true)
-assert(-9 == -9)
-assert(-4 == -4 and 4 == 4 and 0 == 0)
-assert(-3 == 2 and 2 == 2)
-assert(3 == 3 and "33" == "33")
-assert(true)
-assert(false)
-assert(true)
-assert(244 == 244)
-assert(244 == 244)
-assert(16 == 16)
-assert(2 == 2)
-assert(-1.666667 == -1.666667)
-assert(true)
-assert(nil)
-d = true
-d = 2
-d = 1
-d = 1 + "1e33333"
-d = 142.3
-d = inf
-d = "a"
-assert(true == true)
-assert(false == false)
-local c, e = 1, nil
-assert(-1 == -1 and 0.75 == 0.75)
-local d = (e or c) + 1 == 2 and 11 == 11
-assert(d)
-d = true == true and 4 == 4
-assert(d)
-local d, f = 1, 2
-assert(d > f and d or f == 2)
-d, f = 2, 1
-assert(d > f and d or f == 2)
-assert(1234567890 == tonumber("1234567890") and 1234567891 == 1234567891)
-do
-    local g = {
-        3,
-        100,
-        5,
-        -10,
-        -5,
-        10000,
-        -10000
-    }
-    local h = {
-        "+",
-        "-",
-        "*",
-        "/",
-        "//",
-        "%",
-        "^",
-        "&",
-        "|",
-        "^",
-        "<<",
-        ">>",
-        "==",
-        "~=",
-        "<",
-        ">",
-        "<=",
-        ">="
-    }
-    for i, j in ipairs(h) do
-        local k = assert(load(string.format("return function (x,y)\n                return x %s y\n              end", j)))()
-        for i, l in ipairs(g) do
-            for i, m in ipairs(g) do
-                local n = k(l, m)
-                _ENV.XX = l
-                local o = string.format("return XX %s %s", j, m)
-                local p = assert(load(o))()
-                assert(p == n)
-                _ENV.XX = m
-                o = string.format("return (%s) %s XX", l, j)
-                p = assert(load(o))()
-                assert(p == n)
-                o = string.format("return (%s) %s %s", l, j, m)
-                p = assert(load(o))()
-                assert(p == n)
+    local function g(h)
+        b("invalid UTF%-8 code", function()
+            for i in a.codes(h) do
+                assert(i)
             end
-        end
+        end)
     end
-    _ENV.XX = nil
+    g("ab\xff")
+    g("\u{110000}")
+    g("in\x80valid")
+    g("\xbfinvalid")
+    g("\206\177\206\187\207\134\xBF\206\177")
+    local h = a.codes("")
+    assert(h("", 2) == nil)
+    assert(h("", -1) == nil)
+    assert(h("", math.mininteger) == nil)
 end
-repeat
-until 1
-repeat
-until true
-while false do
+b("position out of bounds", a.offset, "abc", 1, 5)
+b("position out of bounds", a.offset, "abc", 1, -4)
+b("position out of bounds", a.offset, "", 1, 2)
+b("position out of bounds", a.offset, "", 1, -1)
+b("continuation byte", a.offset, "\240\166\167\186", 1, 2)
+b("continuation byte", a.offset, "\240\166\167\186", 1, 2)
+b("continuation byte", a.offset, "\x80", 1)
+b("out of bounds", a.c, "abc", 0, 2)
+b("out of bounds", a.c, "abc", 1, 4)
+local g = "hello World"
+local h = {string.byte(g, 1, -1)}
+for i = 1, a.c(g) do
+    assert(h[i] == string.byte(g, i))
 end
-while nil do
-end
+f(g, h)
+f("\230\177\137\229\173\151/\230\188\162\229\173\151", {
+    27721,
+    23383,
+    47,
+    28450,
+    23383
+})
 do
-    local c
-    local function g(d)
-        d = {a = 1}
-        d = {x = 1}
-        d = {G = 1}
-    end
+    local g = "\195\161\195\169\195\173\128"
+    local h = {a.codepoint(g, 1, #g - 1)}
+    assert(#h == 3 and h[1] == 225 and h[2] == 233 and h[3] == 237)
+    b("invalid UTF%-8 code", a.codepoint, g, 1, #g)
+    b("out of bounds", a.codepoint, g, #g + 1)
+    h = {a.codepoint(g, 4, 3)}
+    assert(#h == 0)
+    b("out of bounds", a.codepoint, g, -(#g + 1), 1)
+    b("out of bounds", a.codepoint, g, 1, #g + 1)
+    assert(a.codepoint("\u{D7FF}") == 55295)
+    assert(a.codepoint("\u{E000}") == 57344)
+    assert(a.codepoint("\u{D800}", 1, 1, true) == 55296)
+    assert(a.codepoint("\u{DFFF}", 1, 1, true) == 57343)
+    assert(a.codepoint("\u{7FFFFFFF}", 1, 1, true) == 2147483647)
 end
+assert(a.char() == "")
+assert(a.char(0, 97, 98, 99, 1) == "\0abc\1")
+assert(a.codepoint(a.char(1114111)) == 1114111)
+assert(a.codepoint(a.char(2147483647), 1, 1, true) == -2147483649)
+b("value out of range", a.char, 2147483648)
+b("value out of range", a.char, -1)
+local function i(g)
+    b("invalid UTF%-8 code", a.codepoint, g)
+    assert(not a.c(g))
+end
+i("\xF4\x9F\xBF\xBF")
+i("\u{D800}")
+i("\u{DFFF}")
+i("\xC0\x80")
+i("\xC1\xBF")
+i("\xE0\x9F\xBF")
+i("\xF0\x8F\xBF\xBF")
+i("\x80")
+i("\xBF")
+i("\xFE")
+i("\xFF")
+f("", {})
+g = "\0 \x7F\z\xC2\x80 \xDF\xBF\z\xE0\xA0\x80 \xEF\xBF\xBF\z\xF0\x90\x80\x80  \xF4\x8F\xBF\xBF"
+g = string.gsub(g, " ", "")
+f(g, {
+    0,
+    127,
+    128,
+    2047,
+    2048,
+    65535,
+    65536,
+    1114111
+})
 do
-    local g = {"local x = {"}
-    for h = 1, 257 do
-        g[#g + 1] = h .. ".1,"
-    end
-    g[#g + 1] = "};"
-    g = table.concat(g)
-    local function h(i, j)
-        local g = g .. i
-        g = load(g)
-        assert(g() == j)
-    end
-    h("return (1 ~ (2 or 3))", 3)
-    h("return (1 | (2 or 3))", 3)
-    h("return (1 + (2 or 3))", 3)
-    h("return (1 << (2 or 3))", 4)
+    local g = "\u{4000000}\u{7FFFFFFF}"
+    assert(#g == 12)
+    f(g, {
+        67108864,
+        2147483647
+    }, true)
+    g = "\u{200000}\u{3FFFFFF}"
+    assert(#g == 10)
+    f(g, {
+        2097152,
+        67108863
+    }, true)
+    g = "\u{10000}\u{1fffff}"
+    assert(#g == 8)
+    f(g, {
+        65536,
+        2097151
+    }, true)
 end
-local function g(h)
-    if type(h) ~= "number" then
-        return h, "jojo"
-    end
-    if h > 0 then
-        return h, g(h - 1)
-    end
-end
-d = {
-    g(3),
-    g(5),
-    g(10)
-}
-assert(d[1] == 3 and d[2] == 5 and d[3] == 10 and d[4] == 9 and d[12] == 1)
-assert(d[nil] == nil)
-d = {
-    g("alo"),
-    g("xixi"),
-    nil
-}
-assert(d[1] == "alo" and d[2] == "xixi" and d[3] == nil)
-d = {g("alo") .. "xixi"}
-assert(d[1] == "aloxixi")
-d = {g({})}
-assert(d[2] == "jojo" and type(d[1]) == "table")
-local g = function(h)
-    if h < 10 then
-        return "a"
-    elseif h < 20 then
-        return "b"
-    elseif h < 30 then
-        return "c"
-    end
-end
-assert(g(3) == "a" and g(12) == "b" and g(26) == "c" and g(100) == nil)
-for h = 1, 1000 do
-    break
-end
-local h = 100
-local i = 3
-local j = {}
-local c = nil
-while not c do
-    c = 0
-    for i = 1, h do
-        for i = i, 1, -1 do
-            c = c + 1
-            j[i] = 1
-        end
+local j = "\230\151\165\230\156\172\232\170\158a-4\0\195\169\195\179"
+f(j, {
+    26085,
+    26412,
+    35486,
+    97,
+    45,
+    52,
+    0,
+    233,
+    243
+})
+f("\240\163\178\183\240\160\156\142\240\160\177\147\240\161\129\187\240\160\181\188ab\240\160\186\162", {
+    146615,
+    132878,
+    134227,
+    135291,
+    134524,
+    97,
+    98,
+    134818
+})
+f("\240\168\179\138\240\169\182\152\240\166\167\186\240\168\179\146\240\165\132\171\240\164\147\147\xF4\x8F\xBF\xBF", {
+    167114,
+    171416,
+    158202,
+    167122,
+    151851,
+    148691,
+    1114111
+})
+local k = 0
+for l, m in string.gmatch(j, "()(" .. a.charpattern .. ")") do
+    k = k + 1
+    assert(a.offset(j, k) == l)
+    assert(a.c(j, l) == a.c(j) - k + 1)
+    assert(a.c(m) == 1)
+    for n = 1, #m - 1 do
+        assert(a.offset(j, 0, l + n - 1) == l)
     end
 end
-assert(c == h * (h + 1) / 2 and i == 3)
-assert(j[1] and j[h] and not j[0] and not j[h + 1])
-function g(e)
-    local d = 1
-    repeat
-        local c
-        if e == 1 then
-            local e = 1
-            d = 10
-            break
-        elseif e == 2 then
-            d = 20
-            break
-        elseif e == 3 then
-            d = 30
-        else
-            local c, e, k, l = math.sin(1)
-            d = d + 1
-        end
-    until d >= 12
-    return d
-end
-assert(g(1) == 10 and g(2) == 20 and g(3) == 30 and g(4) == 12)
-local g = function(i)
-    if i < 10 then
-        return "a"
-    elseif i < 20 then
-        return "b"
-    elseif i < 30 then
-        return "c"
-    else
-        return 8
-    end
-end
-assert(g(3) == "a" and g(12) == "b" and g(26) == "c" and g(100) == 8)
-local c, e = nil, 23
-d = {
-    g(100) * 2 + 3 or c,
-    c or e + 2
-}
-assert(d[1] == 19 and d[2] == 25)
-d = {
-    f = 5,
-    a = e + 2
-}
-assert(d.g == 5 and d.c == 25)
-c = {y = 1}
-d = {c.f}
-assert(d[1] == 1)
-local function g(i)
-    while 1 do
-        if i > 0 then
-            i = i - 1
-        else
-            return
-        end
-    end
-end
-local function k(i)
-    while 1 do
-        if i > 0 then
-            i = i - 1
-        else
-            return
-        end
-    end
-end
-g(10)
-k(10)
-do
-    function g()
-        return 1, 2, 3
-    end
-    local c, e, l = g()
-    assert(c == 1 and e == 2 and l == 3)
-    c, e, l = g()
-    assert(c == 1 and e == nil and l == nil)
-end
-local c, e = g()
-assert(c == 1 and e == nil)
-function k()
-    g()
-    return
-end
-assert(k() == nil)
-function k()
-    return g()
-end
-c, e = k()
-assert(c == 1 and e == nil)
-print("+")
-do
-    local l<const> = "local x <XXX> = 10"
-    b(l, "unknown attribute 'XXX'")
-    b("local xxx <const> = 20; xxx = 10", ":1: attempt to assign to const variable 'xxx'")
-    b("\n    local xx; \\n\n    local xxx <const> = 20;\n    local yyy;\n    local function foo ()\n      local abc = xx + yyy + xxx;\n      return function () return function () xxx = yyy end end\n    end\n  ", ":6: attempt to assign to const variable 'xxx'")
-    b("\n        A\n    local x <close> = nil\n    x = io.open()\n  ", ":2: attempt to assign to const variable 'x'")
-end
-d = "\255\233"
-g = "\nreturn function ( a , b , c , d , e )\n  local x = a >= b or c or ( d and e ) or nil\n  return x\nend , { a = 1 , b = 2 >= 1 , } or { 1 };\n"
-d = "\ "
-g = string.gsub(g, "%s+", "\n")
-g, c = load(g)()
-assert(c.c == 1 and c.e)
-function k(c, e, l, m, n)
-    if not ((c >= e or l or m) and n or nil) then
-        return 0
-    else
-        return 1
-    end
-end
-local function l(c, e, m, n, o)
-    while c >= e or m or n and o or nil do
-        return 1
-    end
-    return 0
-end
-assert(g(2, 1) == true and k(2, 1) == 1 and l(2, 1) == 1)
-assert(g(1, 2, "a") == "a" and k(1, 2, "a") == 1 and l(1, 2, "a") == 1)
-assert(g(1, 2, "a") ~= nil, "")
-assert(g(1, 2, "a") == "a" and k(1, 2, "a") == 1 and l(1, 2, "a") == 1)
-assert(g(1, 2, nil, 1, "x") == "x" and k(1, 2, nil, 1, "x") == 1 and l(1, 2, nil, 1, "x") == 1)
-assert(g(1, 2, nil, nil, "x") == nil and k(1, 2, nil, nil, "x") == 0 and l(1, 2, nil, nil, "x") == 0)
-assert(g(1, 2, nil, 1, nil) == nil and k(1, 2, nil, 1, nil) == 0 and l(1, 2, nil, 1, nil) == 0)
-assert(true == true and true and true == true)
-d = false
-assert(d == false)
-d = "a"
-assert(d == "a")
-do
-    local c
-    if nil then
-        c = 1
-    else
-        c = 2
-    end
-    assert(c == 2)
-end
-local function m(c)
-    assert(a.getinfo(1, "n").name == "F")
-    return c, 2, 3
-end
-c, e = m(1) ~= nil
-assert(c == true and e == nil)
-c, e = m(nil) == nil
-assert(c == true and e == nil)
-_ENV.GLOB1 = math.random(0, 1)
-local n = {
-    {
-        "nil",
-        nil
-    },
-    {
-        "false",
-        false
-    },
-    {
-        "true",
-        true
-    },
-    {
-        "10",
-        10
-    },
-    {
-        "(0==_ENV.GLOB1)",
-        0 == _ENV.GLOB1
-    }
-}
-local o
-if _ENV.GLOB1 == 0 then
-    n[2][1] = "F"
-    o = "\n    local F <const> = false\n    if %s then IX = true end\n    return %s\n"
-else
-    n[4][1] = "k10"
-    o = "\n    local k10 <const> = 10\n    if %s then IX = true end\n    return %s\n  "
-end
-print("testing short-circuit optimizations (" .. _ENV.GLOB1 .. ")")
-local p<const> = {
-    {
-        " and ",
-        function(c, e)
-            if not c then
-                return c
-            else
-                return e
-            end
-        end
-    },
-    {
-        " or ",
-        function(c, e)
-            if c then
-                return c
-            else
-                return e
-            end
-        end
-    }
-}
-local q<const> = {}
-local function r(h)
-    local s = {}
-    for i = 1, h - 1 do
-        for t, u in ipairs(q[i]) do
-            for t, v in ipairs(q[h - i]) do
-                for t, w in ipairs(p) do
-                    local j = {
-                        "(" .. u[1] .. w[1] .. v[1] .. ")",
-                        w[2](u[2], v[2])
-                    }
-                    s[#s + 1] = j
-                    s[#s + 1] = {
-                        "not" .. j[1],
-                        not j[2]
-                    }
-                end
-            end
-        end
-    end
-    return s
-end
-local s = _soft and 3 or 4
-q[1] = n
-for i = 2, s do
-    q[i] = r(i)
-end
-print("+")
-local i = 0
-for h = 1, s do
-    for t, u in pairs(q[h]) do
-        local v = u[1]
-        local w = load(string.format(o, v, v), "")
-        x = false
-        assert(w() == u[2] and x == not not u[2])
-        i = i + 1
-        if i % 60000 == 0 then
-            print("+")
-        end
-    end
-end
-t = nil
-_G.GLOB1 = nil
-b("for x do", "expected")
-b("x:call", "expected")
-print("OK")
+print("ok")

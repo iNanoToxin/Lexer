@@ -3,12 +3,6 @@
     [0] = {
         Kind: Block
         [0] = {
-            Kind: Semicolon
-        }
-        [1] = {
-            Kind: Semicolon
-        }
-        [2] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -18,17 +12,11 @@
                 Kind: ArgumentList
                 [0] = {
                     Kind: String
-                    [0] = "testing syntax"
+                    [0] = "testing UTF-8 library"
                 }
             }
         }
-        [3] = {
-            Kind: Semicolon
-        }
-        [4] = {
-            Kind: Semicolon
-        }
-        [5] = {
+        [1] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -36,7 +24,7 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'debug'
+                        [0] = 'utf8'
                     }
                 }
                 [1] = {
@@ -51,20 +39,253 @@
                             Kind: ArgumentList
                             [0] = {
                                 Kind: String
-                                [0] = "debug"
+                                [0] = "utf8"
                             }
                         }
                     }
                 }
             }
         }
-        [6] = {
+        [2] = {
             Kind: LocalStatement
             [0] = {
                 Kind: FunctionDefinition
                 [0] = {
                     Kind: Identifier
-                    [0] = 'checkload'
+                    [0] = 'checkerror'
+                }
+                [1] = {
+                    Kind: FunctionBody
+                    [0] = {
+                        Kind: ParameterList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'msg'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'f'
+                        }
+                        [2] = {
+                            Kind: Varargs
+                            [0] = '...'
+                        }
+                    }
+                    [1] = {
+                        Kind: Block
+                        [0] = {
+                            Kind: LocalStatement
+                            [0] = {
+                                Kind: AssignmentStatement
+                                [0] = {
+                                    Kind: AttributeList
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 's'
+                                    }
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 'err'
+                                    }
+                                }
+                                [1] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: FunctionCall
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'pcall'
+                                        }
+                                        [1] = {
+                                            Kind: ArgumentList
+                                            [0] = {
+                                                Kind: ExpressionList
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'f'
+                                                }
+                                                [1] = {
+                                                    Kind: Varargs
+                                                    [0] = '...'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [1] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'assert'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: BinaryOperation
+                                        [0] = "and"
+                                        [1] = {
+                                            Kind: UnaryOperation
+                                            [0] = "not"
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 's'
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'string'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'find'
+                                                }
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 'err'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'msg'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [3] = {
+            Kind: LocalStatement
+            [0] = {
+                Kind: FunctionDefinition
+                [0] = {
+                    Kind: Identifier
+                    [0] = 'len'
+                }
+                [1] = {
+                    Kind: FunctionBody
+                    [0] = {
+                        Kind: ParameterList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 's'
+                        }
+                    }
+                    [1] = {
+                        Kind: Block
+                        [0] = {
+                            Kind: ReturnStatement
+                            [0] = {
+                                Kind: ExpressionList
+                                [0] = {
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: FunctionCall
+                                        [0] = {
+                                            Kind: Member
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'string'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'gsub'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ArgumentList
+                                            [0] = {
+                                                Kind: ExpressionList
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 's'
+                                                }
+                                                [1] = {
+                                                    Kind: String
+                                                    [0] = "[\x80-\xBF]"
+                                                }
+                                                [2] = {
+                                                    Kind: String
+                                                    [0] = ""
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [4] = {
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'justone'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = ".."
+                        [1] = {
+                            Kind: String
+                            [0] = "^"
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = ".."
+                            [1] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'charpattern'
+                                }
+                            }
+                            [2] = {
+                                Kind: String
+                                [0] = "$"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [5] = {
+            Kind: LocalStatement
+            [0] = {
+                Kind: FunctionDefinition
+                [0] = {
+                    Kind: Identifier
+                    [0] = 'checksyntax'
                 }
                 [1] = {
                     Kind: FunctionBody
@@ -76,12 +297,200 @@
                         }
                         [1] = {
                             Kind: Identifier
-                            [0] = 'msg'
+                            [0] = 't'
                         }
                     }
                     [1] = {
                         Kind: Block
                         [0] = {
+                            Kind: LocalStatement
+                            [0] = {
+                                Kind: AssignmentStatement
+                                [0] = {
+                                    Kind: AttributeList
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'ts'
+                                    }
+                                }
+                                [1] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: TableConstructor
+                                        [0] = {
+                                            Kind: FieldList
+                                            [0] = {
+                                                Kind: TableValue
+                                                [0] = {
+                                                    Kind: String
+                                                    [0] = "return '"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [1] = {
+                            Kind: ForStatement
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'i'
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                            [2] = {
+                                Kind: UnaryOperation
+                                [0] = "#"
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 't'
+                                }
+                            }
+                            [3] = nullptr
+                            [4] = {
+                                Kind: Block
+                                [0] = {
+                                    Kind: AssignmentStatement
+                                    [0] = {
+                                        Kind: VariableList
+                                        [0] = {
+                                            Kind: Index
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'ts'
+                                            }
+                                            [1] = {
+                                                Kind: BinaryOperation
+                                                [0] = "+"
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'i'
+                                                }
+                                                [2] = {
+                                                    Kind: Numeric
+                                                    [0] = 1
+                                                }
+                                            }
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ExpressionList
+                                        [0] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'string'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'format'
+                                                }
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: String
+                                                        [0] = "\\u{%x}"
+                                                    }
+                                                    [1] = {
+                                                        Kind: Index
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 't'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'i'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [2] = {
+                            Kind: AssignmentStatement
+                            [0] = {
+                                Kind: VariableList
+                                [0] = {
+                                    Kind: Index
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'ts'
+                                    }
+                                    [1] = {
+                                        Kind: BinaryOperation
+                                        [0] = "+"
+                                        [1] = {
+                                            Kind: UnaryOperation
+                                            [0] = "#"
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 't'
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: Numeric
+                                            [0] = 2
+                                        }
+                                    }
+                                }
+                            }
+                            [1] = {
+                                Kind: ExpressionList
+                                [0] = {
+                                    Kind: String
+                                    [0] = "'"
+                                }
+                            }
+                        }
+                        [3] = {
+                            Kind: AssignmentStatement
+                            [0] = {
+                                Kind: VariableList
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'ts'
+                                }
+                            }
+                            [1] = {
+                                Kind: ExpressionList
+                                [0] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'table'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'concat'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'ts'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [4] = {
                             Kind: FunctionCall
                             [0] = {
                                 Kind: Identifier
@@ -92,1335 +501,50 @@
                                 [0] = {
                                     Kind: ExpressionList
                                     [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Member
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'string'
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'find'
-                                            }
-                                        }
+                                        Kind: BinaryOperation
+                                        [0] = "=="
                                         [1] = {
-                                            Kind: ArgumentList
+                                            Kind: FunctionCall
                                             [0] = {
-                                                Kind: ExpressionList
+                                                Kind: FunctionCall
                                                 [0] = {
-                                                    Kind: FunctionCall
+                                                    Kind: Identifier
+                                                    [0] = 'assert'
+                                                }
+                                                [1] = {
+                                                    Kind: ArgumentList
                                                     [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'select'
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
+                                                        Kind: ExpressionList
                                                         [0] = {
-                                                            Kind: ExpressionList
+                                                            Kind: FunctionCall
                                                             [0] = {
-                                                                Kind: Numeric
-                                                                [0] = 2
+                                                                Kind: Identifier
+                                                                [0] = 'load'
                                                             }
                                                             [1] = {
-                                                                Kind: FunctionCall
+                                                                Kind: ArgumentList
                                                                 [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'load'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: ArgumentList
+                                                                    Kind: ExpressionList
                                                                     [0] = {
-                                                                        Kind: ExpressionList
-                                                                        [0] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 's'
-                                                                        }
+                                                                        Kind: Identifier
+                                                                        [0] = 'ts'
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     }
                                                 }
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'msg'
-                                                }
                                             }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [7] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AttributeList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'a'
-                }
-            }
-        }
-        [8] = {
-            Kind: DoStatement
-            [0] = {
-                Kind: Block
-                [0] = {
-                    Kind: Semicolon
-                }
-                [1] = {
-                    Kind: Semicolon
-                }
-                [2] = {
-                    Kind: Semicolon
-                }
-            }
-        }
-        [9] = {
-            Kind: Semicolon
-        }
-        [10] = {
-            Kind: DoStatement
-            [0] = {
-                Kind: Block
-                [0] = {
-                    Kind: Semicolon
-                }
-                [1] = {
-                    Kind: AssignmentStatement
-                    [0] = {
-                        Kind: VariableList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'a'
-                        }
-                    }
-                    [1] = {
-                        Kind: ExpressionList
-                        [0] = {
-                            Kind: Numeric
-                            [0] = 3
-                        }
-                    }
-                }
-                [2] = {
-                    Kind: Semicolon
-                }
-                [3] = {
-                    Kind: FunctionCall
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'assert'
-                    }
-                    [1] = {
-                        Kind: ArgumentList
-                        [0] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [11] = {
-            Kind: Semicolon
-        }
-        [12] = {
-            Kind: Semicolon
-        }
-        [13] = {
-            Kind: IfStatement
-            [0] = {
-                Kind: ConditionalBlock
-                [0] = {
-                    Kind: Boolean
-                    [0] = 0
-                }
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: VariableList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = "//"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: Semicolon
-                    }
-                    [2] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: VariableList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = "%"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [14] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "^"
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "^"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "^"
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "^"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [15] = {
-            Kind: Semicolon
-        }
-        [16] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "*"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "^"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 4
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "*"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "^"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 4
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [17] = {
-            Kind: Semicolon
-        }
-        [18] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "^"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                                [2] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "/"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 4
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: UnaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "^"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: UnaryOperation
-                                        [0] = "-"
-                                        [1] = {
-                                            Kind: UnaryOperation
-                                            [0] = "-"
                                             [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: UnaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: UnaryOperation
-                                        [0] = "-"
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 4
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [19] = {
-            Kind: Semicolon
-        }
-        [20] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: UnaryOperation
-                                [0] = "not"
-                                [1] = {
-                                    Kind: Null
-                                    [0] = 'nil'
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                        }
-                        [2] = {
-                            Kind: UnaryOperation
-                            [0] = "not"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "or"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = ">"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "<"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [21] = {
-            Kind: Semicolon
-        }
-        [22] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "-"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 5
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "-"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 9
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [23] = {
-            Kind: Semicolon
-        }
-        [24] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "^"
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "^"
-                                    [1] = {
-                                        Kind: UnaryOperation
-                                        [0] = "-"
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 4
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "*"
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 0
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [25] = {
-            Kind: Semicolon
-        }
-        [26] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "%"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 5
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 5
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [27] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "*"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "/"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 3
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = ".."
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "*"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: String
-                                [0] = "33"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [28] = {
-            Kind: Semicolon
-        }
-        [29] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: UnaryOperation
-                            [0] = "not"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = ">"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "*"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = ">"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = ".."
-                                [1] = {
-                                    Kind: String
-                                    [0] = "a"
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "b"
-                                }
-                            }
-                            [2] = {
-                                Kind: String
-                                [0] = "a"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [30] = {
-            Kind: Semicolon
-        }
-        [31] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "<"
-                        [1] = {
-                            Kind: String
-                            [0] = "ab"
-                        }
-                        [2] = {
-                            Kind: String
-                            [0] = "a"
-                        }
-                    }
-                }
-            }
-        }
-        [32] = {
-            Kind: Semicolon
-        }
-        [33] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "<"
-                        [1] = {
-                            Kind: String
-                            [0] = "a"
-                        }
-                        [2] = {
-                            Kind: String
-                            [0] = "ab"
-                        }
-                    }
-                }
-            }
-        }
-        [34] = {
-            Kind: Semicolon
-        }
-        [35] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "|"
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 240
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "~"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 204
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "&"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 170
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 253
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 244
-                        }
-                    }
-                }
-            }
-        }
-        [36] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "|"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "~"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "&"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 253
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 170
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 204
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 240
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 244
-                        }
-                    }
-                }
-            }
-        }
-        [37] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "&"
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 240
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 15
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 16
-                        }
-                    }
-                }
-            }
-        }
-        [38] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "//"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "//"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "^"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "^"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 5
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 2
-                        }
-                    }
-                }
-            }
-        }
-        [39] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "+"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "//"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "//"
-                                        [1] = {
-                                            Kind: BinaryOperation
-                                            [0] = "*"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 4
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 5
+                                                Kind: ArgumentList
+                                                [0] = nullptr
                                             }
                                         }
                                         [2] = {
-                                            Kind: BinaryOperation
-                                            [0] = "^"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: BinaryOperation
-                                                [0] = "^"
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 3
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 2
-                                                }
-                                            }
+                                            Kind: Identifier
+                                            [0] = 's'
                                         }
                                     }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 9
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "/"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "%"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 10
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "+"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "//"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "//"
-                                        [1] = {
-                                            Kind: BinaryOperation
-                                            [0] = "*"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 4
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 5
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: BinaryOperation
-                                            [0] = "^"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: BinaryOperation
-                                                [0] = "^"
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 3
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 2
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 9
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "/"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "%"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 10
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
                                 }
                             }
                         }
@@ -1428,7 +552,7 @@
                 }
             }
         }
-        [40] = {
+        [6] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1442,30 +566,38 @@
                         Kind: UnaryOperation
                         [0] = "not"
                         [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "or"
-                                [1] = {
-                                    Kind: Boolean
-                                    [0] = 1
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
                                 }
-                                [2] = {
-                                    Kind: Boolean
-                                    [0] = 0
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'offset'
                                 }
                             }
-                            [2] = {
-                                Kind: Null
-                                [0] = 'nil'
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: String
+                                        [0] = "alo"
+                                    }
+                                    [1] = {
+                                        Kind: Numeric
+                                        [0] = 5
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        [41] = {
+        [7] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -1476,395 +608,30 @@
                 [0] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
+                        Kind: UnaryOperation
+                        [0] = "not"
                         [1] = {
-                            Kind: BinaryOperation
-                            [0] = "or"
-                            [1] = {
-                                Kind: Boolean
-                                [0] = 1
-                            }
-                            [2] = {
-                                Kind: Boolean
-                                [0] = 0
-                            }
-                        }
-                        [2] = {
-                            Kind: Null
-                            [0] = 'nil'
-                        }
-                    }
-                }
-            }
-        }
-        [42] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "or"
-                    [1] = {
-                        Kind: BinaryOperation
-                        [0] = "or"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "or"
-                            [1] = {
-                                Kind: Boolean
-                                [0] = 0
-                            }
-                            [2] = {
-                                Kind: Boolean
-                                [0] = 0
-                            }
-                        }
-                        [2] = {
-                            Kind: Boolean
-                            [0] = 0
-                        }
-                    }
-                    [2] = {
-                        Kind: Boolean
-                        [0] = 1
-                    }
-                }
-            }
-        }
-        [43] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "+"
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 1
-                    }
-                    [2] = {
-                        Kind: Numeric
-                        [0] = 1
-                    }
-                }
-            }
-        }
-        [44] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "//"
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 3
-                    }
-                    [2] = {
-                        Kind: Numeric
-                        [0] = 2
-                    }
-                }
-            }
-        }
-        [45] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "+"
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 1
-                    }
-                    [2] = {
-                        Kind: String
-                        [0] = "1e33333"
-                    }
-                }
-            }
-        }
-        [46] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: Numeric
-                    [0] = 142.3
-                }
-            }
-        }
-        [47] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: Numeric
-                    [0] = inf
-                }
-            }
-        }
-        [48] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: String
-                    [0] = "a"
-                }
-            }
-        }
-        [49] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "or"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "and"
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
                                 [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "or"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                    [2] = {
-                                        Kind: Boolean
-                                        [0] = 0
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Boolean
-                                    [0] = 1
+                                    Kind: Identifier
+                                    [0] = 'offset'
                                 }
                             }
-                            [2] = {
-                                Kind: Boolean
-                                [0] = 0
-                            }
-                        }
-                        [2] = {
-                            Kind: Boolean
-                            [0] = 1
-                        }
-                    }
-                }
-            }
-        }
-        [50] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
                             [1] = {
-                                Kind: BinaryOperation
-                                [0] = "or"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "and"
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: String
+                                        [0] = "alo"
+                                    }
                                     [1] = {
-                                        Kind: Null
-                                        [0] = 'nil'
-                                    }
-                                    [2] = {
-                                        Kind: Boolean
-                                        [0] = 1
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Boolean
-                                    [0] = 0
-                                }
-                            }
-                            [2] = {
-                                Kind: Boolean
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: Boolean
-                            [0] = 0
-                        }
-                    }
-                }
-            }
-        }
-        [51] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'a'
-                    }
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'b'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Numeric
-                        [0] = 1
-                    }
-                    [1] = {
-                        Kind: Null
-                        [0] = 'nil'
-                    }
-                }
-            }
-        }
-        [52] = {
-            Kind: Semicolon
-        }
-        [53] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: UnaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "or"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: UnaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "and"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "or"
-                                    [1] = {
-                                        Kind: UnaryOperation
-                                        [0] = "-"
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 1.25
-                                        }
-                                    }
-                                    [2] = {
                                         Kind: UnaryOperation
                                         [0] = "-"
                                         [1] = {
@@ -1874,707 +641,37 @@
                                     }
                                 }
                             }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 0.75
-                            }
                         }
                     }
                 }
             }
         }
-        [54] = {
-            Kind: Semicolon
-        }
-        [55] = {
+        [8] = {
             Kind: LocalStatement
             [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'x'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "or"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'b'
-                                    }
-                                    [2] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "or"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 10
-                                    }
-                                    [2] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 11
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [56] = {
-            Kind: Semicolon
-        }
-        [57] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'x'
-                    }
-                }
-            }
-        }
-        [58] = {
-            Kind: Semicolon
-        }
-        [59] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
+                Kind: FunctionDefinition
                 [0] = {
                     Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "and"
-                    [1] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "or"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "<"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: Boolean
-                            [0] = 1
-                        }
-                    }
-                    [2] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "<"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 4
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 4
-                        }
-                    }
-                }
-            }
-        }
-        [60] = {
-            Kind: Semicolon
-        }
-        [61] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'x'
-                    }
-                }
-            }
-        }
-        [62] = {
-            Kind: Semicolon
-        }
-        [63] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'x'
-                    }
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'y'
-                    }
+                    [0] = 'check'
                 }
                 [1] = {
-                    Kind: ExpressionList
+                    Kind: FunctionBody
                     [0] = {
-                        Kind: Numeric
-                        [0] = 1
-                    }
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 2
-                    }
-                }
-            }
-        }
-        [64] = {
-            Kind: Semicolon
-        }
-        [65] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "or"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = ">"
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [2] = {
-                                    Kind: Identifier
-                                    [0] = 'y'
-                                }
-                            }
-                            [2] = {
-                                Kind: Identifier
-                                [0] = 'x'
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'y'
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [66] = {
-            Kind: Semicolon
-        }
-        [67] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-                [1] = {
-                    Kind: Identifier
-                    [0] = 'y'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: Numeric
-                    [0] = 2
-                }
-                [1] = {
-                    Kind: Numeric
-                    [0] = 1
-                }
-            }
-        }
-        [68] = {
-            Kind: Semicolon
-        }
-        [69] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "or"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = ">"
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [2] = {
-                                    Kind: Identifier
-                                    [0] = 'y'
-                                }
-                            }
-                            [2] = {
-                                Kind: Identifier
-                                [0] = 'x'
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'y'
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [70] = {
-            Kind: Semicolon
-        }
-        [71] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 1234567890
-                            }
-                            [2] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'tonumber'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "1234567890"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1234567890
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1234567891
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [72] = {
-            Kind: DoStatement
-            [0] = {
-                Kind: Block
-                [0] = {
-                    Kind: LocalStatement
-                    [0] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: AttributeList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'operand'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: TableConstructor
-                                [0] = {
-                                    Kind: FieldList
-                                    [0] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 3
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 100
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 5
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: UnaryOperation
-                                            [0] = "-"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 10
-                                            }
-                                        }
-                                    }
-                                    [4] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: UnaryOperation
-                                            [0] = "-"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 5
-                                            }
-                                        }
-                                    }
-                                    [5] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 10000
-                                        }
-                                    }
-                                    [6] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: UnaryOperation
-                                            [0] = "-"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 10000
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                [1] = {
-                    Kind: LocalStatement
-                    [0] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: AttributeList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'operator'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: TableConstructor
-                                [0] = {
-                                    Kind: FieldList
-                                    [0] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "+"
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "-"
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "*"
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "/"
-                                        }
-                                    }
-                                    [4] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "//"
-                                        }
-                                    }
-                                    [5] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "%"
-                                        }
-                                    }
-                                    [6] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "^"
-                                        }
-                                    }
-                                    [7] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "&"
-                                        }
-                                    }
-                                    [8] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "|"
-                                        }
-                                    }
-                                    [9] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "^"
-                                        }
-                                    }
-                                    [10] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "<<"
-                                        }
-                                    }
-                                    [11] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = ">>"
-                                        }
-                                    }
-                                    [12] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "=="
-                                        }
-                                    }
-                                    [13] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "~="
-                                        }
-                                    }
-                                    [14] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "<"
-                                        }
-                                    }
-                                    [15] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = ">"
-                                        }
-                                    }
-                                    [16] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "<="
-                                        }
-                                    }
-                                    [17] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = ">="
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                [2] = {
-                    Kind: ForStatement
-                    [0] = {
-                        Kind: NameList
+                        Kind: ParameterList
                         [0] = {
                             Kind: Identifier
-                            [0] = '_'
+                            [0] = 's'
                         }
                         [1] = {
                             Kind: Identifier
-                            [0] = 'op'
+                            [0] = 't'
+                        }
+                        [2] = {
+                            Kind: Identifier
+                            [0] = 'nonstrict'
                         }
                     }
                     [1] = {
-                        Kind: ExpressionList
-                        [0] = {
-                            Kind: FunctionCall
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'ipairs'
-                            }
-                            [1] = {
-                                Kind: ArgumentList
-                                [0] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'operator'
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    [2] = {
                         Kind: Block
                         [0] = {
                             Kind: LocalStatement
@@ -2584,7 +681,7 @@
                                     Kind: AttributeList
                                     [0] = {
                                         Kind: Identifier
-                                        [0] = 'f'
+                                        [0] = 'l'
                                     }
                                 }
                                 [1] = {
@@ -2592,10 +689,129 @@
                                     [0] = {
                                         Kind: FunctionCall
                                         [0] = {
-                                            Kind: FunctionCall
+                                            Kind: Member
                                             [0] = {
                                                 Kind: Identifier
-                                                [0] = 'assert'
+                                                [0] = 'utf8'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'len'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ArgumentList
+                                            [0] = {
+                                                Kind: ExpressionList
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 's'
+                                                }
+                                                [1] = {
+                                                    Kind: Numeric
+                                                    [0] = 1
+                                                }
+                                                [2] = {
+                                                    Kind: UnaryOperation
+                                                    [0] = "-"
+                                                    [1] = {
+                                                        Kind: Numeric
+                                                        [0] = 1
+                                                    }
+                                                }
+                                                [3] = {
+                                                    Kind: Identifier
+                                                    [0] = 'nonstrict'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [1] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'assert'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: BinaryOperation
+                                        [0] = "and"
+                                        [1] = {
+                                            Kind: BinaryOperation
+                                            [0] = "=="
+                                            [1] = {
+                                                Kind: UnaryOperation
+                                                [0] = "#"
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 't'
+                                                }
+                                            }
+                                            [2] = {
+                                                Kind: Identifier
+                                                [0] = 'l'
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: BinaryOperation
+                                            [0] = "=="
+                                            [1] = {
+                                                Kind: FunctionCall
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'len'
+                                                }
+                                                [1] = {
+                                                    Kind: ArgumentList
+                                                    [0] = {
+                                                        Kind: ExpressionList
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 's'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            [2] = {
+                                                Kind: Identifier
+                                                [0] = 'l'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [2] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'assert'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: BinaryOperation
+                                        [0] = "=="
+                                        [1] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'utf8'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'char'
+                                                }
                                             }
                                             [1] = {
                                                 Kind: ArgumentList
@@ -2604,8 +820,616 @@
                                                     [0] = {
                                                         Kind: FunctionCall
                                                         [0] = {
+                                                            Kind: Member
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 'table'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'unpack'
+                                                            }
+                                                        }
+                                                        [1] = {
+                                                            Kind: ArgumentList
+                                                            [0] = {
+                                                                Kind: ExpressionList
+                                                                [0] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 't'
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: Identifier
+                                            [0] = 's'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [3] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'assert'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: BinaryOperation
+                                        [0] = "=="
+                                        [1] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'utf8'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'offset'
+                                                }
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 's'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Numeric
+                                                        [0] = 0
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: Numeric
+                                            [0] = 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [4] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'checksyntax'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 's'
+                                    }
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 't'
+                                    }
+                                }
+                            }
+                        }
+                        [5] = {
+                            Kind: LocalStatement
+                            [0] = {
+                                Kind: AssignmentStatement
+                                [0] = {
+                                    Kind: AttributeList
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 't1'
+                                    }
+                                }
+                                [1] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: TableConstructor
+                                        [0] = {
+                                            Kind: FieldList
+                                            [0] = {
+                                                Kind: TableValue
+                                                [0] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
                                                             Kind: Identifier
-                                                            [0] = 'load'
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'codepoint'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Numeric
+                                                                [0] = 1
+                                                            }
+                                                            [2] = {
+                                                                Kind: UnaryOperation
+                                                                [0] = "-"
+                                                                [1] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                            [3] = {
+                                                                Kind: Identifier
+                                                                [0] = 'nonstrict'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [6] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'assert'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: BinaryOperation
+                                        [0] = "=="
+                                        [1] = {
+                                            Kind: UnaryOperation
+                                            [0] = "#"
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 't'
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: UnaryOperation
+                                            [0] = "#"
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 't1'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [7] = {
+                            Kind: ForStatement
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'i'
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                            [2] = {
+                                Kind: UnaryOperation
+                                [0] = "#"
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 't'
+                                }
+                            }
+                            [3] = nullptr
+                            [4] = {
+                                Kind: Block
+                                [0] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: Index
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 't'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'i'
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: Index
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 't1'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'i'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [8] = {
+                            Kind: ForStatement
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'i'
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                            [2] = {
+                                Kind: Identifier
+                                [0] = 'l'
+                            }
+                            [3] = nullptr
+                            [4] = {
+                                Kind: Block
+                                [0] = {
+                                    Kind: LocalStatement
+                                    [0] = {
+                                        Kind: AssignmentStatement
+                                        [0] = {
+                                            Kind: AttributeList
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'pi'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: FunctionCall
+                                                [0] = {
+                                                    Kind: Member
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 'utf8'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'offset'
+                                                    }
+                                                }
+                                                [1] = {
+                                                    Kind: ArgumentList
+                                                    [0] = {
+                                                        Kind: ExpressionList
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 's'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'i'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [1] = {
+                                    Kind: LocalStatement
+                                    [0] = {
+                                        Kind: AssignmentStatement
+                                        [0] = {
+                                            Kind: AttributeList
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'pi1'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: FunctionCall
+                                                [0] = {
+                                                    Kind: Member
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 'utf8'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'offset'
+                                                    }
+                                                }
+                                                [1] = {
+                                                    Kind: ArgumentList
+                                                    [0] = {
+                                                        Kind: ExpressionList
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 's'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Numeric
+                                                            [0] = 2
+                                                        }
+                                                        [2] = {
+                                                            Kind: Identifier
+                                                            [0] = 'pi'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: FunctionCall
+                                                [0] = {
+                                                    Kind: Member
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 'string'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'find'
+                                                    }
+                                                }
+                                                [1] = {
+                                                    Kind: ArgumentList
+                                                    [0] = {
+                                                        Kind: ExpressionList
+                                                        [0] = {
+                                                            Kind: FunctionCall
+                                                            [0] = {
+                                                                Kind: Member
+                                                                [0] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'string'
+                                                                }
+                                                                [1] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'sub'
+                                                                }
+                                                            }
+                                                            [1] = {
+                                                                Kind: ArgumentList
+                                                                [0] = {
+                                                                    Kind: ExpressionList
+                                                                    [0] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 's'
+                                                                    }
+                                                                    [1] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'pi'
+                                                                    }
+                                                                    [2] = {
+                                                                        Kind: BinaryOperation
+                                                                        [0] = "-"
+                                                                        [1] = {
+                                                                            Kind: Identifier
+                                                                            [0] = 'pi1'
+                                                                        }
+                                                                        [2] = {
+                                                                            Kind: Numeric
+                                                                            [0] = 1
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'justone'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [3] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'offset'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: UnaryOperation
+                                                                [0] = "-"
+                                                                [1] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                            [2] = {
+                                                                Kind: Identifier
+                                                                [0] = 'pi1'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: Identifier
+                                                    [0] = 'pi'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [4] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'offset'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: BinaryOperation
+                                                                [0] = "-"
+                                                                [1] = {
+                                                                    Kind: BinaryOperation
+                                                                    [0] = "-"
+                                                                    [1] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'i'
+                                                                    }
+                                                                    [2] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'l'
+                                                                    }
+                                                                }
+                                                                [2] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: Identifier
+                                                    [0] = 'pi'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [5] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: BinaryOperation
+                                                    [0] = "-"
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'pi1'
+                                                    }
+                                                    [2] = {
+                                                        Kind: Identifier
+                                                        [0] = 'pi'
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: UnaryOperation
+                                                    [0] = "#"
+                                                    [1] = {
+                                                        Kind: FunctionCall
+                                                        [0] = {
+                                                            Kind: Member
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 'utf8'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'char'
+                                                            }
                                                         }
                                                         [1] = {
                                                             Kind: ArgumentList
@@ -2617,11 +1441,11 @@
                                                                         Kind: Member
                                                                         [0] = {
                                                                             Kind: Identifier
-                                                                            [0] = 'string'
+                                                                            [0] = 'utf8'
                                                                         }
                                                                         [1] = {
                                                                             Kind: Identifier
-                                                                            [0] = 'format'
+                                                                            [0] = 'codepoint'
                                                                         }
                                                                     }
                                                                     [1] = {
@@ -2629,12 +1453,20 @@
                                                                         [0] = {
                                                                             Kind: ExpressionList
                                                                             [0] = {
-                                                                                Kind: String
-                                                                                [0] = "return function (x,y)\n                return x %s y\n              end"
+                                                                                Kind: Identifier
+                                                                                [0] = 's'
                                                                             }
                                                                             [1] = {
                                                                                 Kind: Identifier
-                                                                                [0] = 'op'
+                                                                                [0] = 'pi'
+                                                                            }
+                                                                            [2] = {
+                                                                                Kind: Identifier
+                                                                                [0] = 'pi'
+                                                                            }
+                                                                            [3] = {
+                                                                                Kind: Identifier
+                                                                                [0] = 'nonstrict'
                                                                             }
                                                                         }
                                                                     }
@@ -2645,28 +1477,526 @@
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                                [6] = {
+                                    Kind: ForStatement
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'j'
+                                    }
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 'pi'
+                                    }
+                                    [2] = {
+                                        Kind: BinaryOperation
+                                        [0] = "-"
                                         [1] = {
-                                            Kind: ArgumentList
-                                            [0] = nullptr
+                                            Kind: Identifier
+                                            [0] = 'pi1'
+                                        }
+                                        [2] = {
+                                            Kind: Numeric
+                                            [0] = 1
+                                        }
+                                    }
+                                    [3] = nullptr
+                                    [4] = {
+                                        Kind: Block
+                                        [0] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'assert'
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: BinaryOperation
+                                                        [0] = "=="
+                                                        [1] = {
+                                                            Kind: FunctionCall
+                                                            [0] = {
+                                                                Kind: Member
+                                                                [0] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'utf8'
+                                                                }
+                                                                [1] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'offset'
+                                                                }
+                                                            }
+                                                            [1] = {
+                                                                Kind: ArgumentList
+                                                                [0] = {
+                                                                    Kind: ExpressionList
+                                                                    [0] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 's'
+                                                                    }
+                                                                    [1] = {
+                                                                        Kind: Numeric
+                                                                        [0] = 0
+                                                                    }
+                                                                    [2] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'j'
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        [2] = {
+                                                            Kind: Identifier
+                                                            [0] = 'pi'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [7] = {
+                                    Kind: ForStatement
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'j'
+                                    }
+                                    [1] = {
+                                        Kind: BinaryOperation
+                                        [0] = "+"
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'pi'
+                                        }
+                                        [2] = {
+                                            Kind: Numeric
+                                            [0] = 1
+                                        }
+                                    }
+                                    [2] = {
+                                        Kind: BinaryOperation
+                                        [0] = "-"
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'pi1'
+                                        }
+                                        [2] = {
+                                            Kind: Numeric
+                                            [0] = 1
+                                        }
+                                    }
+                                    [3] = nullptr
+                                    [4] = {
+                                        Kind: Block
+                                        [0] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'assert'
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: UnaryOperation
+                                                        [0] = "not"
+                                                        [1] = {
+                                                            Kind: FunctionCall
+                                                            [0] = {
+                                                                Kind: Member
+                                                                [0] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'utf8'
+                                                                }
+                                                                [1] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'len'
+                                                                }
+                                                            }
+                                                            [1] = {
+                                                                Kind: ArgumentList
+                                                                [0] = {
+                                                                    Kind: ExpressionList
+                                                                    [0] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 's'
+                                                                    }
+                                                                    [1] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'j'
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [8] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'len'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'pi'
+                                                            }
+                                                            [2] = {
+                                                                Kind: Identifier
+                                                                [0] = 'pi'
+                                                            }
+                                                            [3] = {
+                                                                Kind: Identifier
+                                                                [0] = 'nonstrict'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: Numeric
+                                                    [0] = 1
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [9] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'len'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'pi'
+                                                            }
+                                                            [2] = {
+                                                                Kind: BinaryOperation
+                                                                [0] = "-"
+                                                                [1] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'pi1'
+                                                                }
+                                                                [2] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                            [3] = {
+                                                                Kind: Identifier
+                                                                [0] = 'nonstrict'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: Numeric
+                                                    [0] = 1
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [10] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'len'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'pi'
+                                                            }
+                                                            [2] = {
+                                                                Kind: UnaryOperation
+                                                                [0] = "-"
+                                                                [1] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                            [3] = {
+                                                                Kind: Identifier
+                                                                [0] = 'nonstrict'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: BinaryOperation
+                                                    [0] = "+"
+                                                    [1] = {
+                                                        Kind: BinaryOperation
+                                                        [0] = "-"
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'l'
+                                                        }
+                                                        [2] = {
+                                                            Kind: Identifier
+                                                            [0] = 'i'
+                                                        }
+                                                    }
+                                                    [2] = {
+                                                        Kind: Numeric
+                                                        [0] = 1
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [11] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'len'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'pi1'
+                                                            }
+                                                            [2] = {
+                                                                Kind: UnaryOperation
+                                                                [0] = "-"
+                                                                [1] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                            [3] = {
+                                                                Kind: Identifier
+                                                                [0] = 'nonstrict'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: BinaryOperation
+                                                    [0] = "-"
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'l'
+                                                    }
+                                                    [2] = {
+                                                        Kind: Identifier
+                                                        [0] = 'i'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [12] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'len'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Numeric
+                                                                [0] = 1
+                                                            }
+                                                            [2] = {
+                                                                Kind: Identifier
+                                                                [0] = 'pi'
+                                                            }
+                                                            [3] = {
+                                                                Kind: Identifier
+                                                                [0] = 'nonstrict'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: Identifier
+                                                    [0] = 'i'
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        [1] = {
-                            Kind: Semicolon
+                        [9] = {
+                            Kind: LocalStatement
+                            [0] = {
+                                Kind: AssignmentStatement
+                                [0] = {
+                                    Kind: AttributeList
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'i'
+                                    }
+                                }
+                                [1] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: Numeric
+                                        [0] = 0
+                                    }
+                                }
+                            }
                         }
-                        [2] = {
+                        [10] = {
                             Kind: ForStatement
                             [0] = {
                                 Kind: NameList
                                 [0] = {
                                     Kind: Identifier
-                                    [0] = '_'
+                                    [0] = 'p'
                                 }
                                 [1] = {
                                     Kind: Identifier
-                                    [0] = 'o1'
+                                    [0] = 'c'
                                 }
                             }
                             [1] = {
@@ -2674,8 +2004,15 @@
                                 [0] = {
                                     Kind: FunctionCall
                                     [0] = {
-                                        Kind: Identifier
-                                        [0] = 'ipairs'
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'codes'
+                                        }
                                     }
                                     [1] = {
                                         Kind: ArgumentList
@@ -2683,7 +2020,11 @@
                                             Kind: ExpressionList
                                             [0] = {
                                                 Kind: Identifier
-                                                [0] = 'operand'
+                                                [0] = 's'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'nonstrict'
                                             }
                                         }
                                     }
@@ -2692,125 +2033,80 @@
                             [2] = {
                                 Kind: Block
                                 [0] = {
-                                    Kind: ForStatement
+                                    Kind: AssignmentStatement
                                     [0] = {
-                                        Kind: NameList
+                                        Kind: VariableList
                                         [0] = {
                                             Kind: Identifier
-                                            [0] = '_'
-                                        }
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'o2'
+                                            [0] = 'i'
                                         }
                                     }
                                     [1] = {
                                         Kind: ExpressionList
                                         [0] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'ipairs'
-                                            }
+                                            Kind: BinaryOperation
+                                            [0] = "+"
                                             [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'operand'
-                                                    }
-                                                }
+                                                Kind: Identifier
+                                                [0] = 'i'
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 1
                                             }
                                         }
                                     }
-                                    [2] = {
-                                        Kind: Block
+                                }
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
                                         [0] = {
-                                            Kind: LocalStatement
+                                            Kind: ExpressionList
                                             [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: AttributeList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'gab'
-                                                    }
-                                                }
+                                                Kind: BinaryOperation
+                                                [0] = "and"
                                                 [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'f'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'o1'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'o2'
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Member
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = '_ENV'
-                                                    }
+                                                    Kind: BinaryOperation
+                                                    [0] = "=="
                                                     [1] = {
                                                         Kind: Identifier
-                                                        [0] = 'XX'
+                                                        [0] = 'c'
+                                                    }
+                                                    [2] = {
+                                                        Kind: Index
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 't'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'i'
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o1'
-                                                }
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: LocalStatement
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: AttributeList
-                                                    [0] = {
+                                                [2] = {
+                                                    Kind: BinaryOperation
+                                                    [0] = "=="
+                                                    [1] = {
                                                         Kind: Identifier
-                                                        [0] = 'code'
+                                                        [0] = 'p'
                                                     }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
+                                                    [2] = {
                                                         Kind: FunctionCall
                                                         [0] = {
                                                             Kind: Member
                                                             [0] = {
                                                                 Kind: Identifier
-                                                                [0] = 'string'
+                                                                [0] = 'utf8'
                                                             }
                                                             [1] = {
                                                                 Kind: Identifier
-                                                                [0] = 'format'
+                                                                [0] = 'offset'
                                                             }
                                                         }
                                                         [1] = {
@@ -2818,839 +2114,15 @@
                                                             [0] = {
                                                                 Kind: ExpressionList
                                                                 [0] = {
-                                                                    Kind: String
-                                                                    [0] = "return XX %s %s"
+                                                                    Kind: Identifier
+                                                                    [0] = 's'
                                                                 }
                                                                 [1] = {
                                                                     Kind: Identifier
-                                                                    [0] = 'op'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'o2'
+                                                                    [0] = 'i'
                                                                 }
                                                             }
                                                         }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [3] = {
-                                            Kind: LocalStatement
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: AttributeList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'res'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'assert'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: FunctionCall
-                                                                        [0] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'load'
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: ArgumentList
-                                                                            [0] = {
-                                                                                Kind: ExpressionList
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'code'
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = nullptr
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [4] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'assert'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "=="
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'res'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Identifier
-                                                            [0] = 'gab'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [5] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Member
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = '_ENV'
-                                                    }
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'XX'
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o2'
-                                                }
-                                            }
-                                        }
-                                        [6] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'code'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: Member
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'string'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'format'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: String
-                                                                [0] = "return (%s) %s XX"
-                                                            }
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'o1'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Identifier
-                                                                [0] = 'op'
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [7] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'res'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'assert'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: FunctionCall
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'load'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: ArgumentList
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'code'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = nullptr
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [8] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'assert'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "=="
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'res'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Identifier
-                                                            [0] = 'gab'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [9] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'code'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: Member
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'string'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'format'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: String
-                                                                [0] = "return (%s) %s %s"
-                                                            }
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'o1'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Identifier
-                                                                [0] = 'op'
-                                                            }
-                                                            [3] = {
-                                                                Kind: Identifier
-                                                                [0] = 'o2'
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [10] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'res'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'assert'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: FunctionCall
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'load'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: ArgumentList
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'code'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = nullptr
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [11] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'assert'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "=="
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'res'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Identifier
-                                                            [0] = 'gab'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                [3] = {
-                    Kind: AssignmentStatement
-                    [0] = {
-                        Kind: VariableList
-                        [0] = {
-                            Kind: Member
-                            [0] = {
-                                Kind: Identifier
-                                [0] = '_ENV'
-                            }
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'XX'
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: ExpressionList
-                        [0] = {
-                            Kind: Null
-                            [0] = 'nil'
-                        }
-                    }
-                }
-            }
-        }
-        [73] = {
-            Kind: RepeatStatement
-            [0] = {
-                Kind: ConditionalBlock
-                [0] = {
-                    Kind: Numeric
-                    [0] = 1
-                }
-                [1] = nullptr
-            }
-        }
-        [74] = {
-            Kind: Semicolon
-        }
-        [75] = {
-            Kind: RepeatStatement
-            [0] = {
-                Kind: ConditionalBlock
-                [0] = {
-                    Kind: Boolean
-                    [0] = 1
-                }
-                [1] = nullptr
-            }
-        }
-        [76] = {
-            Kind: Semicolon
-        }
-        [77] = {
-            Kind: WhileStatement
-            [0] = {
-                Kind: ConditionalBlock
-                [0] = {
-                    Kind: Boolean
-                    [0] = 0
-                }
-                [1] = nullptr
-            }
-        }
-        [78] = {
-            Kind: Semicolon
-        }
-        [79] = {
-            Kind: WhileStatement
-            [0] = {
-                Kind: ConditionalBlock
-                [0] = {
-                    Kind: Null
-                    [0] = 'nil'
-                }
-                [1] = nullptr
-            }
-        }
-        [80] = {
-            Kind: Semicolon
-        }
-        [81] = {
-            Kind: DoStatement
-            [0] = {
-                Kind: Block
-                [0] = {
-                    Kind: LocalStatement
-                    [0] = {
-                        Kind: AttributeList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'a'
-                        }
-                    }
-                }
-                [1] = {
-                    Kind: Semicolon
-                }
-                [2] = {
-                    Kind: LocalStatement
-                    [0] = {
-                        Kind: FunctionDefinition
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'f'
-                        }
-                        [1] = {
-                            Kind: FunctionBody
-                            [0] = {
-                                Kind: ParameterList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                            }
-                            [1] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'x'
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: TableConstructor
-                                            [0] = {
-                                                Kind: FieldList
-                                                [0] = {
-                                                    Kind: TableNameValue
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'a'
-                                                    }
-                                                    [1] = {
-                                                        Kind: Numeric
-                                                        [0] = 1
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Semicolon
-                                }
-                                [2] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'x'
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: TableConstructor
-                                            [0] = {
-                                                Kind: FieldList
-                                                [0] = {
-                                                    Kind: TableNameValue
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'x'
-                                                    }
-                                                    [1] = {
-                                                        Kind: Numeric
-                                                        [0] = 1
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [3] = {
-                                    Kind: Semicolon
-                                }
-                                [4] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'x'
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: TableConstructor
-                                            [0] = {
-                                                Kind: FieldList
-                                                [0] = {
-                                                    Kind: TableNameValue
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'G'
-                                                    }
-                                                    [1] = {
-                                                        Kind: Numeric
-                                                        [0] = 1
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [82] = {
-            Kind: DoStatement
-            [0] = {
-                Kind: Block
-                [0] = {
-                    Kind: LocalStatement
-                    [0] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: AttributeList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'code'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: TableConstructor
-                                [0] = {
-                                    Kind: FieldList
-                                    [0] = {
-                                        Kind: TableValue
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "local x = {"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                [1] = {
-                    Kind: ForStatement
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'i'
-                    }
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 1
-                    }
-                    [2] = {
-                        Kind: Numeric
-                        [0] = 257
-                    }
-                    [3] = nullptr
-                    [4] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'code'
-                                    }
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "+"
-                                        [1] = {
-                                            Kind: UnaryOperation
-                                            [0] = "#"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'code'
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = ".."
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'i'
-                                    }
-                                    [2] = {
-                                        Kind: String
-                                        [0] = ".1,"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                [2] = {
-                    Kind: AssignmentStatement
-                    [0] = {
-                        Kind: VariableList
-                        [0] = {
-                            Kind: Index
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'code'
-                            }
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: UnaryOperation
-                                    [0] = "#"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'code'
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: ExpressionList
-                        [0] = {
-                            Kind: String
-                            [0] = "};"
-                        }
-                    }
-                }
-                [3] = {
-                    Kind: AssignmentStatement
-                    [0] = {
-                        Kind: VariableList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'code'
-                        }
-                    }
-                    [1] = {
-                        Kind: ExpressionList
-                        [0] = {
-                            Kind: FunctionCall
-                            [0] = {
-                                Kind: Member
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'table'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'concat'
-                                }
-                            }
-                            [1] = {
-                                Kind: ArgumentList
-                                [0] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'code'
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                [4] = {
-                    Kind: LocalStatement
-                    [0] = {
-                        Kind: FunctionDefinition
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'check'
-                        }
-                        [1] = {
-                            Kind: FunctionBody
-                            [0] = {
-                                Kind: ParameterList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'ret'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'val'
-                                }
-                            }
-                            [1] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: AttributeList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'code'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = ".."
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'code'
-                                                }
-                                                [2] = {
-                                                    Kind: Identifier
-                                                    [0] = 'ret'
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'code'
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'load'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'code'
                                                     }
                                                 }
                                             }
@@ -3673,21 +2145,583 @@
                                                 [1] = {
                                                     Kind: FunctionCall
                                                     [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'code'
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'codepoint'
+                                                        }
                                                     }
                                                     [1] = {
                                                         Kind: ArgumentList
-                                                        [0] = nullptr
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'p'
+                                                            }
+                                                            [2] = {
+                                                                Kind: Identifier
+                                                                [0] = 'p'
+                                                            }
+                                                            [3] = {
+                                                                Kind: Identifier
+                                                                [0] = 'nonstrict'
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 [2] = {
                                                     Kind: Identifier
-                                                    [0] = 'val'
+                                                    [0] = 'c'
                                                 }
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+                        [11] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'assert'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: BinaryOperation
+                                        [0] = "=="
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'i'
+                                        }
+                                        [2] = {
+                                            Kind: UnaryOperation
+                                            [0] = "#"
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 't'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [12] = {
+                            Kind: AssignmentStatement
+                            [0] = {
+                                Kind: VariableList
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'i'
+                                }
+                            }
+                            [1] = {
+                                Kind: ExpressionList
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 0
+                                }
+                            }
+                        }
+                        [13] = {
+                            Kind: ForStatement
+                            [0] = {
+                                Kind: NameList
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'c'
+                                }
+                            }
+                            [1] = {
+                                Kind: ExpressionList
+                                [0] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'string'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'gmatch'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 's'
+                                            }
+                                            [1] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'utf8'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'charpattern'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            [2] = {
+                                Kind: Block
+                                [0] = {
+                                    Kind: AssignmentStatement
+                                    [0] = {
+                                        Kind: VariableList
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'i'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ExpressionList
+                                        [0] = {
+                                            Kind: BinaryOperation
+                                            [0] = "+"
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'i'
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 1
+                                            }
+                                        }
+                                    }
+                                }
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'c'
+                                                }
+                                                [2] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'char'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Index
+                                                                [0] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 't'
+                                                                }
+                                                                [1] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'i'
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [14] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'assert'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: BinaryOperation
+                                        [0] = "=="
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'i'
+                                        }
+                                        [2] = {
+                                            Kind: UnaryOperation
+                                            [0] = "#"
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 't'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [15] = {
+                            Kind: ForStatement
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'i'
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                            [2] = {
+                                Kind: Identifier
+                                [0] = 'l'
+                            }
+                            [3] = nullptr
+                            [4] = {
+                                Kind: Block
+                                [0] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "=="
+                                                [1] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'offset'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'i'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: FunctionCall
+                                                    [0] = {
+                                                        Kind: Member
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 'utf8'
+                                                        }
+                                                        [1] = {
+                                                            Kind: Identifier
+                                                            [0] = 'offset'
+                                                        }
+                                                    }
+                                                    [1] = {
+                                                        Kind: ArgumentList
+                                                        [0] = {
+                                                            Kind: ExpressionList
+                                                            [0] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                            [1] = {
+                                                                Kind: BinaryOperation
+                                                                [0] = "-"
+                                                                [1] = {
+                                                                    Kind: BinaryOperation
+                                                                    [0] = "-"
+                                                                    [1] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'i'
+                                                                    }
+                                                                    [2] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'l'
+                                                                    }
+                                                                }
+                                                                [2] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                            [2] = {
+                                                                Kind: BinaryOperation
+                                                                [0] = "+"
+                                                                [1] = {
+                                                                    Kind: UnaryOperation
+                                                                    [0] = "#"
+                                                                    [1] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 's'
+                                                                    }
+                                                                }
+                                                                [2] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 1
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [9] = {
+            Kind: DoStatement
+            [0] = {
+                Kind: Block
+                [0] = {
+                    Kind: LocalStatement
+                    [0] = {
+                        Kind: FunctionDefinition
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'check'
+                        }
+                        [1] = {
+                            Kind: FunctionBody
+                            [0] = {
+                                Kind: ParameterList
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 's'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'p'
+                                }
+                            }
+                            [1] = {
+                                Kind: Block
+                                [0] = {
+                                    Kind: LocalStatement
+                                    [0] = {
+                                        Kind: AssignmentStatement
+                                        [0] = {
+                                            Kind: AttributeList
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'a'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'b'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: FunctionCall
+                                                [0] = {
+                                                    Kind: Member
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 'utf8'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'len'
+                                                    }
+                                                }
+                                                [1] = {
+                                                    Kind: ArgumentList
+                                                    [0] = {
+                                                        Kind: ExpressionList
+                                                        [0] = {
+                                                            Kind: Identifier
+                                                            [0] = 's'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'assert'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: BinaryOperation
+                                                [0] = "and"
+                                                [1] = {
+                                                    Kind: UnaryOperation
+                                                    [0] = "not"
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'a'
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: BinaryOperation
+                                                    [0] = "=="
+                                                    [1] = {
+                                                        Kind: Identifier
+                                                        [0] = 'b'
+                                                    }
+                                                    [2] = {
+                                                        Kind: Identifier
+                                                        [0] = 'p'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                [1] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'check'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "abc\xE3def"
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 4
+                            }
+                        }
+                    }
+                }
+                [2] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'check'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\xF4\x9F\xBF"
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                        }
+                    }
+                }
+                [3] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'check'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\xF4\x9F\xBF\xBF"
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                        }
+                    }
+                }
+                [4] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'check'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\230\177\137\229\173\151\x80"
+                            }
+                            [1] = {
+                                Kind: BinaryOperation
+                                [0] = "+"
+                                [1] = {
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: String
+                                        [0] = "\230\177\137\229\173\151"
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 1
                                 }
                             }
                         }
@@ -3705,19 +2739,11 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: String
-                                [0] = "return (1 ~ (2 or 3))"
+                                [0] = "\x80hello"
                             }
                             [1] = {
-                                Kind: BinaryOperation
-                                [0] = "~"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
+                                Kind: Numeric
+                                [0] = 1
                             }
                         }
                     }
@@ -3734,19 +2760,11 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: String
-                                [0] = "return (1 | (2 or 3))"
+                                [0] = "hel\x80lo"
                             }
                             [1] = {
-                                Kind: BinaryOperation
-                                [0] = "|"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
+                                Kind: Numeric
+                                [0] = 4
                             }
                         }
                     }
@@ -3763,18 +2781,22 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: String
-                                [0] = "return (1 + (2 or 3))"
+                                [0] = "\230\177\137\229\173\151\xBF"
                             }
                             [1] = {
                                 Kind: BinaryOperation
                                 [0] = "+"
                                 [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: String
+                                        [0] = "\230\177\137\229\173\151"
+                                    }
                                 }
                                 [2] = {
                                     Kind: Numeric
-                                    [0] = 2
+                                    [0] = 1
                                 }
                             }
                         }
@@ -3792,141 +2814,138 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: String
-                                [0] = "return (1 << (2 or 3))"
+                                [0] = "\xBFhello"
                             }
                             [1] = {
-                                Kind: BinaryOperation
-                                [0] = "<<"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                        }
+                    }
+                }
+                [9] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'check'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "hel\xBFlo"
+                            }
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 4
                             }
                         }
                     }
                 }
             }
         }
-        [83] = {
-            Kind: LocalStatement
+        [10] = {
+            Kind: DoStatement
             [0] = {
-                Kind: FunctionDefinition
+                Kind: Block
                 [0] = {
-                    Kind: Identifier
-                    [0] = 'f'
-                }
-                [1] = {
-                    Kind: FunctionBody
+                    Kind: LocalStatement
                     [0] = {
-                        Kind: ParameterList
+                        Kind: FunctionDefinition
                         [0] = {
                             Kind: Identifier
-                            [0] = 'i'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: IfStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "~="
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'type'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'i'
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: String
-                                        [0] = "number"
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: ReturnStatement
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [1] = {
-                                                Kind: String
-                                                [0] = "jojo"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            [0] = 'errorcodes'
                         }
                         [1] = {
-                            Kind: Semicolon
-                        }
-                        [2] = {
-                            Kind: IfStatement
+                            Kind: FunctionBody
                             [0] = {
-                                Kind: ConditionalBlock
+                                Kind: ParameterList
                                 [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = ">"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'i'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 0
-                                    }
+                                    Kind: Identifier
+                                    [0] = 's'
                                 }
-                                [1] = {
-                                    Kind: Block
+                            }
+                            [1] = {
+                                Kind: Block
+                                [0] = {
+                                    Kind: FunctionCall
                                     [0] = {
-                                        Kind: ReturnStatement
+                                        Kind: Identifier
+                                        [0] = 'checkerror'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
                                         [0] = {
                                             Kind: ExpressionList
                                             [0] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
+                                                Kind: String
+                                                [0] = "invalid UTF%-8 code"
                                             }
                                             [1] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'f'
-                                                }
+                                                Kind: FunctionDefinition
+                                                [0] = nullptr
                                                 [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = {
-                                                        Kind: ExpressionList
+                                                    Kind: FunctionBody
+                                                    [0] = nullptr
+                                                    [1] = {
+                                                        Kind: Block
                                                         [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "-"
+                                                            Kind: ForStatement
+                                                            [0] = {
+                                                                Kind: NameList
+                                                                [0] = {
+                                                                    Kind: Identifier
+                                                                    [0] = 'c'
+                                                                }
+                                                            }
                                                             [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'i'
+                                                                Kind: ExpressionList
+                                                                [0] = {
+                                                                    Kind: FunctionCall
+                                                                    [0] = {
+                                                                        Kind: Member
+                                                                        [0] = {
+                                                                            Kind: Identifier
+                                                                            [0] = 'utf8'
+                                                                        }
+                                                                        [1] = {
+                                                                            Kind: Identifier
+                                                                            [0] = 'codes'
+                                                                        }
+                                                                    }
+                                                                    [1] = {
+                                                                        Kind: ArgumentList
+                                                                        [0] = {
+                                                                            Kind: ExpressionList
+                                                                            [0] = {
+                                                                                Kind: Identifier
+                                                                                [0] = 's'
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                             [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
+                                                                Kind: Block
+                                                                [0] = {
+                                                                    Kind: FunctionCall
+                                                                    [0] = {
+                                                                        Kind: Identifier
+                                                                        [0] = 'assert'
+                                                                    }
+                                                                    [1] = {
+                                                                        Kind: ArgumentList
+                                                                        [0] = {
+                                                                            Kind: ExpressionList
+                                                                            [0] = {
+                                                                                Kind: Identifier
+                                                                                [0] = 'c'
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -3937,775 +2956,144 @@
                                 }
                             }
                         }
-                        [3] = {
-                            Kind: Semicolon
-                        }
-                    }
-                }
-            }
-        }
-        [84] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 3
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 5
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 10
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [85] = {
-            Kind: Semicolon
-        }
-        [86] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "and"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "and"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "=="
-                                        [1] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'x'
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 3
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: BinaryOperation
-                                        [0] = "=="
-                                        [1] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'x'
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 5
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: Index
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'x'
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 3
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 10
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'x'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 9
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 12
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [87] = {
-            Kind: Semicolon
-        }
-        [88] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: Index
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'x'
-                            }
-                            [1] = {
-                                Kind: Null
-                                [0] = 'nil'
-                            }
-                        }
-                        [2] = {
-                            Kind: Null
-                            [0] = 'nil'
-                        }
-                    }
-                }
-            }
-        }
-        [89] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: String
-                                        [0] = "alo"
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: String
-                                        [0] = "xixi"
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: Null
-                                [0] = 'nil'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [90] = {
-            Kind: Semicolon
-        }
-        [91] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'x'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "alo"
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'x'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "xixi"
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                            [2] = {
-                                Kind: Null
-                                [0] = 'nil'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [92] = {
-            Kind: Semicolon
-        }
-        [93] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = ".."
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: String
-                                            [0] = "alo"
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "xixi"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [94] = {
-            Kind: Semicolon
-        }
-        [95] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: Index
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'x'
-                            }
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: String
-                            [0] = "aloxixi"
-                        }
-                    }
-                }
-            }
-        }
-        [96] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [97] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                            [2] = {
-                                Kind: String
-                                [0] = "jojo"
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'type'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'x'
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: String
-                                [0] = "table"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [98] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'f'
                     }
                 }
                 [1] = {
-                    Kind: ExpressionList
+                    Kind: FunctionCall
                     [0] = {
-                        Kind: FunctionDefinition
-                        [0] = nullptr
-                        [1] = {
-                            Kind: FunctionBody
+                        Kind: Identifier
+                        [0] = 'errorcodes'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
                             [0] = {
-                                Kind: ParameterList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'i'
-                                }
+                                Kind: String
+                                [0] = "ab\xff"
                             }
-                            [1] = {
-                                Kind: Block
+                        }
+                    }
+                }
+                [2] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'errorcodes'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\u{110000}"
+                            }
+                        }
+                    }
+                }
+                [3] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'errorcodes'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "in\x80valid"
+                            }
+                        }
+                    }
+                }
+                [4] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'errorcodes'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\xbfinvalid"
+                            }
+                        }
+                    }
+                }
+                [5] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'errorcodes'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\206\177\206\187\207\134\xBF\206\177"
+                            }
+                        }
+                    }
+                }
+                [6] = {
+                    Kind: LocalStatement
+                    [0] = {
+                        Kind: AssignmentStatement
+                        [0] = {
+                            Kind: AttributeList
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'f'
+                            }
+                        }
+                        [1] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: FunctionCall
                                 [0] = {
-                                    Kind: IfStatement
+                                    Kind: Member
                                     [0] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "<"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 10
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: ReturnStatement
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: String
-                                                        [0] = "a"
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        Kind: Identifier
+                                        [0] = 'utf8'
                                     }
                                     [1] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "<"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 20
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: ReturnStatement
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: String
-                                                        [0] = "b"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "<"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 30
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: ReturnStatement
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: String
-                                                        [0] = "c"
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        Kind: Identifier
+                                        [0] = 'codes'
                                     }
                                 }
                                 [1] = {
-                                    Kind: Semicolon
+                                    Kind: ArgumentList
+                                    [0] = {
+                                        Kind: ExpressionList
+                                        [0] = {
+                                            Kind: String
+                                            [0] = ""
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-        [99] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
+                [7] = {
+                    Kind: FunctionCall
                     [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "and"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'f'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 3
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: String
-                                        [0] = "a"
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'f'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 12
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: String
-                                        [0] = "b"
-                                    }
-                                }
-                            }
-                            [2] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
                                 Kind: BinaryOperation
                                 [0] = "=="
                                 [1] = {
@@ -4719,76 +3107,486 @@
                                         [0] = {
                                             Kind: ExpressionList
                                             [0] = {
+                                                Kind: String
+                                                [0] = ""
+                                            }
+                                            [1] = {
                                                 Kind: Numeric
-                                                [0] = 26
+                                                [0] = 2
                                             }
                                         }
                                     }
                                 }
                                 [2] = {
-                                    Kind: String
-                                    [0] = "c"
+                                    Kind: Null
+                                    [0] = 'nil'
                                 }
                             }
                         }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
+                    }
+                }
+                [8] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
                                 [1] = {
-                                    Kind: ArgumentList
+                                    Kind: FunctionCall
                                     [0] = {
-                                        Kind: ExpressionList
+                                        Kind: Identifier
+                                        [0] = 'f'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
                                         [0] = {
-                                            Kind: Numeric
-                                            [0] = 100
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: String
+                                                [0] = ""
+                                            }
+                                            [1] = {
+                                                Kind: UnaryOperation
+                                                [0] = "-"
+                                                [1] = {
+                                                    Kind: Numeric
+                                                    [0] = 1
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                [2] = {
+                                    Kind: Null
+                                    [0] = 'nil'
+                                }
                             }
-                            [2] = {
-                                Kind: Null
-                                [0] = 'nil'
+                        }
+                    }
+                }
+                [9] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Identifier
+                                        [0] = 'f'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: String
+                                                [0] = ""
+                                            }
+                                            [1] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'math'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'mininteger'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Null
+                                    [0] = 'nil'
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        [100] = {
-            Kind: ForStatement
+        [11] = {
+            Kind: FunctionCall
             [0] = {
                 Kind: Identifier
-                [0] = 'i'
+                [0] = 'checkerror'
             }
             [1] = {
-                Kind: Numeric
-                [0] = 1
-            }
-            [2] = {
-                Kind: Numeric
-                [0] = 1000
-            }
-            [3] = nullptr
-            [4] = {
-                Kind: Block
+                Kind: ArgumentList
                 [0] = {
-                    Kind: BreakStatement
-                }
-                [1] = {
-                    Kind: Semicolon
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "position out of bounds"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'offset'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = "abc"
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [4] = {
+                        Kind: Numeric
+                        [0] = 5
+                    }
                 }
             }
         }
-        [101] = {
-            Kind: Semicolon
+        [12] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "position out of bounds"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'offset'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = "abc"
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [4] = {
+                        Kind: UnaryOperation
+                        [0] = "-"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 4
+                        }
+                    }
+                }
+            }
         }
-        [102] = {
+        [13] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "position out of bounds"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'offset'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = ""
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [4] = {
+                        Kind: Numeric
+                        [0] = 2
+                    }
+                }
+            }
+        }
+        [14] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "position out of bounds"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'offset'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = ""
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [4] = {
+                        Kind: UnaryOperation
+                        [0] = "-"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 1
+                        }
+                    }
+                }
+            }
+        }
+        [15] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "continuation byte"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'offset'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = "\240\166\167\186"
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [4] = {
+                        Kind: Numeric
+                        [0] = 2
+                    }
+                }
+            }
+        }
+        [16] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "continuation byte"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'offset'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = "\240\166\167\186"
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [4] = {
+                        Kind: Numeric
+                        [0] = 2
+                    }
+                }
+            }
+        }
+        [17] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "continuation byte"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'offset'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = "\x80"
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                }
+            }
+        }
+        [18] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "out of bounds"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'len'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = "abc"
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 0
+                    }
+                    [4] = {
+                        Kind: Numeric
+                        [0] = 2
+                    }
+                }
+            }
+        }
+        [19] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "out of bounds"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'len'
+                        }
+                    }
+                    [2] = {
+                        Kind: String
+                        [0] = "abc"
+                    }
+                    [3] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [4] = {
+                        Kind: Numeric
+                        [0] = 4
+                    }
+                }
+            }
+        }
+        [20] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -4796,45 +3594,19 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'n'
+                        [0] = 's'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Numeric
-                        [0] = 100
+                        Kind: String
+                        [0] = "hello World"
                     }
                 }
             }
         }
-        [103] = {
-            Kind: Semicolon
-        }
-        [104] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'i'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Numeric
-                        [0] = 3
-                    }
-                }
-            }
-        }
-        [105] = {
-            Kind: Semicolon
-        }
-        [106] = {
+        [21] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -4849,1158 +3621,139 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: TableConstructor
-                        [0] = nullptr
-                    }
-                }
-            }
-        }
-        [107] = {
-            Kind: Semicolon
-        }
-        [108] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'a'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Null
-                        [0] = 'nil'
-                    }
-                }
-            }
-        }
-        [109] = {
-            Kind: WhileStatement
-            [0] = {
-                Kind: ConditionalBlock
-                [0] = {
-                    Kind: UnaryOperation
-                    [0] = "not"
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'a'
-                    }
-                }
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: AssignmentStatement
                         [0] = {
-                            Kind: VariableList
+                            Kind: FieldList
                             [0] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: Numeric
-                                [0] = 0
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: Semicolon
-                    }
-                    [2] = {
-                        Kind: ForStatement
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'i'
-                        }
-                        [1] = {
-                            Kind: Numeric
-                            [0] = 1
-                        }
-                        [2] = {
-                            Kind: Identifier
-                            [0] = 'n'
-                        }
-                        [3] = nullptr
-                        [4] = {
-                            Kind: Block
-                            [0] = {
-                                Kind: ForStatement
+                                Kind: TableValue
                                 [0] = {
-                                    Kind: Identifier
-                                    [0] = 'i'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'i'
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                                [3] = {
-                                    Kind: UnaryOperation
-                                    [0] = "-"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                                [4] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: VariableList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'a'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "+"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'a'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 1
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: Semicolon
-                                    }
-                                    [2] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: VariableList
-                                            [0] = {
-                                                Kind: Index
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 't'
-                                                }
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'i'
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: Semicolon
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: Semicolon
-                            }
-                        }
-                    }
-                    [3] = {
-                        Kind: Semicolon
-                    }
-                }
-            }
-        }
-        [110] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "/"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "*"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'n'
-                                    }
-                                    [2] = {
-                                        Kind: BinaryOperation
-                                        [0] = "+"
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'n'
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'i'
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 3
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [111] = {
-            Kind: Semicolon
-        }
-        [112] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "and"
-                                [1] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 't'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 't'
-                                    }
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'n'
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: UnaryOperation
-                                [0] = "not"
-                                [1] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 't'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 0
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: UnaryOperation
-                            [0] = "not"
-                            [1] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 't'
-                                }
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'n'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [113] = {
-            Kind: FunctionDefinition
-            [0] = {
-                Kind: FunctionName
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'f'
-                }
-            }
-            [1] = {
-                Kind: FunctionBody
-                [0] = {
-                    Kind: ParameterList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'b'
-                    }
-                }
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: LocalStatement
-                        [0] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: AttributeList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: Semicolon
-                    }
-                    [2] = {
-                        Kind: RepeatStatement
-                        [0] = {
-                            Kind: ConditionalBlock
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = ">="
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 12
-                                }
-                            }
-                            [1] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AttributeList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'a'
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Semicolon
-                                }
-                                [2] = {
-                                    Kind: IfStatement
-                                    [0] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'b'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'b'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                            [2] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'x'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Numeric
-                                                        [0] = 10
-                                                    }
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: Semicolon
-                                            }
-                                            [4] = {
-                                                Kind: BreakStatement
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'b'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'x'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Numeric
-                                                        [0] = 20
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                            [2] = {
-                                                Kind: BreakStatement
-                                            }
-                                            [3] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'b'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 3
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'x'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Numeric
-                                                        [0] = 30
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: ConditionalBlock
-                                        [0] = nullptr
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'a'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'b'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Identifier
-                                                            [0] = 'c'
-                                                        }
-                                                        [3] = {
-                                                            Kind: Identifier
-                                                            [0] = 'd'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Member
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'math'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'sin'
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 1
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                            [2] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'x'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "+"
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'x'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    [3] = {
-                        Kind: Semicolon
-                    }
-                    [4] = {
-                        Kind: ReturnStatement
-                        [0] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'x'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [114] = {
-            Kind: Semicolon
-        }
-        [115] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "and"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'f'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 1
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 10
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'f'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 2
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 20
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
                                     Kind: FunctionCall
                                     [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'string'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'byte'
+                                        }
                                     }
                                     [1] = {
                                         Kind: ArgumentList
                                         [0] = {
                                             Kind: ExpressionList
                                             [0] = {
+                                                Kind: Identifier
+                                                [0] = 's'
+                                            }
+                                            [1] = {
                                                 Kind: Numeric
-                                                [0] = 3
+                                                [0] = 1
+                                            }
+                                            [2] = {
+                                                Kind: UnaryOperation
+                                                [0] = "-"
+                                                [1] = {
+                                                    Kind: Numeric
+                                                    [0] = 1
+                                                }
                                             }
                                         }
                                     }
                                 }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 30
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 4
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 12
                             }
                         }
                     }
                 }
             }
         }
-        [116] = {
-            Kind: LocalStatement
+        [22] = {
+            Kind: ForStatement
             [0] = {
-                Kind: AssignmentStatement
+                Kind: Identifier
+                [0] = 'i'
+            }
+            [1] = {
+                Kind: Numeric
+                [0] = 1
+            }
+            [2] = {
+                Kind: FunctionCall
                 [0] = {
-                    Kind: AttributeList
+                    Kind: Member
                     [0] = {
                         Kind: Identifier
-                        [0] = 'f'
+                        [0] = 'utf8'
+                    }
+                    [1] = {
+                        Kind: Identifier
+                        [0] = 'len'
                     }
                 }
                 [1] = {
-                    Kind: ExpressionList
+                    Kind: ArgumentList
                     [0] = {
-                        Kind: FunctionDefinition
-                        [0] = nullptr
-                        [1] = {
-                            Kind: FunctionBody
-                            [0] = {
-                                Kind: ParameterList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'i'
-                                }
-                            }
-                            [1] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: IfStatement
-                                    [0] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "<"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 10
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: ReturnStatement
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: String
-                                                        [0] = "a"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "<"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 20
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: ReturnStatement
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: String
-                                                        [0] = "b"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "<"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 30
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: ReturnStatement
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: String
-                                                        [0] = "c"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: ConditionalBlock
-                                        [0] = nullptr
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: ReturnStatement
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Numeric
-                                                        [0] = 8
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                        Kind: ExpressionList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 's'
                         }
                     }
                 }
             }
-        }
-        [117] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
+            [3] = nullptr
+            [4] = {
+                Kind: Block
                 [0] = {
-                    Kind: ExpressionList
+                    Kind: FunctionCall
                     [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "and"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'f'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 3
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: String
-                                        [0] = "a"
-                                    }
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'f'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 12
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: String
-                                        [0] = "b"
-                                    }
-                                }
-                            }
-                            [2] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
                                 Kind: BinaryOperation
                                 [0] = "=="
                                 [1] = {
-                                    Kind: FunctionCall
+                                    Kind: Index
                                     [0] = {
                                         Kind: Identifier
-                                        [0] = 'f'
+                                        [0] = 't'
+                                    }
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 'i'
+                                    }
+                                }
+                                [2] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'string'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'byte'
+                                        }
                                     }
                                     [1] = {
                                         Kind: ArgumentList
                                         [0] = {
                                             Kind: ExpressionList
                                             [0] = {
-                                                Kind: Numeric
-                                                [0] = 26
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "c"
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 100
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 8
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [118] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'a'
-                    }
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'b'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Null
-                        [0] = 'nil'
-                    }
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 23
-                    }
-                }
-            }
-        }
-        [119] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = "or"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "*"
-                                        [1] = {
-                                            Kind: FunctionCall
-                                            [0] = {
                                                 Kind: Identifier
-                                                [0] = 'f'
+                                                [0] = 's'
                                             }
                                             [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Numeric
-                                                        [0] = 100
-                                                    }
-                                                }
+                                                Kind: Identifier
+                                                [0] = 'i'
                                             }
                                         }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = "or"
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'b'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 2
                                     }
                                 }
                             }
@@ -6009,467 +3762,78 @@
                 }
             }
         }
-        [120] = {
+        [23] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
-                [0] = 'assert'
+                [0] = 'check'
             }
             [1] = {
                 Kind: ArgumentList
                 [0] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 19
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 25
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [121] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableNameValue
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'f'
-                            }
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "or"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: TableNameValue
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "+"
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'b'
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [122] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Member
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 5
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Member
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'x'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 25
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [123] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'a'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableNameValue
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'y'
-                            }
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [124] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: TableConstructor
-                    [0] = {
-                        Kind: FieldList
-                        [0] = {
-                            Kind: TableValue
-                            [0] = {
-                                Kind: Member
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'y'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [125] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: Index
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'x'
-                            }
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 1
-                        }
-                    }
-                }
-            }
-        }
-        [126] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'f'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'i'
-                        }
+                        Kind: Identifier
+                        [0] = 's'
                     }
                     [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: WhileStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: IfStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = ">"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'i'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'i'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "-"
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'i'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: Semicolon
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ConditionalBlock
-                                            [0] = nullptr
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: ReturnStatement
-                                                    [0] = nullptr
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: Semicolon
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: Semicolon
-                        }
+                        Kind: Identifier
+                        [0] = 't'
                     }
                 }
             }
         }
-        [127] = {
-            Kind: Semicolon
-        }
-        [128] = {
-            Kind: LocalStatement
+        [24] = {
+            Kind: FunctionCall
             [0] = {
-                Kind: FunctionDefinition
+                Kind: Identifier
+                [0] = 'check'
+            }
+            [1] = {
+                Kind: ArgumentList
                 [0] = {
-                    Kind: Identifier
-                    [0] = 'g'
-                }
-                [1] = {
-                    Kind: FunctionBody
+                    Kind: ExpressionList
                     [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'i'
-                        }
+                        Kind: String
+                        [0] = "\230\177\137\229\173\151/\230\188\162\229\173\151"
                     }
                     [1] = {
-                        Kind: Block
+                        Kind: TableConstructor
                         [0] = {
-                            Kind: WhileStatement
+                            Kind: FieldList
                             [0] = {
-                                Kind: ConditionalBlock
+                                Kind: TableValue
                                 [0] = {
                                     Kind: Numeric
-                                    [0] = 1
+                                    [0] = 27721
                                 }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: IfStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = ">"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'i'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'i'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "-"
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'i'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ConditionalBlock
-                                            [0] = nullptr
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: ReturnStatement
-                                                    [0] = nullptr
-                                                }
-                                            }
-                                        }
-                                    }
+                            }
+                            [1] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 23383
+                                }
+                            }
+                            [2] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 47
+                                }
+                            }
+                            [3] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 28450
+                                }
+                            }
+                            [4] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 23383
                                 }
                             }
                         }
@@ -6477,81 +3841,26 @@
                 }
             }
         }
-        [129] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'f'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Numeric
-                        [0] = 10
-                    }
-                }
-            }
-        }
-        [130] = {
-            Kind: Semicolon
-        }
-        [131] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'g'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Numeric
-                        [0] = 10
-                    }
-                }
-            }
-        }
-        [132] = {
-            Kind: Semicolon
-        }
-        [133] = {
+        [25] = {
             Kind: DoStatement
             [0] = {
                 Kind: Block
                 [0] = {
-                    Kind: FunctionDefinition
+                    Kind: LocalStatement
                     [0] = {
-                        Kind: FunctionName
+                        Kind: AssignmentStatement
                         [0] = {
-                            Kind: Identifier
-                            [0] = 'f'
-                        }
-                    }
-                    [1] = {
-                        Kind: FunctionBody
-                        [0] = nullptr
-                        [1] = {
-                            Kind: Block
+                            Kind: AttributeList
                             [0] = {
-                                Kind: ReturnStatement
-                                [0] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 3
-                                    }
-                                }
+                                Kind: Identifier
+                                [0] = 's'
+                            }
+                        }
+                        [1] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\195\161\195\169\195\173\128"
                             }
                         }
                     }
@@ -6564,37 +3873,68 @@
                             Kind: AttributeList
                             [0] = {
                                 Kind: Identifier
-                                [0] = 'a'
-                            }
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'b'
-                            }
-                            [2] = {
-                                Kind: Identifier
-                                [0] = 'c'
+                                [0] = 't'
                             }
                         }
                         [1] = {
                             Kind: ExpressionList
                             [0] = {
-                                Kind: FunctionCall
+                                Kind: TableConstructor
                                 [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = nullptr
+                                    Kind: FieldList
+                                    [0] = {
+                                        Kind: TableValue
+                                        [0] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'utf8'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'codepoint'
+                                                }
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 's'
+                                                    }
+                                                    [1] = {
+                                                        Kind: Numeric
+                                                        [0] = 1
+                                                    }
+                                                    [2] = {
+                                                        Kind: BinaryOperation
+                                                        [0] = "-"
+                                                        [1] = {
+                                                            Kind: UnaryOperation
+                                                            [0] = "#"
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 's'
+                                                            }
+                                                        }
+                                                        [2] = {
+                                                            Kind: Numeric
+                                                            [0] = 1
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 [2] = {
-                    Kind: Semicolon
-                }
-                [3] = {
                     Kind: FunctionCall
                     [0] = {
                         Kind: Identifier
@@ -6612,26 +3952,60 @@
                                     [0] = "and"
                                     [1] = {
                                         Kind: BinaryOperation
-                                        [0] = "=="
+                                        [0] = "and"
                                         [1] = {
-                                            Kind: Identifier
-                                            [0] = 'a'
+                                            Kind: BinaryOperation
+                                            [0] = "=="
+                                            [1] = {
+                                                Kind: UnaryOperation
+                                                [0] = "#"
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 't'
+                                                }
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 3
+                                            }
                                         }
                                         [2] = {
-                                            Kind: Numeric
-                                            [0] = 1
+                                            Kind: BinaryOperation
+                                            [0] = "=="
+                                            [1] = {
+                                                Kind: Index
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 't'
+                                                }
+                                                [1] = {
+                                                    Kind: Numeric
+                                                    [0] = 1
+                                                }
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 225
+                                            }
                                         }
                                     }
                                     [2] = {
                                         Kind: BinaryOperation
                                         [0] = "=="
                                         [1] = {
-                                            Kind: Identifier
-                                            [0] = 'b'
+                                            Kind: Index
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 't'
+                                            }
+                                            [1] = {
+                                                Kind: Numeric
+                                                [0] = 2
+                                            }
                                         }
                                         [2] = {
                                             Kind: Numeric
-                                            [0] = 2
+                                            [0] = 233
                                         }
                                     }
                                 }
@@ -6639,52 +4013,170 @@
                                     Kind: BinaryOperation
                                     [0] = "=="
                                     [1] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
+                                        Kind: Index
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 't'
+                                        }
+                                        [1] = {
+                                            Kind: Numeric
+                                            [0] = 3
+                                        }
                                     }
                                     [2] = {
                                         Kind: Numeric
-                                        [0] = 3
+                                        [0] = 237
                                     }
                                 }
                             }
                         }
                     }
                 }
-                [4] = {
-                    Kind: AssignmentStatement
+                [3] = {
+                    Kind: FunctionCall
                     [0] = {
-                        Kind: VariableList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'a'
-                        }
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'b'
-                        }
-                        [2] = {
-                            Kind: Identifier
-                            [0] = 'c'
-                        }
+                        Kind: Identifier
+                        [0] = 'checkerror'
                     }
                     [1] = {
-                        Kind: ExpressionList
+                        Kind: ArgumentList
                         [0] = {
-                            Kind: FunctionCall
+                            Kind: ExpressionList
                             [0] = {
-                                Kind: Identifier
-                                [0] = 'f'
+                                Kind: String
+                                [0] = "invalid UTF%-8 code"
                             }
                             [1] = {
-                                Kind: ArgumentList
-                                [0] = nullptr
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'codepoint'
+                                }
+                            }
+                            [2] = {
+                                Kind: Identifier
+                                [0] = 's'
+                            }
+                            [3] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                            [4] = {
+                                Kind: UnaryOperation
+                                [0] = "#"
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 's'
+                                }
+                            }
+                        }
+                    }
+                }
+                [4] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'checkerror'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "out of bounds"
+                            }
+                            [1] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'codepoint'
+                                }
+                            }
+                            [2] = {
+                                Kind: Identifier
+                                [0] = 's'
+                            }
+                            [3] = {
+                                Kind: BinaryOperation
+                                [0] = "+"
+                                [1] = {
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 's'
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 1
+                                }
                             }
                         }
                     }
                 }
                 [5] = {
-                    Kind: Semicolon
+                    Kind: AssignmentStatement
+                    [0] = {
+                        Kind: VariableList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 't'
+                        }
+                    }
+                    [1] = {
+                        Kind: ExpressionList
+                        [0] = {
+                            Kind: TableConstructor
+                            [0] = {
+                                Kind: FieldList
+                                [0] = {
+                                    Kind: TableValue
+                                    [0] = {
+                                        Kind: FunctionCall
+                                        [0] = {
+                                            Kind: Member
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'utf8'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'codepoint'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ArgumentList
+                                            [0] = {
+                                                Kind: ExpressionList
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 's'
+                                                }
+                                                [1] = {
+                                                    Kind: Numeric
+                                                    [0] = 4
+                                                }
+                                                [2] = {
+                                                    Kind: Numeric
+                                                    [0] = 3
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 [6] = {
                     Kind: FunctionCall
@@ -6698,46 +4190,403 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: BinaryOperation
-                                [0] = "and"
+                                [0] = "=="
+                                [1] = {
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 't'
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 0
+                                }
+                            }
+                        }
+                    }
+                }
+                [7] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'checkerror'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "out of bounds"
+                            }
+                            [1] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'codepoint'
+                                }
+                            }
+                            [2] = {
+                                Kind: Identifier
+                                [0] = 's'
+                            }
+                            [3] = {
+                                Kind: UnaryOperation
+                                [0] = "-"
                                 [1] = {
                                     Kind: BinaryOperation
-                                    [0] = "and"
+                                    [0] = "+"
                                     [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "=="
+                                        Kind: UnaryOperation
+                                        [0] = "#"
                                         [1] = {
                                             Kind: Identifier
-                                            [0] = 'a'
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 1
+                                            [0] = 's'
                                         }
                                     }
                                     [2] = {
-                                        Kind: BinaryOperation
-                                        [0] = "=="
+                                        Kind: Numeric
+                                        [0] = 1
+                                    }
+                                }
+                            }
+                            [4] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                        }
+                    }
+                }
+                [8] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'checkerror'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "out of bounds"
+                            }
+                            [1] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'codepoint'
+                                }
+                            }
+                            [2] = {
+                                Kind: Identifier
+                                [0] = 's'
+                            }
+                            [3] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                            [4] = {
+                                Kind: BinaryOperation
+                                [0] = "+"
+                                [1] = {
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 's'
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 1
+                                }
+                            }
+                        }
+                    }
+                }
+                [9] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
                                         [1] = {
                                             Kind: Identifier
-                                            [0] = 'b'
+                                            [0] = 'codepoint'
                                         }
-                                        [2] = {
-                                            Kind: Null
-                                            [0] = 'nil'
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: String
+                                                [0] = "\u{D7FF}"
+                                            }
                                         }
                                     }
                                 }
                                 [2] = {
                                     Kind: BinaryOperation
-                                    [0] = "=="
+                                    [0] = "-"
                                     [1] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
+                                        Kind: Numeric
+                                        [0] = 55296
                                     }
                                     [2] = {
-                                        Kind: Null
-                                        [0] = 'nil'
+                                        Kind: Numeric
+                                        [0] = 1
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+                [10] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'codepoint'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: String
+                                                [0] = "\u{E000}"
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: BinaryOperation
+                                    [0] = "+"
+                                    [1] = {
+                                        Kind: Numeric
+                                        [0] = 57343
+                                    }
+                                    [2] = {
+                                        Kind: Numeric
+                                        [0] = 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                [11] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'codepoint'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: String
+                                                [0] = "\u{D800}"
+                                            }
+                                            [1] = {
+                                                Kind: Numeric
+                                                [0] = 1
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 1
+                                            }
+                                            [3] = {
+                                                Kind: Boolean
+                                                [0] = 1
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 55296
+                                }
+                            }
+                        }
+                    }
+                }
+                [12] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'codepoint'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: String
+                                                [0] = "\u{DFFF}"
+                                            }
+                                            [1] = {
+                                                Kind: Numeric
+                                                [0] = 1
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 1
+                                            }
+                                            [3] = {
+                                                Kind: Boolean
+                                                [0] = 1
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 57343
+                                }
+                            }
+                        }
+                    }
+                }
+                [13] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'codepoint'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: String
+                                                [0] = "\u{7FFFFFFF}"
+                                            }
+                                            [1] = {
+                                                Kind: Numeric
+                                                [0] = 1
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 1
+                                            }
+                                            [3] = {
+                                                Kind: Boolean
+                                                [0] = 1
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 2147483647
                                 }
                             }
                         }
@@ -6745,128 +4594,7 @@
                 }
             }
         }
-        [134] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'a'
-                    }
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'b'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: Numeric
-                            [0] = 3
-                        }
-                        [2] = {
-                            Kind: FunctionCall
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'f'
-                            }
-                            [1] = {
-                                Kind: ArgumentList
-                                [0] = nullptr
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [135] = {
-            Kind: Semicolon
-        }
-        [136] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'b'
-                            }
-                            [2] = {
-                                Kind: Null
-                                [0] = 'nil'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [137] = {
-            Kind: FunctionDefinition
-            [0] = {
-                Kind: FunctionName
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'g'
-                }
-            }
-            [1] = {
-                Kind: FunctionBody
-                [0] = nullptr
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: FunctionCall
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'f'
-                        }
-                        [1] = {
-                            Kind: ArgumentList
-                            [0] = nullptr
-                        }
-                    }
-                    [1] = {
-                        Kind: Semicolon
-                    }
-                    [2] = {
-                        Kind: ReturnStatement
-                        [0] = nullptr
-                    }
-                }
-            }
-        }
-        [138] = {
-            Kind: Semicolon
-        }
-        [139] = {
+        [26] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6882,8 +4610,15 @@
                         [1] = {
                             Kind: FunctionCall
                             [0] = {
-                                Kind: Identifier
-                                [0] = 'g'
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'char'
+                                }
                             }
                             [1] = {
                                 Kind: ArgumentList
@@ -6891,84 +4626,14 @@
                             }
                         }
                         [2] = {
-                            Kind: Null
-                            [0] = 'nil'
+                            Kind: String
+                            [0] = ""
                         }
                     }
                 }
             }
         }
-        [140] = {
-            Kind: FunctionDefinition
-            [0] = {
-                Kind: FunctionName
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'g'
-                }
-            }
-            [1] = {
-                Kind: FunctionBody
-                [0] = nullptr
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: ReturnStatement
-                        [0] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: BinaryOperation
-                                [0] = "or"
-                                [1] = {
-                                    Kind: Null
-                                    [0] = 'nil'
-                                }
-                                [2] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [141] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'a'
-                }
-                [1] = {
-                    Kind: Identifier
-                    [0] = 'b'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: FunctionCall
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'g'
-                    }
-                    [1] = {
-                        Kind: ArgumentList
-                        [0] = nullptr
-                    }
-                }
-            }
-        }
-        [142] = {
+        [27] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -6980,235 +4645,617 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = "and"
+                        [0] = "=="
                         [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'char'
+                                }
+                            }
                             [1] = {
-                                Kind: Identifier
-                                [0] = 'a'
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: Numeric
+                                        [0] = 0
+                                    }
+                                    [1] = {
+                                        Kind: Numeric
+                                        [0] = 97
+                                    }
+                                    [2] = {
+                                        Kind: Numeric
+                                        [0] = 98
+                                    }
+                                    [3] = {
+                                        Kind: Numeric
+                                        [0] = 99
+                                    }
+                                    [4] = {
+                                        Kind: Numeric
+                                        [0] = 1
+                                    }
+                                }
+                            }
+                        }
+                        [2] = {
+                            Kind: String
+                            [0] = "\0abc\1"
+                        }
+                    }
+                }
+            }
+        }
+        [28] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'assert'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "=="
+                        [1] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'codepoint'
+                                }
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: FunctionCall
+                                        [0] = {
+                                            Kind: Member
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'utf8'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'char'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ArgumentList
+                                            [0] = {
+                                                Kind: ExpressionList
+                                                [0] = {
+                                                    Kind: Numeric
+                                                    [0] = 1114111
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 1114111
+                        }
+                    }
+                }
+            }
+        }
+        [29] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'assert'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "=="
+                        [1] = {
+                            Kind: FunctionCall
+                            [0] = {
+                                Kind: Member
+                                [0] = {
+                                    Kind: Identifier
+                                    [0] = 'utf8'
+                                }
+                                [1] = {
+                                    Kind: Identifier
+                                    [0] = 'codepoint'
+                                }
+                            }
+                            [1] = {
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: FunctionCall
+                                        [0] = {
+                                            Kind: Member
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'utf8'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'char'
+                                            }
+                                        }
+                                        [1] = {
+                                            Kind: ArgumentList
+                                            [0] = {
+                                                Kind: ExpressionList
+                                                [0] = {
+                                                    Kind: Numeric
+                                                    [0] = 2147483647
+                                                }
+                                            }
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: Numeric
+                                        [0] = 1
+                                    }
+                                    [2] = {
+                                        Kind: Numeric
+                                        [0] = 1
+                                    }
+                                    [3] = {
+                                        Kind: Boolean
+                                        [0] = 1
+                                    }
+                                }
+                            }
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = "-"
+                            [1] = {
+                                Kind: BinaryOperation
+                                [0] = "<<"
+                                [1] = {
+                                    Kind: Numeric
+                                    [0] = 1
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 31
+                                }
                             }
                             [2] = {
                                 Kind: Numeric
                                 [0] = 1
                             }
                         }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'b'
-                            }
-                            [2] = {
-                                Kind: Null
-                                [0] = 'nil'
-                            }
-                        }
                     }
                 }
             }
         }
-        [143] = {
+        [30] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
-                [0] = 'print'
+                [0] = 'checkerror'
             }
             [1] = {
                 Kind: ArgumentList
                 [0] = {
-                    Kind: String
-                    [0] = "+"
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "value out of range"
+                    }
+                    [1] = {
+                        Kind: Member
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'char'
+                        }
+                    }
+                    [2] = {
+                        Kind: BinaryOperation
+                        [0] = "+"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 2147483647
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 1
+                        }
+                    }
                 }
             }
         }
-        [144] = {
-            Kind: Semicolon
-        }
-        [145] = {
-            Kind: DoStatement
+        [31] = {
+            Kind: FunctionCall
             [0] = {
-                Kind: Block
+                Kind: Identifier
+                [0] = 'checkerror'
+            }
+            [1] = {
+                Kind: ArgumentList
                 [0] = {
-                    Kind: LocalStatement
+                    Kind: ExpressionList
                     [0] = {
-                        Kind: AssignmentStatement
+                        Kind: String
+                        [0] = "value out of range"
+                    }
+                    [1] = {
+                        Kind: Member
                         [0] = {
-                            Kind: AttributeList
+                            Kind: Identifier
+                            [0] = 'utf8'
+                        }
+                        [1] = {
+                            Kind: Identifier
+                            [0] = 'char'
+                        }
+                    }
+                    [2] = {
+                        Kind: UnaryOperation
+                        [0] = "-"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 1
+                        }
+                    }
+                }
+            }
+        }
+        [32] = {
+            Kind: LocalStatement
+            [0] = {
+                Kind: FunctionDefinition
+                [0] = {
+                    Kind: Identifier
+                    [0] = 'invalid'
+                }
+                [1] = {
+                    Kind: FunctionBody
+                    [0] = {
+                        Kind: ParameterList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 's'
+                        }
+                    }
+                    [1] = {
+                        Kind: Block
+                        [0] = {
+                            Kind: FunctionCall
                             [0] = {
-                                Kind: Attribute
+                                Kind: Identifier
+                                [0] = 'checkerror'
+                            }
+                            [1] = {
+                                Kind: ArgumentList
                                 [0] = {
-                                    Kind: Identifier
-                                    [0] = 'prog'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'const'
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: String
+                                        [0] = "invalid UTF%-8 code"
+                                    }
+                                    [1] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'codepoint'
+                                        }
+                                    }
+                                    [2] = {
+                                        Kind: Identifier
+                                        [0] = 's'
+                                    }
                                 }
                             }
                         }
                         [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "local x <XXX> = 10"
-                            }
-                        }
-                    }
-                }
-                [1] = {
-                    Kind: FunctionCall
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'checkload'
-                    }
-                    [1] = {
-                        Kind: ArgumentList
-                        [0] = {
-                            Kind: ExpressionList
+                            Kind: FunctionCall
                             [0] = {
                                 Kind: Identifier
-                                [0] = 'prog'
+                                [0] = 'assert'
                             }
                             [1] = {
-                                Kind: String
-                                [0] = "unknown attribute 'XXX'"
-                            }
-                        }
-                    }
-                }
-                [2] = {
-                    Kind: FunctionCall
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'checkload'
-                    }
-                    [1] = {
-                        Kind: ArgumentList
-                        [0] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "local xxx <const> = 20; xxx = 10"
-                            }
-                            [1] = {
-                                Kind: String
-                                [0] = ":1: attempt to assign to const variable 'xxx'"
-                            }
-                        }
-                    }
-                }
-                [3] = {
-                    Kind: FunctionCall
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'checkload'
-                    }
-                    [1] = {
-                        Kind: ArgumentList
-                        [0] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "\n    local xx; \\n\n    local xxx <const> = 20;\n    local yyy;\n    local function foo ()\n      local abc = xx + yyy + xxx;\n      return function () return function () xxx = yyy end end\n    end\n  "
-                            }
-                            [1] = {
-                                Kind: String
-                                [0] = ":6: attempt to assign to const variable 'xxx'"
-                            }
-                        }
-                    }
-                }
-                [4] = {
-                    Kind: FunctionCall
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'checkload'
-                    }
-                    [1] = {
-                        Kind: ArgumentList
-                        [0] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "\n        A\n    local x <close> = nil\n    x = io.open()\n  "
-                            }
-                            [1] = {
-                                Kind: String
-                                [0] = ":2: attempt to assign to const variable 'x'"
+                                Kind: ArgumentList
+                                [0] = {
+                                    Kind: ExpressionList
+                                    [0] = {
+                                        Kind: UnaryOperation
+                                        [0] = "not"
+                                        [1] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'utf8'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'len'
+                                                }
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 's'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        [146] = {
-            Kind: AssignmentStatement
+        [33] = {
+            Kind: FunctionCall
             [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
+                Kind: Identifier
+                [0] = 'invalid'
             }
             [1] = {
-                Kind: ExpressionList
+                Kind: ArgumentList
                 [0] = {
-                    Kind: BinaryOperation
-                    [0] = ".."
-                    [1] = {
+                    Kind: ExpressionList
+                    [0] = {
                         Kind: String
-                        [0] = "\255"
-                    }
-                    [2] = {
-                        Kind: String
-                        [0] = "\233"
+                        [0] = "\xF4\x9F\xBF\xBF"
                     }
                 }
             }
         }
-        [147] = {
+        [34] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\u{D800}"
+                    }
+                }
+            }
+        }
+        [35] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\u{DFFF}"
+                    }
+                }
+            }
+        }
+        [36] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\xC0\x80"
+                    }
+                }
+            }
+        }
+        [37] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\xC1\xBF"
+                    }
+                }
+            }
+        }
+        [38] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\xE0\x9F\xBF"
+                    }
+                }
+            }
+        }
+        [39] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\xF0\x8F\xBF\xBF"
+                    }
+                }
+            }
+        }
+        [40] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\x80"
+                    }
+                }
+            }
+        }
+        [41] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\xBF"
+                    }
+                }
+            }
+        }
+        [42] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\xFE"
+                    }
+                }
+            }
+        }
+        [43] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'invalid'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\xFF"
+                    }
+                }
+            }
+        }
+        [44] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'check'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = ""
+                    }
+                    [1] = {
+                        Kind: TableConstructor
+                        [0] = nullptr
+                    }
+                }
+            }
+        }
+        [45] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
                 [0] = {
                     Kind: Identifier
-                    [0] = 'f'
+                    [0] = 's'
                 }
             }
             [1] = {
                 Kind: ExpressionList
                 [0] = {
                     Kind: String
-                    [0] = "\nreturn function ( a , b , c , d , e )\n  local x = a >= b or c or ( d and e ) or nil\n  return x\nend , { a = 1 , b = 2 >= 1 , } or { 1 };\n"
+                    [0] = "\0 \x7F\z\xC2\x80 \xDF\xBF\z\xE0\xA0\x80 \xEF\xBF\xBF\z\xF0\x90\x80\x80  \xF4\x8F\xBF\xBF"
                 }
             }
         }
-        [148] = {
+        [46] = {
             Kind: AssignmentStatement
             [0] = {
                 Kind: VariableList
                 [0] = {
                     Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: String
-                    [0] = "\ "
-                }
-            }
-        }
-        [149] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'f'
+                    [0] = 's'
                 }
             }
             [1] = {
@@ -7232,1259 +5279,185 @@
                             Kind: ExpressionList
                             [0] = {
                                 Kind: Identifier
-                                [0] = 'f'
+                                [0] = 's'
                             }
                             [1] = {
                                 Kind: String
-                                [0] = "%s+"
+                                [0] = " "
                             }
                             [2] = {
                                 Kind: String
-                                [0] = "\n"
+                                [0] = ""
                             }
                         }
                     }
                 }
             }
         }
-        [150] = {
-            Kind: Semicolon
-        }
-        [151] = {
-            Kind: AssignmentStatement
+        [47] = {
+            Kind: FunctionCall
             [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'f'
-                }
-                [1] = {
-                    Kind: Identifier
-                    [0] = 'a'
-                }
+                Kind: Identifier
+                [0] = 'check'
             }
             [1] = {
-                Kind: ExpressionList
+                Kind: ArgumentList
                 [0] = {
-                    Kind: FunctionCall
+                    Kind: ExpressionList
                     [0] = {
-                        Kind: FunctionCall
+                        Kind: Identifier
+                        [0] = 's'
+                    }
+                    [1] = {
+                        Kind: TableConstructor
                         [0] = {
-                            Kind: Identifier
-                            [0] = 'load'
-                        }
-                        [1] = {
-                            Kind: ArgumentList
+                            Kind: FieldList
                             [0] = {
-                                Kind: ExpressionList
+                                Kind: TableValue
                                 [0] = {
-                                    Kind: Identifier
-                                    [0] = 'f'
+                                    Kind: Numeric
+                                    [0] = 0
+                                }
+                            }
+                            [1] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 127
+                                }
+                            }
+                            [2] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 128
+                                }
+                            }
+                            [3] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 2047
+                                }
+                            }
+                            [4] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 2048
+                                }
+                            }
+                            [5] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 65535
+                                }
+                            }
+                            [6] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 65536
+                                }
+                            }
+                            [7] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 1114111
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+        [48] = {
+            Kind: DoStatement
+            [0] = {
+                Kind: Block
+                [0] = {
+                    Kind: LocalStatement
+                    [0] = {
+                        Kind: AssignmentStatement
+                        [0] = {
+                            Kind: AttributeList
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 's'
+                            }
+                        }
+                        [1] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: String
+                                [0] = "\u{4000000}\u{7FFFFFFF}"
+                            }
+                        }
+                    }
+                }
+                [1] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
                     }
                     [1] = {
                         Kind: ArgumentList
-                        [0] = nullptr
-                    }
-                }
-            }
-        }
-        [152] = {
-            Kind: Semicolon
-        }
-        [153] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Member
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
                                 [1] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 's'
+                                    }
                                 }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 12
+                                }
                             }
                         }
-                        [2] = {
-                            Kind: Member
+                    }
+                }
+                [2] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'check'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
                             [0] = {
                                 Kind: Identifier
-                                [0] = 'a'
+                                [0] = 's'
                             }
                             [1] = {
-                                Kind: Identifier
-                                [0] = 'b'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [154] = {
-            Kind: FunctionDefinition
-            [0] = {
-                Kind: FunctionName
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'g'
-                }
-            }
-            [1] = {
-                Kind: FunctionBody
-                [0] = {
-                    Kind: ParameterList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'a'
-                    }
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'b'
-                    }
-                    [2] = {
-                        Kind: Identifier
-                        [0] = 'c'
-                    }
-                    [3] = {
-                        Kind: Identifier
-                        [0] = 'd'
-                    }
-                    [4] = {
-                        Kind: Identifier
-                        [0] = 'e'
-                    }
-                }
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: IfStatement
-                        [0] = {
-                            Kind: ConditionalBlock
-                            [0] = {
-                                Kind: UnaryOperation
-                                [0] = "not"
-                                [1] = {
-                                    Kind: BinaryOperation
-                                    [0] = "or"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "and"
-                                        [1] = {
-                                            Kind: BinaryOperation
-                                            [0] = "or"
-                                            [1] = {
-                                                Kind: BinaryOperation
-                                                [0] = "or"
-                                                [1] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = ">="
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'a'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Identifier
-                                                        [0] = 'b'
-                                                    }
-                                                }
-                                                [2] = {
-                                                    Kind: Identifier
-                                                    [0] = 'c'
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: Identifier
-                                                [0] = 'd'
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: Identifier
-                                            [0] = 'e'
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Null
-                                        [0] = 'nil'
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: Block
+                                Kind: TableConstructor
                                 [0] = {
-                                    Kind: ReturnStatement
+                                    Kind: FieldList
                                     [0] = {
-                                        Kind: ExpressionList
+                                        Kind: TableValue
                                         [0] = {
                                             Kind: Numeric
-                                            [0] = 0
+                                            [0] = 67108864
                                         }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: ConditionalBlock
-                            [0] = nullptr
-                            [1] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: ReturnStatement
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: Semicolon
-                    }
-                }
-            }
-        }
-        [155] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'h'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'a'
-                        }
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'b'
-                        }
-                        [2] = {
-                            Kind: Identifier
-                            [0] = 'c'
-                        }
-                        [3] = {
-                            Kind: Identifier
-                            [0] = 'd'
-                        }
-                        [4] = {
-                            Kind: Identifier
-                            [0] = 'e'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: WhileStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "or"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "or"
-                                        [1] = {
-                                            Kind: BinaryOperation
-                                            [0] = "or"
-                                            [1] = {
-                                                Kind: BinaryOperation
-                                                [0] = ">="
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'a'
-                                                }
-                                                [2] = {
-                                                    Kind: Identifier
-                                                    [0] = 'b'
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: Identifier
-                                                [0] = 'c'
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: BinaryOperation
-                                            [0] = "and"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'd'
-                                            }
-                                            [2] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Null
-                                        [0] = 'nil'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: ReturnStatement
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: Semicolon
-                        }
-                        [2] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [156] = {
-            Kind: Semicolon
-        }
-        [157] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
                                     }
                                     [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Boolean
-                                    [0] = 1
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'g'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'h'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
+                                        Kind: TableValue
                                         [0] = {
                                             Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 1
+                                            [0] = 2147483647
                                         }
                                     }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [158] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: String
-                                                [0] = "a"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "a"
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'g'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: String
-                                                [0] = "a"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'h'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: String
-                                            [0] = "a"
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [159] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "~="
-                        [1] = {
-                            Kind: FunctionCall
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'f'
-                            }
-                            [1] = {
-                                Kind: ArgumentList
-                                [0] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                    [2] = {
-                                        Kind: String
-                                        [0] = "a"
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: Null
-                            [0] = 'nil'
-                        }
-                    }
-                    [1] = {
-                        Kind: String
-                        [0] = ""
-                    }
-                }
-            }
-        }
-        [160] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: String
-                                                [0] = "a"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "a"
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'g'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: String
-                                                [0] = "a"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'h'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: String
-                                            [0] = "a"
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [161] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [3] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [4] = {
-                                                Kind: String
-                                                [0] = "x"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "x"
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'g'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [3] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [4] = {
-                                                Kind: String
-                                                [0] = "x"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'h'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: Null
-                                            [0] = 'nil'
-                                        }
-                                        [3] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                        [4] = {
-                                            Kind: String
-                                            [0] = "x"
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [162] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [3] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [4] = {
-                                                Kind: String
-                                                [0] = "x"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Null
-                                    [0] = 'nil'
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'g'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [3] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [4] = {
-                                                Kind: String
-                                                [0] = "x"
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'h'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: Null
-                                            [0] = 'nil'
-                                        }
-                                        [3] = {
-                                            Kind: Null
-                                            [0] = 'nil'
-                                        }
-                                        [4] = {
-                                            Kind: String
-                                            [0] = "x"
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 0
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [163] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [3] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [4] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Null
-                                    [0] = 'nil'
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "=="
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'g'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                            [2] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                            [3] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                            [4] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                        }
-                                    }
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 0
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'h'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: Null
-                                            [0] = 'nil'
-                                        }
-                                        [3] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                        [4] = {
-                                            Kind: Null
-                                            [0] = 'nil'
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 0
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [164] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "and"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                                [2] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "<"
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                        [2] = {
-                                            Kind: Numeric
-                                            [0] = 3
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Boolean
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "<"
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 3
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: BinaryOperation
-                                [0] = "<"
-                                [1] = {
-                                    Kind: String
-                                    [0] = "a"
-                                }
-                                [2] = {
-                                    Kind: String
-                                    [0] = "b"
                                 }
                             }
                             [2] = {
@@ -8494,229 +5467,22 @@
                         }
                     }
                 }
-            }
-        }
-        [165] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "and"
-                    [1] = {
-                        Kind: BinaryOperation
-                        [0] = "<"
-                        [1] = {
-                            Kind: Numeric
-                            [0] = 2
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 3
-                        }
-                    }
-                    [2] = {
-                        Kind: UnaryOperation
-                        [0] = "not"
-                        [1] = {
-                            Kind: Numeric
-                            [0] = 3
-                        }
-                    }
-                }
-            }
-        }
-        [166] = {
-            Kind: Semicolon
-        }
-        [167] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'x'
-                        }
-                        [2] = {
-                            Kind: Boolean
-                            [0] = 0
-                        }
-                    }
-                }
-            }
-        }
-        [168] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'x'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "or"
-                    [1] = {
-                        Kind: BinaryOperation
-                        [0] = "<"
-                        [1] = {
-                            Kind: Numeric
-                            [0] = 2
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 1
-                        }
-                    }
-                    [2] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = ">"
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 2
-                            }
-                            [2] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: String
-                            [0] = "a"
-                        }
-                    }
-                }
-            }
-        }
-        [169] = {
-            Kind: Semicolon
-        }
-        [170] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "=="
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'x'
-                        }
-                        [2] = {
-                            Kind: String
-                            [0] = "a"
-                        }
-                    }
-                }
-            }
-        }
-        [171] = {
-            Kind: DoStatement
-            [0] = {
-                Kind: Block
-                [0] = {
-                    Kind: LocalStatement
-                    [0] = {
-                        Kind: AttributeList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'a'
-                        }
-                    }
-                }
-                [1] = {
-                    Kind: Semicolon
-                }
-                [2] = {
-                    Kind: IfStatement
-                    [0] = {
-                        Kind: ConditionalBlock
-                        [0] = {
-                            Kind: Null
-                            [0] = 'nil'
-                        }
-                        [1] = {
-                            Kind: Block
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: VariableList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: Semicolon
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: ConditionalBlock
-                        [0] = nullptr
-                        [1] = {
-                            Kind: Block
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: VariableList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: Semicolon
-                            }
-                        }
-                    }
-                }
                 [3] = {
-                    Kind: Semicolon
+                    Kind: AssignmentStatement
+                    [0] = {
+                        Kind: VariableList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 's'
+                        }
+                    }
+                    [1] = {
+                        Kind: ExpressionList
+                        [0] = {
+                            Kind: String
+                            [0] = "\u{200000}\u{3FFFFFF}"
+                        }
+                    }
                 }
                 [4] = {
                     Kind: FunctionCall
@@ -8732,332 +5498,144 @@
                                 Kind: BinaryOperation
                                 [0] = "=="
                                 [1] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [172] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'F'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'a'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: FunctionCall
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'assert'
-                            }
-                            [1] = {
-                                Kind: ArgumentList
-                                [0] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: BinaryOperation
-                                        [0] = "=="
-                                        [1] = {
-                                            Kind: Member
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Member
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'debug'
-                                                    }
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'getinfo'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                        [1] = {
-                                                            Kind: String
-                                                            [0] = "n"
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'name'
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: String
-                                            [0] = "F"
-                                        }
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 's'
                                     }
                                 }
-                            }
-                        }
-                        [1] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 2
-                                }
                                 [2] = {
                                     Kind: Numeric
-                                    [0] = 3
+                                    [0] = 10
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-        [173] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'a'
-                }
-                [1] = {
-                    Kind: Identifier
-                    [0] = 'b'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "~="
-                    [1] = {
-                        Kind: FunctionCall
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'F'
-                        }
-                        [1] = {
-                            Kind: ArgumentList
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                    }
-                    [2] = {
-                        Kind: Null
-                        [0] = 'nil'
-                    }
-                }
-            }
-        }
-        [174] = {
-            Kind: Semicolon
-        }
-        [175] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                            [2] = {
-                                Kind: Boolean
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'b'
-                            }
-                            [2] = {
-                                Kind: Null
-                                [0] = 'nil'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [176] = {
-            Kind: Semicolon
-        }
-        [177] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'a'
-                }
-                [1] = {
-                    Kind: Identifier
-                    [0] = 'b'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "=="
-                    [1] = {
-                        Kind: FunctionCall
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'F'
-                        }
-                        [1] = {
-                            Kind: ArgumentList
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Null
-                                    [0] = 'nil'
-                                }
-                            }
-                        }
-                    }
-                    [2] = {
-                        Kind: Null
-                        [0] = 'nil'
-                    }
-                }
-            }
-        }
-        [178] = {
-            Kind: Semicolon
-        }
-        [179] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'assert'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "and"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                            [2] = {
-                                Kind: Boolean
-                                [0] = 1
-                            }
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = "=="
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'b'
-                            }
-                            [2] = {
-                                Kind: Null
-                                [0] = 'nil'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [180] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Member
-                    [0] = {
-                        Kind: Identifier
-                        [0] = '_ENV'
-                    }
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'GLOB1'
-                    }
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
+                [5] = {
                     Kind: FunctionCall
                     [0] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'math'
-                        }
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'random'
-                        }
+                        Kind: Identifier
+                        [0] = 'check'
                     }
                     [1] = {
                         Kind: ArgumentList
                         [0] = {
                             Kind: ExpressionList
                             [0] = {
-                                Kind: Numeric
-                                [0] = 0
+                                Kind: Identifier
+                                [0] = 's'
                             }
                             [1] = {
-                                Kind: Numeric
+                                Kind: TableConstructor
+                                [0] = {
+                                    Kind: FieldList
+                                    [0] = {
+                                        Kind: TableValue
+                                        [0] = {
+                                            Kind: Numeric
+                                            [0] = 2097152
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: TableValue
+                                        [0] = {
+                                            Kind: Numeric
+                                            [0] = 67108863
+                                        }
+                                    }
+                                }
+                            }
+                            [2] = {
+                                Kind: Boolean
+                                [0] = 1
+                            }
+                        }
+                    }
+                }
+                [6] = {
+                    Kind: AssignmentStatement
+                    [0] = {
+                        Kind: VariableList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 's'
+                        }
+                    }
+                    [1] = {
+                        Kind: ExpressionList
+                        [0] = {
+                            Kind: String
+                            [0] = "\u{10000}\u{1fffff}"
+                        }
+                    }
+                }
+                [7] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: UnaryOperation
+                                    [0] = "#"
+                                    [1] = {
+                                        Kind: Identifier
+                                        [0] = 's'
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 8
+                                }
+                            }
+                        }
+                    }
+                }
+                [8] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'check'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 's'
+                            }
+                            [1] = {
+                                Kind: TableConstructor
+                                [0] = {
+                                    Kind: FieldList
+                                    [0] = {
+                                        Kind: TableValue
+                                        [0] = {
+                                            Kind: Numeric
+                                            [0] = 65536
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: TableValue
+                                        [0] = {
+                                            Kind: Numeric
+                                            [0] = 2097151
+                                        }
+                                    }
+                                }
+                            }
+                            [2] = {
+                                Kind: Boolean
                                 [0] = 1
                             }
                         }
@@ -9065,7 +5643,7 @@
                 }
             }
         }
-        [181] = {
+        [49] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -9073,1114 +5651,97 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'basiccases'
+                        [0] = 'x'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: TableConstructor
-                        [0] = {
-                            Kind: FieldList
-                            [0] = {
-                                Kind: TableValue
-                                [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: String
-                                                [0] = "nil"
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: Null
-                                                [0] = 'nil'
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: TableValue
-                                [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: String
-                                                [0] = "false"
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: Boolean
-                                                [0] = 0
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            [2] = {
-                                Kind: TableValue
-                                [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: String
-                                                [0] = "true"
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: Boolean
-                                                [0] = 1
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            [3] = {
-                                Kind: TableValue
-                                [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: String
-                                                [0] = "10"
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: Numeric
-                                                [0] = 10
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            [4] = {
-                                Kind: TableValue
-                                [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: String
-                                                [0] = "(0==_ENV.GLOB1)"
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "=="
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                                [2] = {
-                                                    Kind: Member
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = '_ENV'
-                                                    }
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'GLOB1'
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Kind: String
+                        [0] = "\230\151\165\230\156\172\232\170\158a-4\0\195\169\195\179"
                     }
                 }
             }
         }
-        [182] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AttributeList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'prog'
-                }
-            }
-        }
-        [183] = {
-            Kind: IfStatement
-            [0] = {
-                Kind: ConditionalBlock
-                [0] = {
-                    Kind: BinaryOperation
-                    [0] = "=="
-                    [1] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = '_ENV'
-                        }
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'GLOB1'
-                        }
-                    }
-                    [2] = {
-                        Kind: Numeric
-                        [0] = 0
-                    }
-                }
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: VariableList
-                            [0] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'basiccases'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "F"
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: VariableList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'prog'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "\n    local F <const> = false\n    if %s then IX = true end\n    return %s\n"
-                            }
-                        }
-                    }
-                }
-            }
-            [1] = {
-                Kind: ConditionalBlock
-                [0] = nullptr
-                [1] = {
-                    Kind: Block
-                    [0] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: VariableList
-                            [0] = {
-                                Kind: Index
-                                [0] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'basiccases'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "k10"
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: AssignmentStatement
-                        [0] = {
-                            Kind: VariableList
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'prog'
-                            }
-                        }
-                        [1] = {
-                            Kind: ExpressionList
-                            [0] = {
-                                Kind: String
-                                [0] = "\n    local k10 <const> = 10\n    if %s then IX = true end\n    return %s\n  "
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [184] = {
+        [50] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
-                [0] = 'print'
+                [0] = 'check'
             }
             [1] = {
                 Kind: ArgumentList
                 [0] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: BinaryOperation
-                        [0] = ".."
-                        [1] = {
-                            Kind: String
-                            [0] = "testing short-circuit optimizations ("
-                        }
-                        [2] = {
-                            Kind: BinaryOperation
-                            [0] = ".."
-                            [1] = {
-                                Kind: Member
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = '_ENV'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'GLOB1'
-                                }
-                            }
-                            [2] = {
-                                Kind: String
-                                [0] = ")"
-                            }
-                        }
+                        Kind: Identifier
+                        [0] = 'x'
                     }
-                }
-            }
-        }
-        [185] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Attribute
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'binops'
-                        }
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'const'
-                        }
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
+                    [1] = {
                         Kind: TableConstructor
                         [0] = {
                             Kind: FieldList
                             [0] = {
                                 Kind: TableValue
                                 [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: String
-                                                [0] = " and "
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: FunctionDefinition
-                                                [0] = nullptr
-                                                [1] = {
-                                                    Kind: FunctionBody
-                                                    [0] = {
-                                                        Kind: ParameterList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'a'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'b'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: Block
-                                                        [0] = {
-                                                            Kind: IfStatement
-                                                            [0] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = {
-                                                                    Kind: UnaryOperation
-                                                                    [0] = "not"
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'a'
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: ReturnStatement
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'a'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = nullptr
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: ReturnStatement
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'b'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    Kind: Numeric
+                                    [0] = 26085
                                 }
                             }
                             [1] = {
                                 Kind: TableValue
                                 [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: String
-                                                [0] = " or "
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: FunctionDefinition
-                                                [0] = nullptr
-                                                [1] = {
-                                                    Kind: FunctionBody
-                                                    [0] = {
-                                                        Kind: ParameterList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'a'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'b'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: Block
-                                                        [0] = {
-                                                            Kind: IfStatement
-                                                            [0] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'a'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: ReturnStatement
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'a'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = nullptr
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: ReturnStatement
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'b'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [186] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Attribute
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'cases'
-                        }
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'const'
-                        }
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: TableConstructor
-                        [0] = nullptr
-                    }
-                }
-            }
-        }
-        [187] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'createcases'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'n'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'res'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: ForStatement
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'i'
-                            }
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'n'
-                                }
-                                [2] = {
                                     Kind: Numeric
-                                    [0] = 1
+                                    [0] = 26412
                                 }
-                            }
-                            [3] = nullptr
-                            [4] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: ForStatement
-                                    [0] = {
-                                        Kind: NameList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = '_'
-                                        }
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'v1'
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'ipairs'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'cases'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'i'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Block
-                                        [0] = {
-                                            Kind: ForStatement
-                                            [0] = {
-                                                Kind: NameList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = '_'
-                                                }
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'v2'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'ipairs'
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: Index
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'cases'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "-"
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'i'
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: ForStatement
-                                                    [0] = {
-                                                        Kind: NameList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = '_'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'op'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'ipairs'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'binops'
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    [2] = {
-                                                        Kind: Block
-                                                        [0] = {
-                                                            Kind: LocalStatement
-                                                            [0] = {
-                                                                Kind: AssignmentStatement
-                                                                [0] = {
-                                                                    Kind: AttributeList
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 't'
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: TableConstructor
-                                                                        [0] = {
-                                                                            Kind: FieldList
-                                                                            [0] = {
-                                                                                Kind: TableValue
-                                                                                [0] = {
-                                                                                    Kind: BinaryOperation
-                                                                                    [0] = ".."
-                                                                                    [1] = {
-                                                                                        Kind: String
-                                                                                        [0] = "("
-                                                                                    }
-                                                                                    [2] = {
-                                                                                        Kind: BinaryOperation
-                                                                                        [0] = ".."
-                                                                                        [1] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'v1'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Numeric
-                                                                                                [0] = 1
-                                                                                            }
-                                                                                        }
-                                                                                        [2] = {
-                                                                                            Kind: BinaryOperation
-                                                                                            [0] = ".."
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'op'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 1
-                                                                                                }
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: BinaryOperation
-                                                                                                [0] = ".."
-                                                                                                [1] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'v2'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Numeric
-                                                                                                        [0] = 1
-                                                                                                    }
-                                                                                                }
-                                                                                                [2] = {
-                                                                                                    Kind: String
-                                                                                                    [0] = ")"
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: TableValue
-                                                                                [0] = {
-                                                                                    Kind: FunctionCall
-                                                                                    [0] = {
-                                                                                        Kind: Index
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'op'
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Numeric
-                                                                                            [0] = 2
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ArgumentList
-                                                                                        [0] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'v1'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'v2'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: AssignmentStatement
-                                                            [0] = {
-                                                                Kind: VariableList
-                                                                [0] = {
-                                                                    Kind: Index
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'res'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: BinaryOperation
-                                                                        [0] = "+"
-                                                                        [1] = {
-                                                                            Kind: UnaryOperation
-                                                                            [0] = "#"
-                                                                            [1] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'res'
-                                                                            }
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: Numeric
-                                                                            [0] = 1
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 't'
-                                                                }
-                                                            }
-                                                        }
-                                                        [2] = {
-                                                            Kind: AssignmentStatement
-                                                            [0] = {
-                                                                Kind: VariableList
-                                                                [0] = {
-                                                                    Kind: Index
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'res'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: BinaryOperation
-                                                                        [0] = "+"
-                                                                        [1] = {
-                                                                            Kind: UnaryOperation
-                                                                            [0] = "#"
-                                                                            [1] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'res'
-                                                                            }
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: Numeric
-                                                                            [0] = 1
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: TableConstructor
-                                                                    [0] = {
-                                                                        Kind: FieldList
-                                                                        [0] = {
-                                                                            Kind: TableValue
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = ".."
-                                                                                [1] = {
-                                                                                    Kind: String
-                                                                                    [0] = "not"
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Index
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 't'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Numeric
-                                                                                        [0] = 1
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: TableValue
-                                                                            [0] = {
-                                                                                Kind: UnaryOperation
-                                                                                [0] = "not"
-                                                                                [1] = {
-                                                                                    Kind: Index
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 't'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Numeric
-                                                                                        [0] = 2
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [2] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'res'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [188] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'level'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: BinaryOperation
-                        [0] = "or"
-                        [1] = {
-                            Kind: BinaryOperation
-                            [0] = "and"
-                            [1] = {
-                                Kind: Identifier
-                                [0] = '_soft'
                             }
                             [2] = {
-                                Kind: Numeric
-                                [0] = 3
-                            }
-                        }
-                        [2] = {
-                            Kind: Numeric
-                            [0] = 4
-                        }
-                    }
-                }
-            }
-        }
-        [189] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Index
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'cases'
-                    }
-                    [1] = {
-                        Kind: Numeric
-                        [0] = 1
-                    }
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'basiccases'
-                }
-            }
-        }
-        [190] = {
-            Kind: ForStatement
-            [0] = {
-                Kind: Identifier
-                [0] = 'i'
-            }
-            [1] = {
-                Kind: Numeric
-                [0] = 2
-            }
-            [2] = {
-                Kind: Identifier
-                [0] = 'level'
-            }
-            [3] = nullptr
-            [4] = {
-                Kind: Block
-                [0] = {
-                    Kind: AssignmentStatement
-                    [0] = {
-                        Kind: VariableList
-                        [0] = {
-                            Kind: Index
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'cases'
-                            }
-                            [1] = {
-                                Kind: Identifier
-                                [0] = 'i'
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: ExpressionList
-                        [0] = {
-                            Kind: FunctionCall
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'createcases'
-                            }
-                            [1] = {
-                                Kind: ArgumentList
+                                Kind: TableValue
                                 [0] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'i'
-                                    }
+                                    Kind: Numeric
+                                    [0] = 35486
+                                }
+                            }
+                            [3] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 97
+                                }
+                            }
+                            [4] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 45
+                                }
+                            }
+                            [5] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 52
+                                }
+                            }
+                            [6] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 0
+                                }
+                            }
+                            [7] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 233
+                                }
+                            }
+                            [8] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 243
                                 }
                             }
                         }
@@ -10188,11 +5749,11 @@
                 }
             }
         }
-        [191] = {
+        [51] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
-                [0] = 'print'
+                [0] = 'check'
             }
             [1] = {
                 Kind: ArgumentList
@@ -10200,12 +5761,146 @@
                     Kind: ExpressionList
                     [0] = {
                         Kind: String
-                        [0] = "+"
+                        [0] = "\240\163\178\183\240\160\156\142\240\160\177\147\240\161\129\187\240\160\181\188ab\240\160\186\162"
+                    }
+                    [1] = {
+                        Kind: TableConstructor
+                        [0] = {
+                            Kind: FieldList
+                            [0] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 146615
+                                }
+                            }
+                            [1] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 132878
+                                }
+                            }
+                            [2] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 134227
+                                }
+                            }
+                            [3] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 135291
+                                }
+                            }
+                            [4] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 134524
+                                }
+                            }
+                            [5] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 97
+                                }
+                            }
+                            [6] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 98
+                                }
+                            }
+                            [7] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 134818
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        [192] = {
+        [52] = {
+            Kind: FunctionCall
+            [0] = {
+                Kind: Identifier
+                [0] = 'check'
+            }
+            [1] = {
+                Kind: ArgumentList
+                [0] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: String
+                        [0] = "\240\168\179\138\240\169\182\152\240\166\167\186\240\168\179\146\240\165\132\171\240\164\147\147\xF4\x8F\xBF\xBF"
+                    }
+                    [1] = {
+                        Kind: TableConstructor
+                        [0] = {
+                            Kind: FieldList
+                            [0] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 167114
+                                }
+                            }
+                            [1] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 171416
+                                }
+                            }
+                            [2] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 158202
+                                }
+                            }
+                            [3] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 167122
+                                }
+                            }
+                            [4] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 151851
+                                }
+                            }
+                            [5] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 148691
+                                }
+                            }
+                            [6] = {
+                                Kind: TableValue
+                                [0] = {
+                                    Kind: Numeric
+                                    [0] = 1114111
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [53] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -10225,175 +5920,309 @@
                 }
             }
         }
-        [193] = {
+        [54] = {
             Kind: ForStatement
             [0] = {
-                Kind: Identifier
-                [0] = 'n'
+                Kind: NameList
+                [0] = {
+                    Kind: Identifier
+                    [0] = 'p'
+                }
+                [1] = {
+                    Kind: Identifier
+                    [0] = 'c'
+                }
             }
             [1] = {
-                Kind: Numeric
-                [0] = 1
-            }
-            [2] = {
-                Kind: Identifier
-                [0] = 'level'
-            }
-            [3] = nullptr
-            [4] = {
-                Kind: Block
+                Kind: ExpressionList
                 [0] = {
-                    Kind: ForStatement
+                    Kind: FunctionCall
                     [0] = {
-                        Kind: NameList
+                        Kind: Member
                         [0] = {
                             Kind: Identifier
-                            [0] = '_'
+                            [0] = 'string'
                         }
                         [1] = {
                             Kind: Identifier
-                            [0] = 'v'
+                            [0] = 'gmatch'
+                        }
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: Identifier
+                                [0] = 'x'
+                            }
+                            [1] = {
+                                Kind: BinaryOperation
+                                [0] = ".."
+                                [1] = {
+                                    Kind: String
+                                    [0] = "()("
+                                }
+                                [2] = {
+                                    Kind: BinaryOperation
+                                    [0] = ".."
+                                    [1] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'charpattern'
+                                        }
+                                    }
+                                    [2] = {
+                                        Kind: String
+                                        [0] = ")"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            [2] = {
+                Kind: Block
+                [0] = {
+                    Kind: AssignmentStatement
+                    [0] = {
+                        Kind: VariableList
+                        [0] = {
+                            Kind: Identifier
+                            [0] = 'i'
                         }
                     }
                     [1] = {
                         Kind: ExpressionList
                         [0] = {
-                            Kind: FunctionCall
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'pairs'
-                            }
+                            Kind: BinaryOperation
+                            [0] = "+"
                             [1] = {
-                                Kind: ArgumentList
-                                [0] = {
-                                    Kind: ExpressionList
+                                Kind: Identifier
+                                [0] = 'i'
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 1
+                            }
+                        }
+                    }
+                }
+                [1] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
                                     [0] = {
-                                        Kind: Index
+                                        Kind: Member
                                         [0] = {
                                             Kind: Identifier
-                                            [0] = 'cases'
+                                            [0] = 'utf8'
                                         }
                                         [1] = {
                                             Kind: Identifier
-                                            [0] = 'n'
+                                            [0] = 'offset'
                                         }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'x'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'i'
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: Identifier
+                                    [0] = 'p'
+                                }
+                            }
+                        }
+                    }
+                }
+                [2] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
+                        [0] = {
+                            Kind: ExpressionList
+                            [0] = {
+                                Kind: BinaryOperation
+                                [0] = "=="
+                                [1] = {
+                                    Kind: FunctionCall
+                                    [0] = {
+                                        Kind: Member
+                                        [0] = {
+                                            Kind: Identifier
+                                            [0] = 'utf8'
+                                        }
+                                        [1] = {
+                                            Kind: Identifier
+                                            [0] = 'len'
+                                        }
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
+                                            [0] = {
+                                                Kind: Identifier
+                                                [0] = 'x'
+                                            }
+                                            [1] = {
+                                                Kind: Identifier
+                                                [0] = 'p'
+                                            }
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: BinaryOperation
+                                    [0] = "+"
+                                    [1] = {
+                                        Kind: BinaryOperation
+                                        [0] = "-"
+                                        [1] = {
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
+                                                [0] = {
+                                                    Kind: Identifier
+                                                    [0] = 'utf8'
+                                                }
+                                                [1] = {
+                                                    Kind: Identifier
+                                                    [0] = 'len'
+                                                }
+                                            }
+                                            [1] = {
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 'x'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: Identifier
+                                            [0] = 'i'
+                                        }
+                                    }
+                                    [2] = {
+                                        Kind: Numeric
+                                        [0] = 1
                                     }
                                 }
                             }
                         }
                     }
-                    [2] = {
-                        Kind: Block
+                }
+                [3] = {
+                    Kind: FunctionCall
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'assert'
+                    }
+                    [1] = {
+                        Kind: ArgumentList
                         [0] = {
-                            Kind: LocalStatement
+                            Kind: ExpressionList
                             [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 's'
-                                    }
-                                }
+                                Kind: BinaryOperation
+                                [0] = "=="
                                 [1] = {
-                                    Kind: ExpressionList
+                                    Kind: FunctionCall
                                     [0] = {
-                                        Kind: Index
+                                        Kind: Member
                                         [0] = {
                                             Kind: Identifier
-                                            [0] = 'v'
+                                            [0] = 'utf8'
                                         }
                                         [1] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'p'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
                                             Kind: Identifier
-                                            [0] = 'load'
+                                            [0] = 'len'
                                         }
-                                        [1] = {
-                                            Kind: ArgumentList
+                                    }
+                                    [1] = {
+                                        Kind: ArgumentList
+                                        [0] = {
+                                            Kind: ExpressionList
                                             [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: Member
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'string'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'format'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'prog'
-                                                            }
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 's'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Identifier
-                                                                [0] = 's'
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: String
-                                                    [0] = ""
-                                                }
+                                                Kind: Identifier
+                                                [0] = 'c'
                                             }
                                         }
                                     }
                                 }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 1
+                                }
+                            }
+                        }
+                    }
+                }
+                [4] = {
+                    Kind: ForStatement
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'j'
+                    }
+                    [1] = {
+                        Kind: Numeric
+                        [0] = 1
+                    }
+                    [2] = {
+                        Kind: BinaryOperation
+                        [0] = "-"
+                        [1] = {
+                            Kind: UnaryOperation
+                            [0] = "#"
+                            [1] = {
+                                Kind: Identifier
+                                [0] = 'c'
                             }
                         }
                         [2] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'IX'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Boolean
-                                    [0] = 0
-                                }
-                            }
+                            Kind: Numeric
+                            [0] = 1
                         }
-                        [3] = {
+                    }
+                    [3] = nullptr
+                    [4] = {
+                        Kind: Block
+                        [0] = {
                             Kind: FunctionCall
                             [0] = {
                                 Kind: Identifier
@@ -10405,130 +6234,58 @@
                                     Kind: ExpressionList
                                     [0] = {
                                         Kind: BinaryOperation
-                                        [0] = "and"
+                                        [0] = "=="
                                         [1] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: FunctionCall
+                                            Kind: FunctionCall
+                                            [0] = {
+                                                Kind: Member
                                                 [0] = {
                                                     Kind: Identifier
-                                                    [0] = 'p'
+                                                    [0] = 'utf8'
                                                 }
                                                 [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = nullptr
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: Index
-                                                [0] = {
                                                     Kind: Identifier
-                                                    [0] = 'v'
-                                                }
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 2
+                                                    [0] = 'offset'
                                                 }
                                             }
-                                        }
-                                        [2] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
                                             [1] = {
-                                                Kind: Identifier
-                                                [0] = 'IX'
-                                            }
-                                            [2] = {
-                                                Kind: UnaryOperation
-                                                [0] = "not"
-                                                [1] = {
-                                                    Kind: UnaryOperation
-                                                    [0] = "not"
+                                                Kind: ArgumentList
+                                                [0] = {
+                                                    Kind: ExpressionList
+                                                    [0] = {
+                                                        Kind: Identifier
+                                                        [0] = 'x'
+                                                    }
                                                     [1] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'v'
-                                                        }
+                                                        Kind: Numeric
+                                                        [0] = 0
+                                                    }
+                                                    [2] = {
+                                                        Kind: BinaryOperation
+                                                        [0] = "-"
                                                         [1] = {
+                                                            Kind: BinaryOperation
+                                                            [0] = "+"
+                                                            [1] = {
+                                                                Kind: Identifier
+                                                                [0] = 'p'
+                                                            }
+                                                            [2] = {
+                                                                Kind: Identifier
+                                                                [0] = 'j'
+                                                            }
+                                                        }
+                                                        [2] = {
                                                             Kind: Numeric
-                                                            [0] = 2
+                                                            [0] = 1
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
-                                }
-                            }
-                        }
-                        [4] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'i'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'i'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                        }
-                        [5] = {
-                            Kind: IfStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "%"
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'i'
-                                        }
                                         [2] = {
-                                            Kind: Numeric
-                                            [0] = 60000
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 0
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
                                             Kind: Identifier
-                                            [0] = 'print'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: String
-                                                    [0] = "+"
-                                                }
-                                            }
+                                            [0] = 'p'
                                         }
                                     }
                                 }
@@ -10538,90 +6295,7 @@
                 }
             }
         }
-        [194] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'IX'
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: Null
-                    [0] = 'nil'
-                }
-            }
-        }
-        [195] = {
-            Kind: AssignmentStatement
-            [0] = {
-                Kind: VariableList
-                [0] = {
-                    Kind: Member
-                    [0] = {
-                        Kind: Identifier
-                        [0] = '_G'
-                    }
-                    [1] = {
-                        Kind: Identifier
-                        [0] = 'GLOB1'
-                    }
-                }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: Null
-                    [0] = 'nil'
-                }
-            }
-        }
-        [196] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'checkload'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: String
-                        [0] = "for x do"
-                    }
-                    [1] = {
-                        Kind: String
-                        [0] = "expected"
-                    }
-                }
-            }
-        }
-        [197] = {
-            Kind: FunctionCall
-            [0] = {
-                Kind: Identifier
-                [0] = 'checkload'
-            }
-            [1] = {
-                Kind: ArgumentList
-                [0] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: String
-                        [0] = "x:call"
-                    }
-                    [1] = {
-                        Kind: String
-                        [0] = "expected"
-                    }
-                }
-            }
-        }
-        [198] = {
+        [55] = {
             Kind: FunctionCall
             [0] = {
                 Kind: Identifier
@@ -10631,7 +6305,7 @@
                 Kind: ArgumentList
                 [0] = {
                     Kind: String
-                    [0] = "OK"
+                    [0] = "ok"
                 }
             }
         }

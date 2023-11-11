@@ -1,421 +1,258 @@
--- $Id: testes/constructs.lua $
+-- $Id: testes/utf8.lua $
 -- See Copyright Notice in file all.lua
 
-;;print "testing syntax";;
-
-local debug = require "debug"
+-- UTF-8 file
 
 
-local function checkload (s, msg)
-  assert(string.find(select(2, load(s)), msg))
+
+print "testing UTF-8 library"
+
+local utf8 = require'utf8'
+
+
+local function checkerror (msg, f, ...)
+  local s, err = pcall(f, ...)
+  assert(not s and string.find(err, msg))
 end
 
--- testing semicollons
-local a
-do ;;; end
-; do ; a = 3; assert(a == 3) end;
-;
+
+local function len (s)
+  return #string.gsub(s, "[\x80-\xBF]", "")
+end
 
 
--- invalid operations should not raise errors when not executed
-if false then a = 3 // 0; a = 0 % 0 end
+local justone = "^" .. utf8.charpattern .. "$"
 
+-- 't' is the list of codepoints of 's'
+local function checksyntax (s, t)
+  -- creates a string "return '\u{t[1]}...\u{t[n]}'"
+  local ts = {"return '"}
+  for i = 1, #t do ts[i + 1] = string.format("\\u{%x}", t[i]) end
+  ts[#t + 2] = "'"
+  ts = table.concat(ts)
+  -- its execution should result in 's'
+  assert(assert(load(ts))() == s)
+end
 
--- testing priorities
+assert(not utf8.offset("alo", 5))
+assert(not utf8.offset("alo", -4))
 
-assert(2^3^2 == 2^(3^2));
-assert(2^3*4 == (2^3)*4);
-assert(2.0^-2 == 1/4 and -2^- -2 == - - -4);
-assert(not nil and 2 and not(2>3 or 3<2));
-assert(-3-1-5 == 0+0-9);
-assert(-2^2 == -4 and (-2)^2 == 4 and 2*2-3-1 == 0);
-assert(-3%5 == 2 and -3+5 == 2)
-assert(2*1+3/3 == 3 and 1+2 .. 3*1 == "33");
-assert(not(2+1 > 3*1) and "a".."b" > "a");
-assert("ab" < "a");
-assert("a" < "ab");
+-- 'check' makes several tests over the validity of string 's'.
+-- 't' is the list of codepoints of 's'.
+local function check (s, t, nonstrict)
+  local l = utf8.len(s, 1, -1, nonstrict)
+  assert(#t == l and len(s) == l)
+  assert(utf8.char(table.unpack(t)) == s)   -- 't' and 's' are equivalent
 
-assert(0xF0 | 0xCC ~ 0xAA & 0xFD == 0xF4)
-assert(0xFD & 0xAA ~ 0xCC | 0xF0 == 0xF4)
-assert(0xF0 & 0x0F + 1 == 0x10)
+  assert(utf8.offset(s, 0) == 1)
 
-assert(3^4//2^3//5 == 2)
+  checksyntax(s, t)
 
-assert(-3+4*5//2^3^2//9+4%10/3 == (-3)+(((4*5)//(2^(3^2)))//9)+((4%10)/3))
+  -- creates new table with all codepoints of 's'
+  local t1 = {utf8.codepoint(s, 1, -1, nonstrict)}
+  assert(#t == #t1)
+  for i = 1, #t do assert(t[i] == t1[i]) end   -- 't' is equal to 't1'
 
-assert(not ((true or false) and nil))
-assert(      true or false  and nil)
-
-x = false or false or false or true
-x = 1 + 1
-x = 3 // 2
-x = 1 + "1e33333"
-x = 1.423E2
-x = 5E30000
-
-x = [[a]]
-
--- old bug
-assert((((1 or false) and true) or false) == true)
-assert((((nil and true) or false) and true) == false)
-
-local a,b = 1,nil;
-assert(-(1 or 2) == -1 and (1 and 2)+(-1.25 or -4) == 0.75);
-local x = ((b or a)+1 == 2 and (10 or a)+1 == 11); assert(x);
-x = (((2<3) or 1) == true and (2<3 and 4) == 4); assert(x);
-
-local x, y = 1, 2;
-assert((x>y) and x or y == 2);
-x,y=2,1;
-assert((x>y) and x or y == 2);
-
-assert(1234567890 == tonumber('1234567890') and 1234567890+1 == 1234567891)
-
-do   -- testing operators with diffent kinds of constants
-  -- operands to consider:
-  --  * fit in register
-  --  * constant doesn't fit in register
-  --  * floats with integral values
-  local operand = {3, 100, 5.0, -10, -5.0, 10000, -10000}
-  local operator = {"+", "-", "*", "/", "//", "%", "^",
-                    "&", "|", "^", "<<", ">>",
-                    "==", "~=", "<", ">", "<=", ">=",}
-  for _, op in ipairs(operator) do
-    local f = assert(load(string.format([[return function (x,y)
-                return x %s y
-              end]], op)))();
-    for _, o1 in ipairs(operand) do
-      for _, o2 in ipairs(operand) do
-        local gab = f(o1, o2)
-
-        _ENV.XX = o1
-        local code = string.format("return XX %s %s", op, o2)
-        local res = assert(load(code))()
-        assert(res == gab)
-
-        _ENV.XX = o2
-        code = string.format("return (%s) %s XX", o1, op)
-        res = assert(load(code))()
-        assert(res == gab)
-
-        code = string.format("return (%s) %s %s", o1, op, o2)
-        res = assert(load(code))()
-        assert(res == gab)
-      end
+  for i = 1, l do   -- for all codepoints
+    local pi = utf8.offset(s, i)        -- position of i-th char
+    local pi1 = utf8.offset(s, 2, pi)   -- position of next char
+    assert(string.find(string.sub(s, pi, pi1 - 1), justone))
+    assert(utf8.offset(s, -1, pi1) == pi)
+    assert(utf8.offset(s, i - l - 1) == pi)
+    assert(pi1 - pi == #utf8.char(utf8.codepoint(s, pi, pi, nonstrict)))
+    for j = pi, pi1 - 1 do
+      assert(utf8.offset(s, 0, j) == pi)
     end
-  end
-  _ENV.XX = nil
-end
-
-
--- silly loops
-repeat until 1; repeat until true;
-while false do end; while nil do end;
-
-do  -- test old bug (first name could not be an `upvalue')
- local a; local function f(x) x={a=1}; x={x=1}; x={G=1} end
-end
-
-
-do   -- bug since 5.4.0
-  -- create code with a table using more than 256 constants
-  local code = {"local x = {"}
-  for i = 1, 257 do
-    code[#code + 1] = i .. ".1,"
-  end
-  code[#code + 1] = "};"
-  code = table.concat(code)
-
-  -- add "ret" to the end of that code and checks that
-  -- it produces the expected value "val"
-  local function check (ret, val)
-    local code = code .. ret
-    code = load(code)
-    assert(code() == val)
-  end
-
-  check("return (1 ~ (2 or 3))", 1 ~ 2)
-  check("return (1 | (2 or 3))", 1 | 2)
-  check("return (1 + (2 or 3))", 1 + 2)
-  check("return (1 << (2 or 3))", 1 << 2)
-end
-
-
-local function f (i)
-  if type(i) ~= 'number' then return i,'jojo'; end;
-  if i > 0 then return i, f(i-1); end;
-end
-
-x = {f(3), f(5), f(10);};
-assert(x[1] == 3 and x[2] == 5 and x[3] == 10 and x[4] == 9 and x[12] == 1);
-assert(x[nil] == nil)
-x = {f'alo', f'xixi', nil};
-assert(x[1] == 'alo' and x[2] == 'xixi' and x[3] == nil);
-x = {f'alo'..'xixi'};
-assert(x[1] == 'aloxixi')
-x = {f{}}
-assert(x[2] == 'jojo' and type(x[1]) == 'table')
-
-
-local f = function (i)
-  if i < 10 then return 'a';
-  elseif i < 20 then return 'b';
-  elseif i < 30 then return 'c';
-  end;
-end
-
-assert(f(3) == 'a' and f(12) == 'b' and f(26) == 'c' and f(100) == nil)
-
-for i=1,1000 do break; end;
-local n=100;
-local i=3;
-local t = {};
-local a=nil
-while not a do
-  a=0; for i=1,n do for i=i,1,-1 do a=a+1; t[i]=1; end; end;
-end
-assert(a == n*(n+1)/2 and i==3);
-assert(t[1] and t[n] and not t[0] and not t[n+1])
-
-function f(b)
-  local x = 1;
-  repeat
-    local a;
-    if b==1 then local b=1; x=10; break
-    elseif b==2 then x=20; break;
-    elseif b==3 then x=30;
-    else local a,b,c,d=math.sin(1); x=x+1;
+    for j = pi + 1, pi1 - 1 do
+      assert(not utf8.len(s, j))
     end
-  until x>=12;
-  return x;
-end;
-
-assert(f(1) == 10 and f(2) == 20 and f(3) == 30 and f(4)==12)
-
-
-local f = function (i)
-  if i < 10 then return 'a'
-  elseif i < 20 then return 'b'
-  elseif i < 30 then return 'c'
-  else return 8
+   assert(utf8.len(s, pi, pi, nonstrict) == 1)
+   assert(utf8.len(s, pi, pi1 - 1, nonstrict) == 1)
+   assert(utf8.len(s, pi, -1, nonstrict) == l - i + 1)
+   assert(utf8.len(s, pi1, -1, nonstrict) == l - i)
+   assert(utf8.len(s, 1, pi, nonstrict) == i)
   end
+
+  local i = 0
+  for p, c in utf8.codes(s, nonstrict) do
+    i = i + 1
+    assert(c == t[i] and p == utf8.offset(s, i))
+    assert(utf8.codepoint(s, p, p, nonstrict) == c)
+  end
+  assert(i == #t)
+
+  i = 0
+  for c in string.gmatch(s, utf8.charpattern) do
+    i = i + 1
+    assert(c == utf8.char(t[i]))
+  end
+  assert(i == #t)
+
+  for i = 1, l do
+    assert(utf8.offset(s, i) == utf8.offset(s, i - l - 1, #s + 1))
+  end
+
 end
 
-assert(f(3) == 'a' and f(12) == 'b' and f(26) == 'c' and f(100) == 8)
 
-local a, b = nil, 23
-x = {f(100)*2+3 or a, a or b+2}
-assert(x[1] == 19 and x[2] == 25)
-x = {f=2+3 or a, a = b+2}
-assert(x.f == 5 and x.a == 25)
-
-a={y=1}
-x = {a.y}
-assert(x[1] == 1)
-
-local function f (i)
-  while 1 do
-    if i>0 then i=i-1;
-    else return; end;
-  end;
-end;
-
-local function g(i)
-  while 1 do
-    if i>0 then i=i-1
-    else return end
+do    -- error indication in utf8.len
+  local function check (s, p)
+    local a, b = utf8.len(s)
+    assert(not a and b == p)
   end
+  check("abc\xE3def", 4)
+  check("\xF4\x9F\xBF", 1)
+  check("\xF4\x9F\xBF\xBF", 1)
+  -- spurious continuation bytes
+  check("汉字\x80", #("汉字") + 1)
+  check("\x80hello", 1)
+  check("hel\x80lo", 4)
+  check("汉字\xBF", #("汉字") + 1)
+  check("\xBFhello", 1)
+  check("hel\xBFlo", 4)
 end
 
-f(10); g(10);
+-- errors in utf8.codes
+do
+  local function errorcodes (s)
+    checkerror("invalid UTF%-8 code",
+      function ()
+        for c in utf8.codes(s) do assert(c) end
+      end)
+  end
+  errorcodes("ab\xff")
+  errorcodes("\u{110000}")
+  errorcodes("in\x80valid")
+  errorcodes("\xbfinvalid")
+  errorcodes("αλφ\xBFα")
+
+  -- calling interation function with invalid arguments
+  local f = utf8.codes("")
+  assert(f("", 2) == nil)
+  assert(f("", -1) == nil)
+  assert(f("", math.mininteger) == nil)
+
+end
+
+-- error in initial position for offset
+checkerror("position out of bounds", utf8.offset, "abc", 1, 5)
+checkerror("position out of bounds", utf8.offset, "abc", 1, -4)
+checkerror("position out of bounds", utf8.offset, "", 1, 2)
+checkerror("position out of bounds", utf8.offset, "", 1, -1)
+checkerror("continuation byte", utf8.offset, "𦧺", 1, 2)
+checkerror("continuation byte", utf8.offset, "𦧺", 1, 2)
+checkerror("continuation byte", utf8.offset, "\x80", 1)
+
+-- error in indices for len
+checkerror("out of bounds", utf8.len, "abc", 0, 2)
+checkerror("out of bounds", utf8.len, "abc", 1, 4)
+
+
+local s = "hello World"
+local t = {string.byte(s, 1, -1)}
+for i = 1, utf8.len(s) do assert(t[i] == string.byte(s, i)) end
+check(s, t)
+
+check("汉字/漢字", {27721, 23383, 47, 28450, 23383,})
 
 do
-  function f () return 1,2,3; end
-  local a, b, c = f();
-  assert(a==1 and b==2 and c==3)
-  a, b, c = (f());
-  assert(a==1 and b==nil and c==nil)
+  local s = "áéí\128"
+  local t = {utf8.codepoint(s,1,#s - 1)}
+  assert(#t == 3 and t[1] == 225 and t[2] == 233 and t[3] == 237)
+  checkerror("invalid UTF%-8 code", utf8.codepoint, s, 1, #s)
+  checkerror("out of bounds", utf8.codepoint, s, #s + 1)
+  t = {utf8.codepoint(s, 4, 3)}
+  assert(#t == 0)
+  checkerror("out of bounds", utf8.codepoint, s, -(#s + 1), 1)
+  checkerror("out of bounds", utf8.codepoint, s, 1, #s + 1)
+  -- surrogates
+  assert(utf8.codepoint("\u{D7FF}") == 0xD800 - 1)
+  assert(utf8.codepoint("\u{E000}") == 0xDFFF + 1)
+  assert(utf8.codepoint("\u{D800}", 1, 1, true) == 0xD800)
+  assert(utf8.codepoint("\u{DFFF}", 1, 1, true) == 0xDFFF)
+  assert(utf8.codepoint("\u{7FFFFFFF}", 1, 1, true) == 0x7FFFFFFF)
 end
 
-local a,b = 3 and f();
-assert(a==1 and b==nil)
+assert(utf8.char() == "")
+assert(utf8.char(0, 97, 98, 99, 1) == "\0abc\1")
 
-function g() f(); return; end;
-assert(g() == nil)
-function g() return nil or f() end
-a,b = g()
-assert(a==1 and b==nil)
+assert(utf8.codepoint(utf8.char(0x10FFFF)) == 0x10FFFF)
+assert(utf8.codepoint(utf8.char(0x7FFFFFFF), 1, 1, true) == (1<<31) - 1)
 
-print'+';
+checkerror("value out of range", utf8.char, 0x7FFFFFFF + 1)
+checkerror("value out of range", utf8.char, -1)
 
-do   -- testing constants
-  local prog <const> = [[local x <XXX> = 10]]
-  checkload(prog, "unknown attribute 'XXX'")
-
-  checkload([[local xxx <const> = 20; xxx = 10]],
-             ":1: attempt to assign to const variable 'xxx'")
-
-  checkload([[
-    local xx; \n
-    local xxx <const> = 20;
-    local yyy;
-    local function foo ()
-      local abc = xx + yyy + xxx;
-      return function () return function () xxx = yyy end end
-    end
-  ]], ":6: attempt to assign to const variable 'xxx'")
-
-  checkload([[
-        A
-    local x <close> = nil
-    x = io.open()
-  ]], ":2: attempt to assign to const variable 'x'")
+local function invalid (s)
+  checkerror("invalid UTF%-8 code", utf8.codepoint, s)
+  assert(not utf8.len(s))
 end
 
-x = "\255" .. "\233"
+-- UTF-8 representation for 0x11ffff (value out of valid range)
+invalid("\xF4\x9F\xBF\xBF")
 
-f = [[
-return function ( a , b , c , d , e )
-  local x = a >= b or c or ( d and e ) or nil
-  return x
-end , { a = 1 , b = 2 >= 1 , } or { 1 };
-]]
-x = "\ "
-f = string.gsub(f, "%s+", "\n");   -- force a SETLINE between opcodes
-f,a = load(f)();
-assert(a.a == 1 and a.b)
+-- surrogates
+invalid("\u{D800}")
+invalid("\u{DFFF}")
 
-function g (a,b,c,d,e)
-  if not (a>=b or c or d and e or nil) then return 0; else return 1; end;
-end
+-- overlong sequences
+invalid("\xC0\x80")          -- zero
+invalid("\xC1\xBF")          -- 0x7F (should be coded in 1 byte)
+invalid("\xE0\x9F\xBF")      -- 0x7FF (should be coded in 2 bytes)
+invalid("\xF0\x8F\xBF\xBF")  -- 0xFFFF (should be coded in 3 bytes)
 
-local function h (a,b,c,d,e)
-  while (a>=b or c or (d and e) or nil) do return 1; end;
-  return 0;
-end;
 
-assert(f(2,1) == true and g(2,1) == 1 and h(2,1) == 1)
-assert(f(1,2,'a') == 'a' and g(1,2,'a') == 1 and h(1,2,'a') == 1)
-assert(f(1,2,'a')
-~=          -- force SETLINE before nil
-nil, "")
-assert(f(1,2,'a') == 'a' and g(1,2,'a') == 1 and h(1,2,'a') == 1)
-assert(f(1,2,nil,1,'x') == 'x' and g(1,2,nil,1,'x') == 1 and
-                                   h(1,2,nil,1,'x') == 1)
-assert(f(1,2,nil,nil,'x') == nil and g(1,2,nil,nil,'x') == 0 and
-                                     h(1,2,nil,nil,'x') == 0)
-assert(f(1,2,nil,1,nil) == nil and g(1,2,nil,1,nil) == 0 and
-                                   h(1,2,nil,1,nil) == 0)
+-- invalid bytes
+invalid("\x80")  -- continuation byte
+invalid("\xBF")  -- continuation byte
+invalid("\xFE")  -- invalid byte
+invalid("\xFF")  -- invalid byte
 
-assert(1 and 2<3 == true and 2<3 and 'a'<'b' == true)
-x = 2<3 and not 3; assert(x==false)
-x = 2<1 or (2>1 and 'a'); assert(x=='a')
 
+-- empty string
+check("", {})
+
+-- minimum and maximum values for each sequence size
+s = "\0 \x7F\z\xC2\x80 \xDF\xBF\z\xE0\xA0\x80 \xEF\xBF\xBF\z\xF0\x90\x80\x80  \xF4\x8F\xBF\xBF"
+
+s = string.gsub(s, " ", "")
+check(s, {0,0x7F, 0x80,0x7FF, 0x800,0xFFFF, 0x10000,0x10FFFF})
 
 do
-  local a; if nil then a=1; else a=2; end;    -- this nil comes as PUSHNIL 2
-  assert(a==2)
+  -- original UTF-8 values
+  local s = "\u{4000000}\u{7FFFFFFF}"
+  assert(#s == 12)
+  check(s, {0x4000000, 0x7FFFFFFF}, true)
+
+  s = "\u{200000}\u{3FFFFFF}"
+  assert(#s == 10)
+  check(s, {0x200000, 0x3FFFFFF}, true)
+
+  s = "\u{10000}\u{1fffff}"
+  assert(#s == 8)
+  check(s, {0x10000, 0x1FFFFF}, true)
 end
 
-local function F (a)
-  assert(debug.getinfo(1, "n").name == 'F')
-  return a,2,3
-end
-
-a,b = F(1)~=nil; assert(a == true and b == nil);
-a,b = F(nil)==nil; assert(a == true and b == nil)
-
-----------------------------------------------------------------
-------------------------------------------------------------------
-
--- sometimes will be 0, sometimes will not...
-_ENV.GLOB1 = math.random(0, 1)
-
--- basic expressions with their respective values
-local basiccases = {
-  {"nil", nil},
-  {"false", false},
-  {"true", true},
-  {"10", 10},
-  {"(0==_ENV.GLOB1)", 0 == _ENV.GLOB1},
-}
-
-local prog
-
-if _ENV.GLOB1 == 0 then
-  basiccases[2][1] = "F"   -- constant false
-
-  prog = [[
-    local F <const> = false
-    if %s then IX = true end
-    return %s
-]]
-else
-  basiccases[4][1] = "k10"   -- constant 10
-
-  prog = [[
-    local k10 <const> = 10
-    if %s then IX = true end
-    return %s
-  ]]
-end
-
-print('testing short-circuit optimizations (' .. _ENV.GLOB1 .. ')')
+local x = "日本語a-4\0éó"
+check(x, {26085, 26412, 35486, 97, 45, 52, 0, 233, 243})
 
 
--- operators with their respective values
-local binops <const> = {
-  {" and ", function (a,b) if not a then return a else return b end end},
-  {" or ", function (a,b) if a then return a else return b end end},
-}
+-- Supplementary Characters
+check("𣲷𠜎𠱓𡁻𠵼ab𠺢",
+      {0x23CB7, 0x2070E, 0x20C53, 0x2107B, 0x20D7C, 0x61, 0x62, 0x20EA2,})
 
-local cases <const> = {}
+check("𨳊𩶘𦧺𨳒𥄫𤓓\xF4\x8F\xBF\xBF",
+      {0x28CCA, 0x29D98, 0x269FA, 0x28CD2, 0x2512B, 0x244D3, 0x10ffff})
 
--- creates all combinations of '(cases[i] op cases[n-i])' plus
--- 'not(cases[i] op cases[n-i])' (syntax + value)
-local function createcases (n)
-  local res = {}
-  for i = 1, n - 1 do
-    for _, v1 in ipairs(cases[i]) do
-      for _, v2 in ipairs(cases[n - i]) do
-        for _, op in ipairs(binops) do
-            local t = {
-              "(" .. v1[1] .. op[1] .. v2[1] .. ")",
-              op[2](v1[2], v2[2])
-            }
-            res[#res + 1] = t
-            res[#res + 1] = {"not" .. t[1], not t[2]}
-        end
-      end
-    end
-  end
-  return res
-end
-
--- do not do too many combinations for soft tests
-local level = _soft and 3 or 4
-
-cases[1] = basiccases
-for i = 2, level do cases[i] = createcases(i) end
-print("+")
 
 local i = 0
-for n = 1, level do
-  for _, v in pairs(cases[n]) do
-    local s = v[1]
-    local p = load(string.format(prog, s, s), "")
-    IX = false
-    assert(p() == v[2] and IX == not not v[2])
-    i = i + 1
-    if i % 60000 == 0 then print('+') end
+for p, c in string.gmatch(x, "()(" .. utf8.charpattern .. ")") do
+  i = i + 1
+  assert(utf8.offset(x, i) == p)
+  assert(utf8.len(x, p) == utf8.len(x) - i + 1)
+  assert(utf8.len(c) == 1)
+  for j = 1, #c - 1 do
+    assert(utf8.offset(x, 0, p + j - 1) == p)
   end
 end
-IX = nil
-_G.GLOB1 = nil
-------------------------------------------------------------------
 
--- testing some syntax errors (chosen through 'gcov')
-checkload("for x do", "expected")
-checkload("x:call", "expected")
-
-print'OK'
+print'ok'

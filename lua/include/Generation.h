@@ -258,6 +258,21 @@ public:
         return std::nullopt;
     }
 
+    static std::optional<bool> isLessThanOrEqualTo(const p_Node& lhs, const p_Node& rhs)
+    {
+        if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::Numeric))
+        {
+            return lhs->getChild<Number>(0) <= rhs->getChild<Number>(0);
+        }
+        else if (lhs->isKind(Kind::String) && rhs->isKind(Kind::String))
+        {
+            const std::string& a = lhs->getChild<std::string>(0);
+            const std::string& b = rhs->getChild<std::string>(0);
+            return a.compare(b) <= 0;
+        }
+        return std::nullopt;
+    }
+
     static void performBinaryOperation(const p_Node& node)
     {
         auto opKind = node->getChild<OperatorKind>(0);
@@ -410,7 +425,6 @@ public:
                 }
                 break;
             }
-
             case OperatorKind::GT:
             {
                 if (auto value = isLessThan(rhs, lhs))
