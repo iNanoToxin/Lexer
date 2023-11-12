@@ -157,88 +157,212 @@ std::string Util::toRawString(const std::string& string, bool isRawString)
 {
     std::stringstream result;
 
-    for (int i = 0; i < string.size(); i++)
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
+    std::u32string utf = converter.from_bytes(string);
+
+    for (int i = 0; i < utf.size(); i++)
     {
-        unsigned char c = string[i];
+        char32_t curr = utf[i];
 
         if (isRawString)
         {
-            if (auto value = getSequence(c))
+            switch (curr)
             {
-                result << *value;
-                continue;
+                case '\a':
+                {
+                    result << "\\a";
+                    continue;
+                }
+                case '\b':
+                {
+                    result << "\\b";
+                    continue;
+                }
+                case '\f':
+                {
+                    result << "\\f";
+                    continue;
+                }
+                case '\n':
+                {
+                    result << "\\n";
+                    continue;
+                }
+                case '\r':
+                {
+                    result << "\\r";
+                    continue;
+                }
+                case '\t':
+                {
+                    result << "\\t";
+                    continue;
+                }
+                case '\v':
+                {
+                    result << "\\v";
+                    continue;
+                }
+                case '\\':
+                {
+                    result << "\\\\";
+                    continue;
+                }
+                case '\"':
+                {
+                    result << "\\\"";
+                    continue;
+                }
+                case '\'':
+                {
+                    result << "\\\'";
+                    continue;
+                }
+                default:
+                {
+                    break;
+                }
             }
         }
         else
         {
-            /*if (c == '\\')
+            if (curr == '\\' && i + 1 < utf.size())
             {
-                i++;
-                result << c;
-                if (i < string.size() && isSequence(string[i]))
+                char32_t next = utf[++i];
+
+                switch (next)
                 {
-                    result << string[i];
+                    case 'a':
+                    case 'b':
+                    case 'f':
+                    case 'n':
+                    case 'r':
+                    case 't':
+                    case 'v':
+                    case '\\':
+                    case '\"':
+                    case '\'':
+                    {
+                        result << '\\' << static_cast<char>(next);
+                        break;
+                    }
+                    case 'x':
+                    {
+                        if (i + 2 < utf.size() && std::isxdigit(utf[i + 1]) && std::isxdigit(utf[i + 2]))
+                        {
+                            result << "\\x";
+                            result << static_cast<char>(utf[++i]);
+                            result << static_cast<char>(utf[++i]);
+                            break;
+                        }
+                        throw std::invalid_argument("sequence expects two hex digits");
+                    }
+                    case 'u':
+                    {
+                        result << "\\u";
+
+                        if (!(i + 1 < utf.size() && utf[i + 1] == '{'))
+                        {
+                            throw std::invalid_argument("expected { after utf8");
+                        }
+                        result << static_cast<char>(utf[++i]);
+
+                        while (i + 1 < utf.size() && std::isxdigit(utf[i + 1]))
+                        {
+                            result << static_cast<char>(utf[++i]);
+                        }
+
+                        if (!(i + 1 < utf.size() && utf[i + 1] == '}'))
+                        {
+                            throw std::invalid_argument("expected } after utf8");
+                        }
+                        result << static_cast<char>(utf[++i]);
+                        break;
+                    }
+                    case 'z':
+                    {
+                        while (i + 1 < utf.size() && utf[i + 1] == ' ')
+                        {
+                            i++;
+                        }
+                        break;
+                    }
+                    case '\n':
+                    {
+                        result << "\\n";
+                        break;
+                    }
+                    default:
+                    {
+                        if (std::isdigit(next))
+                        {
+                            int j = i;
+                            int k = 0;
+                            while (j - i < 3 && j < utf.size() && std::isdigit(utf[j]))
+                            {
+                                k *= 10;
+                                k += utf[j] - '0';
+                                j++;
+                            }
+                            i = j - 1;
+
+                            if (k >= 32 && k <= 126)
+                            {
+                                result << static_cast<char>(k);
+                                continue;
+                            }
+
+                            result << '\\';
+                            if (k >= 256)
+                            {
+                                throw std::invalid_argument("escape sequence too large");
+                            }
+
+                            if (i + 1 < utf.size() && std::isdigit(utf[i + 1]))
+                            {
+                                result << std::setfill('0');
+                                result << std::setw(3);
+                            }
+
+                            result << k;
+                            break;
+                        }
+                        throw std::invalid_argument("invalid escape sequence");
+                    }
                 }
                 continue;
-            }*/
+            }
         }
 
-        if (c < 32 || c > 126)
+        if (curr >= 32 && curr <= 126)
+        {
+            result << static_cast<char>(curr);
+        }
+        else if (curr >= 0 && curr <= 127)
         {
             result << "\\";
-            // result << std::setfill('0');
-            // result << std::setw(3);
-            result << static_cast<int>(c);
+
+            if (i + 1 < utf.size() && std::isdigit(utf[i + 1]))
+            {
+                result << std::setfill('0');
+                result << std::setw(3);
+            }
+
+            result << static_cast<int>(curr);
         }
         else
         {
-            result << c;
+            result << "\\u{";
+            result << std::hex;
+            result << std::uppercase;
+            result << static_cast<int>(curr);
+            result << "}";
         }
     }
     return result.str();
 }
 
-std::optional<std::string> Util::getSequence(char c)
-{
-    switch (c)
-    {
-        case '\a': return "\\a";
-        case '\b': return "\\b";
-        case '\f': return "\\f";
-        case '\n': return "\\n";
-        case '\r': return "\\r";
-        case '\t': return "\\t";
-        case '\v': return "\\v";
-        case '\'': return "\\\'";
-        case '\"': return "\\\"";
-        case '\\': return "\\\\";
-        default: return std::nullopt;
-    }
-}
 
-bool Util::isSequence(char c)
-{
-    switch (c)
-    {
-        case 'a':
-        case 'b':
-        case 'f':
-        case 'n':
-        case 'r':
-        case 't':
-        case 'v':
-        case '\'':
-        case '\"':
-        case '\\':
-        {
-            return true;
-        }
-        default:
-        {
-            return false;
-        }
-    }
-}
 
 std::string Util::quote(const std::string& string)
 {

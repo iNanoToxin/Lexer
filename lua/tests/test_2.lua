@@ -1,258 +1,497 @@
--- $Id: testes/utf8.lua $
+-- $Id: testes/calls.lua $
 -- See Copyright Notice in file all.lua
 
--- UTF-8 file
+print("testing functions and calls")
+
+local debug = require "debug"
+
+-- get the opportunity to test 'type' too ;)
+
+assert(type(1<2) == 'boolean')
+assert(type(true) == 'boolean' and type(false) == 'boolean')
+assert(type(nil) == 'nil'
+   and type(-3) == 'number'
+   and type'x' == 'string'
+   and type{} == 'table'
+   and type(type) == 'function')
+
+assert(type(assert) == type(print))
+local function f (x) return a:x (x) end
+assert(type(f) == 'function')
+assert(not pcall(type))
 
 
-
-print "testing UTF-8 library"
-
-local utf8 = require'utf8'
-
-
-local function checkerror (msg, f, ...)
-  local s, err = pcall(f, ...)
-  assert(not s and string.find(err, msg))
-end
-
-
-local function len (s)
-  return #string.gsub(s, "[\x80-\xBF]", "")
-end
-
-
-local justone = "^" .. utf8.charpattern .. "$"
-
--- 't' is the list of codepoints of 's'
-local function checksyntax (s, t)
-  -- creates a string "return '\u{t[1]}...\u{t[n]}'"
-  local ts = {"return '"}
-  for i = 1, #t do ts[i + 1] = string.format("\\u{%x}", t[i]) end
-  ts[#t + 2] = "'"
-  ts = table.concat(ts)
-  -- its execution should result in 's'
-  assert(assert(load(ts))() == s)
-end
-
-assert(not utf8.offset("alo", 5))
-assert(not utf8.offset("alo", -4))
-
--- 'check' makes several tests over the validity of string 's'.
--- 't' is the list of codepoints of 's'.
-local function check (s, t, nonstrict)
-  local l = utf8.len(s, 1, -1, nonstrict)
-  assert(#t == l and len(s) == l)
-  assert(utf8.char(table.unpack(t)) == s)   -- 't' and 's' are equivalent
-
-  assert(utf8.offset(s, 0) == 1)
-
-  checksyntax(s, t)
-
-  -- creates new table with all codepoints of 's'
-  local t1 = {utf8.codepoint(s, 1, -1, nonstrict)}
-  assert(#t == #t1)
-  for i = 1, #t do assert(t[i] == t1[i]) end   -- 't' is equal to 't1'
-
-  for i = 1, l do   -- for all codepoints
-    local pi = utf8.offset(s, i)        -- position of i-th char
-    local pi1 = utf8.offset(s, 2, pi)   -- position of next char
-    assert(string.find(string.sub(s, pi, pi1 - 1), justone))
-    assert(utf8.offset(s, -1, pi1) == pi)
-    assert(utf8.offset(s, i - l - 1) == pi)
-    assert(pi1 - pi == #utf8.char(utf8.codepoint(s, pi, pi, nonstrict)))
-    for j = pi, pi1 - 1 do
-      assert(utf8.offset(s, 0, j) == pi)
+-- testing local-function recursion
+fact = false
+do
+  local res = 1
+  local function fact (n)
+    if n==0 then return res
+    else return n*fact(n-1)
     end
-    for j = pi + 1, pi1 - 1 do
-      assert(not utf8.len(s, j))
+  end
+  assert(fact(5) == 120)
+end
+assert(fact == false)
+fact = nil
+
+-- testing declarations
+local a = {i = 10}
+local self = 20
+function a:x (x) return x+self.i end
+function a.y (x) return x+self end
+
+assert(a:x(1)+10 == a.y(1))
+
+a.t = {i=-100}
+a["t"].x = function (self, a,b) return self.i+a+b end
+
+assert(a.t:x(2,3) == -95)
+
+do
+  local a = {x=0}
+  function a:add (x) self.x, a.y = self.x+x, 20; return self end
+  assert(a:add(10):add(20):add(30).x == 60 and a.y == 20)
+end
+
+local a = {b={c={}}}
+
+function a.b.c.f1 (x) return x+1 end
+function a.b.c:f2 (x,y) self[x] = y end
+assert(a.b.c.f1(4) == 5)
+a.b.c:f2('k', 12); assert(a.b.c.k == 12)
+
+print('+')
+
+t = nil   -- 'declare' t
+function f(a,b,c) local d = 'a'; t={a,b,c,d} end
+
+f(      -- this line change must be valid
+  1,2)
+assert(t[1] == 1 and t[2] == 2 and t[3] == nil and t[4] == 'a')
+f(1,2,   -- this one too
+      3,4)
+assert(t[1] == 1 and t[2] == 2 and t[3] == 3 and t[4] == 'a')
+
+t = nil   -- delete 't'
+
+function fat(x)
+  if x <= 1 then return 1
+  else return x*load("return fat(" .. x-1 .. ")", "")()
+  end
+end
+
+assert(load "load 'assert(fat(6)==720)' () ")()
+a = load('return fat(5), 3')
+local a,b = a()
+assert(a == 120 and b == 3)
+fat = nil
+print('+')
+
+local function err_on_n (n)
+  if n==0 then error(); exit(1);
+  else err_on_n (n-1); exit(1);
+  end
+end
+
+do
+  local function dummy (n)
+    if n > 0 then
+      assert(not pcall(err_on_n, n))
+      dummy(n-1)
     end
-   assert(utf8.len(s, pi, pi, nonstrict) == 1)
-   assert(utf8.len(s, pi, pi1 - 1, nonstrict) == 1)
-   assert(utf8.len(s, pi, -1, nonstrict) == l - i + 1)
-   assert(utf8.len(s, pi1, -1, nonstrict) == l - i)
-   assert(utf8.len(s, 1, pi, nonstrict) == i)
   end
 
+  dummy(10)
+end
+
+_G.deep = nil   -- "declaration"  (used by 'all.lua')
+
+function deep (n)
+  if n>0 then deep(n-1) end
+end
+deep(10)
+deep(180)
+
+
+print"testing tail calls"
+
+function deep (n) if n>0 then return deep(n-1) else return 101 end end
+assert(deep(30000) == 101)
+a = {}
+function a:deep (n) if n>0 then return self:deep(n-1) else return 101 end end
+assert(a:deep(30000) == 101)
+
+do   -- tail calls x varargs
+  local function foo (x, ...) local a = {...}; return x, a[1], a[2] end
+
+  local function foo1 (x) return foo(10, x, x + 1) end
+
+  local a, b, c = foo1(-2)
+  assert(a == 10 and b == -2 and c == -1)
+
+  -- tail calls x metamethods
+  local t = setmetatable({}, {__call = foo})
+  local function foo2 (x) return t(10, x) end
+  a, b, c = foo2(100)
+  assert(a == t and b == 10 and c == 100)
+
+  a, b = (function () return foo() end)()
+  assert(a == nil and b == nil)
+
+  local X, Y, A
+  local function foo (x, y, ...) X = x; Y = y; A = {...} end
+  local function foo1 (...) return foo(...) end
+
+  local a, b, c = foo1()
+  assert(X == nil and Y == nil and #A == 0)
+
+  a, b, c = foo1(10)
+  assert(X == 10 and Y == nil and #A == 0)
+
+  a, b, c = foo1(10, 20)
+  assert(X == 10 and Y == 20 and #A == 0)
+
+  a, b, c = foo1(10, 20, 30)
+  assert(X == 10 and Y == 20 and #A == 1 and A[1] == 30)
+end
+
+
+do   -- C-stack overflow while handling C-stack overflow
+  local function loop ()
+    assert(pcall(loop))
+  end
+
+  local err, msg = xpcall(loop, loop)
+  assert(not err and string.find(msg, "error"))
+end
+
+
+
+do   -- tail calls x chain of __call
+  local n = 10000   -- depth
+
+  local function foo ()
+    if n == 0 then return 1023
+    else n = n - 1; return foo()
+    end
+  end
+
+  -- build a chain of __call metamethods ending in function 'foo'
+  for i = 1, 100 do
+    foo = setmetatable({}, {__call = foo})
+  end
+
+  -- call the first one as a tail call in a new coroutine
+  -- (to ensure stack is not preallocated)
+  assert(coroutine.wrap(function() return foo() end)() == 1023)
+end
+
+print('+')
+
+
+do  -- testing chains of '__call'
+  local N = 20
+  local u = table.pack
+  for i = 1, N do
+    u = setmetatable({i}, {__call = u})
+  end
+
+  local Res = u("a", "b", "c")
+
+  assert(Res.n == N + 3)
+  for i = 1, N do
+    assert(Res[i][1] == i)
+  end
+  assert(Res[N + 1] == "a" and Res[N + 2] == "b" and Res[N + 3] == "c")
+end
+
+
+a = nil
+(function (x) a=x end)(23)
+assert(a == 23 and (function (x) return x*2 end)(20) == 40)
+
+
+-- testing closures
+
+-- fixed-point operator
+local Z = function (le)
+      local function a (f)
+        return le(function (x) return f(f)(x) end)
+      end
+      return a(a)
+    end
+
+
+-- non-recursive factorial
+
+local F = function (f)
+      return function (n)
+               if n == 0 then return 1
+               else return n*f(n-1) end
+             end
+    end
+
+local fat = Z(F)
+
+assert(fat(0) == 1 and fat(4) == 24 and Z(F)(5)==5*Z(F)(4))
+
+local function g (z)
+  local function f (a,b,c,d)
+    return function (x,y) return a+b+c+d+a+x+y+z end
+  end
+  return f(z,z+1,z+2,z+3)
+end
+
+local f = g(10)
+assert(f(9, 16) == 10+11+12+13+10+9+16+10)
+
+print('+')
+
+-- testing multiple returns
+
+local function unlpack (t, i)
+  i = i or 1
+  if (i <= #t) then
+    return t[i], unlpack(t, i+1)
+  end
+end
+
+local function equaltab (t1, t2)
+  assert(#t1 == #t2)
+  for i = 1, #t1 do
+    assert(t1[i] == t2[i])
+  end
+end
+
+local pack = function (...) return (table.pack(...)) end
+
+local function f() return 1,2,30,4 end
+local function ret2 (a,b) return a,b end
+
+local a,b,c,d = unlpack{1,2,3}
+assert(a==1 and b==2 and c==3 and d==nil)
+a = {1,2,3,4,false,10,'alo',false,assert}
+equaltab(pack(unlpack(a)), a)
+equaltab(pack(unlpack(a), -1), {1,-1})
+a,b,c,d = ret2(f()), ret2(f())
+assert(a==1 and b==1 and c==2 and d==nil)
+a,b,c,d = unlpack(pack(ret2(f()), ret2(f())))
+assert(a==1 and b==1 and c==2 and d==nil)
+a,b,c,d = unlpack(pack(ret2(f()), (ret2(f()))))
+assert(a==1 and b==1 and c==nil and d==nil)
+
+a = ret2{ unlpack{1,2,3}, unlpack{3,2,1}, unlpack{"a", "b"}}
+assert(a[1] == 1 and a[2] == 3 and a[3] == "a" and a[4] == "b")
+
+
+-- testing calls with 'incorrect' arguments
+rawget({}, "x", 1)
+rawset({}, "x", 1, 2)
+assert(math.sin(1,2) == math.sin(1))
+table.sort({10,9,8,4,19,23,0,0}, function (a,b) return a<b end, "extra arg")
+
+
+-- test for generic load
+local x = "-- a comment\0\0\0\n  x = 10 + \n23; \
+     local a = function () x = 'hi' end; \
+     return '\0'"
+local function read1 (x)
   local i = 0
-  for p, c in utf8.codes(s, nonstrict) do
-    i = i + 1
-    assert(c == t[i] and p == utf8.offset(s, i))
-    assert(utf8.codepoint(s, p, p, nonstrict) == c)
+  return function ()
+    collectgarbage()
+    i=i+1
+    return string.sub(x, i, i)
   end
-  assert(i == #t)
+end
 
-  i = 0
-  for c in string.gmatch(s, utf8.charpattern) do
-    i = i + 1
-    assert(c == utf8.char(t[i]))
-  end
-  assert(i == #t)
+local function cannotload (msg, a,b)
+  assert(not a and string.find(b, msg))
+end
 
-  for i = 1, l do
-    assert(utf8.offset(s, i) == utf8.offset(s, i - l - 1, #s + 1))
-  end
+a = assert(load(read1(x), "modname", "t", _G))
+assert(a() == "\0" and _G.x == 33)
+assert(debug.getinfo(a).source == "modname")
+-- cannot read text in binary mode
+cannotload("attempt to load a text chunk", load(read1(x), "modname", "b", {}))
+cannotload("attempt to load a text chunk", load(x, "modname", "b"))
 
+a = assert(load(function () return nil end))
+a()  -- empty chunk
+
+assert(not load(function () return true end))
+
+
+-- small bug
+local t = {nil, "return ", "3"}
+f, msg = load(function () return table.remove(t, 1) end)
+assert(f() == nil)   -- should read the empty chunk
+
+-- another small bug (in 5.2.1)
+f = load(string.dump(function () return 1 end), nil, "b", {})
+assert(type(f) == "function" and f() == 1)
+
+
+do   -- another bug (in 5.4.0)
+  -- loading a binary long string interrupted by GC cycles
+  local f = string.dump(function ()
+    return '01234567890123456789012345678901234567890123456789'
+  end)
+  f = load(read1(f))
+  assert(f() == '01234567890123456789012345678901234567890123456789')
 end
 
 
-do    -- error indication in utf8.len
-  local function check (s, p)
-    local a, b = utf8.len(s)
-    assert(not a and b == p)
-  end
-  check("abc\xE3def", 4)
-  check("\xF4\x9F\xBF", 1)
-  check("\xF4\x9F\xBF\xBF", 1)
-  -- spurious continuation bytes
-  check("汉字\x80", #("汉字") + 1)
-  check("\x80hello", 1)
-  check("hel\x80lo", 4)
-  check("汉字\xBF", #("汉字") + 1)
-  check("\xBFhello", 1)
-  check("hel\xBFlo", 4)
-end
+x = string.dump(load("x = 1; return x"))
+a = assert(load(read1(x), nil, "b"))
+assert(a() == 1 and _G.x == 1)
+cannotload("attempt to load a binary chunk", load(read1(x), nil, "t"))
+cannotload("attempt to load a binary chunk", load(x, nil, "t"))
+_G.x = nil
 
--- errors in utf8.codes
+assert(not pcall(string.dump, print))  -- no dump of C functions
+
+cannotload("unexpected symbol", load(read1("*a = 123")))
+cannotload("unexpected symbol", load("*a = 123"))
+cannotload("hhi", load(function () error("hhi") end))
+
+-- any value is valid for _ENV
+assert(load("return _ENV", nil, nil, 123)() == 123)
+
+
+-- load when _ENV is not first upvalue
+local x; XX = 123
+local function h ()
+  local y=x   -- use 'x', so that it becomes 1st upvalue
+  return XX   -- global name
+end
+local d = string.dump(h)
+x = load(d, "", "b")
+assert(debug.getupvalue(x, 2) == '_ENV')
+debug.setupvalue(x, 2, _G)
+assert(x() == 123)
+
+assert(assert(load("return XX + ...", nil, nil, {XX = 13}))(4) == 17)
+XX = nil
+
+-- test generic load with nested functions
+x = [[
+  return function (x)
+    return function (y)
+     return function (z)
+       return x+y+z
+     end
+   end
+  end
+]]
+a = assert(load(read1(x), "read", "t"))
+assert(a()(2)(3)(10) == 15)
+
+-- repeat the test loading a binary chunk
+x = string.dump(a)
+a = assert(load(read1(x), "read", "b"))
+assert(a()(2)(3)(10) == 15)
+
+
+-- test for dump/undump with upvalues
+local a, b = 20, 30
+x = load(string.dump(function (x)
+  if x == "set" then a = 10+b; b = b+1 else
+  return a
+  end
+end), "", "b", nil)
+assert(x() == nil)
+assert(debug.setupvalue(x, 1, "hi") == "a")
+assert(x() == "hi")
+assert(debug.setupvalue(x, 2, 13) == "b")
+assert(not debug.setupvalue(x, 3, 10))   -- only 2 upvalues
+x("set")
+assert(x() == 23)
+x("set")
+assert(x() == 24)
+
+-- test for dump/undump with many upvalues
 do
-  local function errorcodes (s)
-    checkerror("invalid UTF%-8 code",
-      function ()
-        for c in utf8.codes(s) do assert(c) end
-      end)
+  local nup = 200    -- maximum number of local variables
+  local prog = {"local a1"}
+  for i = 2, nup do prog[#prog + 1] = ", a" .. i end
+  prog[#prog + 1] = " = 1"
+  for i = 2, nup do prog[#prog + 1] = ", " .. i end
+  local sum = 1
+  prog[#prog + 1] = "; return function () return a1"
+  for i = 2, nup do prog[#prog + 1] = " + a" .. i; sum = sum + i end
+  prog[#prog + 1] = " end"
+  prog = table.concat(prog)
+  local f = assert(load(prog))()
+  assert(f() == sum)
+
+  f = load(string.dump(f))   -- main chunk now has many upvalues
+  local a = 10
+  local h = function () return a end
+  for i = 1, nup do
+    debug.upvaluejoin(f, i, h, 1)
   end
-  errorcodes("ab\xff")
-  errorcodes("\u{110000}")
-  errorcodes("in\x80valid")
-  errorcodes("\xbfinvalid")
-  errorcodes("αλφ\xBFα")
-
-  -- calling interation function with invalid arguments
-  local f = utf8.codes("")
-  assert(f("", 2) == nil)
-  assert(f("", -1) == nil)
-  assert(f("", math.mininteger) == nil)
-
+  assert(f() == 10 * nup)
 end
 
--- error in initial position for offset
-checkerror("position out of bounds", utf8.offset, "abc", 1, 5)
-checkerror("position out of bounds", utf8.offset, "abc", 1, -4)
-checkerror("position out of bounds", utf8.offset, "", 1, 2)
-checkerror("position out of bounds", utf8.offset, "", 1, -1)
-checkerror("continuation byte", utf8.offset, "𦧺", 1, 2)
-checkerror("continuation byte", utf8.offset, "𦧺", 1, 2)
-checkerror("continuation byte", utf8.offset, "\x80", 1)
-
--- error in indices for len
-checkerror("out of bounds", utf8.len, "abc", 0, 2)
-checkerror("out of bounds", utf8.len, "abc", 1, 4)
-
-
-local s = "hello World"
-local t = {string.byte(s, 1, -1)}
-for i = 1, utf8.len(s) do assert(t[i] == string.byte(s, i)) end
-check(s, t)
-
-check("汉字/漢字", {27721, 23383, 47, 28450, 23383,})
-
+-- test for long method names
 do
-  local s = "áéí\128"
-  local t = {utf8.codepoint(s,1,#s - 1)}
-  assert(#t == 3 and t[1] == 225 and t[2] == 233 and t[3] == 237)
-  checkerror("invalid UTF%-8 code", utf8.codepoint, s, 1, #s)
-  checkerror("out of bounds", utf8.codepoint, s, #s + 1)
-  t = {utf8.codepoint(s, 4, 3)}
-  assert(#t == 0)
-  checkerror("out of bounds", utf8.codepoint, s, -(#s + 1), 1)
-  checkerror("out of bounds", utf8.codepoint, s, 1, #s + 1)
-  -- surrogates
-  assert(utf8.codepoint("\u{D7FF}") == 0xD800 - 1)
-  assert(utf8.codepoint("\u{E000}") == 0xDFFF + 1)
-  assert(utf8.codepoint("\u{D800}", 1, 1, true) == 0xD800)
-  assert(utf8.codepoint("\u{DFFF}", 1, 1, true) == 0xDFFF)
-  assert(utf8.codepoint("\u{7FFFFFFF}", 1, 1, true) == 0x7FFFFFFF)
+  local t = {x = 1}
+  function t:_012345678901234567890123456789012345678901234567890123456789 ()
+    return self.x
+  end
+  assert(t:_012345678901234567890123456789012345678901234567890123456789() == 1)
 end
 
-assert(utf8.char() == "")
-assert(utf8.char(0, 97, 98, 99, 1) == "\0abc\1")
 
-assert(utf8.codepoint(utf8.char(0x10FFFF)) == 0x10FFFF)
-assert(utf8.codepoint(utf8.char(0x7FFFFFFF), 1, 1, true) == (1<<31) - 1)
-
-checkerror("value out of range", utf8.char, 0x7FFFFFFF + 1)
-checkerror("value out of range", utf8.char, -1)
-
-local function invalid (s)
-  checkerror("invalid UTF%-8 code", utf8.codepoint, s)
-  assert(not utf8.len(s))
-end
-
--- UTF-8 representation for 0x11ffff (value out of valid range)
-invalid("\xF4\x9F\xBF\xBF")
-
--- surrogates
-invalid("\u{D800}")
-invalid("\u{DFFF}")
-
--- overlong sequences
-invalid("\xC0\x80")          -- zero
-invalid("\xC1\xBF")          -- 0x7F (should be coded in 1 byte)
-invalid("\xE0\x9F\xBF")      -- 0x7FF (should be coded in 2 bytes)
-invalid("\xF0\x8F\xBF\xBF")  -- 0xFFFF (should be coded in 3 bytes)
+-- test for bug in parameter adjustment
+assert((function () return nil end)(4) == nil)
+assert((function () local a; return a end)(4) == nil)
+assert((function (a) return a end)() == nil)
 
 
--- invalid bytes
-invalid("\x80")  -- continuation byte
-invalid("\xBF")  -- continuation byte
-invalid("\xFE")  -- invalid byte
-invalid("\xFF")  -- invalid byte
-
-
--- empty string
-check("", {})
-
--- minimum and maximum values for each sequence size
-s = "\0 \x7F\z\xC2\x80 \xDF\xBF\z\xE0\xA0\x80 \xEF\xBF\xBF\z\xF0\x90\x80\x80  \xF4\x8F\xBF\xBF"
-
-s = string.gsub(s, " ", "")
-check(s, {0,0x7F, 0x80,0x7FF, 0x800,0xFFFF, 0x10000,0x10FFFF})
-
+print("testing binary chunks")
 do
-  -- original UTF-8 values
-  local s = "\u{4000000}\u{7FFFFFFF}"
-  assert(#s == 12)
-  check(s, {0x4000000, 0x7FFFFFFF}, true)
+  local header = string.pack("c4BBc6BBB",
+    "\27Lua",                                  -- signature
+    0x54,                                      -- version 5.4 (0x54)
+    0,                                         -- format
+    "\x19\x93\r\n\x1a\n",                      -- data
+    4,                                         -- size of instruction
+    string.packsize("j"),                      -- sizeof(lua integer)
+    string.packsize("n")                       -- sizeof(lua number)
+  )
+  local c = string.dump(function ()
+    local a = 1; local b = 3;
+    local f = function () return a + b + _ENV.c; end    -- upvalues
+    local s1 = "a constant"
+    local s2 = "another constant"
+    return a + b * 3
+  end)
 
-  s = "\u{200000}\u{3FFFFFF}"
-  assert(#s == 10)
-  check(s, {0x200000, 0x3FFFFFF}, true)
+  assert(assert(load(c))() == 10)
 
-  s = "\u{10000}\u{1fffff}"
-  assert(#s == 8)
-  check(s, {0x10000, 0x1FFFFF}, true)
-end
+  -- check header
+  assert(string.sub(c, 1, #header) == header)
+  -- check LUAC_INT and LUAC_NUM
+  local ci, cn = string.unpack("jn", c, #header + 1)
+  assert(ci == 0x5678 and cn == 370.5)
 
-local x = "日本語a-4\0éó"
-check(x, {26085, 26412, 35486, 97, 45, 52, 0, 233, 243})
+  -- corrupted header
+  for i = 1, #header do
+    local s = string.sub(c, 1, i - 1) ..
+              string.char(string.byte(string.sub(c, i, i)) + 1) ..
+              string.sub(c, i + 1, -1)
+    assert(#s == #c)
+    assert(not load(s))
+  end
 
-
--- Supplementary Characters
-check("𣲷𠜎𠱓𡁻𠵼ab𠺢",
-      {0x23CB7, 0x2070E, 0x20C53, 0x2107B, 0x20D7C, 0x61, 0x62, 0x20EA2,})
-
-check("𨳊𩶘𦧺𨳒𥄫𤓓\xF4\x8F\xBF\xBF",
-      {0x28CCA, 0x29D98, 0x269FA, 0x28CD2, 0x2512B, 0x244D3, 0x10ffff})
-
-
-local i = 0
-for p, c in string.gmatch(x, "()(" .. utf8.charpattern .. ")") do
-  i = i + 1
-  assert(utf8.offset(x, i) == p)
-  assert(utf8.len(x, p) == utf8.len(x) - i + 1)
-  assert(utf8.len(c) == 1)
-  for j = 1, #c - 1 do
-    assert(utf8.offset(x, 0, p + j - 1) == p)
+  -- loading truncated binary chunks
+  for i = 1, #c - 1 do
+    local st, msg = load(string.sub(c, 1, i))
+    assert(not st and string.find(msg, "truncated"))
   end
 end
 
-print'ok'
+print('OK')
+return deep

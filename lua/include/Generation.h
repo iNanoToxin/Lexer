@@ -603,6 +603,9 @@ public:
 
     void rename(const p_Node& node)
     {
+        {
+            return;
+        }
         if (!node)
         {
             return;

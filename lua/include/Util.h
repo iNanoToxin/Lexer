@@ -3,6 +3,7 @@
 
 #include <Node.h>
 #include <optional>
+#include <codecvt>
 
 #define assert(condition, message)                            \
     do {                                                      \
