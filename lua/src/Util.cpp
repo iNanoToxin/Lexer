@@ -2,62 +2,62 @@
 #include <map>
 #include <sstream>
 
-std::optional<double> Util::toNumber(const std::string& number)
+std::optional<double> Util::to_number(const std::string& p_Number)
 {
     double integer = 0;
     double fractional = 0;
     double exponential = 1;
 
-    bool isFractional = false;
-    bool isBase16 = false;
+    bool is_fractional = false;
+    bool is_base_16 = false;
 
     int base = 10;
     int i = 0;
     int j = 0;
-    int n = number.size() - 1;
+    int n = p_Number.size() - 1;
 
-    while (i < n && isspace(number[i]))
+    while (i < n && isspace(p_Number[i]))
     {
         i++;
     }
 
-    while (n >= 0 && isspace(number[n]))
+    while (n >= 0 && isspace(p_Number[n]))
     {
         n--;
     }
 
-    if (i + 1 <= n && number[i] == '0' && (number[i + 1] == 'x' || number[i + 1] == 'X'))
+    if (i + 1 <= n && p_Number[i] == '0' && (p_Number[i + 1] == 'x' || p_Number[i + 1] == 'X'))
     {
-        isBase16 = true;
+        is_base_16 = true;
         base = 16;
         i += 2;
     }
 
     while (i <= n)
     {
-        char c = number[i++];
+        char c = p_Number[i++];
 
         if (c == '.')
         {
-            if (isFractional)
+            if (is_fractional)
             {
                 return std::nullopt;
             }
-            isFractional = true;
+            is_fractional = true;
             continue;
         }
 
         int num = c - '0';
 
-        if (isBase16)
+        if (is_base_16)
         {
             if (c == 'p' || c == 'P')
             {
                 int exp = 0;
-                while (i <= n && isdigit(number[i]))
+                while (i <= n && isdigit(p_Number[i]))
                 {
                     exp *= 10;
-                    exp += number[i++] - '0';
+                    exp += p_Number[i++] - '0';
                 }
                 exponential = std::pow(2, exp);
                 break;
@@ -82,10 +82,10 @@ std::optional<double> Util::toNumber(const std::string& number)
             if (c == 'e' || c == 'E')
             {
                 int exp = 0;
-                while (i <= n && isdigit(number[i]))
+                while (i <= n && isdigit(p_Number[i]))
                 {
                     exp *= 10;
-                    exp += number[i++] - '0';
+                    exp += p_Number[i++] - '0';
                 }
                 exponential = std::pow(10, exp);
                 break;
@@ -97,7 +97,7 @@ std::optional<double> Util::toNumber(const std::string& number)
             }
         }
 
-        if (isFractional)
+        if (is_fractional)
         {
             j++;
             fractional *= base;
@@ -115,56 +115,56 @@ std::optional<double> Util::toNumber(const std::string& number)
         return std::nullopt;
     }
 
-    fractional /= std::pow(isBase16 ? 16 : 10, j);
+    fractional /= std::pow(is_base_16 ? 16 : 10, j);
     return (integer + fractional) * exponential;
 }
 
-std::optional<double> Util::toNumber(const p_Node& node)
+std::optional<double> Util::to_number(const NodePointer& p_Node)
 {
-    if (node->isKind(Kind::Numeric))
+    if (p_Node->isKind(Kind::Numeric))
     {
-        return node->getChild<Number>(0).value;
+        return p_Node->getChild<Number>(0).value;
     }
-    else if (node->isKind(Kind::String))
+    else if (p_Node->isKind(Kind::String))
     {
-        return toNumber(unquote(*toString(node)));
+        return to_number(unquote(*to_string(p_Node)));
     }
     return std::nullopt;
 }
 
-std::optional<std::string> Util::toString(const std::string& string)
+std::optional<std::string> Util::to_string(const std::string& p_String)
 {
-    return "\"" + toRawString(string, false) + "\"";
+    return "\"" + to_raw_string(p_String, false) + "\"";
 }
 
-std::optional<std::string> Util::toString(const p_Node& node)
+std::optional<std::string> Util::to_string(const NodePointer& p_Node)
 {
-    if (node->isKind(Kind::Numeric))
+    if (p_Node->isKind(Kind::Numeric))
     {
-        return quote(node->getChild<Number>(0).toString());
+        return quote(p_Node->getChild<Number>(0).toString());
     }
-    else if (node->isKind(Kind::String))
+    else if (p_Node->isKind(Kind::String))
     {
-        auto string = node->getChild<std::string>(0);
-        auto isRawString = string.starts_with('[');
+        auto string = p_Node->getChild<std::string>(0);
+        auto is_raw_string = string.starts_with('[');
 
-        return quote(toRawString(unquote(string), isRawString));
+        return quote(to_raw_string(unquote(string), is_raw_string));
     }
     return std::nullopt;
 }
 
-std::string Util::toRawString(const std::string& string, bool isRawString)
+std::string Util::to_raw_string(const std::string& p_String, bool p_IsRawString)
 {
     std::stringstream result;
 
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
-    std::u32string utf = converter.from_bytes(string);
+    std::u32string utf = converter.from_bytes(p_String);
 
     for (int i = 0; i < utf.size(); i++)
     {
         char32_t curr = utf[i];
 
-        if (isRawString)
+        if (p_IsRawString)
         {
             switch (curr)
             {
@@ -364,22 +364,22 @@ std::string Util::toRawString(const std::string& string, bool isRawString)
 
 
 
-std::string Util::quote(const std::string& string)
+std::string Util::quote(const std::string& p_String)
 {
-    return "\"" + string + "\"";
+    return "\"" + p_String + "\"";
 }
 
-std::string Util::unquote(const std::string& string)
+std::string Util::unquote(const std::string& p_String)
 {
     auto i = 1;
 
-    if (string.starts_with("["))
+    if (p_String.starts_with("["))
     {
-        while (i < string.size() && string[i] == '=')
+        while (i < p_String.size() && p_String[i] == '=')
         {
             i++;
         }
         i++;
     }
-    return {string.begin() + i, string.end() - i};
+    return {p_String.begin() + i, p_String.end() - i};
 }

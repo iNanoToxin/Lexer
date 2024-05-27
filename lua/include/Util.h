@@ -50,11 +50,11 @@ static const std::vector<std::string> operators{
 
 namespace Util
 {
-    static OperatorKind getOperator(const std::string& opStr)
+    static OperatorKind get_operator(const std::string& p_OpStr)
     {
         for (int i = 0; i < operators.size(); i++)
         {
-            if (operators[i] == opStr)
+            if (operators[i] == p_OpStr)
             {
                 return static_cast<OperatorKind>(i);
             }
@@ -62,26 +62,26 @@ namespace Util
         throw std::invalid_argument("operator not found");
     }
 
-    static std::string getOperator(OperatorKind opKind)
+    static std::string get_operator(OperatorKind p_OpKind)
     {
-        return operators[static_cast<int>(opKind)];
+        return operators[static_cast<int>(p_OpKind)];
     }
 
-    std::optional<std::string> getSequence(char c);
-    bool isSequence(char c);
+    std::optional<std::string> get_sequence(char p_Char);
+    bool is_sequence(char p_Char);
 
-    std::optional<double> toNumber(const std::string& number);
-    std::optional<double> toNumber(const p_Node& node);
+    std::optional<double> to_number(const std::string& p_Number);
+    std::optional<double> to_number(const NodePointer& p_Node);
 
-    std::string toRawString(const std::string& string, bool isRawString);
+    std::string to_raw_string(const std::string& p_String, bool p_IsRawString);
 
-    std::string quote(const std::string& string);
+    std::string quote(const std::string& p_String);
 
-    std::string unquote(const std::string& string);
+    std::string unquote(const std::string& p_String);
 
-    std::optional<std::string> toString(const p_Node& node);
-    std::optional<std::string> toString(const std::string& string);
-} // namespace Util
+    std::optional<std::string> to_string(const NodePointer& p_Node);
+    std::optional<std::string> to_string(const std::string& p_String);
+}
 
 namespace Operation
 {
@@ -92,23 +92,23 @@ namespace Operation
 
     struct Idiv
     {
-        constexpr double operator()(double lhs, double rhs) const
+        constexpr double operator()(double p_Lhs, double p_Rhs) const
         {
-            return std::floor(lhs / rhs);
+            return std::floor(p_Lhs / p_Rhs);
         }
     };
     struct Pow
     {
-        constexpr double operator()(double lhs, double rhs) const
+        constexpr double operator()(double p_Lhs, double p_Rhs) const
         {
-            return std::pow(lhs, rhs);
+            return std::pow(p_Lhs, p_Rhs);
         }
     };
     struct Mod
     {
-        constexpr double operator()(double lhs, double rhs) const
+        constexpr double operator()(double p_Lhs, double p_Rhs) const
         {
-            return std::fmod(lhs, rhs);
+            return std::fmod(p_Lhs, p_Rhs);
         }
     };
 
@@ -118,87 +118,87 @@ namespace Operation
 
     struct Shl
     {
-        constexpr double operator()(int lhs, int rhs) const
+        constexpr double operator()(int p_Lhs, int p_Rhs) const
         {
-            return lhs << rhs;
+            return p_Lhs << p_Rhs;
         }
     };
     struct Shr
     {
-        constexpr double operator()(int lhs, int rhs) const
+        constexpr double operator()(int p_Lhs, int p_Rhs) const
         {
-            return lhs >> rhs;
+            return p_Lhs >> p_Rhs;
         }
     };
 
     template <typename T>
-    std::optional<double> arithmetic(const p_Node& lhs, const p_Node& rhs, T&& func)
+    std::optional<double> arithmetic(const NodePointer& p_Lhs, const NodePointer& p_Rhs, T&& p_Func)
     {
-        auto n = Util::toNumber(lhs);
-        auto m = Util::toNumber(rhs);
+        auto n = Util::to_number(p_Lhs);
+        auto m = Util::to_number(p_Rhs);
 
         if (n && m)
         {
-            return func(*n, *m);
+            return p_Func(*n, *m);
         }
         return std::nullopt;
     }
 
     template <typename T>
-    std::optional<double> bitwise(const p_Node& lhs, const p_Node& rhs, T&& func)
+    std::optional<double> bitwise(const NodePointer& p_Lhs, const NodePointer& p_Rhs, T&& p_Func)
     {
         int n, m;
 
-        if (lhs->isKind(Kind::Numeric) && std::fmod(lhs->getChild<Number>(0).value, 1.0) == 0.0)
+        if (p_Lhs->isKind(Kind::Numeric) && std::fmod(p_Lhs->getChild<Number>(0).value, 1.0) == 0.0)
         {
-            n = static_cast<int>(lhs->getChild<Number>(0).value);
+            n = static_cast<int>(p_Lhs->getChild<Number>(0).value);
         }
         else
         {
             return std::nullopt;
         }
 
-        if (rhs->isKind(Kind::Numeric) && std::fmod(rhs->getChild<Number>(0).value, 1.0) == 0.0)
+        if (p_Rhs->isKind(Kind::Numeric) && std::fmod(p_Rhs->getChild<Number>(0).value, 1.0) == 0.0)
         {
-            m = static_cast<int>(rhs->getChild<Number>(0).value);
+            m = static_cast<int>(p_Rhs->getChild<Number>(0).value);
         }
         else
         {
             return std::nullopt;
         }
-        return func(n, m);
+        return p_Func(n, m);
     }
 
     template <typename T>
-    std::optional<double> unaryArithmetic(const p_Node& lhs, T&& func)
+    std::optional<double> unary_arithmetic(const NodePointer& p_Lhs, T&& p_Func)
     {
-        if (auto value = Util::toNumber(lhs))
+        if (auto value = Util::to_number(p_Lhs))
         {
-            return func(*value);
+            return p_Func(*value);
         }
         return std::nullopt;
     }
 
     template <typename T>
-    std::optional<double> unaryBitwise(const p_Node& lhs, T&& func)
+    std::optional<double> unary_bitwise(const NodePointer& p_Lhs, T&& p_Func)
     {
-        if (lhs->isKind(Kind::Numeric) && std::fmod(lhs->getChild<Number>(0).value, 1.0) == 0.0)
+        if (p_Lhs->isKind(Kind::Numeric) && std::fmod(p_Lhs->getChild<Number>(0).value, 1.0) == 0.0)
         {
-            return func(static_cast<int>(lhs->getChild<Number>(0).value));
+            return p_Func(static_cast<int>(p_Lhs->getChild<Number>(0).value));
         }
         return std::nullopt;
     }
 
     template <typename T>
-    std::optional<bool> compare(const p_Node& lhs, const p_Node& rhs, T&& func)
+    std::optional<bool> compare(const NodePointer& p_Lhs, const NodePointer& p_Rhs, T&& p_Func)
     {
-        if (lhs->isKind(Kind::Numeric) && rhs->isKind(Kind::Numeric))
+        if (p_Lhs->isKind(Kind::Numeric) && p_Rhs->isKind(Kind::Numeric))
         {
-            return func(lhs->getChild<Number>(0).value, rhs->getChild<Number>(0).value);
+            return p_Func(p_Lhs->getChild<Number>(0).value, p_Rhs->getChild<Number>(0).value);
         }
         return std::nullopt;
     }
-} // namespace Operation
+}
 
 
 #endif

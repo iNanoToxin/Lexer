@@ -1,7 +1,7 @@
 #include "Kind.h"
 
-std::string getKindName(const Kind& kind) {
-    switch (kind)
+std::string get_kind_name(const Kind& p_Kind) {
+    switch (p_Kind)
     {
         case Kind::Identifier: return "Identifier";
         case Kind::String: return "String";

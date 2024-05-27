@@ -13,34 +13,34 @@
 #include <Node.h>
 
 
-bool isBinaryOperator(const Token& currentToken);
+bool is_binary_operator(const Token& p_CurrentToken);
 
-bool isFieldSeparator(const Token& currentToken);
+bool is_field_separator(const Token& p_CurrentToken);
 
-bool isUnaryOperator(const Token& currentToken);
+bool is_unary_operator(const Token& p_CurrentToken);
 
-bool isBoolean(const Token& currentToken);
+bool is_boolean(const Token& p_CurrentToken);
 
-bool isConditional(const Token& currentToken);
+bool is_conditional(const Token& p_CurrentToken);
 
-bool isNull(const Token& currentToken);
+bool is_null(const Token& p_CurrentToken);
 
-bool isRhsAssociative(const Token& token);
+bool is_rhs_associative(const Token& p_Token);
 
 
 class Parser
 {
-public:
     std::size_t m_Index = 0;
     std::size_t m_Length = 0;
     std::vector<Token> m_Tokens;
+public:
 
-    p_Node getName()
+    NodePointer getName()
     {
         return expectPeek(TokenType::IDENTIFIER) ? getPrimaryExpression() : nullptr;
     }
 
-    p_Node getAttributeName()
+    NodePointer getAttributeName()
     {
         auto name = getName();
 
@@ -53,26 +53,26 @@ public:
         {
             consume();
 
-            auto attributeType = getName();
-            assert(attributeType, "expected attribute type");
+            auto attribute_type = getName();
+            assert(attribute_type, "expected attribute type");
             assert(expectPeek(">"), "expected > after < in attrib");
             consume();
 
             auto attribute = Node::create(Kind::Attribute);
-            attribute->setChildren({name, attributeType});
+            attribute->setChildren({name, attribute_type});
             return attribute;
         }
         return name;
     }
 
-    p_Node getAttributeList()
+    NodePointer getAttributeList()
     {
-        auto attributeList = Node::create(Kind::AttributeList);
-        p_NodeArray list;
+        auto attribute_list = Node::create(Kind::AttributeList);
+        NodeArray list;
 
         if (auto attribute = getAttributeName())
         {
-            attribute->setParent(attributeList);
+            attribute->setParent(attribute_list);
             list.push_back(attribute);
         }
         else
@@ -87,22 +87,22 @@ public:
             auto attribute = getAttributeName();
             assert(attribute, "expected attribute variable");
 
-            attribute->setParent(attributeList);
+            attribute->setParent(attribute_list);
             list.push_back(attribute);
         }
 
-        attributeList->setChildren({list});
-        return attributeList;
+        attribute_list->setChildren({list});
+        return attribute_list;
     }
 
-    p_Node getExpressionList()
+    NodePointer getExpressionList()
     {
-        auto expressionList = Node::create(Kind::ExpressionList);
-        p_NodeArray list;
+        auto expression_list = Node::create(Kind::ExpressionList);
+        NodeArray list;
 
         if (auto expression = getExpression())
         {
-            expression->setParent(expressionList);
+            expression->setParent(expression_list);
             list.push_back(expression);
         }
         else
@@ -117,15 +117,15 @@ public:
             auto expression = getExpression();
             assert(expression, "expression expected");
 
-            expression->setParent(expressionList);
+            expression->setParent(expression_list);
             list.push_back(expression);
         }
 
-        expressionList->setChildren({list});
-        return expressionList;
+        expression_list->setChildren({list});
+        return expression_list;
     }
 
-    p_Node getReturnStatement()
+    NodePointer getReturnStatement()
     {
         if (!expectPeek("return"))
         {
@@ -134,23 +134,23 @@ public:
         consume();
 
 
-        auto expressionList = getExpressionList();
+        auto expression_list = getExpressionList();
 
         if (expectPeek(";"))
         {
             consume();
         }
 
-        auto returnStatement = Node::create(Kind::ReturnStatement);
-        returnStatement->setChildren({expressionList});
-        return returnStatement;
+        auto return_statement = Node::create(Kind::ReturnStatement);
+        return_statement->setChildren({expression_list});
+        return return_statement;
     }
 
-    p_Node getFunctionName()
+    NodePointer getFunctionName()
     {
-        auto functionName = Node::create(Kind::FunctionName);
+        auto function_name = Node::create(Kind::FunctionName);
 
-        p_Node root = getName();
+        NodePointer root = getName();
         if (!root)
         {
             return nullptr;
@@ -163,10 +163,10 @@ public:
             auto name = getName();
             assert(name, "expected name for function");
 
-            auto memberExpression = Node::create(Kind::Member);
+            auto member_expression = Node::create(Kind::Member);
 
-            memberExpression->setChildren({root, name});
-            root = memberExpression;
+            member_expression->setChildren({root, name});
+            root = member_expression;
         }
 
         if (expectPeek(":"))
@@ -176,34 +176,34 @@ public:
             auto name = getName();
             assert(name, "expected name for method");
 
-            auto methodExpression = Node::create(Kind::Method);
-            methodExpression->setChildren({root, name});
-            root = methodExpression;
+            auto method_expression = Node::create(Kind::Method);
+            method_expression->setChildren({root, name});
+            root = method_expression;
         }
 
-        functionName->setChildren({root});
-        return functionName;
+        function_name->setChildren({root});
+        return function_name;
     }
 
-    p_Node getNameList(bool isParameterList = false)
+    NodePointer getNameList(bool p_IsParameterList = false)
     {
-        auto nameList = Node::create();
-        p_NodeArray list;
+        auto name_list = Node::create();
+        NodeArray list;
 
         if (auto name = getName())
         {
-            name->setParent(nameList);
+            name->setParent(name_list);
             list.push_back(name);
         }
-        else if (isParameterList && expectPeek("..."))
+        else if (p_IsParameterList && expectPeek("..."))
         {
             auto varargs = getPrimaryExpression();
-            varargs->setParent(nameList);
+            varargs->setParent(name_list);
             list.push_back(varargs);
 
-            nameList->setKind(Kind::ParameterList);
-            nameList->setChildren({list});
-            return nameList;
+            name_list->setKind(Kind::ParameterList);
+            name_list->setChildren({list});
+            return name_list;
         }
         else
         {
@@ -214,37 +214,37 @@ public:
         {
             consume();
 
-            if (isParameterList && expectPeek("..."))
+            if (p_IsParameterList && expectPeek("..."))
             {
                 auto varargs = getPrimaryExpression();
-                varargs->setParent(nameList);
+                varargs->setParent(name_list);
                 list.push_back(varargs);
                 break;
             }
 
             auto name = getName();
             assert(name, "expected name");
-            name->setParent(nameList);
+            name->setParent(name_list);
             list.push_back(name);
         }
 
-        nameList->setKind(isParameterList ? Kind::ParameterList : Kind::NameList);
-        nameList->setChildren({list});
-        return nameList;
+        name_list->setKind(p_IsParameterList ? Kind::ParameterList : Kind::NameList);
+        name_list->setChildren({list});
+        return name_list;
     }
 
-    p_Node getParameterList()
+    NodePointer getParameterList()
     {
         return getNameList(true);
     }
 
-    p_Node getField()
+    NodePointer getField()
     {
         if (expectPeek("["))
         {
             consume();
 
-            auto tableIndexValueExpression = Node::create(Kind::TableIndexValue);
+            auto table_index_value_expression = Node::create(Kind::TableIndexValue);
 
             auto expression = getExpression();
             assert(expression, "expected index in field");
@@ -258,8 +258,8 @@ public:
             assert(value, "expected value in field");
 
 
-            tableIndexValueExpression->setChildren({expression, value});
-            return tableIndexValueExpression;
+            table_index_value_expression->setChildren({expression, value});
+            return table_index_value_expression;
         }
         else if (expectPeek(TokenType::IDENTIFIER) && expectPeek("=", 1))
         {
@@ -271,28 +271,28 @@ public:
             auto value = getExpression();
             assert(value, "expected value in field");
 
-            auto tableNameValueExpression = Node::create(Kind::TableNameValue);
-            tableNameValueExpression->setChildren({name, value});
-            return tableNameValueExpression;
+            auto table_name_value_expression = Node::create(Kind::TableNameValue);
+            table_name_value_expression->setChildren({name, value});
+            return table_name_value_expression;
         }
         else if (auto expression = getExpression())
         {
-            auto tableValueExpression = Node::create(Kind::TableValue);
-            tableValueExpression->setChildren({expression});
-            return tableValueExpression;
+            auto table_value_expression = Node::create(Kind::TableValue);
+            table_value_expression->setChildren({expression});
+            return table_value_expression;
         }
         return nullptr;
     }
 
-    p_Node getFieldList()
+    NodePointer getFieldList()
     {
-        auto fieldList = Node::create(Kind::FieldList);
+        auto field_list = Node::create(Kind::FieldList);
 
-        p_NodeArray list;
+        NodeArray list;
 
         while (auto field = getField())
         {
-            field->setParent(fieldList);
+            field->setParent(field_list);
             list.push_back(field);
 
             if (expectPeek(",") || expectPeek(";"))
@@ -306,42 +306,42 @@ public:
             return nullptr;
         }
 
-        fieldList->setChildren({list});
-        return fieldList;
+        field_list->setChildren({list});
+        return field_list;
     }
 
-    p_Node getArgumentList()
+    NodePointer getArgumentList()
     {
         if (expectPeek("("))
         {
             consume();
-            auto expressionList = getExpressionList();
+            auto expression_list = getExpressionList();
 
             assert(expectPeek(")"), "expected ) after ( in args");
             consume();
 
-            auto argumentList = Node::create(Kind::ArgumentList);
-            argumentList->setChildren({expressionList});
-            return argumentList;
+            auto argument_list = Node::create(Kind::ArgumentList);
+            argument_list->setChildren({expression_list});
+            return argument_list;
         }
         else if (expectPeek(TokenType::STRING) || expectPeek(TokenType::STRING_RAW))
         {
             auto expression = getPrimaryExpression();
 
-            auto argumentList = Node::create(Kind::ArgumentList);
-            argumentList->setChildren({expression});
-            return argumentList;
+            auto argument_list = Node::create(Kind::ArgumentList);
+            argument_list->setChildren({expression});
+            return argument_list;
         }
-        else if (auto tableConstructor = getTableConstructor())
+        else if (auto table_constructor = getTableConstructor())
         {
-            auto argumentList = Node::create(Kind::ArgumentList);
-            argumentList->setChildren({tableConstructor});
-            return argumentList;
+            auto argument_list = Node::create(Kind::ArgumentList);
+            argument_list->setChildren({table_constructor});
+            return argument_list;
         }
         return nullptr;
     }
 
-    p_Node getTableConstructor()
+    NodePointer getTableConstructor()
     {
         if (!expectPeek("{"))
         {
@@ -349,20 +349,20 @@ public:
         }
         consume();
 
-        auto fieldList = getFieldList();
+        auto field_list = getFieldList();
 
         assert(expectPeek("}"), "expected } after { in table constructor");
         consume();
 
-        auto tableConstructorExpression = Node::create(Kind::TableConstructor);
-        tableConstructorExpression->setChildren({fieldList});
-        return tableConstructorExpression;
+        auto table_constructor_expression = Node::create(Kind::TableConstructor);
+        table_constructor_expression->setChildren({field_list});
+        return table_constructor_expression;
     }
 
-    p_Node getVariable(bool isPrefixExpression = false)
+    NodePointer getVariable(bool p_IsPrefixExpression = false)
     {
-        p_Node root = nullptr;
-        bool isValidExpression = true;
+        NodePointer root = nullptr;
+        bool is_valid_expression = true;
         auto marked = mark();
 
         while (true)
@@ -372,7 +372,7 @@ public:
                 if (auto name = getName())
                 {
                     root = name;
-                    isValidExpression = true;
+                    is_valid_expression = true;
                 }
                 else if (expectPeek("("))
                 {
@@ -383,7 +383,7 @@ public:
 
                     assert(expectPeek(")"), "expected ) after ( in var");
                     consume();
-                    isValidExpression = false;
+                    is_valid_expression = false;
                 }
                 else
                 {
@@ -400,11 +400,11 @@ public:
                 assert(expectPeek("]"), "expected ] after [ in var");
                 consume();
 
-                auto indexExpression = Node::create(Kind::Index);
-                indexExpression->setChildren({root, expression});
-                root = indexExpression;
+                auto index_expression = Node::create(Kind::Index);
+                index_expression->setChildren({root, expression});
+                root = index_expression;
 
-                isValidExpression = true;
+                is_valid_expression = true;
             }
             else if (expectPeek("."))
             {
@@ -413,11 +413,11 @@ public:
                 auto name = getName();
                 assert(name, "expected name in var");
 
-                auto memberExpression = Node::create(Kind::Member);
-                memberExpression->setChildren({root, name});
-                root = memberExpression;
+                auto member_expression = Node::create(Kind::Member);
+                member_expression->setChildren({root, name});
+                root = member_expression;
 
-                isValidExpression = true;
+                is_valid_expression = true;
             }
             else if (expectPeek(":"))
             {
@@ -426,26 +426,26 @@ public:
                 auto name = getName();
                 assert(name, "expected name in var");
 
-                auto methodExpression = Node::create(Kind::Method);
-                methodExpression->setChildren({root, name});
-                root = methodExpression;
+                auto method_expression = Node::create(Kind::Method);
+                method_expression->setChildren({root, name});
+                root = method_expression;
 
-                auto argumentList = getArgumentList();
-                assert(argumentList, "expected argumentList in var");
+                auto argument_list = getArgumentList();
+                assert(argument_list, "expected argumentList in var");
 
-                auto functionCall = Node::create(Kind::FunctionCall);
-                functionCall->setChildren({root, argumentList});
-                root = functionCall;
+                auto function_call = Node::create(Kind::FunctionCall);
+                function_call->setChildren({root, argument_list});
+                root = function_call;
 
-                isValidExpression = false;
+                is_valid_expression = false;
             }
             else if (auto args = getArgumentList())
             {
-                auto functionCall = Node::create(Kind::FunctionCall);
-                functionCall->setChildren({root, args});
-                root = functionCall;
+                auto function_call = Node::create(Kind::FunctionCall);
+                function_call->setChildren({root, args});
+                root = function_call;
 
-                isValidExpression = false;
+                is_valid_expression = false;
             }
             else
             {
@@ -453,7 +453,7 @@ public:
             }
         }
 
-        if (!isPrefixExpression && !isValidExpression)
+        if (!p_IsPrefixExpression && !is_valid_expression)
         {
             revert(marked);
             return nullptr;
@@ -461,12 +461,12 @@ public:
         return root;
     }
 
-    p_Node getPrefixExpression()
+    NodePointer getPrefixExpression()
     {
         return getVariable(true);
     }
 
-    p_Node getFunctionCall()
+    NodePointer getFunctionCall()
     {
         auto marked = mark();
         auto expression = getPrefixExpression();
@@ -479,7 +479,7 @@ public:
         return expression;
     }
 
-    p_Node getVariableList()
+    NodePointer getVariableList()
     {
         auto variable = getVariable();
         if (!variable)
@@ -487,10 +487,10 @@ public:
             return nullptr;
         }
 
-        p_NodeArray list;
-        auto variableList = Node::create(Kind::VariableList);
+        NodeArray list;
+        auto variable_list = Node::create(Kind::VariableList);
 
-        variable->setParent(variableList);
+        variable->setParent(variable_list);
         list.push_back(variable);
 
         while (expectPeek(","))
@@ -500,15 +500,15 @@ public:
             variable = getVariable();
             assert(variable, "expression expected in variable list");
 
-            variable->setParent(variableList);
+            variable->setParent(variable_list);
             list.push_back(variable);
         }
 
-        variableList->setChildren({list});
-        return variableList;
+        variable_list->setChildren({list});
+        return variable_list;
     }
 
-    p_Node getFunctionBody()
+    NodePointer getFunctionBody()
     {
         if (!expectPeek("("))
         {
@@ -516,7 +516,7 @@ public:
         }
         consume();
 
-        auto parameterList = getParameterList();
+        auto parameter_list = getParameterList();
 
         assert(expectPeek(")"), "expected ) after ( in function body");
         consume();
@@ -526,12 +526,12 @@ public:
         assert(expectPeek("end"), "expected end in function body");
         consume();
 
-        auto functionBody = Node::create(Kind::FunctionBody);
-        functionBody->setChildren({parameterList, block});
-        return functionBody;
+        auto function_body = Node::create(Kind::FunctionBody);
+        function_body->setChildren({parameter_list, block});
+        return function_body;
     }
 
-    p_Node getFunctionDefinition()
+    NodePointer getFunctionDefinition()
     {
         if (!expectPeek("function"))
         {
@@ -539,15 +539,15 @@ public:
         }
         consume();
 
-        auto functionBody = getFunctionBody();
-        assert(functionBody, "expected function body in function definition");
+        auto function_body = getFunctionBody();
+        assert(function_body, "expected function body in function definition");
 
-        auto functionDefinition = Node::create(Kind::FunctionDefinition);
-        functionDefinition->setChildren({p_Node{nullptr}, functionBody});
-        return functionDefinition;
+        auto function_definition = Node::create(Kind::FunctionDefinition);
+        function_definition->setChildren({NodePointer{nullptr}, function_body});
+        return function_definition;
     }
 
-    p_Node getStatement()
+    NodePointer getStatement()
     {
         if (expectPeek(";"))
         {
@@ -558,22 +558,22 @@ public:
         else if (expectPeek("break"))
         {
             consume();
-            auto breakStatement = Node::create(Kind::BreakStatement);
-            return breakStatement;
+            auto break_statement = Node::create(Kind::BreakStatement);
+            return break_statement;
         }
         // For Luau continue
         else if (expectPeek("continue"))
         {
             consume();
-            auto continueStatement = Node::create(Kind::BreakStatement);
-            return continueStatement;
+            auto continue_statement = Node::create(Kind::BreakStatement);
+            return continue_statement;
         }
         else if (expectPeek("if"))
         {
             consume();
-            p_NodeArray list;
+            NodeArray list;
 
-            auto ifStatement = Node::create(Kind::IfStatement);
+            auto if_statement = Node::create(Kind::IfStatement);
 
             auto expression = getExpression();
             assert(expression, "expected expression in if stat");
@@ -584,9 +584,9 @@ public:
             auto block = getBlock();
 
 
-            auto conditionalBlock = Node::create(Kind::ConditionalBlock);
-            conditionalBlock->setChildren({expression, block});
-            list.push_back(conditionalBlock);
+            auto conditional_block = Node::create(Kind::ConditionalBlock);
+            conditional_block->setChildren({expression, block});
+            list.push_back(conditional_block);
 
             while (expectPeek("elseif"))
             {
@@ -600,10 +600,10 @@ public:
 
                 block = getBlock();
 
-                conditionalBlock = Node::create(Kind::ConditionalBlock);
-                conditionalBlock->setChildren({expression, block});
-                conditionalBlock->setParent(ifStatement);
-                list.push_back(conditionalBlock);
+                conditional_block = Node::create(Kind::ConditionalBlock);
+                conditional_block->setChildren({expression, block});
+                conditional_block->setParent(if_statement);
+                list.push_back(conditional_block);
             }
 
             if (expectPeek("else"))
@@ -612,17 +612,17 @@ public:
 
                 block = getBlock();
 
-                conditionalBlock = Node::create(Kind::ConditionalBlock);
-                conditionalBlock->setChildren({p_Node{nullptr}, block});
-                conditionalBlock->setParent(ifStatement);
-                list.push_back(conditionalBlock);
+                conditional_block = Node::create(Kind::ConditionalBlock);
+                conditional_block->setChildren({NodePointer{nullptr}, block});
+                conditional_block->setParent(if_statement);
+                list.push_back(conditional_block);
             }
 
             assert(expectPeek("end"), "expected end after if stat");
             consume();
 
-            ifStatement->setChildren({list});
-            return ifStatement;
+            if_statement->setChildren({list});
+            return if_statement;
         }
         else if (expectPeek("while"))
         {
@@ -639,12 +639,12 @@ public:
             assert(expectPeek("end"), "expected end in while stat");
             consume();
 
-            auto conditionalBlock = Node::create(Kind::ConditionalBlock);
-            conditionalBlock->setChildren({expression, block});
+            auto conditional_block = Node::create(Kind::ConditionalBlock);
+            conditional_block->setChildren({expression, block});
 
-            auto whileStatement = Node::create(Kind::WhileStatement);
-            whileStatement->setChildren({conditionalBlock});
-            return whileStatement;
+            auto while_statement = Node::create(Kind::WhileStatement);
+            while_statement->setChildren({conditional_block});
+            return while_statement;
         }
         else if (expectPeek("repeat"))
         {
@@ -658,12 +658,12 @@ public:
             auto expression = getExpression();
             assert(expression, "expected expression in repeat stat");
 
-            auto conditionalBlock = Node::create(Kind::ConditionalBlock);
-            conditionalBlock->setChildren({expression, block});
+            auto conditional_block = Node::create(Kind::ConditionalBlock);
+            conditional_block->setChildren({expression, block});
 
-            auto repeatStatement = Node::create(Kind::RepeatStatement);
-            repeatStatement->setChildren({conditionalBlock});
-            return repeatStatement;
+            auto repeat_statement = Node::create(Kind::RepeatStatement);
+            repeat_statement->setChildren({conditional_block});
+            return repeat_statement;
         }
         else if (expectPeek("do"))
         {
@@ -674,9 +674,9 @@ public:
             assert(expectPeek("end"), "expected end in do statement");
             consume();
 
-            auto doStatement = Node::create(Kind::DoStatement);
-            doStatement->setChildren({block});
-            return doStatement;
+            auto do_statement = Node::create(Kind::DoStatement);
+            do_statement->setChildren({block});
+            return do_statement;
         }
         else if (expectPeek("local"))
         {
@@ -692,37 +692,37 @@ public:
                 auto body = getFunctionBody();
                 assert(body, "expected function body in local function");
 
-                auto functionDefinition = Node::create(Kind::FunctionDefinition);
-                functionDefinition->setChildren({name, body});
+                auto function_definition = Node::create(Kind::FunctionDefinition);
+                function_definition->setChildren({name, body});
 
-                auto localStatement = Node::create(Kind::LocalStatement);
-                localStatement->setChildren({functionDefinition});
-                return localStatement;
+                auto local_statement = Node::create(Kind::LocalStatement);
+                local_statement->setChildren({function_definition});
+                return local_statement;
             }
             else
             {
-                auto localStatement = Node::create(Kind::LocalStatement);
+                auto local_statement = Node::create(Kind::LocalStatement);
 
-                auto attributeNameList = getAttributeList();
-                assert(attributeNameList, "expected attribute name list in local stat");
+                auto attribute_name_list = getAttributeList();
+                assert(attribute_name_list, "expected attribute name list in local stat");
 
                 if (expectPeek("="))
                 {
                     consume();
 
-                    auto expressionList = getExpressionList();
-                    assert(expressionList, "expected expression list in local stat");
+                    auto expression_list = getExpressionList();
+                    assert(expression_list, "expected expression list in local stat");
 
-                    auto assignmentStatement = Node::create(Kind::AssignmentStatement);
-                    assignmentStatement->setChildren({attributeNameList, expressionList});
+                    auto assignment_statement = Node::create(Kind::AssignmentStatement);
+                    assignment_statement->setChildren({attribute_name_list, expression_list});
 
-                    localStatement->setChildren({assignmentStatement});
+                    local_statement->setChildren({assignment_statement});
                 }
                 else
                 {
-                    localStatement->setChildren({attributeNameList});
+                    local_statement->setChildren({attribute_name_list});
                 }
-                return localStatement;
+                return local_statement;
             }
         }
         else if (expectPeek("function"))
@@ -735,9 +735,9 @@ public:
             auto body = getFunctionBody();
             assert(body, "expected function body in function");
 
-            auto functionDefinition = Node::create(Kind::FunctionDefinition);
-            functionDefinition->setChildren({name, body});
-            return functionDefinition;
+            auto function_definition = Node::create(Kind::FunctionDefinition);
+            function_definition->setChildren({name, body});
+            return function_definition;
         }
         else if (expectPeek("for"))
         {
@@ -760,7 +760,7 @@ public:
                 auto goal = getExpression();
                 assert(goal, "expected expression in numeric for stat");
 
-                p_Node step = nullptr;
+                NodePointer step = nullptr;
 
                 if (expectPeek(","))
                 {
@@ -777,27 +777,27 @@ public:
                 assert(expectPeek("end"), "expected do in numeric for stat");
                 consume();
 
-                auto forStatement = Node::create(Kind::ForStatement);
+                auto for_statement = Node::create(Kind::ForStatement);
                 if (step == nullptr)
                 {
-                    forStatement->setChildren({name, init, goal, p_Node{nullptr}, block});
+                    for_statement->setChildren({name, init, goal, NodePointer{nullptr}, block});
                 }
                 else
                 {
-                    forStatement->setChildren({name, init, goal, step, block});
+                    for_statement->setChildren({name, init, goal, step, block});
                 }
-                return forStatement;
+                return for_statement;
             }
             else
             {
-                auto nameList = getNameList();
-                assert(nameList, "expected name list in generic for loop");
+                auto name_list = getNameList();
+                assert(name_list, "expected name list in generic for loop");
 
                 assert(expectPeek("in"), "expected in after for in generic for stat");
                 consume();
 
-                auto expressionList = getExpressionList();
-                assert(expressionList, "expected expression list in generic for stat");
+                auto expression_list = getExpressionList();
+                assert(expression_list, "expected expression list in generic for stat");
 
                 assert(expectPeek("do"), "expected do in generic for stat");
                 consume();
@@ -807,9 +807,9 @@ public:
                 assert(expectPeek("end"), "expected end in generic for stat");
                 consume();
 
-                auto forStatement = Node::create(Kind::ForStatement);
-                forStatement->setChildren({nameList, expressionList, block});
-                return forStatement;
+                auto for_statement = Node::create(Kind::ForStatement);
+                for_statement->setChildren({name_list, expression_list, block});
+                return for_statement;
             }
         }
         else if (expectPeek("goto"))
@@ -819,9 +819,9 @@ public:
             auto name = getName();
             assert(name, "expected name in goto stat");
 
-            auto gotoStatement = Node::create(Kind::GotoStatement);
-            gotoStatement->setChildren({name});
-            return gotoStatement;
+            auto goto_statement = Node::create(Kind::GotoStatement);
+            goto_statement->setChildren({name});
+            return goto_statement;
         }
         else if (expectPeek("::"))
         {
@@ -838,17 +838,17 @@ public:
             return label;
         }
 
-        if (auto variableList = getVariableList())
+        if (auto variable_list = getVariableList())
         {
             assert(expectPeek("="), "expected = in assignment stat");
             consume();
 
-            auto expressionList = getExpressionList();
-            assert(expressionList, "expected expression list in assignment stat");
+            auto expression_list = getExpressionList();
+            assert(expression_list, "expected expression list in assignment stat");
 
-            auto assignmentStatement = Node::create(Kind::AssignmentStatement);
-            assignmentStatement->setChildren({variableList, expressionList});
-            return assignmentStatement;
+            auto assignment_statement = Node::create(Kind::AssignmentStatement);
+            assignment_statement->setChildren({variable_list, expression_list});
+            return assignment_statement;
         }
         else if (auto function_call = getFunctionCall())
         {
@@ -858,10 +858,10 @@ public:
         return nullptr;
     }
 
-    p_Node getBlock()
+    NodePointer getBlock()
     {
         auto block = Node::create(Kind::Block);
-        p_NodeArray list;
+        NodeArray list;
 
         while (auto stat = getStatement())
         {
@@ -884,7 +884,7 @@ public:
         return block;
     }
 
-    p_Node getChunk()
+    NodePointer getChunk()
     {
         auto chunk = Node::create(Kind::Chunk);
 
@@ -894,16 +894,16 @@ public:
         }
         else
         {
-            chunk->setChildren({p_Node{nullptr}});
+            chunk->setChildren({NodePointer{nullptr}});
         }
         return chunk;
     }
 
 
-    p_Node parse(const std::string& source)
+    NodePointer parse(const std::string& p_Source)
     {
         TokenStream stream;
-        stream.tokenize(source);
+        stream.tokenize(p_Source);
         m_Tokens = stream.m_Tokens;
         m_Length = m_Tokens.size();
 
@@ -1018,7 +1018,7 @@ public:
     }
 
 
-    static int getPrecedence(const Token& currentToken, bool isUnaryOperation = false)
+    static int getPrecedence(const Token& p_CurrentToken, bool p_IsUnaryOperation = false)
     {
         static const std::vector<std::vector<std::string>> priority = {
             {"or"},
@@ -1035,7 +1035,7 @@ public:
             {"^"}
         };
 
-        if (isUnaryOperation)
+        if (p_IsUnaryOperation)
         {
             return static_cast<int>(priority.size()) - 1;
         }
@@ -1044,7 +1044,7 @@ public:
         {
             for (auto& e: priority[i])
             {
-                if (currentToken.is(e))
+                if (p_CurrentToken.is(e))
                 {
                     return i + 1;
                 }
@@ -1053,16 +1053,16 @@ public:
         return -1;
     }
 
-    p_Node getPrimaryExpression()
+    NodePointer getPrimaryExpression()
     {
         if (!next())
         {
             return nullptr;
         }
 
-        Token currentToken = peek();
+        Token current_token = peek();
 
-        switch (currentToken.type)
+        switch (current_token.type)
         {
             case TokenType::IDENTIFIER:
             {
@@ -1075,7 +1075,7 @@ public:
             {
                 auto string = Node::create(Kind::String);
                 string->setChildren({consume().literal});
-                string->setChildren({*Util::toString(string)});
+                string->setChildren({*Util::to_string(string)});
                 return string;
             }
 
@@ -1089,7 +1089,7 @@ public:
             case TokenType::NUMBER_BINARY:
             case TokenType::NUMBER:
             {
-                auto value = Util::toNumber(consume().literal);
+                auto value = Util::to_number(consume().literal);
 
                 auto number = Node::create(Kind::Numeric);
                 number->setChildren({Number(*value)});
@@ -1098,23 +1098,23 @@ public:
 
             case TokenType::KEYWORD:
             {
-                if (isBoolean(currentToken))
+                if (is_boolean(current_token))
                 {
                     auto boolean = Node::create(Kind::Boolean);
                     boolean->setChildren({consume().literal == "true"});
                     return boolean;
                 }
-                else if (isUnaryOperator(currentToken))
+                else if (is_unary_operator(current_token))
                 {
                     consume();
-                    auto expr = getExpression(getPrecedence(currentToken, true));
-                    assert(expr, "expected expression after " + currentToken.literal);
+                    auto expr = getExpression(getPrecedence(current_token, true));
+                    assert(expr, "expected expression after " + current_token.literal);
 
-                    auto unaryOperation = Node::create(Kind::UnaryOperation);
-                    unaryOperation->setChildren({OperatorKind::LNOT, expr});
-                    return unaryOperation;
+                    auto unary_operation = Node::create(Kind::UnaryOperation);
+                    unary_operation->setChildren({OperatorKind::LNOT, expr});
+                    return unary_operation;
                 }
-                else if (isNull(currentToken))
+                else if (is_null(current_token))
                 {
                     auto null = Node::create(Kind::Null);
                     null->setChildren({consume().literal});
@@ -1124,13 +1124,13 @@ public:
             }
             case TokenType::PUNCTUATION:
             {
-                if (currentToken.is("..."))
+                if (current_token.is("..."))
                 {
                     auto varargs = Node::create(Kind::Varargs);
                     varargs->setChildren({consume().literal});
                     return varargs;
                 }
-                else if (currentToken.is("("))
+                else if (current_token.is("("))
                 {
                     consume();
 
@@ -1142,34 +1142,34 @@ public:
 
                     return expr;
                 }
-                else if (currentToken.is("{"))
+                else if (current_token.is("{"))
                 {
                     return getTableConstructor();
                 }
-                else if (isUnaryOperator(currentToken))
+                else if (is_unary_operator(current_token))
                 {
                     consume();
-                    auto expr = getExpression(getPrecedence(currentToken, true));
-                    assert(expr, "expected expression after " + currentToken.literal);
+                    auto expr = getExpression(getPrecedence(current_token, true));
+                    assert(expr, "expected expression after " + current_token.literal);
 
-                    auto unaryOperation = Node::create(Kind::UnaryOperation);
-                    OperatorKind opKind;
+                    auto unary_operation = Node::create(Kind::UnaryOperation);
+                    OperatorKind op_kind;
 
-                    if (currentToken.is("-"))
+                    if (current_token.is("-"))
                     {
-                        opKind = OperatorKind::UNM;
+                        op_kind = OperatorKind::UNM;
                     }
-                    else if (currentToken.is("~"))
+                    else if (current_token.is("~"))
                     {
-                        opKind = OperatorKind::BNOT;
+                        op_kind = OperatorKind::BNOT;
                     }
-                    else if (currentToken.is("#"))
+                    else if (current_token.is("#"))
                     {
-                        opKind = OperatorKind::LEN;
+                        op_kind = OperatorKind::LEN;
                     }
 
-                    unaryOperation->setChildren({opKind, expr});
-                    return unaryOperation;
+                    unary_operation->setChildren({op_kind, expr});
+                    return unary_operation;
                 }
                 break;
             }
@@ -1177,40 +1177,40 @@ public:
         return nullptr;
     }
 
-    p_Node getExpression(int precedence = 0)
+    NodePointer getExpression(int p_Precedence = 0)
     {
-        if (auto lhsExpression = getFunctionDefinition())
+        if (auto lhs_expression = getFunctionDefinition())
         {
-            return getRhsExpression(precedence, lhsExpression);
+            return getRhsExpression(p_Precedence, lhs_expression);
         }
 
-        if (auto lhsExpression = getPrefixExpression())
+        if (auto lhs_expression = getPrefixExpression())
         {
-            return getRhsExpression(precedence, lhsExpression);
+            return getRhsExpression(p_Precedence, lhs_expression);
         }
 
-        if (auto lhsExpression = getPrimaryExpression())
+        if (auto lhs_expression = getPrimaryExpression())
         {
-            return getRhsExpression(precedence, lhsExpression);
+            return getRhsExpression(p_Precedence, lhs_expression);
         }
         return nullptr;
     }
 
-    p_Node getRhsExpression(int minPrecedence, p_Node lhs)
+    NodePointer getRhsExpression(int p_MinPrecedence, NodePointer p_Lhs)
     {
         while (next())
         {
-            Token currentToken = peek();
-            int currentPrecedence = getPrecedence(currentToken);
+            Token current_token = peek();
+            int current_precedence = getPrecedence(current_token);
 
-            if (currentPrecedence < minPrecedence)
+            if (current_precedence < p_MinPrecedence)
             {
-                return lhs;
+                return p_Lhs;
             }
 
             consume();
 
-            p_Node rhs = nullptr;
+            NodePointer rhs = nullptr;
 
             if (!rhs)
             {
@@ -1229,43 +1229,43 @@ public:
 
             if (expectPeek(TokenType::PUNCTUATION))
             {
-                if (isRhsAssociative(currentToken))
+                if (is_rhs_associative(current_token))
                 {
-                    rhs = getRhsExpression(currentPrecedence, rhs);
+                    rhs = getRhsExpression(current_precedence, rhs);
                     assert(rhs, "expected rhs expression");
                 }
-                else if (currentPrecedence < getPrecedence(peek()))
+                else if (current_precedence < getPrecedence(peek()))
                 {
-                    rhs = getRhsExpression(currentPrecedence + 1, rhs);
+                    rhs = getRhsExpression(current_precedence + 1, rhs);
                     assert(rhs, "expected rhs expression");
                 }
             }
 
-            if (isBinaryOperator(currentToken))
+            if (is_binary_operator(current_token))
             {
 
 
-                auto binaryOperation = Node::create(Kind::BinaryOperation);
-                binaryOperation->setChildren({Util::getOperator(currentToken.literal), lhs, rhs});
-                lhs = binaryOperation;
+                auto binary_operation = Node::create(Kind::BinaryOperation);
+                binary_operation->setChildren({Util::get_operator(current_token.literal), p_Lhs, rhs});
+                p_Lhs = binary_operation;
             }
         }
-        return lhs;
+        return p_Lhs;
     }
 
-    bool next(std::size_t offset = 0) const;
+    bool next(std::size_t p_Offset = 0) const;
 
-    Token peek(std::size_t offset = 0);
+    Token peek(std::size_t p_Offset = 0);
 
     Token consume();
 
     std::size_t mark() const;
 
-    void revert(std::size_t marked);
+    void revert(std::size_t p_Marked);
 
-    bool expectPeek(TokenType type, std::size_t offset = 0);
+    bool expectPeek(TokenType p_Type, std::size_t p_Offset = 0);
 
-    bool expectPeek(const std::string& match, std::size_t offset = 0);
+    bool expectPeek(const std::string& p_Match, std::size_t p_Offset = 0);
 };
 
 

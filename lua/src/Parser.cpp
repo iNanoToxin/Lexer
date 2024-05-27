@@ -1,13 +1,13 @@
 #include "Parser.h"
 
-bool Parser::next(std::size_t offset) const
+bool Parser::next(std::size_t p_Offset) const
 {
-    return m_Index + offset < m_Length;
+    return m_Index + p_Offset < m_Length;
 }
 
-Token Parser::peek(std::size_t offset)
+Token Parser::peek(std::size_t p_Offset)
 {
-    return m_Tokens.at(m_Index + offset);
+    return m_Tokens.at(m_Index + p_Offset);
 }
 
 std::size_t Parser::mark() const
@@ -20,79 +20,79 @@ Token Parser::consume()
     return m_Tokens.at(m_Index++);
 }
 
-void Parser::revert(std::size_t marked)
+void Parser::revert(std::size_t p_Marked)
 {
-    m_Index = marked;
+    m_Index = p_Marked;
 }
 
-bool Parser::expectPeek(TokenType type, std::size_t offset)
+bool Parser::expectPeek(TokenType p_Type, std::size_t p_Offset)
 {
-    return next(offset) && peek(offset).type == type;
+    return next(p_Offset) && peek(p_Offset).type == p_Type;
 }
 
-bool Parser::expectPeek(const std::string& match, std::size_t offset)
+bool Parser::expectPeek(const std::string& p_Match, std::size_t p_Offset)
 {
-    return next(offset) && peek(offset).literal == match;
+    return next(p_Offset) && peek(p_Offset).literal == p_Match;
 }
 
 
 
 
 
-bool isBinaryOperator(const Token& currentToken)
+bool is_binary_operator(const Token& p_CurrentToken)
 {
-    return currentToken.is("+")
-        || currentToken.is("-")
-        || currentToken.is("*")
-        || currentToken.is("/")
-        || currentToken.is("//")
-        || currentToken.is("^")
-        || currentToken.is("%")
-        || currentToken.is("&")
-        || currentToken.is("~")
-        || currentToken.is("|")
-        || currentToken.is(">>")
-        || currentToken.is("<<")
-        || currentToken.is("..")
-        || currentToken.is("<")
-        || currentToken.is("<=")
-        || currentToken.is(">")
-        || currentToken.is(">=")
-        || currentToken.is("==")
-        || currentToken.is("~=")
-        || currentToken.is("and")
-        || currentToken.is("or");
+    return p_CurrentToken.is("+")
+           || p_CurrentToken.is("-")
+           || p_CurrentToken.is("*")
+           || p_CurrentToken.is("/")
+           || p_CurrentToken.is("//")
+           || p_CurrentToken.is("^")
+           || p_CurrentToken.is("%")
+           || p_CurrentToken.is("&")
+           || p_CurrentToken.is("~")
+           || p_CurrentToken.is("|")
+           || p_CurrentToken.is(">>")
+           || p_CurrentToken.is("<<")
+           || p_CurrentToken.is("..")
+           || p_CurrentToken.is("<")
+           || p_CurrentToken.is("<=")
+           || p_CurrentToken.is(">")
+           || p_CurrentToken.is(">=")
+           || p_CurrentToken.is("==")
+           || p_CurrentToken.is("~=")
+           || p_CurrentToken.is("and")
+           || p_CurrentToken.is("or");
 }
 
-bool isFieldSeparator(const Token& currentToken)
+bool is_field_separator(const Token& p_CurrentToken)
 {
-    return currentToken.is(",") || currentToken.is(";");
+    return p_CurrentToken.is(",") || p_CurrentToken.is(";");
 }
 
-bool isUnaryOperator(const Token& currentToken)
+bool is_unary_operator(const Token& p_CurrentToken)
 {
-    return currentToken.is("-")
-        || currentToken.is("not")
-        || currentToken.is("#")
-        || currentToken.is("~");
+    return p_CurrentToken.is("-")
+           || p_CurrentToken.is("not")
+           || p_CurrentToken.is("#")
+           || p_CurrentToken.is("~");
 }
 
-bool isBoolean(const Token& currentToken)
+bool is_boolean(const Token& p_CurrentToken)
 {
-    return currentToken.is("true") || currentToken.is("false");
+    return p_CurrentToken.is("true") || p_CurrentToken.is("false");
 }
 
-bool isConditional(const Token& currentToken)
+bool is_conditional(const Token& p_CurrentToken)
 {
-    return currentToken.is("and") || currentToken.is("or");
+    return p_CurrentToken.is("and") || p_CurrentToken.is("or");
 }
 
-bool isNull(const Token& currentToken)
+bool is_null(const Token& p_CurrentToken)
 {
-    return currentToken.is("nil");
+    return p_CurrentToken.is("nil");
 }
 
-bool isRhsAssociative(const Token& token)
+bool is_rhs_associative(const Token& p_Token)
 {
-    return token.literal == "^" || token.literal == "..";
+    return p_Token.literal == "^" || p_Token.literal == "..";
 }

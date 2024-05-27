@@ -101,6 +101,6 @@ enum class Kind
     BreakStatement
 };
 
-std::string getKindName(const Kind& kind);
+std::string get_kind_name(const Kind& p_Kind);
 
 #endif

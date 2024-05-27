@@ -11,7 +11,7 @@ class Number
 public:
     double value = 0;
 
-    explicit Number(double value) : value(value) {}
+    explicit Number(double p_Value) : value(p_Value) {}
 
     std::string toHexadecimal() const
     {
@@ -21,31 +21,31 @@ public:
         }
 
         static const char* hex = "0123456789ABCDEF";
-        std::string hexString;
+        std::string hex_string;
 
         auto n = std::abs(value);
 
         if (n == 0)
         {
-            hexString += '0';
+            hex_string += '0';
         }
         while (n != 0)
         {
-            hexString += hex[(int) std::fmod(n, 16.0)];
+            hex_string += hex[(int) std::fmod(n, 16.0)];
             n /= 16.0;
             n = std::trunc(n);
         }
 
-        hexString.push_back('x');
-        hexString.push_back('0');
+        hex_string.push_back('x');
+        hex_string.push_back('0');
 
         if (value < 0)
         {
-            hexString.push_back('-');
+            hex_string.push_back('-');
         }
 
-        std::reverse(hexString.begin(), hexString.end());
-        return hexString;
+        std::reverse(hex_string.begin(), hex_string.end());
+        return hex_string;
     }
 
     std::string toString() const
@@ -67,30 +67,30 @@ public:
         return str;
     }
 
-    constexpr bool operator<(const Number& other) const
+    constexpr bool operator<(const Number& p_Other) const
     {
-        return value < other.value;
+        return value < p_Other.value;
     }
-    constexpr bool operator>(const Number& other) const
+    constexpr bool operator>(const Number& p_Other) const
     {
-        return value > other.value;
+        return value > p_Other.value;
     }
 
-    constexpr bool operator<=(const Number& other) const
+    constexpr bool operator<=(const Number& p_Other) const
     {
-        return value <= other.value;
+        return value <= p_Other.value;
     }
-    constexpr bool operator>=(const Number& other) const
+    constexpr bool operator>=(const Number& p_Other) const
     {
-        return value >= other.value;
+        return value >= p_Other.value;
     }
-    constexpr bool operator==(const Number& other) const
+    constexpr bool operator==(const Number& p_Other) const
     {
-        return value == other.value;
+        return value == p_Other.value;
     }
-    constexpr bool operator!=(const Number& other) const
+    constexpr bool operator!=(const Number& p_Other) const
     {
-        return value != other.value;
+        return value != p_Other.value;
     }
 };
 

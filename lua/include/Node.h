@@ -44,14 +44,14 @@ enum class OperatorKind
 
 class Node;
 
-using p_Node = std::shared_ptr<Node>;
-using p_NodeArray = std::vector<p_Node>;
-using v_Variant = std::vector<std::variant<
+using NodePointer = std::shared_ptr<Node>;
+using NodeArray = std::vector<NodePointer>;
+using NodeChildren = std::vector<std::variant<
     Number,
     bool,
     std::string,
-    p_Node,
-    p_NodeArray,
+    NodePointer,
+    NodeArray,
     OperatorKind
 >>;
 
@@ -60,85 +60,85 @@ class Node : public std::enable_shared_from_this<Node>
 {
 private:
     std::size_t m_Index;
-    v_Variant m_Children;
-    p_Node m_Parent;
+    NodeChildren m_Children;
+    NodePointer m_Parent;
     Kind m_Kind;
 public:
     explicit Node() : Node(Kind::Unknown)
     {
     }
 
-    explicit Node(Kind kind)
+    explicit Node(Kind p_Kind)
     {
         m_Index = 0;
-        m_Kind = kind;
+        m_Kind = p_Kind;
         m_Parent = nullptr;
         m_Children = {};
     }
 
-    [[nodiscard]] static p_Node create()
+    [[nodiscard]] static NodePointer create()
     {
         return std::make_shared<Node>();
     }
-    [[nodiscard]] static p_Node create(Kind kind)
+    [[nodiscard]] static NodePointer create(Kind p_Kind)
     {
-        return std::make_shared<Node>(kind);
+        return std::make_shared<Node>(p_Kind);
     }
 
 
-    void setChildren(v_Variant children);
-    void setParent(const p_Node& parent);
-    void setKind(Kind kind);
+    void setChildren(NodeChildren p_Children);
+    void setParent(const NodePointer& p_Parent);
+    void setKind(Kind p_Kind);
 
     template <typename T>
-    [[nodiscard]] T& getChild(const std::size_t& index)
+    [[nodiscard]] T& getChild(const std::size_t& p_Index)
     {
         // std::cout << getKindName(m_Kind) << " : " << typeid(T).name() << std::endl;
-        return std::get<T>(m_Children[index]);
+        return std::get<T>(m_Children[p_Index]);
     }
-    [[nodiscard]] p_Node getParent(const std::size_t& depth = 0);
+    [[nodiscard]] NodePointer getParent(const std::size_t& p_Depth = 0);
     [[nodiscard]] Kind& getKind();
     [[nodiscard]] std::size_t getSize() const;
-    [[nodiscard]] v_Variant& getChildren();
-    [[nodiscard]] p_Node getPointer()
+    [[nodiscard]] NodeChildren& getChildren();
+    [[nodiscard]] NodePointer getPointer()
     {
         return shared_from_this();
     }
-    [[nodiscard]] std::string toString(std::size_t depth) const;
+    [[nodiscard]] std::string toString(std::size_t p_Depth) const;
 
-    [[nodiscard]] bool isKind(Kind kind) const
+    [[nodiscard]] bool isKind(Kind p_Kind) const
     {
-        return m_Kind == kind;
+        return m_Kind == p_Kind;
     }
 
-    [[nodiscard]] p_Node& findNode(const p_Node& node)
+    [[nodiscard]] NodePointer& findNode(const NodePointer& p_Node)
     {
         for (std::size_t i = 0; i < m_Children.size(); i++)
         {
-            if (std::holds_alternative<p_Node>(m_Children[i]))
+            if (std::holds_alternative<NodePointer>(m_Children[i]))
             {
-                if (getChild<p_Node>(i) == node)
+                if (getChild<NodePointer>(i) == p_Node)
                 {
                     std::cout << "found: " << i << std::endl;
-                    return getChild<p_Node>(i);
+                    return getChild<NodePointer>(i);
                 }
                 break;
             }
         }
     }
 
-    static void reset(const p_Node& node)
+    static void reset(const NodePointer& p_Node)
     {
-        node->setParent(nullptr);
-        node->setChildren({});
-        node->setKind(Kind::Unknown);
+        p_Node->setParent(nullptr);
+        p_Node->setChildren({});
+        p_Node->setKind(Kind::Unknown);
     }
 
-    static void swap(const p_Node& lhs, const p_Node& rhs)
+    static void swap(const NodePointer& p_Lhs, const NodePointer& p_Rhs)
     {
-        std::swap(lhs->m_Parent, rhs->m_Parent);
-        std::swap(lhs->m_Kind, rhs->m_Kind);
-        std::swap(lhs->m_Children, rhs->m_Children);
+        std::swap(p_Lhs->m_Parent, p_Rhs->m_Parent);
+        std::swap(p_Lhs->m_Kind, p_Rhs->m_Kind);
+        std::swap(p_Lhs->m_Children, p_Rhs->m_Children);
     }
 };
 
