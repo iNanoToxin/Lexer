@@ -35,7 +35,7 @@ enum class OperatorKind
     GT,
     GE,
     EQ,
-    INEQ,
+    NOT_EQ,
     LNOT,
     LAND,
     LOR
@@ -46,14 +46,15 @@ class Node;
 
 using NodePointer = std::shared_ptr<Node>;
 using NodeArray = std::vector<NodePointer>;
-using NodeChildren = std::vector<std::variant<
+using NodeVariant = std::variant<
     Number,
     bool,
     std::string,
     NodePointer,
     NodeArray,
     OperatorKind
->>;
+>;
+using NodeChildren = std::vector<NodeVariant>;
 
 
 class Node : public std::enable_shared_from_this<Node>

@@ -21,7 +21,7 @@ do {                                                      \
 int main() {
     std::string luaSource;
     {
-        std::ifstream file("../tests/test_2.lua");
+        std::ifstream file("../tests/test_3.lua");
         f_assert(file.is_open(), "failed to open file");
 
         std::stringstream stream;

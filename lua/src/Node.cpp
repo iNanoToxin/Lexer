@@ -3,12 +3,11 @@
 
 void Node::setChildren(NodeChildren p_Children)
 {
-    for (std::size_t i = 0; i < p_Children.size(); i++)
+    for (const NodeVariant& elem : p_Children)
     {
-        auto& elem = p_Children[i];
         if (std::holds_alternative<NodePointer>(elem))
         {
-            if (auto node = std::get<NodePointer>(elem))
+            if (NodePointer node = std::get<NodePointer>(elem))
             {
                 node->setParent(getPointer());
             }
@@ -52,7 +51,7 @@ std::string Node::toString(std::size_t p_Depth) const
     {
         if (std::holds_alternative<std::string>(m_Children[i]))
         {
-            auto value = std::get<std::string>(m_Children[i]);
+            std::string value = std::get<std::string>(m_Children[i]);
 
             if (m_Kind == Kind::String || m_Kind == Kind::Numeric)
             {
@@ -75,7 +74,7 @@ std::string Node::toString(std::size_t p_Depth) const
         }
         else if (std::holds_alternative<bool>(m_Children[i]))
         {
-            auto value = std::get<bool>(m_Children[i]);
+            bool value = std::get<bool>(m_Children[i]);
 
             str += fmt::format(
                 "{0}[{1}] = {2}\n",
@@ -86,7 +85,7 @@ std::string Node::toString(std::size_t p_Depth) const
         }
         else if (std::holds_alternative<Number>(m_Children[i]))
         {
-            auto value = std::get<Number>(m_Children[i]);
+            Number value = std::get<Number>(m_Children[i]);
 
             str += fmt::format(
                 "{0}[{1}] = {2}\n",
@@ -97,7 +96,7 @@ std::string Node::toString(std::size_t p_Depth) const
         }
         else if (std::holds_alternative<OperatorKind>(m_Children[i]))
         {
-            auto value = std::get<OperatorKind>(m_Children[i]);
+            OperatorKind value = std::get<OperatorKind>(m_Children[i]);
 
             str += fmt::format(
                 "{0}[{1}] = \"{2}\"\n",
@@ -108,7 +107,7 @@ std::string Node::toString(std::size_t p_Depth) const
         }
         else if (std::holds_alternative<NodePointer>(m_Children[i]))
         {
-            auto value = std::get<NodePointer>(m_Children[i]);
+            NodePointer value = std::get<NodePointer>(m_Children[i]);
 
             if (!value)
             {
@@ -130,7 +129,7 @@ std::string Node::toString(std::size_t p_Depth) const
         }
         else if (std::holds_alternative<NodeArray>(m_Children[i]))
         {
-            auto array = std::get<NodeArray>(m_Children[i]);
+            NodeArray array = std::get<NodeArray>(m_Children[i]);
 
             for (int j = 0; j < array.size(); j++)
             {

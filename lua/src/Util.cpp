@@ -145,8 +145,8 @@ std::optional<std::string> Util::to_string(const NodePointer& p_Node)
     }
     else if (p_Node->isKind(Kind::String))
     {
-        auto string = p_Node->getChild<std::string>(0);
-        auto is_raw_string = string.starts_with('[');
+        std::string string = p_Node->getChild<std::string>(0);
+        std::size_t is_raw_string = string.starts_with('[');
 
         return quote(to_raw_string(unquote(string), is_raw_string));
     }
@@ -371,7 +371,7 @@ std::string Util::quote(const std::string& p_String)
 
 std::string Util::unquote(const std::string& p_String)
 {
-    auto i = 1;
+    std::size_t i = 1;
 
     if (p_String.starts_with("["))
     {
@@ -382,4 +382,24 @@ std::string Util::unquote(const std::string& p_String)
         i++;
     }
     return {p_String.begin() + i, p_String.end() - i};
+}
+
+bool Util::is_allowed_comparison(const NodePointer& p_Node)
+{
+    switch (p_Node->getKind())
+    {
+        case Kind::FunctionDefinition:
+        case Kind::TableConstructor:
+        case Kind::String:
+        case Kind::Numeric:
+        case Kind::Boolean:
+        case Kind::Null:
+        {
+            return true;
+        }
+        default:
+        {
+            return false;
+        }
+    }
 }

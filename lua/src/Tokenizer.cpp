@@ -451,7 +451,7 @@ void TokenStream::parseWord()
 
 void TokenStream::parsePunctuation()
 {
-    for (auto punctuation: punctuations)
+    for (const char* punctuation: punctuations)
     {
         if (startsWith(punctuation))
         {

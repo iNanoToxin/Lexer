@@ -1,4 +1,4 @@
-lua/.idea/
-lua/cmake-build-debug/
-.idea/
-cmake-build-debug/
+/lua/.idea/
+/lua/cmake-build-debug/
+/.idea/
+/cmake-build-debug/

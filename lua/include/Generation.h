@@ -10,8 +10,12 @@
 #include <stack>
 #include <string_view>
 #include <variant>
+#include <functional>
 
 #define NEW_LINE "\n"
+
+
+std::function<void(const Kind&, const NodeChildren&)> set_node_wrapper(const NodePointer& p_Node, const NodePointer& p_Lhs, const NodePointer& p_Rhs);
 
 
 int get_unary_operation_count(const NodePointer& p_Node, OperatorKind p_OpKind);
@@ -37,7 +41,7 @@ public:
 
     bool contains(const std::string& p_String)
     {
-        auto scopes = *this;
+        Scope scopes = *this;
 
         while (!scopes.empty())
         {
@@ -52,7 +56,7 @@ public:
 
     std::string get(const std::string& p_String)
     {
-        auto scopes = *this;
+        Scope scopes = *this;
 
         while (!scopes.empty())
         {
@@ -115,10 +119,137 @@ public:
     }
 };
 
+class VariableScope : std::stack<std::map<std::string, NodePointer>>
+{
+public:
+    void begin()
+    {
+        this->push({});
+    }
+
+    void end()
+    {
+        assert(!this->empty(), "state is empty");
+        this->pop();
+    }
+
+    void set(const std::string& p_VariableName, const NodePointer& p_Node)
+    {
+        this->top()[p_VariableName] = p_Node;
+    }
+
+    NodePointer get(const std::string& p_VariableName)
+    {
+        VariableScope scopes = *this;
+
+        while (!scopes.empty())
+        {
+            if (scopes.top().contains(p_VariableName))
+            {
+                return scopes.top()[p_VariableName];
+            }
+            scopes.pop();
+        }
+        return nullptr;
+    }
+};
+
+struct ScopeVariable
+{
+    NodePointer node = nullptr;
+    bool local = false;
+};
+
+class ScopeNode
+{
+public:
+    std::map<std::string, ScopeVariable> variables{};
+    ScopeNode* next = nullptr;
+    ScopeNode* prev = nullptr;
+    explicit ScopeNode() = default;
+    explicit ScopeNode(ScopeNode* p_Prev)
+    {
+        prev = p_Prev;
+    }
+};
+
+class ScopeTree
+{
+public:
+    ScopeNode* head = nullptr;
+    ScopeNode* tail = nullptr;
+
+    ScopeTree() = default;
+
+    void push()
+    {
+        if (head == nullptr)
+        {
+            head = new ScopeNode();
+            tail = head;
+        }
+        else
+        {
+            ScopeNode* next = new ScopeNode(head);
+            head->next = next;
+            head = next;
+        }
+    }
+
+    void pop()
+    {
+        ScopeNode* temp = head;
+        head = head->prev;
+        delete temp;
+    }
+
+    void set(const std::string& p_Variable, const ScopeVariable& p_Value) const
+    {
+        if (p_Value.local)
+        {
+            head->variables[p_Variable] = p_Value;
+            return;
+        }
+
+        ScopeNode* temp = head;
+
+        while (temp != nullptr && !temp->variables.contains(p_Variable))
+        {
+            temp = temp->prev;
+        }
+
+        if (temp != nullptr)
+        {
+            temp->variables[p_Variable] = p_Value;
+        }
+        else
+        {
+            tail->variables[p_Variable] = p_Value;
+        }
+    }
+
+    NodePointer get(const std::string& p_Variable) const
+    {
+        ScopeNode* temp = head;
+
+        while (temp != nullptr && !temp->variables.contains(p_Variable))
+        {
+            temp = temp->prev;
+        }
+
+        if (temp != nullptr)
+        {
+            return temp->variables[p_Variable].node;
+        }
+        return nullptr;
+    }
+};
+
 
 class Memory
 {
 public:
+    ScopeTree variableScope;
     Scope scope;
 
     static bool isUsedLocalVariable(const NodePointer& p_Node)
@@ -128,7 +259,7 @@ public:
             return false;
         }
 
-        if (auto parent = p_Node->getParent())
+        if (NodePointer parent = p_Node->getParent())
         {
             switch (parent->getKind())
             {
@@ -143,8 +274,8 @@ public:
                 case Kind::Member:
                 case Kind::Method:
                 {
-                    auto lhs_child = parent->getChild<NodePointer>(0);
-                    auto rhs_child = parent->getChild<NodePointer>(1);
+                    NodePointer lhs_child = parent->getChild<NodePointer>(0);
+                    NodePointer rhs_child = parent->getChild<NodePointer>(1);
 
                     if (lhs_child->getKind() != Kind::Identifier
                         || rhs_child->getKind() != Kind::Identifier
@@ -169,7 +300,7 @@ public:
             return false;
         }
 
-        if (auto parent = p_Node->getParent())
+        if (NodePointer parent = p_Node->getParent())
         {
             switch (parent->getKind())
             {
@@ -225,61 +356,14 @@ public:
         }
     };
 
-    static bool isALlowedComparison(const NodePointer& p_Node)
-    {
-        switch (p_Node->getKind())
-        {
-            case Kind::FunctionDefinition:
-            case Kind::TableConstructor:
-            case Kind::String:
-            case Kind::Numeric:
-            case Kind::Boolean:
-            case Kind::Null:
-            {
-                return true;
-            }
-            default:
-            {
-                return false;
-            }
-        }
-    };
 
-    static std::optional<bool> isLessThan(const NodePointer& p_Lhs, const NodePointer& p_Rhs)
-    {
-        if (p_Lhs->isKind(Kind::Numeric) && p_Rhs->isKind(Kind::Numeric))
-        {
-            return p_Lhs->getChild<Number>(0) < p_Rhs->getChild<Number>(0);
-        }
-        else if (p_Lhs->isKind(Kind::String) && p_Rhs->isKind(Kind::String))
-        {
-            const std::string& a = p_Lhs->getChild<std::string>(0);
-            const std::string& b = p_Rhs->getChild<std::string>(0);
-            return a.compare(b) < 0;
-        }
-        return std::nullopt;
-    }
 
-    static std::optional<bool> isLessThanOrEqualTo(const NodePointer& p_Lhs, const NodePointer& p_Rhs)
-    {
-        if (p_Lhs->isKind(Kind::Numeric) && p_Rhs->isKind(Kind::Numeric))
-        {
-            return p_Lhs->getChild<Number>(0) <= p_Rhs->getChild<Number>(0);
-        }
-        else if (p_Lhs->isKind(Kind::String) && p_Rhs->isKind(Kind::String))
-        {
-            const std::string& a = p_Lhs->getChild<std::string>(0);
-            const std::string& b = p_Rhs->getChild<std::string>(0);
-            return a.compare(b) <= 0;
-        }
-        return std::nullopt;
-    }
 
     static void performBinaryOperation(const NodePointer& p_Node)
     {
-        auto op_kind = p_Node->getChild<OperatorKind>(0);
-        auto lhs = p_Node->getChild<NodePointer>(1);
-        auto rhs = p_Node->getChild<NodePointer>(2);
+        OperatorKind op_kind = p_Node->getChild<OperatorKind>(0);
+        NodePointer lhs = p_Node->getChild<NodePointer>(1);
+        NodePointer rhs = p_Node->getChild<NodePointer>(2);
 
         auto swap_with = [&](const NodePointer& p_Other)
         {
@@ -289,36 +373,23 @@ public:
             Node::reset(rhs);
         };
 
+        auto set_node = set_node_wrapper(p_Node, lhs, rhs);
+
         auto compute_arith = [&](auto p_Func)
         {
-            if (auto value = Operation::arithmetic(lhs, rhs, p_Func))
+            if (std::optional<double> value = Operation::arithmetic(lhs, rhs, p_Func))
             {
-                p_Node->setKind(Kind::Numeric);
-                p_Node->setChildren({Number(*value)});
-                Node::reset(lhs);
-                Node::reset(rhs);
+                set_node(Kind::Numeric, {Number(*value)});
             }
         };
 
         auto compute_bit = [&](auto p_Func)
         {
-            if (auto value = Operation::bitwise(lhs, rhs, p_Func))
+            if (std::optional<double> value = Operation::bitwise(lhs, rhs, p_Func))
             {
-                p_Node->setKind(Kind::Numeric);
-                p_Node->setChildren({Number(*value)});
-                Node::reset(lhs);
-                Node::reset(rhs);
+                set_node(Kind::Numeric, {Number(*value)});
             }
         };
-
-        auto set = [&](const Kind& p_Kind, const NodeChildren& p_Children)
-        {
-            p_Node->setKind(p_Kind);
-            p_Node->setChildren(p_Children);
-            Node::reset(lhs);
-            Node::reset(rhs);
-        };
-
 
 
         switch (op_kind)
@@ -327,66 +398,66 @@ public:
             {
                 if (rhs->isKind(Kind::UnaryOperation) && rhs->getChild<OperatorKind>(0) == OperatorKind::UNM)
                 {
-                    auto next_rhs = rhs->getChild<NodePointer>(1);
+                    NodePointer next_rhs = rhs->getChild<NodePointer>(1);
                     Node::swap(rhs, next_rhs);
                     Node::reset(next_rhs);
                     p_Node->getChild<OperatorKind>(0) = OperatorKind::SUB;
-                    compute_arith(Operation::Sub());
+                    compute_arith(Operation::SUB());
                     break;
                 }
                 else if (rhs->isKind(Kind::Numeric) && rhs->getChild<Number>(0).value < 0)
                 {
                     rhs->getChild<Number>(0).value *= -1;
                     p_Node->getChild<OperatorKind>(0) = OperatorKind::SUB;
-                    compute_arith(Operation::Sub());
+                    compute_arith(Operation::SUB());
                     break;
                 }
-                compute_arith(Operation::Add());
+                compute_arith(Operation::ADD());
                 break;
             }
             case OperatorKind::SUB:
             {
-                compute_arith(Operation::Sub());
+                compute_arith(Operation::SUB());
                 break;
             }
             case OperatorKind::MUL:
             {
-                compute_arith(Operation::Mul());
+                compute_arith(Operation::MUL());
                 break;
             }
             case OperatorKind::DIV:
             {
-                compute_arith(Operation::Div());
+                compute_arith(Operation::DIV());
                 break;
             }
             case OperatorKind::IDIV:
             {
-                compute_arith(Operation::Idiv());
+                compute_arith(Operation::IDIV());
                 break;
             }
             case OperatorKind::MOD:
             {
-                compute_arith(Operation::Mod());
+                compute_arith(Operation::MOD());
                 break;
             }
             case OperatorKind::POW:
             {
-                compute_arith(Operation::Pow());
+                compute_arith(Operation::POW());
                 break;
             }
             case OperatorKind::BAND:
             {
-                compute_bit(Operation::Band());
+                compute_bit(Operation::BAND());
                 break;
             }
             case OperatorKind::BOR:
             {
-                compute_bit(Operation::Bor());
+                compute_bit(Operation::BOR());
                 break;
             }
             case OperatorKind::BXOR:
             {
-                compute_bit(Operation::Bxor());
+                compute_bit(Operation::BXOR());
                 break;
             }
             case OperatorKind::SHL:
@@ -401,20 +472,20 @@ public:
             }
             case OperatorKind::CONCAT:
             {
-                auto l = Util::to_string(lhs);
-                auto r = Util::to_string(rhs);
+                std::optional<std::string> l = Util::to_string(lhs);
+                std::optional<std::string> r = Util::to_string(rhs);
 
                 if (l && r)
                 {
-                    set(Kind::String, {Util::quote(Util::unquote(*l) + Util::unquote(*r))});
+                    set_node(Kind::String, {Util::quote(Util::unquote(*l) + Util::unquote(*r))});
                 }
                 break;
             }
 
             case OperatorKind::LAND:
             {
-                auto lhs_e = evaluate(lhs);
-                auto rhs_e = evaluate(lhs);
+                std::optional<bool> lhs_e = evaluate(lhs);
+                std::optional<bool> rhs_e = evaluate(lhs);
 
                 if (lhs_e && rhs_e)
                 {
@@ -424,8 +495,8 @@ public:
             }
             case OperatorKind::LOR:
             {
-                auto lhs_e = evaluate(lhs);
-                auto rhs_e = evaluate(lhs);
+                std::optional<bool> lhs_e = evaluate(lhs);
+                std::optional<bool> rhs_e = evaluate(lhs);
 
                 if (lhs_e && rhs_e)
                 {
@@ -437,64 +508,69 @@ public:
 
             case OperatorKind::LT:
             {
-                if (auto value = isLessThan(lhs, rhs))
+                if (std::optional<bool> value = Operation::compare(lhs, rhs, std::less<>()))
                 {
-                    set(Kind::Boolean, {*value});
+                    set_node(Kind::Boolean, {*value});
                 }
                 break;
             }
             case OperatorKind::GT:
             {
-                if (auto value = isLessThan(rhs, lhs))
+                if (std::optional<bool> value = Operation::compare(lhs, rhs, std::greater<>()))
                 {
-                    set(Kind::Boolean, {*value});
+                    set_node(Kind::Boolean, {*value});
                 }
                 break;
             }
-
+            case OperatorKind::LE:
+            {
+                if (std::optional<bool> value = Operation::compare(lhs, rhs, std::less_equal<>()))
+                {
+                    set_node(Kind::Boolean, {*value});
+                }
+                break;
+            }
+            case OperatorKind::GE:
+            {
+                if (std::optional<bool> value = Operation::compare(lhs, rhs, std::greater_equal<>()))
+                {
+                    set_node(Kind::Boolean, {*value});
+                }
+                break;
+            }
             case OperatorKind::EQ:
             {
-                /*if (auto boolean = Operation::compare(lhs, rhs, std::equal_to<>()))
+                if (std::optional<bool> value = Operation::compare(lhs, rhs, std::equal_to<>()))
                 {
-                    node->setKind(Kind::Boolean);
-                    node->setChildren({*boolean});
-                    Node::reset(lhs);
-                    Node::reset(rhs);
-                }*/
-
-                /*switch (lhs->getKind())
+                    set_node(Kind::Boolean, {*value});
+                    break;
+                }
+                if (Util::is_allowed_comparison(lhs) && Util::is_allowed_comparison(rhs))
                 {
-                    case Kind::String:
+                    if (lhs->getKind() != rhs->getKind())
                     {
+                        set_node(Kind::Boolean, {false});
                         break;
                     }
-                    case Kind::Numeric:
+                }
+                break;
+            }
+            case OperatorKind::NOT_EQ:
+            {
+                if (std::optional<bool> value = Operation::compare(lhs, rhs, std::not_equal_to<>()))
+                {
+                    set_node(Kind::Boolean, {*value});
+                    break;
+                }
+                if (Util::is_allowed_comparison(lhs) && Util::is_allowed_comparison(rhs))
+                {
+                    if (lhs->getKind() != rhs->getKind())
                     {
-                        if (rhs->isKind(Kind::Numeric))
-                        {
-                            std::cout << "bool" << std::endl;
-                            set(Kind::Boolean, {lhs->getChild<Number>(0) == rhs->getChild<Number>(0)});
-                            break;
-                        }
+                        std::cout << p_Node->toString(0) << std::endl;
+                        set_node(Kind::Boolean, {true});
                         break;
                     }
-                    case Kind::Boolean:
-                    {
-                        if (rhs->isKind(Kind::Boolean))
-                        {
-                            std::cout << "bool" << std::endl;
-                            set(Kind::Boolean, {lhs->getChild<bool>(0) == rhs->getChild<bool>(0)});
-                            break;
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
-                }*/
-
-
+                }
                 break;
             }
 
@@ -507,14 +583,14 @@ public:
 
     static void performUnaryOperation(const NodePointer& p_Node)
     {
-        auto op_kind = p_Node->getChild<OperatorKind>(0);
-        auto lhs = p_Node->getChild<NodePointer>(1);
+        OperatorKind op_kind = p_Node->getChild<OperatorKind>(0);
+        NodePointer lhs = p_Node->getChild<NodePointer>(1);
 
         switch (op_kind)
         {
             case OperatorKind::UNM:
             {
-                if (auto value = Operation::unary_arithmetic(lhs, std::negate<>()))
+                if (std::optional<double> value = Operation::unary_arithmetic(lhs, std::negate<>()))
                 {
                     p_Node->setKind(Kind::Numeric);
                     p_Node->setChildren({Number(*value)});
@@ -525,8 +601,8 @@ public:
             {
                 if (lhs->isKind(Kind::String))
                 {
-                    auto s = lhs->getChild<std::string>(0);
-                    auto i = 1;
+                    std::string s = lhs->getChild<std::string>(0);
+                    std::size_t i = 1;
 
                     if (s.starts_with("["))
                     {
@@ -573,9 +649,9 @@ public:
                     }
                     default:
                     {
-                        auto count = get_unary_operation_count(p_Node, op_kind);
-                        auto curr = lhs;
-                        auto next = p_Node;
+                        int count = get_unary_operation_count(p_Node, op_kind);
+                        NodePointer curr = lhs;
+                        NodePointer next = p_Node;
 
                         for (int i = count - 1; i > (count % 2 == 0); i--)
                         {
@@ -592,7 +668,7 @@ public:
             }
             case OperatorKind::BNOT:
             {
-                if (auto value = Operation::unary_bitwise(lhs, std::bit_not<>()))
+                if (std::optional<double> value = Operation::unary_bitwise(lhs, std::bit_not<>()))
                 {
                     p_Node->setKind(Kind::Numeric);
                     p_Node->setChildren({Number(*value)});
@@ -629,9 +705,9 @@ public:
             case Kind::NameList:
             case Kind::ParameterList:
             {
-                auto list = p_Node->getChild<NodeArray>(0);
+                NodeArray list = p_Node->getChild<NodeArray>(0);
 
-                for (auto& var: list)
+                for (NodePointer& var: list)
                 {
                     rename(var);
                 }
@@ -659,8 +735,8 @@ public:
         {
             case Kind::BinaryOperation:
             {
-                auto lhs = p_Node->getChild<NodePointer>(1);
-                auto rhs = p_Node->getChild<NodePointer>(2);
+                NodePointer lhs = p_Node->getChild<NodePointer>(1);
+                NodePointer rhs = p_Node->getChild<NodePointer>(2);
 
                 refactor(lhs);
                 refactor(rhs);
@@ -669,7 +745,7 @@ public:
             }
             case Kind::UnaryOperation:
             {
-                auto expression = p_Node->getChild<NodePointer>(1);
+                NodePointer expression = p_Node->getChild<NodePointer>(1);
 
                 refactor(expression);
 
@@ -687,7 +763,42 @@ public:
                     break;
                 }
 
-                auto& name = p_Node->getChild<std::string>(0);
+                std::string& name = p_Node->getChild<std::string>(0);
+
+                if (NodePointer value = variableScope.get(name))
+                {
+                    bool pass = true;
+                    NodePointer curr = p_Node;
+
+                    while (curr && curr->getKind() != Kind::Chunk)
+                    {
+                        if (curr->getKind() == Kind::VariableList || curr->getKind() == Kind::AttributeList)
+                        {
+                            pass = false;
+                            break;
+                        }
+                        else if (curr->getKind() == Kind::BinaryOperation)
+                        {
+                            break;
+                        }
+                        else if (curr->getKind() == Kind::ForStatement)
+                        {
+                            pass = false;
+                            break;
+                        }
+                        curr = curr->getParent();
+                    }
+
+                    if (pass)
+                    {
+                        // std::cout << "var: " << name << ", value: " << value->toString(0) << std::endl;
+
+                        p_Node->setKind(value->getKind());
+                        p_Node->setChildren(value->getChildren());
+                        // refactor(p_Node);
+                    }
+                }
+
                 if (scope.contains(name))
                 {
                     name = scope.get(name);
@@ -708,8 +819,8 @@ public:
             case Kind::Method:
             case Kind::Index:
             {
-                auto lhs = p_Node->getChild<NodePointer>(0);
-                auto rhs = p_Node->getChild<NodePointer>(1);
+                NodePointer lhs = p_Node->getChild<NodePointer>(0);
+                NodePointer rhs = p_Node->getChild<NodePointer>(1);
                 refactor(lhs);
                 refactor(rhs);
                 break;
@@ -717,29 +828,29 @@ public:
 
             case Kind::TableIndexValue:
             {
-                auto index = p_Node->getChild<NodePointer>(0);
-                auto value = p_Node->getChild<NodePointer>(1);
+                NodePointer index = p_Node->getChild<NodePointer>(0);
+                NodePointer value = p_Node->getChild<NodePointer>(1);
                 refactor(index);
                 refactor(value);
                 break;
             }
             case Kind::TableNameValue:
             {
-                auto index = p_Node->getChild<NodePointer>(0);
-                auto value = p_Node->getChild<NodePointer>(1);
+                NodePointer index = p_Node->getChild<NodePointer>(0);
+                NodePointer value = p_Node->getChild<NodePointer>(1);
                 refactor(index);
                 refactor(value);
                 break;
             }
             case Kind::TableValue:
             {
-                auto value = p_Node->getChild<NodePointer>(0);
+                NodePointer value = p_Node->getChild<NodePointer>(0);
                 refactor(value);
                 break;
             }
             case Kind::TableConstructor:
             {
-                auto field_list = p_Node->getChild<NodePointer>(0);
+                NodePointer field_list = p_Node->getChild<NodePointer>(0);
                 refactor(field_list);
                 break;
             }
@@ -751,9 +862,9 @@ public:
             case Kind::NameList:
             case Kind::FieldList:
             {
-                auto list = p_Node->getChild<NodeArray>(0);
+                NodeArray list = p_Node->getChild<NodeArray>(0);
 
-                for (auto& base_node: list)
+                for (const NodePointer& base_node: list)
                 {
                     refactor(base_node);
                 }
@@ -761,41 +872,44 @@ public:
             }
             case Kind::ArgumentList:
             {
-                auto arguments = p_Node->getChild<NodePointer>(0);
+                NodePointer arguments = p_Node->getChild<NodePointer>(0);
                 refactor(arguments);
                 break;
             }
 
             case Kind::Block:
             {
-                auto statements = p_Node->getChild<NodeArray>(0);
+                NodeArray statements = p_Node->getChild<NodeArray>(0);
 
                 scope.begin();
-                for (auto& statement: statements)
+                variableScope.push();
+
+                for (unsigned int i = 0; i < statements.size(); i++)
                 {
-                    refactor(statement);
+                    refactor(statements[i]);
                 }
                 scope.end();
+                variableScope.pop();
                 break;
             }
             case Kind::Chunk:
             {
-                auto block = p_Node->getChild<NodePointer>(0);
+                NodePointer block = p_Node->getChild<NodePointer>(0);
                 return refactor(block);
             }
 
             case Kind::FunctionCall:
             {
-                auto root = p_Node->getChild<NodePointer>(0);
-                auto args = p_Node->getChild<NodePointer>(1);
+                NodePointer root = p_Node->getChild<NodePointer>(0);
+                NodePointer args = p_Node->getChild<NodePointer>(1);
                 refactor(root);
                 refactor(args);
                 break;
             }
             case Kind::FunctionDefinition:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
-                auto body = p_Node->getChild<NodePointer>(1);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
+                NodePointer body = p_Node->getChild<NodePointer>(1);
                 rename(name);
                 refactor(name);
                 refactor(body);
@@ -803,24 +917,26 @@ public:
             }
             case Kind::FunctionName:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
                 refactor(name);
                 break;
             }
             case Kind::FunctionBody:
             {
-                auto parameters = p_Node->getChild<NodePointer>(0);
-                auto block = p_Node->getChild<NodePointer>(1);
+                NodePointer parameters = p_Node->getChild<NodePointer>(0);
+                NodePointer block = p_Node->getChild<NodePointer>(1);
                 scope.begin();
+                variableScope.push();
                 rename(parameters);
                 refactor(parameters);
                 refactor(block);
                 scope.end();
+                variableScope.pop();
                 break;
             }
             case Kind::Label:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
                 refactor(name);
                 break;
             }
@@ -832,11 +948,12 @@ public:
             case Kind::ForStatement:
             {
                 scope.begin();
+                variableScope.push();
                 if (p_Node->getSize() == 3)
                 {
-                    auto names = p_Node->getChild<NodePointer>(0);
-                    auto expressions = p_Node->getChild<NodePointer>(1);
-                    auto block = p_Node->getChild<NodePointer>(2);
+                    NodePointer names = p_Node->getChild<NodePointer>(0);
+                    NodePointer expressions = p_Node->getChild<NodePointer>(1);
+                    NodePointer block = p_Node->getChild<NodePointer>(2);
                     rename(names);
                     refactor(names);
                     refactor(expressions);
@@ -844,11 +961,17 @@ public:
                 }
                 else
                 {
-                    auto name = p_Node->getChild<NodePointer>(0);
-                    auto init = p_Node->getChild<NodePointer>(1);
-                    auto goal = p_Node->getChild<NodePointer>(2);
-                    auto step = p_Node->getChild<NodePointer>(3);
-                    auto block = p_Node->getChild<NodePointer>(4);
+                    NodePointer name = p_Node->getChild<NodePointer>(0);
+                    NodePointer init = p_Node->getChild<NodePointer>(1);
+                    NodePointer goal = p_Node->getChild<NodePointer>(2);
+                    NodePointer step = p_Node->getChild<NodePointer>(3);
+                    NodePointer block = p_Node->getChild<NodePointer>(4);
+
+                    variableScope.set(name->getChild<std::string>(0), ScopeVariable{
+                        .node = name,
+                        .local = true
+                    });
+
                     rename(name);
                     refactor(name);
                     refactor(init);
@@ -857,54 +980,120 @@ public:
                     refactor(block);
                 }
                 scope.end();
+                variableScope.pop();
                 break;
             }
             case Kind::ReturnStatement:
             {
-                auto expressions = p_Node->getChild<NodePointer>(0);
+                NodePointer expressions = p_Node->getChild<NodePointer>(0);
                 refactor(expressions);
                 break;
             }
             case Kind::RepeatStatement:
             {
-                auto conditional_block = p_Node->getChild<NodePointer>(0);
-                auto condition = conditional_block->getChild<NodePointer>(0);
-                auto block = conditional_block->getChild<NodePointer>(1);
+                NodePointer conditional_block = p_Node->getChild<NodePointer>(0);
+                NodePointer condition = conditional_block->getChild<NodePointer>(0);
+                NodePointer block = conditional_block->getChild<NodePointer>(1);
                 refactor(condition);
                 refactor(block);
                 break;
             }
             case Kind::WhileStatement:
             {
-                auto conditional_block = p_Node->getChild<NodePointer>(0);
-                auto condition = conditional_block->getChild<NodePointer>(0);
-                auto block = conditional_block->getChild<NodePointer>(1);
+                NodePointer conditional_block = p_Node->getChild<NodePointer>(0);
+                NodePointer condition = conditional_block->getChild<NodePointer>(0);
+                NodePointer block = conditional_block->getChild<NodePointer>(1);
                 refactor(condition);
                 refactor(block);
                 break;
             }
             case Kind::IfStatement:
             {
-                auto statements = p_Node->getChild<NodeArray>(0);
+                NodeArray& statements = p_Node->getChild<NodeArray>(0);
 
-                for (const auto& conditional_block: statements)
+                NodeArray& parent_children = p_Node->getParent()->getChild<NodeArray>(0);
+                std::size_t index = 0;
+
+                while (parent_children[index] != p_Node)
                 {
-                    auto condition = conditional_block->getChild<NodePointer>(0);
-                    auto block = conditional_block->getChild<NodePointer>(1);
+                    index++;
+                }
+
+                auto it = statements.begin();
+                while (it != statements.end())
+                {
+                    const NodePointer& conditional_block = *it;
+                    NodePointer condition = conditional_block->getChild<NodePointer>(0);
+                    NodePointer block = conditional_block->getChild<NodePointer>(1);
                     refactor(condition);
+
+                    if (statements.size() == 1 && condition == nullptr)
+                    {
+                        parent_children.erase(parent_children.begin() + index);
+                        refactor(block);
+
+                        if (block != nullptr)
+                        {
+                            for (const NodePointer& child: block->getChild<NodeArray>(0))
+                            {
+                                parent_children.insert(parent_children.begin() + index, child);
+                                child->setParent(p_Node->getParent());
+                                index++;
+                            }
+                            Node::reset(conditional_block);
+                            Node::reset(block);
+                            Node::reset(p_Node);
+                        }
+                        break;
+                    }
+                    else if (condition != nullptr && condition->isKind(Kind::Boolean))
+                    {
+                        if (condition->getChild<bool>(0))
+                        {
+                            parent_children.erase(parent_children.begin() + index);
+                            refactor(block);
+
+                            if (block != nullptr)
+                            {
+                                for (const NodePointer& child: block->getChild<NodeArray>(0))
+                                {
+                                    parent_children.insert(parent_children.begin() + index, child);
+                                    child->setParent(p_Node->getParent());
+                                    index++;
+                                }
+                                Node::reset(conditional_block);
+                                Node::reset(condition);
+                                Node::reset(block);
+                                Node::reset(p_Node);
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            it = statements.erase(it);
+                            continue;
+                        }
+                    }
+
                     refactor(block);
+                    it++;
+                }
+
+                if (statements.empty())
+                {
+                    parent_children.erase(parent_children.begin() + index);
                 }
                 break;
             }
             case Kind::DoStatement:
             {
-                auto block = p_Node->getChild<NodePointer>(0);
+                NodePointer block = p_Node->getChild<NodePointer>(0);
                 refactor(block);
                 break;
             }
             case Kind::GotoStatement:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
                 refactor(name);
                 break;
             }
@@ -914,22 +1103,59 @@ public:
             }
             case Kind::LocalStatement:
             {
-                auto statement = p_Node->getChild<NodePointer>(0);
+                NodePointer statement = p_Node->getChild<NodePointer>(0);
                 rename(statement);
                 refactor(statement);
                 break;
             }
             case Kind::AssignmentStatement:
             {
-                auto lhs = p_Node->getChild<NodePointer>(0);
-                auto rhs = p_Node->getChild<NodePointer>(1);
+                NodePointer lhs = p_Node->getChild<NodePointer>(0);
+                NodePointer rhs = p_Node->getChild<NodePointer>(1);
 
                 refactor(rhs);
-                // if (node->getParent()->getKind() == Kind::LocalStatement)
+                refactor(lhs);
+
+                bool local = p_Node->getParent()->getKind() == Kind::LocalStatement;
+
+                if (lhs->isKind(Kind::VariableList) || lhs->isKind(Kind::AttributeList))
+                {
+                    int i = 0;
+                    for (const NodePointer& node : lhs->getChild<NodeArray>(0))
+                    {
+                        if (node->isKind(Kind::Identifier))
+                        {
+                            std::string variable = node->getChild<std::string>(0);
+                            NodePointer value = rhs->getChild<NodeArray>(0)[i];
+
+                            // std::cout << "var: " << variable << ", value: " << value->toString(0) << std::endl;
+
+                            if (value->isKind(Kind::Numeric))
+                            {
+                                variableScope.set(variable, ScopeVariable{
+                                    .node = value,
+                                    .local = local
+                                });
+                                // std::cout << node->toString(0) << std::endl;
+                                // std::cout << rhs->getChild<NodeArray>(0)[i]->toString(0) << std::endl;
+                                // std::cout << std::endl;
+                            }
+                            else
+                            {
+                                variableScope.set(variable, ScopeVariable{
+                                    .node = node,
+                                    .local = local
+                                });
+                            }
+                        }
+                        i++;
+                    }
+                }
+
+                // if (p_Node->getParent()->getKind() == Kind::LocalStatement)
                 {
                     rename(lhs);
                 }
-                refactor(lhs);
                 break;
             }
 
@@ -950,13 +1176,15 @@ public:
         std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
         Parser parser;
-        auto chunk = parser.parse(p_Source);
+        NodePointer chunk = parser.parse(p_Source);
 
         Memory memory;
         memory.refactor(chunk);
 
+        // std::cout << chunk->toString(0) << std::endl;
 
-        auto generated_string = toString(chunk, 0);
+
+        std::string generated_string = toString(chunk, 0);
 
         if (!generated_string.empty() && generated_string.back() == '\n')
         {
@@ -1020,7 +1248,7 @@ public:
             case OperatorKind::GT:
             case OperatorKind::LE:
             case OperatorKind::GE:
-            case OperatorKind::INEQ:
+            case OperatorKind::NOT_EQ:
             case OperatorKind::EQ:
             {
                 return 3;
@@ -1097,9 +1325,9 @@ public:
         {
             case Kind::BinaryOperation:
             {
-                auto bin_op = p_Node->getChild<OperatorKind>(0);
-                auto lhs = p_Node->getChild<NodePointer>(1);
-                auto rhs = p_Node->getChild<NodePointer>(2);
+                OperatorKind bin_op = p_Node->getChild<OperatorKind>(0);
+                NodePointer lhs = p_Node->getChild<NodePointer>(1);
+                NodePointer rhs = p_Node->getChild<NodePointer>(2);
 
                 std::string lhs_fmt = "{0}";
                 std::string rhs_fmt = "{0}";
@@ -1107,7 +1335,7 @@ public:
 
                 if (lhs->isKind(Kind::BinaryOperation))
                 {
-                    auto lhs_op = lhs->getChild<OperatorKind>(0);
+                    OperatorKind lhs_op = lhs->getChild<OperatorKind>(0);
 
                     if (Util::get_operator(bin_op) == "^" || Util::get_operator(bin_op) == ".." || getPrecedence(lhs_op) < getPrecedence(bin_op))
                     {
@@ -1117,7 +1345,7 @@ public:
 
                 if (rhs->isKind(Kind::BinaryOperation))
                 {
-                    auto rhs_op = rhs->getChild<OperatorKind>(0);
+                    OperatorKind rhs_op = rhs->getChild<OperatorKind>(0);
 
                     if (getPrecedence(rhs_op) < getPrecedence(bin_op))
                     {
@@ -1134,8 +1362,8 @@ public:
             }
             case Kind::UnaryOperation:
             {
-                auto un_op = p_Node->getChild<OperatorKind>(0);
-                auto expression = p_Node->getChild<NodePointer>(1);
+                OperatorKind un_op = p_Node->getChild<OperatorKind>(0);
+                NodePointer expression = p_Node->getChild<NodePointer>(1);
 
                 std::string fmt = "{0}{1}{2}";
 
@@ -1143,7 +1371,7 @@ public:
                 {
                     case Kind::UnaryOperation:
                     {
-                        auto inner_operator = expression->getChild<OperatorKind>(0);
+                        OperatorKind inner_operator = expression->getChild<OperatorKind>(0);
                         if (un_op == OperatorKind::UNM && un_op == inner_operator)
                         {
                             fmt = "{0}{1}({2})";
@@ -1152,7 +1380,7 @@ public:
                     }
                     case Kind::BinaryOperation:
                     {
-                        auto bin_op = expression->getChild<OperatorKind>(0);
+                        OperatorKind bin_op = expression->getChild<OperatorKind>(0);
                         if (getPrecedence(bin_op) < getPrecedence(un_op, true))
                         {
                             fmt = "{0}{1}({2})";
@@ -1192,49 +1420,49 @@ public:
 
             case Kind::Attribute:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
-                auto attribute = p_Node->getChild<NodePointer>(1);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
+                NodePointer attribute = p_Node->getChild<NodePointer>(1);
                 return format("{0}<{1}>", toString(name, p_Depth), toString(attribute, p_Depth));
             }
             case Kind::Member:
             {
-                auto root = p_Node->getChild<NodePointer>(0);
-                auto index = p_Node->getChild<NodePointer>(1);
+                NodePointer root = p_Node->getChild<NodePointer>(0);
+                NodePointer index = p_Node->getChild<NodePointer>(1);
                 return format("{0}.{1}", toString(root, p_Depth), toString(index, p_Depth));
             }
             case Kind::Method:
             {
-                auto root = p_Node->getChild<NodePointer>(0);
-                auto index = p_Node->getChild<NodePointer>(1);
+                NodePointer root = p_Node->getChild<NodePointer>(0);
+                NodePointer index = p_Node->getChild<NodePointer>(1);
                 return format("{0}:{1}", toString(root, p_Depth), toString(index, p_Depth));
             }
             case Kind::Index:
             {
-                auto root = p_Node->getChild<NodePointer>(0);
-                auto index = p_Node->getChild<NodePointer>(1);
+                NodePointer root = p_Node->getChild<NodePointer>(0);
+                NodePointer index = p_Node->getChild<NodePointer>(1);
                 return format("{0}[{1}]", toString(root, p_Depth), toString(index, p_Depth));
             }
 
             case Kind::TableIndexValue:
             {
-                auto index = p_Node->getChild<NodePointer>(0);
-                auto value = p_Node->getChild<NodePointer>(1);
+                NodePointer index = p_Node->getChild<NodePointer>(0);
+                NodePointer value = p_Node->getChild<NodePointer>(1);
                 return format("{0}[{1}] = {2}", space(p_Depth), toString(index, p_Depth), toString(value, p_Depth));
             }
             case Kind::TableNameValue:
             {
-                auto index = p_Node->getChild<NodePointer>(0);
-                auto value = p_Node->getChild<NodePointer>(1);
+                NodePointer index = p_Node->getChild<NodePointer>(0);
+                NodePointer value = p_Node->getChild<NodePointer>(1);
                 return format("{0}{1} = {2}", space(p_Depth), toString(index, p_Depth), toString(value, p_Depth));
             }
             case Kind::TableValue:
             {
-                auto value = p_Node->getChild<NodePointer>(0);
+                NodePointer value = p_Node->getChild<NodePointer>(0);
                 return format("{0}{1}", space(p_Depth), toString(value, p_Depth));
             }
             case Kind::TableConstructor:
             {
-                if (auto child = p_Node->getChild<NodePointer>(0))
+                if (NodePointer child = p_Node->getChild<NodePointer>(0))
                 {
                     std::string fmt = "{{{0}{1}{2}{3}}}";
                     std::string str = toString(child, p_Depth + 1);
@@ -1256,30 +1484,30 @@ public:
             case Kind::VariableList:
             case Kind::NameList:
             {
-                auto list = p_Node->getChild<NodeArray>(0);
+                NodeArray list = p_Node->getChild<NodeArray>(0);
                 return concat(list, ", ", p_Depth);
             }
             case Kind::FieldList:
             {
-                auto list = p_Node->getChild<NodeArray>(0);
+                NodeArray list = p_Node->getChild<NodeArray>(0);
                 return concat(list, ",\n", p_Depth);
             }
             case Kind::ArgumentList:
             {
-                auto arguments = p_Node->getChild<NodePointer>(0);
+                NodePointer arguments = p_Node->getChild<NodePointer>(0);
                 return format("({0})", toString(arguments, p_Depth));
             }
 
             case Kind::Block:
             {
-                auto statements = p_Node->getChild<NodeArray>(0);
+                NodeArray statements = p_Node->getChild<NodeArray>(0);
                 std::string statement_string;
 
-                auto n = statements.size();
+                std::size_t n = statements.size();
                 for (std::size_t i = 0; i < n; i++)
                 {
-                    auto& statement = statements[i];
-                    auto string = toString(statement, p_Depth);
+                    NodePointer statement = statements[i];
+                    std::string string = toString(statement, p_Depth);
 
                     if (statement->getKind() == Kind::Semicolon)
                     {
@@ -1287,7 +1515,7 @@ public:
                             continue;
                         }
 
-                        auto j = i;
+                        std::size_t j = i;
                         while (i + 1 < n && statements[i + 1]->getKind() == Kind::Semicolon)
                         {
                             i++;
@@ -1303,6 +1531,10 @@ public:
                             statement_string.pop_back();
                         }
                     }
+                    else if (statement->getKind() == Kind::Unknown)
+                    {
+                        continue;
+                    }
                     else
                     {
                         statement_string += space(p_Depth);
@@ -1314,14 +1546,14 @@ public:
             }
             case Kind::Chunk:
             {
-                auto block = p_Node->getChild<NodePointer>(0);
+                NodePointer block = p_Node->getChild<NodePointer>(0);
                 return toString(block);
             }
 
             case Kind::FunctionCall:
             {
-                auto root = p_Node->getChild<NodePointer>(0);
-                auto args = p_Node->getChild<NodePointer>(1);
+                NodePointer root = p_Node->getChild<NodePointer>(0);
+                NodePointer args = p_Node->getChild<NodePointer>(1);
                 std::string fmt;
 
                 switch (root->getKind())
@@ -1346,19 +1578,19 @@ public:
             }
             case Kind::FunctionDefinition:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
-                auto body = p_Node->getChild<NodePointer>(1);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
+                NodePointer body = p_Node->getChild<NodePointer>(1);
                 return format("function{0}{1}{2}", !name ? "" : " ", toString(name, p_Depth), toString(body, p_Depth));
             }
             case Kind::FunctionName:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
                 return toString(name, p_Depth);
             }
             case Kind::FunctionBody:
             {
-                auto parameters = p_Node->getChild<NodePointer>(0);
-                auto block = p_Node->getChild<NodePointer>(1);
+                NodePointer parameters = p_Node->getChild<NodePointer>(0);
+                NodePointer block = p_Node->getChild<NodePointer>(1);
                 std::string fmt = "({0}){1}{2}{3}end";
 
                 if (!block)
@@ -1370,7 +1602,7 @@ public:
             }
             case Kind::Label:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
                 return format("::{0}::", toString(name, p_Depth));
             }
             case Kind::Semicolon:
@@ -1382,9 +1614,9 @@ public:
             {
                 if (p_Node->getSize() == 3)
                 {
-                    auto names = p_Node->getChild<NodePointer>(0);
-                    auto expressions = p_Node->getChild<NodePointer>(1);
-                    auto block = p_Node->getChild<NodePointer>(2);
+                    NodePointer names = p_Node->getChild<NodePointer>(0);
+                    NodePointer expressions = p_Node->getChild<NodePointer>(1);
+                    NodePointer block = p_Node->getChild<NodePointer>(2);
 
                     return format(
                         "for {0} in {1} do{2}{3}{4}end",
@@ -1397,11 +1629,11 @@ public:
                 }
                 else
                 {
-                    auto name = p_Node->getChild<NodePointer>(0);
-                    auto init = p_Node->getChild<NodePointer>(1);
-                    auto goal = p_Node->getChild<NodePointer>(2);
-                    auto step = p_Node->getChild<NodePointer>(3);
-                    auto block = p_Node->getChild<NodePointer>(4);
+                    NodePointer name = p_Node->getChild<NodePointer>(0);
+                    NodePointer init = p_Node->getChild<NodePointer>(1);
+                    NodePointer goal = p_Node->getChild<NodePointer>(2);
+                    NodePointer step = p_Node->getChild<NodePointer>(3);
+                    NodePointer block = p_Node->getChild<NodePointer>(4);
 
                     std::string fmt = "for {0} = {1}, {2}, {3} do{4}{5}{6}end";
 
@@ -1424,7 +1656,7 @@ public:
             }
             case Kind::ReturnStatement:
             {
-                auto expressions = p_Node->getChild<NodePointer>(0);
+                NodePointer expressions = p_Node->getChild<NodePointer>(0);
 
                 if (!expressions)
                 {
@@ -1434,9 +1666,9 @@ public:
             }
             case Kind::RepeatStatement:
             {
-                auto conditional_block = p_Node->getChild<NodePointer>(0);
-                auto condition = conditional_block->getChild<NodePointer>(0);
-                auto block = conditional_block->getChild<NodePointer>(1);
+                NodePointer conditional_block = p_Node->getChild<NodePointer>(0);
+                NodePointer condition = conditional_block->getChild<NodePointer>(0);
+                NodePointer block = conditional_block->getChild<NodePointer>(1);
 
                 return format(
                     "repeat{0}{1}{2}until {3}",
@@ -1448,9 +1680,9 @@ public:
             }
             case Kind::WhileStatement:
             {
-                auto conditional_block = p_Node->getChild<NodePointer>(0);
-                auto condition = conditional_block->getChild<NodePointer>(0);
-                auto block = conditional_block->getChild<NodePointer>(1);
+                NodePointer conditional_block = p_Node->getChild<NodePointer>(0);
+                NodePointer condition = conditional_block->getChild<NodePointer>(0);
+                NodePointer block = conditional_block->getChild<NodePointer>(1);
 
                 return format(
                     "while {0} do{1}{2}{3}end",
@@ -1462,14 +1694,14 @@ public:
             }
             case Kind::IfStatement:
             {
-                auto statements = p_Node->getChild<NodeArray>(0);
+                NodeArray statements = p_Node->getChild<NodeArray>(0);
 
                 std::string if_string;
                 for (int i = 0; i < statements.size(); i++)
                 {
-                    auto conditional_block = statements[i];
-                    auto condition = conditional_block->getChild<NodePointer>(0);
-                    auto block = conditional_block->getChild<NodePointer>(1);
+                    NodePointer conditional_block = statements[i];
+                    NodePointer condition = conditional_block->getChild<NodePointer>(0);
+                    NodePointer block = conditional_block->getChild<NodePointer>(1);
 
                     std::string fmt = "if {1} then{2}{3}";
 
@@ -1482,8 +1714,7 @@ public:
                         fmt = "{0}elseif {1} then{2}{3}";
                     }
 
-                    if_string +=
-                        format(fmt, space(p_Depth), toString(condition, p_Depth), NEW_LINE, toString(block, p_Depth + 1));
+                    if_string += format(fmt, space(p_Depth), toString(condition, p_Depth), NEW_LINE, toString(block, p_Depth + 1));
                 }
 
                 if_string += format("{0}end", space(p_Depth));
@@ -1491,12 +1722,12 @@ public:
             }
             case Kind::DoStatement:
             {
-                auto block = p_Node->getChild<NodePointer>(0);
+                NodePointer block = p_Node->getChild<NodePointer>(0);
                 return format("do{0}{1}{2}end", NEW_LINE, toString(block, p_Depth + 1), space(p_Depth));
             }
             case Kind::GotoStatement:
             {
-                auto name = p_Node->getChild<NodePointer>(0);
+                NodePointer name = p_Node->getChild<NodePointer>(0);
                 return format("goto {0}", toString(name, p_Depth));
             }
             case Kind::BreakStatement:
@@ -1505,14 +1736,15 @@ public:
             }
             case Kind::LocalStatement:
             {
-                auto statement = p_Node->getChild<NodePointer>(0);
+                NodePointer statement = p_Node->getChild<NodePointer>(0);
                 return format("local {0}", toString(statement, p_Depth));
             }
             case Kind::AssignmentStatement:
             {
-                auto lhs = p_Node->getChild<NodePointer>(0);
-                auto rhs = p_Node->getChild<NodePointer>(1);
+                NodePointer lhs = p_Node->getChild<NodePointer>(0);
+                NodePointer rhs = p_Node->getChild<NodePointer>(1);
                 return format("{0} = {1}", toString(lhs, p_Depth), toString(rhs, p_Depth));
+                // return format("{0} = {1};print([===[{0} =]===], {0})", toString(lhs, p_Depth), toString(rhs, p_Depth));
             }
 
             default:

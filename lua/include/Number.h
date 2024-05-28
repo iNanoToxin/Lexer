@@ -23,7 +23,7 @@ public:
         static const char* hex = "0123456789ABCDEF";
         std::string hex_string;
 
-        auto n = std::abs(value);
+        double n = std::abs(value);
 
         if (n == 0)
         {
@@ -50,8 +50,8 @@ public:
 
     std::string toString() const
     {
-        auto str = std::to_string(value);
-        auto sep = str.find_first_of('.');
+        std::string str = std::to_string(value);
+        std::size_t sep = str.find_first_of('.');
 
         if (sep != std::string::npos)
         {

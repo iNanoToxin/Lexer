@@ -4,6 +4,7 @@
 #include <Node.h>
 #include <optional>
 #include <codecvt>
+#include <functional>
 
 #define assert(condition, message)                            \
     do {                                                      \
@@ -81,40 +82,51 @@ namespace Util
 
     std::optional<std::string> to_string(const NodePointer& p_Node);
     std::optional<std::string> to_string(const std::string& p_String);
+
+    bool is_allowed_comparison(const NodePointer& p_Node);
 }
 
 namespace Operation
 {
-    using Add = std::plus<>;
-    using Sub = std::minus<>;
-    using Mul = std::multiplies<>;
-    using Div = std::divides<>;
+    using ADD = std::plus<>;
+    using SUB = std::minus<>;
+    using MUL = std::multiplies<>;
+    using DIV = std::divides<>;
 
-    struct Idiv
+    struct IDIV
     {
         constexpr double operator()(double p_Lhs, double p_Rhs) const
         {
             return std::floor(p_Lhs / p_Rhs);
         }
     };
-    struct Pow
+    struct POW
     {
         constexpr double operator()(double p_Lhs, double p_Rhs) const
         {
             return std::pow(p_Lhs, p_Rhs);
         }
     };
-    struct Mod
+    struct MOD
     {
         constexpr double operator()(double p_Lhs, double p_Rhs) const
         {
-            return std::fmod(p_Lhs, p_Rhs);
+            // return std::fmod(p_Lhs, p_Rhs);
+            return p_Lhs - std::floor(p_Lhs / p_Rhs) * p_Rhs;
         }
     };
 
-    using Band = std::bit_and<>;
-    using Bor = std::bit_or<>;
-    using Bxor = std::bit_xor<>;
+    using BAND = std::bit_and<>;
+    using BOR = std::bit_or<>;
+    using BXOR = std::bit_xor<>;
+
+    using LT = std::less<>;
+    using GT = std::greater<>;
+    using LE = std::less_equal<>;
+    using GE = std::greater_equal<>;
+    using EQ = std::equal_to<>;
+    using NOT_EQ = std::not_equal_to<>;
+
 
     struct Shl
     {
@@ -134,8 +146,8 @@ namespace Operation
     template <typename T>
     std::optional<double> arithmetic(const NodePointer& p_Lhs, const NodePointer& p_Rhs, T&& p_Func)
     {
-        auto n = Util::to_number(p_Lhs);
-        auto m = Util::to_number(p_Rhs);
+        std::optional<double> n = Util::to_number(p_Lhs);
+        std::optional<double> m = Util::to_number(p_Rhs);
 
         if (n && m)
         {
@@ -172,7 +184,7 @@ namespace Operation
     template <typename T>
     std::optional<double> unary_arithmetic(const NodePointer& p_Lhs, T&& p_Func)
     {
-        if (auto value = Util::to_number(p_Lhs))
+        if (std::optional<double> value = Util::to_number(p_Lhs))
         {
             return p_Func(*value);
         }
@@ -192,9 +204,19 @@ namespace Operation
     template <typename T>
     std::optional<bool> compare(const NodePointer& p_Lhs, const NodePointer& p_Rhs, T&& p_Func)
     {
-        if (p_Lhs->isKind(Kind::Numeric) && p_Rhs->isKind(Kind::Numeric))
+        if (p_Lhs->isKind(Kind::String) && p_Rhs->isKind(Kind::String))
+        {
+            const std::string& string_left = p_Lhs->getChild<std::string>(0);
+            const std::string& string_right = p_Rhs->getChild<std::string>(0);
+            return p_Func(string_left.compare(string_right), 0);
+        }
+        else if (p_Lhs->isKind(Kind::Numeric) && p_Rhs->isKind(Kind::Numeric))
         {
             return p_Func(p_Lhs->getChild<Number>(0).value, p_Rhs->getChild<Number>(0).value);
+        }
+        else if (p_Lhs->isKind(Kind::Boolean) && p_Rhs->isKind(Kind::Boolean))
+        {
+            return p_Func(p_Lhs->getChild<bool>(0), p_Rhs->getChild<bool>(0));
         }
         return std::nullopt;
     }
