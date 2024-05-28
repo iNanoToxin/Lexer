@@ -11,4 +11,4 @@ public:
     virtual void visit(NumberNode& node) = 0;
 };
 
-#endif // ASTVISITOR_H
+#endif

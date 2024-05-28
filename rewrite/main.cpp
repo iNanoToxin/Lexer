@@ -1,7 +1,7 @@
 #include <iostream>
-#include "BinaryOpNode.h"
-#include "NumberNode.h"
-#include "EvalVisitor.h"
+#include "ast/binary_op_node.h"
+#include "ast/number_node.h"
+#include "ast/eval_visitor.h"
 
 int main() {
     // Create an AST for the expression (5 + 3) * 2

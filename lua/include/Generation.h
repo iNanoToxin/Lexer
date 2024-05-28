@@ -230,17 +230,17 @@ public:
 
     NodePointer get(const std::string& p_Variable) const
     {
-        ScopeNode* temp = head;
-
-        while (temp != nullptr && !temp->variables.contains(p_Variable))
-        {
-            temp = temp->prev;
-        }
-
-        if (temp != nullptr)
-        {
-            return temp->variables[p_Variable].node;
-        }
+        // ScopeNode* temp = head;
+        //
+        // while (temp != nullptr && !temp->variables.contains(p_Variable))
+        // {
+        //     temp = temp->prev;
+        // }
+        //
+        // if (temp != nullptr)
+        // {
+        //     return temp->variables[p_Variable].node;
+        // }
         return nullptr;
     }
 };
@@ -685,7 +685,7 @@ public:
     void rename(const NodePointer& p_Node)
     {
         {
-            return;
+            // return;
         }
         if (!p_Node)
         {
@@ -1743,8 +1743,36 @@ public:
             {
                 NodePointer lhs = p_Node->getChild<NodePointer>(0);
                 NodePointer rhs = p_Node->getChild<NodePointer>(1);
-                return format("{0} = {1}", toString(lhs, p_Depth), toString(rhs, p_Depth));
-                // return format("{0} = {1};print([===[{0} =]===], {0})", toString(lhs, p_Depth), toString(rhs, p_Depth));
+                // return format("{0} = {1}", toString(lhs, p_Depth), toString(rhs, p_Depth));
+
+                NodeArray array = lhs->getChild<NodeArray>(0);
+                std::string str;
+
+                str.append(space(p_Depth));
+                str.append("printf(");
+                str.append("\"");
+                for (const NodePointer& node : array)
+                {
+                    str.append(toString(node, p_Depth));
+                    str.append(", ");
+                }
+                str.erase(str.end() - 2, str.end());
+                str.append(" = ");
+                str.append("\", ");
+
+                for (const NodePointer& node : array)
+                {
+                    str.append(toString(node, p_Depth));
+                    str.append(", ");
+                    // str.append("\", \"");
+                    // str.append(", ");
+                }
+                str.erase(str.end() - 2, str.end());
+                str.append(")");
+
+                std::cout << str << std::endl;
+
+                return format("{0} = {1}\n{2}", toString(lhs, p_Depth), toString(rhs, p_Depth), str);
             }
 
             default:

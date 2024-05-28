@@ -1,7 +1,7 @@
 #ifndef EVALVISITOR_H
 #define EVALVISITOR_H
 
-#include "ASTVisitor.h"
+#include "ast_visitor.h"
 
 class EvalVisitor : public ASTVisitor {
 public:
@@ -14,4 +14,4 @@ private:
     int result;
 };
 
-#endif // EVALVISITOR_H
+#endif

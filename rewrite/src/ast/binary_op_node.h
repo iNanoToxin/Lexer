@@ -1,9 +1,8 @@
 #ifndef BINARYOPNODE_H
 #define BINARYOPNODE_H
 
-#include "ExpressionNode.h"
+#include "expression_node.h"
 
-// Node for binary operations
 class BinaryOpNode : public ExpressionNode {
 public:
     BinaryOpNode(ExpressionNodePtr left, char op, ExpressionNodePtr right)

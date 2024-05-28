@@ -1,6 +1,6 @@
-#include "EvalVisitor.h"
-#include "BinaryOpNode.h"
-#include "NumberNode.h"
+#include "eval_visitor.h"
+#include "binary_op_node.h"
+#include "number_node.h"
 
 void EvalVisitor::visit(BinaryOpNode& node) {
     node.left->accept(*this);

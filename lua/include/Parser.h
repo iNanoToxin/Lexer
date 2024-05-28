@@ -1003,7 +1003,7 @@ public:
         return;
 #endif
 
-        std::string path = "../tests/output_ast.lua";
+        std::string path = R"(C:\Users\dylan\CLionProjects\Lexer\lua\tests\output_ast.lua)";
         NodePointer ptr = getChunk();
         assert(ptr, "failed to parse");
 

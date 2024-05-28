@@ -4,7 +4,7 @@ Key = "keyhere"
 
 
 local getfenv = function()
-return setmetatable({Key = Key, print = print, math = math, string = string}, {__index = function(...) print(...) end})
+    return _G
 end
 
 local a, b = {}, 0

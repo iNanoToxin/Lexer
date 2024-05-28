@@ -1,9 +1,8 @@
 #ifndef NUMBERNODE_H
 #define NUMBERNODE_H
 
-#include "ExpressionNode.h"
+#include "expression_node.h"
 
-// Node for numeric literals
 class NumberNode : public ExpressionNode {
 public:
     NumberNode(int value) : value(value) {}

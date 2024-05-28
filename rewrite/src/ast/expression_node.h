@@ -1,10 +1,9 @@
 #ifndef EXPRESSIONNODE_H
 #define EXPRESSIONNODE_H
 
-#include "ASTNode.h"
+#include "ast_node.h"
 #include <memory>
 
-// Base class for all expression nodes
 class ExpressionNode : public ASTNode {
 public:
     virtual ~ExpressionNode() = default;
