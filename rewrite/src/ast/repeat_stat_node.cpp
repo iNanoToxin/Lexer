@@ -7,7 +7,7 @@ void RepeatStatNode::accept(AstVisitor* p_Visitor) {
 
 void RepeatStatNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    block->destroy();
+    condition->destroy();
     delete this;
 }

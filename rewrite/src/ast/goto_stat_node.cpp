@@ -7,7 +7,6 @@ void GotoStatNode::accept(AstVisitor* p_Visitor) {
 
 void GotoStatNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    label->destroy();
     delete this;
 }

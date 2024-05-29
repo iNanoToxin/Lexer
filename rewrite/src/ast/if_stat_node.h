@@ -1,15 +1,16 @@
 #ifndef IF_STAT_NODE_H
 #define IF_STAT_NODE_H
 
+#include <utility>
+#include <vector>
 #include "expression_node.h"
 
 class IfStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    std::vector<ExpressionNode*> conditionalBlocks;
 
-    IfStatNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    explicit IfStatNode(std::vector<ExpressionNode*> p_ConditionalBlocks) : conditionalBlocks(std::move(p_ConditionalBlocks)) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

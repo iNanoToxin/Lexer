@@ -7,7 +7,7 @@ void FuncCallNode::accept(AstVisitor* p_Visitor) {
 
 void FuncCallNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    root->destroy();
+    args->destroy();
     delete this;
 }

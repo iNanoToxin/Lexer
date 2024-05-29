@@ -7,7 +7,6 @@ void LocalStatNode::accept(AstVisitor* p_Visitor) {
 
 void LocalStatNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    statement->destroy();
     delete this;
 }

@@ -6,10 +6,10 @@
 class WhileStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* condition;
+    ExpressionNode* block;
 
-    WhileStatNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    explicit WhileStatNode(ExpressionNode* p_Condition, ExpressionNode* p_Block) : condition(p_Condition), block(p_Block) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

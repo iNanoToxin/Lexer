@@ -7,7 +7,9 @@ void IfStatNode::accept(AstVisitor* p_Visitor) {
 
 void IfStatNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    for (ExpressionNode* node : conditionalBlocks)
+    {
+        node->destroy();
+    }
     delete this;
 }

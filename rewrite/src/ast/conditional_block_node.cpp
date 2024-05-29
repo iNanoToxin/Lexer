@@ -7,7 +7,7 @@ void ConditionalBlockNode::accept(AstVisitor* p_Visitor) {
 
 void ConditionalBlockNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    condition->destroy();
+    block->destroy();
     delete this;
 }

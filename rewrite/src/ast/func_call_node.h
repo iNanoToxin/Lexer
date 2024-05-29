@@ -6,10 +6,10 @@
 class FuncCallNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* root;
+    ExpressionNode* args;
 
-    FuncCallNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    explicit FuncCallNode(ExpressionNode* p_Root, ExpressionNode* p_Args) : root(p_Root), args(p_Args) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

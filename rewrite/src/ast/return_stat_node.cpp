@@ -7,7 +7,6 @@ void ReturnStatNode::accept(AstVisitor* p_Visitor) {
 
 void ReturnStatNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    args->destroy();
     delete this;
 }

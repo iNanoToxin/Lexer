@@ -7,7 +7,9 @@ void VariableListNode::accept(AstVisitor* p_Visitor) {
 
 void VariableListNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    for (ExpressionNode* node : list)
+    {
+        node->destroy();
+    }
     delete this;
 }

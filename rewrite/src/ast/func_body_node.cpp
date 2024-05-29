@@ -7,7 +7,7 @@ void FuncBodyNode::accept(AstVisitor* p_Visitor) {
 
 void FuncBodyNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    parameters->destroy();
+    block->destroy();
     delete this;
 }

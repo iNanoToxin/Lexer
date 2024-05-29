@@ -7,7 +7,7 @@ void AssignmentStatNode::accept(AstVisitor* p_Visitor) {
 
 void AssignmentStatNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    variableList->destroy();
+    expressionList->destroy();
     delete this;
 }

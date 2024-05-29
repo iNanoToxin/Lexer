@@ -6,10 +6,18 @@
 class ForStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* name = nullptr;
+    ExpressionNode* init = nullptr;
+    ExpressionNode* goal = nullptr;
+    ExpressionNode* step = nullptr;
+    ExpressionNode* block = nullptr;
 
-    ForStatNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    ExpressionNode* nameList = nullptr;
+    ExpressionNode* expressionList = nullptr;
+
+    explicit ForStatNode(ExpressionNode* p_Name, ExpressionNode* p_Init, ExpressionNode* p_Goal, ExpressionNode* p_Step, ExpressionNode* p_Block) : name(p_Name), init(p_Init), goal(p_Goal), step(p_Step), block(p_Block) {}
+
+    explicit ForStatNode(ExpressionNode* p_NameList, ExpressionNode* p_ExpressionList) : nameList(p_NameList), expressionList(p_ExpressionList) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

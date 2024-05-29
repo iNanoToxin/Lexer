@@ -7,7 +7,9 @@ void ExpressionListNode::accept(AstVisitor* p_Visitor) {
 
 void ExpressionListNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    for (ExpressionNode* node : list)
+    {
+        node->destroy();
+    }
     delete this;
 }

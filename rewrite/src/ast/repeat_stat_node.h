@@ -6,10 +6,10 @@
 class RepeatStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* block;
+    ExpressionNode* condition;
 
-    RepeatStatNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    explicit RepeatStatNode(ExpressionNode* p_Block, ExpressionNode* p_Condition) : block(p_Block), condition(p_Condition) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

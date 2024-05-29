@@ -6,10 +6,10 @@
 class AssignmentStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* variableList;
+    ExpressionNode* expressionList;
 
-    AssignmentStatNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    AssignmentStatNode(ExpressionNode* p_VariableList, ExpressionNode* p_ExpressionList) : variableList(p_VariableList), expressionList(p_ExpressionList) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

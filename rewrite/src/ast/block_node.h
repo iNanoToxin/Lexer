@@ -1,15 +1,16 @@
 #ifndef BLOCK_NODE_H
 #define BLOCK_NODE_H
 
+#include <utility>
+#include <vector>
 #include "expression_node.h"
 
 class BlockNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    std::vector<ExpressionNode*> statements;
 
-    BlockNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    explicit BlockNode(std::vector<ExpressionNode*> p_Statements) : statements(std::move(p_Statements)) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

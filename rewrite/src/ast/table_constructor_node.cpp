@@ -7,7 +7,6 @@ void TableConstructorNode::accept(AstVisitor* p_Visitor) {
 
 void TableConstructorNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    fieldList->destroy();
     delete this;
 }

@@ -7,7 +7,6 @@ void DoStatNode::accept(AstVisitor* p_Visitor) {
 
 void DoStatNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    block->destroy();
     delete this;
 }

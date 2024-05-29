@@ -4,10 +4,3 @@
 void BreakStat::accept(AstVisitor* p_Visitor) {
     p_Visitor->visit(this);
 }
-
-void BreakStat::destroy()
-{
-    ptr1->destroy();
-    ptr2->destroy();
-    delete this;
-}

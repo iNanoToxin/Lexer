@@ -7,7 +7,9 @@ void ArgumentListNode::accept(AstVisitor* p_Visitor) {
 
 void ArgumentListNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    for (ExpressionNode* node : list)
+    {
+        node->destroy();
+    }
     delete this;
 }

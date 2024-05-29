@@ -6,10 +6,9 @@
 class ReturnStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* args;
 
-    ReturnStatNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    explicit ReturnStatNode(ExpressionNode* p_Args) : args(p_Args) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

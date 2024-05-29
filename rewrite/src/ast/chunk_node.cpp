@@ -7,7 +7,6 @@ void ChunkNode::accept(AstVisitor* p_Visitor) {
 
 void ChunkNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    block->destroy();
     delete this;
 }

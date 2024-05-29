@@ -7,7 +7,9 @@ void BlockNode::accept(AstVisitor* p_Visitor) {
 
 void BlockNode::destroy()
 {
-    ptr1->destroy();
-    ptr2->destroy();
+    for (ExpressionNode* node : statements)
+    {
+        node->destroy();
+    }
     delete this;
 }

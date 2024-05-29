@@ -6,10 +6,9 @@
 class GotoStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* label;
 
-    GotoStatNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    explicit GotoStatNode(ExpressionNode* p_Label) : label(p_Label) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

@@ -6,10 +6,10 @@
 class FuncBodyNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* ptr1;
-    ExpressionNode* ptr2;
+    ExpressionNode* parameters;
+    ExpressionNode* block;
 
-    FuncBodyNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ptr1(p_Ptr1), ptr2(p_Ptr2) {}
+    FuncBodyNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : parameters(p_Ptr1), block(p_Ptr2) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;
