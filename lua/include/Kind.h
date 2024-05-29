@@ -56,11 +56,12 @@ enum class Kind
     // numeric_for_stat,
     // local_stat,
 
+    Unknown,
+
     Identifier,
     String,
     Numeric,
     Boolean,
-    Unknown,
     UnaryOperation,
     Null,
     Varargs,

@@ -2,13 +2,17 @@
 #define EXPRESSIONNODE_H
 
 #include "ast_node.h"
-#include <memory>
 
-class ExpressionNode : public ASTNode {
+class ExpressionNode : public AstNode
+{
 public:
-    virtual ~ExpressionNode() = default;
+    ~ExpressionNode() override = default;
+    void destroy() override;
 };
 
-using ExpressionNodePtr = std::unique_ptr<ExpressionNode>;
+inline void ExpressionNode::destroy()
+{
+    delete this;
+}
 
 #endif

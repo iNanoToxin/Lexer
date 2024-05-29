@@ -3,16 +3,17 @@
 
 #include "expression_node.h"
 
-class BinaryOpNode : public ExpressionNode {
+class BinaryOpNode final : public ExpressionNode
+{
 public:
-    BinaryOpNode(ExpressionNodePtr left, char op, ExpressionNodePtr right)
-        : left(std::move(left)), op(op), right(std::move(right)) {}
-
-    void accept(ASTVisitor& visitor) override;
-
-    ExpressionNodePtr left;
+    ExpressionNode* lhs;
+    ExpressionNode* rhs;
     char op;
-    ExpressionNodePtr right;
+
+    explicit BinaryOpNode(ExpressionNode* p_Lhs, const char p_Operator, ExpressionNode* p_Rhs) : lhs(p_Lhs), rhs(p_Rhs), op(p_Operator) {}
+
+    void accept(AstVisitor* p_Visitor) override;
+    void destroy() override;
 };
 
 #endif

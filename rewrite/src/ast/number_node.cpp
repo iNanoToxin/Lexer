@@ -1,6 +1,11 @@
 #include "number_node.h"
-#include "ast_visitor.h"
+#include "visitor/ast_visitor.h"
 
-void NumberNode::accept(ASTVisitor& visitor) {
-    visitor.visit(*this);
+void NumberNode::accept(AstVisitor* p_Visitor) {
+    p_Visitor->visit(this);
+}
+
+void NumberNode::destroy()
+{
+    delete this;
 }

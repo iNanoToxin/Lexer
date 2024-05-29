@@ -4,11 +4,12 @@
 #include <memory>
 #include <vector>
 
-class ASTNode
+class AstNode
 {
 public:
-    virtual ~ASTNode() = default;
-    virtual void accept(class ASTVisitor& visitor) = 0;
+    virtual ~AstNode() = default;
+    virtual void accept(class AstVisitor* p_Visitor) = 0;
+    virtual void destroy() = 0;
 };
 
 #endif

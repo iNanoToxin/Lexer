@@ -1,6 +1,13 @@
 #include "binary_op_node.h"
-#include "ast_visitor.h"
+#include "visitor/ast_visitor.h"
 
-void BinaryOpNode::accept(ASTVisitor& visitor) {
-    visitor.visit(*this);
+void BinaryOpNode::accept(AstVisitor* p_Visitor) {
+    p_Visitor->visit(this);
+}
+
+void BinaryOpNode::destroy()
+{
+    lhs->destroy();
+    rhs->destroy();
+    delete this;
 }

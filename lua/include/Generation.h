@@ -685,7 +685,7 @@ public:
     void rename(const NodePointer& p_Node)
     {
         {
-            // return;
+            return;
         }
         if (!p_Node)
         {

@@ -3,11 +3,12 @@
 
 #include "expression_node.h"
 
-class NumberNode : public ExpressionNode {
+class NumberNode final : public ExpressionNode {
 public:
-    NumberNode(int value) : value(value) {}
+    explicit NumberNode(const int p_Value) : value(p_Value) {}
 
-    void accept(ASTVisitor& visitor) override;
+    void accept(AstVisitor* p_Visitor) override;
+    void destroy() override;
 
     int value;
 };
