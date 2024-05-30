@@ -1,19 +1,33 @@
 #include <iostream>
 #include "ast/visitor/eval_visitor.h"
+#include "ast/visitor/format_visitor.h"
 
-int main() {
-    // Create an AST for the expression (5 + 3) * 2
-    ExpressionNode* left = new BinaryOpNode(new NumberNode(5), '+', new NumberNode(3));
-    ExpressionNode* root = new BinaryOpNode(left, '*', new NumberNode(2));
+int main()
+{
+    ExpressionNode* condition = new BinaryOpNode(new IdentifierNode("a"), ">=", new NumberNode(5));
+    ExpressionNode* block = new BlockNode({
+        new AssignmentStatNode(
+            new VariableListNode({new IdentifierNode("b")}),
+            new ExpressionListNode({new BinaryOpNode(new IdentifierNode("b"), "+", new NumberNode(1))})
+        ),
+        new AssignmentStatNode(
+            new VariableListNode({new IdentifierNode("c")}),
+            new ExpressionListNode({new BinaryOpNode(new IdentifierNode("c"), "+", new NumberNode(1))})
+        ),
+        new AssignmentStatNode(
+            new VariableListNode({new IdentifierNode("d")}),
+            new ExpressionListNode({new BinaryOpNode(new IdentifierNode("d"), "+", new NumberNode(1))})
+        )
+    });
 
-    // Evaluate the expression
-    EvalVisitor* evaluator = new EvalVisitor();
-    root->accept(evaluator);
-    std::cout << "Result: " << std::get<int>(evaluator->getResult()) << std::endl;
+    ExpressionNode* while_stat = new WhileStatNode(condition, block);
+    while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
+    while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
+    while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
 
-    root->destroy();
-    evaluator->destroy();
-
+    FormatVisitor* formatter = new FormatVisitor();
+    while_stat->accept(formatter);
+    std::cout << formatter->getResult() << std::endl;
 
 
     return 0;

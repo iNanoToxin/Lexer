@@ -8,7 +8,7 @@ class ChunkNode final : public ExpressionNode
 public:
     ExpressionNode* block;
 
-    explicit ChunkNode(ExpressionNode* p_Block) : block(p_Block) {}
+    explicit ChunkNode(ExpressionNode* p_Block) : ExpressionNode(AstKind::ChunkNode), block(p_Block) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

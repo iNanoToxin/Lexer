@@ -9,7 +9,7 @@ public:
     ExpressionNode* root;
     ExpressionNode* args;
 
-    explicit FuncCallNode(ExpressionNode* p_Root, ExpressionNode* p_Args) : root(p_Root), args(p_Args) {}
+    explicit FuncCallNode(ExpressionNode* p_Root, ExpressionNode* p_Args) : ExpressionNode(AstKind::FuncCallNode), root(p_Root), args(p_Args) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

@@ -9,7 +9,7 @@ public:
     ExpressionNode* condition;
     ExpressionNode* block;
 
-    explicit WhileStatNode(ExpressionNode* p_Condition, ExpressionNode* p_Block) : condition(p_Condition), block(p_Block) {}
+    explicit WhileStatNode(ExpressionNode* p_Condition, ExpressionNode* p_Block) : ExpressionNode(AstKind::WhileStatNode), condition(p_Condition), block(p_Block) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

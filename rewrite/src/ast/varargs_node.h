@@ -6,7 +6,7 @@
 class VarargsNode final : public ExpressionNode
 {
 public:
-    VarargsNode() = default;
+    explicit VarargsNode() : ExpressionNode(AstKind::VarargsNode) {}
 
     void accept(AstVisitor* p_Visitor) override;
 };

@@ -8,7 +8,7 @@ class FuncNameNode final : public ExpressionNode
 public:
     ExpressionNode* name;
 
-    explicit FuncNameNode(ExpressionNode* p_Name) : name(p_Name) {}
+    explicit FuncNameNode(ExpressionNode* p_Name) : ExpressionNode(AstKind::FuncNameNode), name(p_Name) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

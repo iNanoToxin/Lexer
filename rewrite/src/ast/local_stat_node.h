@@ -8,7 +8,7 @@ class LocalStatNode final : public ExpressionNode
 public:
     ExpressionNode* statement;
 
-    explicit LocalStatNode(ExpressionNode* p_Statement) : statement(p_Statement) {}
+    explicit LocalStatNode(ExpressionNode* p_Statement) : ExpressionNode(AstKind::LocalStatNode), statement(p_Statement) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

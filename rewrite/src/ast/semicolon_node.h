@@ -6,7 +6,7 @@
 class SemicolonNode final : public ExpressionNode
 {
 public:
-    SemicolonNode() = default;
+    explicit SemicolonNode() : ExpressionNode(AstKind::SemicolonNode) {}
 
     void accept(AstVisitor* p_Visitor) override;
 };

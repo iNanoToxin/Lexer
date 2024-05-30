@@ -12,7 +12,7 @@ public:
     std::string op;
     ExpressionNode* value;
 
-    UnaryOpNode(std::string p_Operation, ExpressionNode* p_Value) : op(std::move(p_Operation)), value(p_Value) {}
+    explicit UnaryOpNode(std::string p_Operation, ExpressionNode* p_Value) : ExpressionNode(AstKind::UnaryOpNode), op(std::move(p_Operation)), value(p_Value) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

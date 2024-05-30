@@ -1,18 +1,14 @@
-#ifndef EVALVISITOR_H
-#define EVALVISITOR_H
+#ifndef FORMATVISITOR_H
+#define FORMATVISITOR_H
 
 #include <string>
-#include <variant>
-
 #include "ast_visitor.h"
-#include "../expression_node.h"
 
-// using NodeValue = std::variant<int, bool, std::string>;
-
-class EvalVisitor final : public AstVisitor
+class FormatVisitor final : public AstVisitor
 {
 private:
-    ExpressionNode* m_Result = nullptr;
+    std::string m_Result;
+    unsigned int m_Depth = 0;
 public:
     void visit(AttributeNode* p_Node) override;
     void visit(BooleanNode* p_Node) override;
@@ -57,7 +53,7 @@ public:
     void visit(LabelNode* p_Node) override;
     void visit(SemicolonNode* p_Node) override;
 
-    [[nodiscard]] ExpressionNode* getResult() const
+    [[nodiscard]] std::string getResult() const
     {
         return m_Result;
     }

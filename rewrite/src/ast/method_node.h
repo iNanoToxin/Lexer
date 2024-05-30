@@ -9,7 +9,7 @@ public:
     ExpressionNode* root;
     ExpressionNode* name;
 
-    MethodNode(ExpressionNode* p_Root, ExpressionNode* p_Name) : root(p_Root), name(p_Name) {}
+    explicit MethodNode(ExpressionNode* p_Root, ExpressionNode* p_Name) : ExpressionNode(AstKind::MethodNode), root(p_Root), name(p_Name) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

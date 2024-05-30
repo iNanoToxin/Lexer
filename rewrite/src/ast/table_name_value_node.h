@@ -9,7 +9,7 @@ public:
     ExpressionNode* name;
     ExpressionNode* value;
 
-    TableNameValueNode(ExpressionNode* p_Name, ExpressionNode* p_Value) : name(p_Name), value(p_Value) {}
+    explicit TableNameValueNode(ExpressionNode* p_Name, ExpressionNode* p_Value) : ExpressionNode(AstKind::TableNameValueNode), name(p_Name), value(p_Value) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

@@ -6,6 +6,7 @@
 class ExpressionNode : public AstNode
 {
 public:
+    explicit ExpressionNode(const AstKind& p_Kind) : AstNode(p_Kind) {}
     ~ExpressionNode() override = default;
     void destroy() override;
 };

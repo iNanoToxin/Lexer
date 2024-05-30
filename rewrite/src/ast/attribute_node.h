@@ -9,7 +9,7 @@ public:
     ExpressionNode* value;
     ExpressionNode* attribute;
 
-    AttributeNode(ExpressionNode* p_Value, ExpressionNode* p_Attribute) : value(p_Value), attribute(p_Attribute) {}
+    explicit AttributeNode(ExpressionNode* p_Value, ExpressionNode* p_Attribute) : ExpressionNode(AstKind::AttributeNode), value(p_Value), attribute(p_Attribute) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

@@ -8,7 +8,7 @@ class DoStatNode final : public ExpressionNode
 public:
     ExpressionNode* block;
 
-    explicit DoStatNode(ExpressionNode* p_Block) : block(p_Block) {}
+    explicit DoStatNode(ExpressionNode* p_Block) : ExpressionNode(AstKind::DoStatNode), block(p_Block) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

@@ -8,7 +8,7 @@ class TableValueNode final : public ExpressionNode
 public:
     ExpressionNode* value;
 
-    explicit TableValueNode(ExpressionNode* p_Value) : value(p_Value) {}
+    explicit TableValueNode(ExpressionNode* p_Value) : ExpressionNode(AstKind::TableValueNode), value(p_Value) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

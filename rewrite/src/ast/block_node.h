@@ -10,7 +10,7 @@ class BlockNode final : public ExpressionNode
 public:
     std::vector<ExpressionNode*> statements;
 
-    explicit BlockNode(std::vector<ExpressionNode*> p_Statements) : statements(std::move(p_Statements)) {}
+    explicit BlockNode(std::vector<ExpressionNode*> p_Statements) : ExpressionNode(AstKind::BlockNode), statements(std::move(p_Statements)) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

@@ -6,7 +6,7 @@
 class NilNode final : public ExpressionNode
 {
 public:
-    NilNode() = default;
+    explicit NilNode() : ExpressionNode(AstKind::NilNode) {}
 
     void accept(AstVisitor* p_Visitor) override;
 };

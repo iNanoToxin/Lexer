@@ -9,7 +9,7 @@ public:
     ExpressionNode* parameters;
     ExpressionNode* block;
 
-    FuncBodyNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : parameters(p_Ptr1), block(p_Ptr2) {}
+    explicit FuncBodyNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ExpressionNode(AstKind::FuncBodyNode), parameters(p_Ptr1), block(p_Ptr2) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

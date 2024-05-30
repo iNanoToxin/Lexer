@@ -7,7 +7,7 @@ class BreakStat final : public ExpressionNode
 {
 public:
 
-    BreakStat() = default;
+    explicit BreakStat() : ExpressionNode(AstKind::BreakStat) {}
 
     void accept(AstVisitor* p_Visitor) override;
 };

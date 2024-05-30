@@ -9,7 +9,7 @@ public:
     ExpressionNode* condition;
     ExpressionNode* block;
 
-    ConditionalBlockNode(ExpressionNode* p_Condition, ExpressionNode* p_Block) : condition(p_Condition), block(p_Block) {}
+    explicit ConditionalBlockNode(ExpressionNode* p_Condition, ExpressionNode* p_Block) : ExpressionNode(AstKind::ConditionalBlockNode), condition(p_Condition), block(p_Block) {}
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

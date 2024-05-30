@@ -11,7 +11,8 @@ class StringNode final : public ExpressionNode
 public:
     std::string value;
 
-    explicit StringNode(std::string p_Value) : value(std::move(p_Value)) {}
+    explicit StringNode(std::string p_Value) : ExpressionNode(AstKind::StringNode), value(std::move(p_Value)) {}
+
     void accept(AstVisitor* p_Visitor) override;
 };
 
