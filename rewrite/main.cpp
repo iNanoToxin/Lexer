@@ -21,13 +21,16 @@ int main()
     });
 
     ExpressionNode* while_stat = new WhileStatNode(condition, block);
-    while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
-    while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
-    while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
+    // while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
+    // while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
+    // while_stat = new WhileStatNode(condition, new BlockNode({while_stat}));
 
     FormatVisitor* formatter = new FormatVisitor();
     while_stat->accept(formatter);
     std::cout << formatter->getResult() << std::endl;
+
+
+    while_stat->destroy();
 
 
     return 0;
