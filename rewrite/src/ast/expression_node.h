@@ -9,10 +9,10 @@ class ExpressionNode : public AstNode
 {
 public:
     explicit ExpressionNode(const AstKind& p_Kind) : AstNode(p_Kind) {}
-    ~ExpressionNode() override
-    {
-        std::cout << "Object `" << get_kind_name() << "` destroyed." << std::endl;
-    }
+    // ~ExpressionNode() override
+    // {
+    //     std::cout << "Object `" << get_kind_name() << "` destroyed." << std::endl;
+    // }
     void destroy() override;
 };
 

@@ -1,6 +1,9 @@
+#include <fstream>
 #include <iostream>
 #include "ast/visitor/eval_visitor.h"
 #include "ast/visitor/format_visitor.h"
+#include "tokenizer/token_stream.h"
+#include "utilities/util.h"
 
 int main()
 {
@@ -28,6 +31,11 @@ int main()
     FormatVisitor* formatter = new FormatVisitor();
     while_stat->accept(formatter);
     std::cout << formatter->getResult() << std::endl;
+
+
+
+    TokenStream stream;
+    stream.tokenize(Util::read_file(R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\lua\tests\test_2.lua)"));
 
 
     while_stat->destroy();

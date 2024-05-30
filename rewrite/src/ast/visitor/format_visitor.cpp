@@ -1,14 +1,15 @@
 #include "format_visitor.h"
 
 #include <iostream>
-
-#include "../binary_op_node.h"
-#include "../number_node.h"
-
 #include <sstream>
 #include <string>
 
+#include "../binary_op_node.h"
+#include "../number_node.h"
+#include "../../utilities/assert.h"
+
 #define TAB_WIDTH 4
+
 
 void FormatVisitor::visit(BinaryOpNode* p_Node)
 {

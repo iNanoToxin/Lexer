@@ -58,6 +58,11 @@ public:
     virtual void accept(class AstVisitor* p_Visitor) = 0;
     virtual void destroy() = 0;
 
+    [[nodiscard]] bool is(const AstKind& p_Kind) const
+    {
+        return kind == p_Kind;
+    }
+
     [[nodiscard]] std::string get_kind_name() const
     {
         switch (kind)
