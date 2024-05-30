@@ -1,118 +1,169 @@
-#include "Node.h"
+#include <Node.h>
+#include <Util.h>
 
-
-void Node::setChildren(v_Variant children)
+void Node::setChildren(NodeChildren p_Children)
 {
-    m_Children = std::move(children);
+    for (const NodeVariant& elem : p_Children)
+    {
+        if (std::holds_alternative<NodePointer>(elem))
+        {
+            if (NodePointer node = std::get<NodePointer>(elem))
+            {
+                node->setParent(getPointer());
+            }
+        }
+    }
+    m_Children = std::move(p_Children);
 }
 
-void Node::setSize(const std::size_t& size)
+void Node::setParent(const NodePointer& p_Parent)
 {
-    m_Size = size;
+    this->m_Parent = p_Parent;
 }
 
-void Node::setParent(const p_Base& parent)
-{
-    this->m_Parent = parent;
-}
-
-v_Variant Node::getChildren()
+NodeChildren& Node::getChildren()
 {
     return m_Children;
 }
 
-std::size_t Node::getSize() const
+NodePointer Node::getParent(const std::size_t& p_Depth)
 {
-    return m_Size;
-}
-
-p_Node Node::getParent()
-{
-    return std::static_pointer_cast<Node>(m_Parent);
-}
-
-void Node::setParent(const p_Base& baseNode, const p_Base& parentNode)
-{
-    if (auto node = get(baseNode))
+    NodePointer parent = m_Parent;
+    if (parent && p_Depth > 0)
     {
-        node->setParent(parentNode);
+        return parent->getParent(p_Depth - 1);
     }
+    return parent;
 }
 
-p_Node Node::get(const p_Base& baseNode)
-{
-    return std::static_pointer_cast<Node>(baseNode);
-}
 
-std::string Node::toString(std::size_t depth) const
+std::string Node::toString(std::size_t p_Depth) const
 {
     std::string str;
     std::size_t mul = 4;
 
     str += "{\n";
-    depth++;
-    str += std::string(depth * mul, ' ');
-    str += "Kind: " + getKindName(m_Kind) + "\n";
+    p_Depth++;
+    str += std::string(p_Depth * mul, ' ');
+    str += "Kind: " + get_kind_name(m_Kind) + "\n";
 
-    for (int i = 0; i < m_Size; i++) {
-        if (std::holds_alternative<std::string>(m_Children[i])) {
-            auto value = std::get<std::string>(m_Children[i]);
+    for (int i = 0; i < m_Children.size(); i++)
+    {
+        if (std::holds_alternative<std::string>(m_Children[i]))
+        {
+            std::string value = std::get<std::string>(m_Children[i]);
 
-            if (m_Kind == Kind::String || m_Kind == Kind::Numeric) {
+            if (m_Kind == Kind::String || m_Kind == Kind::Numeric)
+            {
                 str += fmt::format(
                     "{0}[{1}] = {2}\n",
-                    std::string(depth * mul, ' '),
+                    std::string(p_Depth * mul, ' '),
                     std::to_string(i),
                     value
                 );
             }
-            else {
+            else
+            {
                 str += fmt::format(
                     "{0}[{1}] = '{2}'\n",
-                    std::string(depth * mul, ' '),
+                    std::string(p_Depth * mul, ' '),
                     std::to_string(i),
                     value
                 );
             }
         }
-        else if (std::holds_alternative<p_Base>(m_Children[i])) {
-            auto value = std::get<p_Base>(m_Children[i]);
+        else if (std::holds_alternative<bool>(m_Children[i]))
+        {
+            bool value = std::get<bool>(m_Children[i]);
 
-            if (!value) {
+            str += fmt::format(
+                "{0}[{1}] = {2}\n",
+                std::string(p_Depth * mul, ' '),
+                std::to_string(i),
+                std::to_string(value)
+            );
+        }
+        else if (std::holds_alternative<Number>(m_Children[i]))
+        {
+            Number value = std::get<Number>(m_Children[i]);
+
+            str += fmt::format(
+                "{0}[{1}] = {2}\n",
+                std::string(p_Depth * mul, ' '),
+                std::to_string(i),
+                value.toString()
+            );
+        }
+        else if (std::holds_alternative<OperatorKind>(m_Children[i]))
+        {
+            OperatorKind value = std::get<OperatorKind>(m_Children[i]);
+
+            str += fmt::format(
+                "{0}[{1}] = \"{2}\"\n",
+                std::string(p_Depth * mul, ' '),
+                std::to_string(i),
+                Util::get_operator(value)
+            );
+        }
+        else if (std::holds_alternative<NodePointer>(m_Children[i]))
+        {
+            NodePointer value = std::get<NodePointer>(m_Children[i]);
+
+            if (!value)
+            {
                 str += fmt::format(
                     "{0}[{1}] = nullptr\n",
-                    std::string(depth * mul, ' '),
+                    std::string(p_Depth * mul, ' '),
                     std::to_string(i)
                 );
             }
-            else if (auto node = get(value)) {
+            else
+            {
                 str += fmt::format(
                     "{0}[{1}] = {2}\n",
-                    std::string(depth * mul, ' '),
+                    std::string(p_Depth * mul, ' '),
                     std::to_string(i),
-                    node->toString(depth)
+                    value->toString(p_Depth)
                 );
             }
         }
-        else if (std::holds_alternative<p_BaseArray>(m_Children[i])) {
-            auto array = std::get<p_BaseArray>(m_Children[i]);
+        else if (std::holds_alternative<NodeArray>(m_Children[i]))
+        {
+            NodeArray array = std::get<NodeArray>(m_Children[i]);
 
-            for (int j = 0; j < array.size(); j++) {
-                if (auto node = get(array[j])) {
+            for (int j = 0; j < array.size(); j++)
+            {
+                if (array[j])
+                {
                     str += fmt::format(
                         "{0}[{1}] = {2}\n",
-                        std::string(depth * mul, ' '),
+                        std::string(p_Depth * mul, ' '),
                         std::to_string(j),
-                        node->toString(depth)
+                        array[j]->toString(p_Depth)
                     );
                 }
             }
         }
     }
 
-    depth--;
-    str += std::string(depth * mul, ' ');
+    p_Depth--;
+    str += std::string(p_Depth * mul, ' ');
     str += "}";
 
     return str;
+}
+
+void Node::setKind(Kind p_Kind)
+{
+    m_Kind = p_Kind;
+}
+
+Kind& Node::getKind()
+{
+    return m_Kind;
+}
+
+std::size_t Node::getSize() const
+{
+    return m_Children.size();
 }

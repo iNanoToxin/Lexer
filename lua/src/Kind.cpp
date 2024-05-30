@@ -1,7 +1,7 @@
 #include "Kind.h"
 
-std::string getKindName(const Kind& kind) {
-    switch (kind)
+std::string get_kind_name(const Kind& p_Kind) {
+    switch (p_Kind)
     {
         case Kind::Identifier: return "Identifier";
         case Kind::String: return "String";
@@ -45,6 +45,7 @@ std::string getKindName(const Kind& kind) {
         case Kind::Block: return "Block";
         case Kind::BinaryOperation: return "BinaryOperation";
         case Kind::Chunk: return "Chunk";
+        case Kind::BreakStatement: return "BreakStatement";
         default: return "UNKNOWN_KIND";
     }
 }

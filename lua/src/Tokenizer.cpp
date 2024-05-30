@@ -63,34 +63,34 @@ static constexpr const char* punctuations[] = {
 };
 
 
-bool isDigit(char c)
+bool is_digit(char p_Char)
 {
-    return (c >= '0') && (c <= '9');
+    return (p_Char >= '0') && (p_Char <= '9');
 }
 
-bool isHexadecimalDigit(char c)
+bool is_hexadecimal_digit(char p_Char)
 {
-    return isDigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+    return is_digit(p_Char) || (p_Char >= 'a' && p_Char <= 'f') || (p_Char >= 'A' && p_Char <= 'F');
 }
 
-bool isBinaryDigit(char c)
+bool is_binary_digit(char p_Char)
 {
-    return (c == '0') || (c == '1');
+    return (p_Char == '0') || (p_Char == '1');
 }
 
-bool isIdentifierNondigit(char c)
+bool is_identifier_nondigit(char p_Char)
 {
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_');
+    return (p_Char >= 'a' && p_Char <= 'z') || (p_Char >= 'A' && p_Char <= 'Z') || (p_Char == '_');
 }
 
-bool isIdentifier(char c)
+bool is_identifier(char p_Char)
 {
-    return isIdentifierNondigit(c) || (c >= '0' && c <= '9');
+    return is_identifier_nondigit(p_Char) || (p_Char >= '0' && p_Char <= '9');
 }
 
-bool isEscapeCharacter(char c)
+bool is_escape_character(char p_Char)
 {
-    switch (c)
+    switch (p_Char)
     {
         case '\"':
         case '\'':
@@ -115,9 +115,9 @@ bool isEscapeCharacter(char c)
     }
 }
 
-bool isSymbol(char c)
+bool is_symbol(char p_Char)
 {
-    switch (c)
+    switch (p_Char)
     {
         case '`':
         case '~':
@@ -161,16 +161,16 @@ bool isSymbol(char c)
     }
 }
 
-bool isWhiteSpace(char c)
+bool is_white_space(char p_Char)
 {
-    return (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\v' || c == '\f');
+    return (p_Char == ' ' || p_Char == '\n' || p_Char == '\t' || p_Char == '\r' || p_Char == '\v' || p_Char == '\f');
 }
 
-bool isKeyword(const std::string& str)
+bool is_keyword(const std::string& p_String)
 {
     for (const char* keyword: keywords)
     {
-        if (keyword == str)
+        if (keyword == p_String)
         {
             return true;
         }
@@ -178,20 +178,20 @@ bool isKeyword(const std::string& str)
     return false;
 }
 
-bool Token::is(const std::string& tokenLiteral) const
+bool Token::is(const std::string& p_TokenLiteral) const
 {
-    return literal == tokenLiteral;
+    return literal == p_TokenLiteral;
 }
 
-bool Token::is(const TokenType& tokenType) const
+bool Token::is(const TokenType& p_TokenType) const
 {
-    return type == tokenType;
+    return type == p_TokenType;
 }
 
-void TokenStream::tokenize(const std::string& source)
+void TokenStream::tokenize(const std::string& p_Source)
 {
-    m_Source = source;
-    m_Length = source.length();
+    m_Source = p_Source;
+    m_Length = p_Source.length();
 
     while (next())
     {
@@ -234,7 +234,7 @@ void TokenStream::tokenize(const std::string& source)
         {
             parsePunctuation();
         }
-        else if (isWhiteSpace(peek()))
+        else if (is_white_space(peek()))
         {
             consume();
         }
@@ -246,20 +246,20 @@ void TokenStream::tokenize(const std::string& source)
 }
 
 template <typename T>
-void TokenStream::parseNumericSequence(TokenType type, T isDigitSequence)
+void TokenStream::parseNumericSequence(TokenType p_Type, T p_IsDigitSequence)
 {
     bool is_malformed = false;
     unsigned int length_sequence = 0;
 
-    while (next() && !isWhiteSpace(peek()))
+    while (next() && !is_white_space(peek()))
     {
         if (next() && !startsWith('_'))
         {
-            if (!startsWith('.') && isSymbol(peek()))
+            if (!startsWith('.') && is_symbol(peek()))
             {
                 break;
             }
-            else if (isDigitSequence(peek()))
+            else if (p_IsDigitSequence(peek()))
             {
                 length_sequence++;
             }
@@ -276,19 +276,19 @@ void TokenStream::parseNumericSequence(TokenType type, T isDigitSequence)
         throw std::invalid_argument("malformed number");
     }
 
-    addToken(type);
+    addToken(p_Type);
 }
 
 void TokenStream::parseHexadecimal()
 {
     bump(2);
-    return parseNumericSequence(TokenType::NUMBER_HEXADECIMAL, &isHexadecimalDigit);
+    return parseNumericSequence(TokenType::NUMBER_HEXADECIMAL, &is_hexadecimal_digit);
 }
 
 void TokenStream::parseBinary()
 {
     bump(2);
-    return parseNumericSequence(TokenType::NUMBER_BINARY, &isBinaryDigit);
+    return parseNumericSequence(TokenType::NUMBER_BINARY, &is_binary_digit);
 }
 
 void TokenStream::parseExponential()
@@ -299,7 +299,7 @@ void TokenStream::parseExponential()
     {
         bump();
     }
-    return parseNumericSequence(TokenType::NUMBER, &isDigit);
+    return parseNumericSequence(TokenType::NUMBER, &is_digit);
 }
 
 void TokenStream::parseNumber()
@@ -307,7 +307,7 @@ void TokenStream::parseNumber()
     bool is_malformed = false;
     unsigned int decimal_points = 0;
 
-    while (next() && !isWhiteSpace(peek()))
+    while (next() && !is_white_space(peek()))
     {
         // Handle numbers with exponents.
         if (startsWith('e') || startsWith('E'))
@@ -322,11 +322,11 @@ void TokenStream::parseNumber()
             {
                 decimal_points++;
             }
-            else if (isSymbol(peek()))
+            else if (is_symbol(peek()))
             {
                 break;
             }
-            else if (!isDigit(peek()))
+            else if (!is_digit(peek()))
             {
                 is_malformed = true;
             }
@@ -433,7 +433,7 @@ void TokenStream::parseComment()
 
 void TokenStream::parseWord()
 {
-    while (next() && isIdentifier(peek()))
+    while (next() && is_identifier(peek()))
     {
         bump();
     }
@@ -451,7 +451,7 @@ void TokenStream::parseWord()
 
 void TokenStream::parsePunctuation()
 {
-    for (auto punctuation: punctuations)
+    for (const char* punctuation: punctuations)
     {
         if (startsWith(punctuation))
         {
@@ -462,14 +462,14 @@ void TokenStream::parsePunctuation()
     }
 }
 
-bool TokenStream::startsWith(char c)
+bool TokenStream::startsWith(char p_Char)
 {
-    return next() && peek() == c;
+    return next() && peek() == p_Char;
 }
 
-bool TokenStream::startsWith(const std::string& string) const
+bool TokenStream::startsWith(const std::string& p_String) const
 {
-    return next(string.length() - 1) && m_Source.substr(m_Index, string.length()) == string;
+    return next(p_String.length() - 1) && m_Source.substr(m_Index, p_String.length()) == p_String;
 }
 
 bool TokenStream::startsWithComment() const
@@ -479,7 +479,7 @@ bool TokenStream::startsWithComment() const
 
 bool TokenStream::startsWithWord()
 {
-    return isIdentifierNondigit(peek());
+    return is_identifier_nondigit(peek());
 }
 
 bool TokenStream::startsWithString()
@@ -489,7 +489,7 @@ bool TokenStream::startsWithString()
 
 bool TokenStream::startsWithNumber()
 {
-    return startsWith('.') && next(1) && isDigit(peek(1)) || isDigit(peek());
+    return startsWith('.') && next(1) && is_digit(peek(1)) || is_digit(peek());
 }
 
 bool TokenStream::startsWithPunctuation() const
@@ -521,19 +521,19 @@ bool TokenStream::startsWithLongBracket()
     return false;
 }
 
-bool TokenStream::next(std::size_t offset) const
+bool TokenStream::next(std::size_t p_Offset) const
 {
-    return m_Index + offset < m_Length;
+    return m_Index + p_Offset < m_Length;
 }
 
-char TokenStream::peek(std::size_t offset)
+char TokenStream::peek(std::size_t p_Offset)
 {
-    return m_Source.at(m_Index + offset);
+    return m_Source.at(m_Index + p_Offset);
 }
 
-void TokenStream::bump(std::size_t amount)
+void TokenStream::bump(std::size_t p_Amount)
 {
-    for (std::size_t i = 0; i < amount; i++)
+    for (std::size_t i = 0; i < p_Amount; i++)
     {
         m_Buffer.push_back(consume());
     }
@@ -544,12 +544,12 @@ char TokenStream::consume()
     return m_Source.at(m_Index++);
 }
 
-void TokenStream::addToken(const TokenType& type)
+void TokenStream::addToken(const TokenType& p_Type)
 {
     // std::cout << m_Buffer << "\n";
-    if (type != TokenType::COMMENT && type != TokenType::COMMENT_RAW)
+    if (p_Type != TokenType::COMMENT && p_Type != TokenType::COMMENT_RAW)
     {
-        m_Tokens.push_back(Token{.type = type, .literal = m_Buffer});
+        m_Tokens.push_back(Token{.type = p_Type, .literal = m_Buffer});
     }
     m_Buffer.clear();
 }

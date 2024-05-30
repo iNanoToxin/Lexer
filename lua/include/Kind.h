@@ -56,11 +56,12 @@ enum class Kind
     // numeric_for_stat,
     // local_stat,
 
+    Unknown,
+
     Identifier,
     String,
     Numeric,
     Boolean,
-    Unknown,
     UnaryOperation,
     Null,
     Varargs,
@@ -101,6 +102,6 @@ enum class Kind
     BreakStatement
 };
 
-std::string getKindName(const Kind& kind);
+std::string get_kind_name(const Kind& p_Kind);
 
 #endif

@@ -43,11 +43,11 @@ function CharSplitLMMinibatchLoader.create(data_dir, batch_size, seq_length, spl
     self.vocab_mapping = torch.load(vocab_file)
 
     -- cut off the end so that it divides evenly
-    local len = data:size(1)
-    if len % (batch_size * seq_length) ~= 0 then
+    local LEN = data:size(1)
+    if LEN % (batch_size * seq_length) ~= 0 then
         print('cutting off end of data so that the batches/sequences divide evenly')
         data = data:sub(1, batch_size * seq_length
-                    * math.floor(len / (batch_size * seq_length)))
+                    * math.floor(LEN / (batch_size * seq_length)))
     end
 
     -- count vocab
@@ -124,14 +124,14 @@ end
 
 -- chinese vocab
 function get_vocab(str, min_freq)
-    local len  = #str
+    local LEN  = #str
     local left = 0
     local arr  = {0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc}
     local unordered = {}
     local start = 1
     local wordLen = 0
 	g_total_chars = 0
-    while len ~= left do
+    while LEN ~= left do
         local tmp = string.byte(str, start)
         local i   = #arr
         while arr[i] do
@@ -164,13 +164,13 @@ function get_data(str, vocab_mapping)
 	-- can not use torch.ByteTensor because it support mo more than 256
 	-- local data = torch.ByteTensor(g_total_chars) -- store it into 1D first, then rearrange
 	local data = torch.ShortTensor(g_total_chars)
-    local len  = #str
+    local LEN  = #str
     local left = 0
     local arr  = {0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc}
     local start = 1
     local wordLen = 0
 	local count = 1
-    while len ~= left do
+    while LEN ~= left do
         local tmp = string.byte(str, start)
         local i = #arr
         while arr[i] do
