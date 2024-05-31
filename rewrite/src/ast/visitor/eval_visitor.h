@@ -1,13 +1,8 @@
 #ifndef EVALVISITOR_H
 #define EVALVISITOR_H
 
-#include <string>
-#include <variant>
-
 #include "ast_visitor.h"
 #include "../expression_node.h"
-
-// using NodeValue = std::variant<int, bool, std::string>;
 
 class EvalVisitor final : public AstVisitor
 {
@@ -34,6 +29,7 @@ public:
     void visit(ChunkNode* p_Node) override;
     void visit(AssignmentStatNode* p_Node) override;
     void visit(BreakStat* p_Node) override;
+    void visit(ContinueStat* p_Node) override;
     void visit(DoStatNode* p_Node) override;
     void visit(GenericForStatNode* p_Node) override;
     void visit(GotoStatNode* p_Node) override;

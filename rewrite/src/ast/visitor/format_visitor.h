@@ -30,6 +30,7 @@ public:
     void visit(ChunkNode* p_Node) override;
     void visit(AssignmentStatNode* p_Node) override;
     void visit(BreakStat* p_Node) override;
+    void visit(ContinueStat* p_Node) override;
     void visit(DoStatNode* p_Node) override;
     void visit(GenericForStatNode* p_Node) override;
     void visit(GotoStatNode* p_Node) override;

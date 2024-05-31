@@ -15,6 +15,14 @@ std::size_t Parser::mark() const
     return m_Index;
 }
 
+void Parser::consume(std::string& p_Out, const TokenType p_Type)
+{
+    if (expectPeek(p_Type))
+    {
+        p_Out = consume().literal;
+    }
+}
+
 Token Parser::consume()
 {
     return m_Tokens.at(m_Index++);

@@ -2,10 +2,7 @@
 #define EXPRESSIONNODE_H
 
 #include <iostream>
-
 #include "ast_node.h"
-
-
 
 class ExpressionNode : public AstNode
 {

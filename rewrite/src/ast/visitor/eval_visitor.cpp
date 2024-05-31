@@ -1,8 +1,6 @@
 #include "eval_visitor.h"
-#include "../binary_op_node.h"
-#include "../number_node.h"
 
-void EvalVisitor::visit(BinaryOpNode* p_Node){}
+void EvalVisitor::visit(BinaryOpNode* p_Node) {}
 void EvalVisitor::visit(NumberNode* p_Node) {}
 void EvalVisitor::visit(IdentifierNode* p_Node) {}
 void EvalVisitor::visit(StringNode* p_Node) {}
@@ -22,6 +20,7 @@ void EvalVisitor::visit(BlockNode* p_Node) {}
 void EvalVisitor::visit(ChunkNode* p_Node) {}
 void EvalVisitor::visit(AssignmentStatNode* p_Node) {}
 void EvalVisitor::visit(BreakStat* p_Node) {}
+void EvalVisitor::visit(ContinueStat* p_Node) {}
 void EvalVisitor::visit(DoStatNode* p_Node) {}
 void EvalVisitor::visit(GenericForStatNode* p_Node) {}
 void EvalVisitor::visit(GotoStatNode* p_Node) {}

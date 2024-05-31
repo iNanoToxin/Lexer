@@ -11,7 +11,8 @@ namespace Util
     std::string string_wrap(char p_LWrap, const std::string& p_String, char p_RWrap);
     std::string string_wrap(const std::string& p_String, char p_Wrap);
 
-    int get_precedence(const std::string& p_Op, bool p_IsUnaryOp = false);
+    int get_precedence(bool p_IsUnaryOp);
+    int get_precedence(const std::string& p_Op);
 }
 
 #endif //UTIL_H

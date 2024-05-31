@@ -50,7 +50,13 @@ std::string Util::string_wrap(const std::string& p_String, const char p_Wrap)
     return string_wrap(p_Wrap, p_String, p_Wrap);
 }
 
-int Util::get_precedence(const std::string& p_Op, const bool p_IsUnaryOp) {
+int Util::get_precedence(const bool p_IsUnaryOp)
+{
+    (void) p_IsUnaryOp;
+    return 11;
+}
+
+int Util::get_precedence(const std::string& p_Op) {
     if (p_Op == "or")
     {
         return 1;
@@ -92,10 +98,10 @@ int Util::get_precedence(const std::string& p_Op, const bool p_IsUnaryOp) {
         return 10;
     }
     // not, #, -, ~
-    if (p_IsUnaryOp)
-    {
-        return 11;
-    }
+    // if (p_IsUnaryOp)
+    // {
+    //     return 11;
+    // }
     if (p_Op == "^")
     {
         return 12;

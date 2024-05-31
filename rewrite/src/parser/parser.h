@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 // #include <Util.h>
+#include <functional>
 #include <utility>
 #include <vector>
 #include "token_stream.h"
@@ -13,6 +14,7 @@
 #include <fmt/format.h>
 #include "ast/visitor/ast_visitor.h"
 #include "utilities/assert.h"
+#include "utilities/util.h"
 
 bool is_binary_operator(const Token& p_CurrentToken);
 
@@ -58,7 +60,6 @@ public:
             LL_assert(attribute != nullptr, "Expected attribute after `<`.");
             LL_assert(expectPeek(">"), "Expected `>` after attribute.");
             consume();
-
             return new AttributeNode(variable, attribute);
         }
         return variable;
@@ -85,7 +86,6 @@ public:
             LL_assert(attribute != nullptr, "Expected attribute variable after `,` in attribute list.");
             list.push_back(attribute);
         }
-
         return new AttributeListNode(list);
     }
 
@@ -108,9 +108,9 @@ public:
 
             ExpressionNode* expression = getExpression();
             LL_assert(expression != nullptr, "Expression expected after `,` in expression list.");
+
             list.push_back(expression);
         }
-
         return new ExpressionListNode(list);
     }
 
@@ -166,35 +166,35 @@ public:
     {
         std::vector<ExpressionNode*> list;
 
-        if (ExpressionNode* name = getName())
+        bool running = false;
+        do
         {
-            list.push_back(name);
-        }
-        else if (p_IsParameterList && expectPeek("..."))
-        {
-            list.push_back(getPrimaryExpression());
-
-            return new ParameterListNode(list);
-        }
-        else
-        {
-            return nullptr;
-        }
-
-        while (expectPeek(","))
-        {
-            consume();
+            if (running) consume();
 
             if (p_IsParameterList && expectPeek("..."))
             {
                 list.push_back(getPrimaryExpression());
-                break;
+                return new ParameterListNode(list);
             }
 
-            ExpressionNode* name = getName();
-            LL_assert(name != nullptr, "Expected name after `,` in name list.");
-            list.push_back(name);
+            if (ExpressionNode* name = getName())
+            {
+                list.push_back(name);
+            }
+            else
+            {
+                if (running)
+                {
+                    LL_failure("name != nullptr", "Expected name after `,` in name list.");
+                }
+                else
+                {
+                    return nullptr;
+                }
+            }
+            running = true;
         }
+        while (expectPeek(","));
 
         if (p_IsParameterList)
         {
@@ -257,7 +257,12 @@ public:
                 consume();
             }
         }
-        return list.empty() ? nullptr : new FieldListNode(list);
+
+        if (list.empty())
+        {
+            return nullptr;
+        }
+        return new FieldListNode(list);
     }
 
     ExpressionNode* getArgumentList()
@@ -470,12 +475,11 @@ public:
             return new BreakStat();
         }
         // For Luau continue
-        // if (expectPeek("continue"))
-        // {
-        //     consume();
-        //     ExpressionNode* continue_statement = Node::create(Kind::BreakStatement);
-        //     return continue_statement;
-        // }
+        if (expectPeek("continue"))
+        {
+            consume();
+            return new ContinueStat();
+        }
         if (expectPeek("if"))
         {
             consume();
@@ -707,11 +711,7 @@ public:
 
     ExpressionNode* getChunk()
     {
-        if (ExpressionNode* block = getBlock())
-        {
-            return new ChunkNode(block);
-        }
-        return new ChunkNode(nullptr);
+        return new ChunkNode(getBlock());
     }
 
 
@@ -723,7 +723,6 @@ public:
         m_Length = m_Tokens.size();
 
         // #define PRINT_TOKENS
-        // #define RETURN_EARLY
 
         #ifdef PRINT_TOKENS
         {
@@ -814,51 +813,10 @@ public:
         }
         #endif
 
-        #ifdef RETURN_EARLY
-        return;
-        #endif
-
-        std::string path = R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\lua\tests\output_ast.lua)";
-        ExpressionNode* chunk = getChunk();
-        LL_assert(chunk != nullptr, "Failed to parse source.", p_Source.c_str());
-        return chunk;
+        return getChunk();
     }
 
 
-    static int getPrecedence(const Token& p_CurrentToken, const bool p_IsUnaryOperation = false)
-    {
-        static const std::vector<std::vector<std::string>> priority = {
-            {"or"},
-            {"and"},
-            {"<", ">", "<=", ">=", "~=", "=="},
-            {"|"},
-            {"~"},
-            {"&"},
-            {"<<", ">>"},
-            {".."},
-            {"+", "-"},
-            {"*", "/", "//", "%"},
-            {"not", "#", "-", "~"},
-            {"^"}
-        };
-
-        if (p_IsUnaryOperation)
-        {
-            return static_cast<int>(priority.size()) - 1;
-        }
-
-        for (int i = 0; i < priority.size(); i++)
-        {
-            for (const std::string& e : priority[i])
-            {
-                if (p_CurrentToken.is(e))
-                {
-                    return i + 1;
-                }
-            }
-        }
-        return -1;
-    }
 
     ExpressionNode* getPrimaryExpression()
     {
@@ -906,13 +864,14 @@ public:
                 if (is_unary_operator(current_token))
                 {
                     consume();
-                    ExpressionNode* expression = getExpression(getPrecedence(current_token, true));
+                    ExpressionNode* expression = getExpression(Util::get_precedence(true));
                     LL_assert(expression != nullptr, fmt::format("Expected expression after `{}`.", current_token.literal));
 
                     return new UnaryOpNode(current_token.literal, expression);
                 }
                 if (is_null(current_token))
                 {
+                    consume();
                     return new NilNode();
                 }
                 break;
@@ -941,8 +900,8 @@ public:
                 if (is_unary_operator(current_token))
                 {
                     consume();
-                    ExpressionNode* expression = getExpression(getPrecedence(current_token, true));
-                    LL_assert(expression != nullptr, fmt::format("Expected expression after `{}`", current_token.literal));
+                    ExpressionNode* expression = getExpression(Util::get_precedence(true));
+                    LL_assert(expression != nullptr, fmt::format("Expected expression after `{}`.", current_token.literal));
 
                     if (current_token.is("-"))
                     {
@@ -965,52 +924,48 @@ public:
 
     ExpressionNode* getExpression(const int p_Precedence = 0)
     {
-        if (ExpressionNode* lhs_expression = getFunctionDefinition())
+        if (ExpressionNode* function_definition = getFunctionDefinition())
         {
-            return getRhsExpression(p_Precedence, lhs_expression);
+            return getRhsExpression(p_Precedence, function_definition);
         }
-
-        if (ExpressionNode* lhs_expression = getPrefixExpression())
+        if (ExpressionNode* prefix_expression = getPrefixExpression())
         {
-            return getRhsExpression(p_Precedence, lhs_expression);
+            return getRhsExpression(p_Precedence, prefix_expression);
         }
-
-        if (ExpressionNode* lhs_expression = getPrimaryExpression())
+        if (ExpressionNode* primary_expression = getPrimaryExpression())
         {
-            return getRhsExpression(p_Precedence, lhs_expression);
+            return getRhsExpression(p_Precedence, primary_expression);
         }
         return nullptr;
     }
 
-    ExpressionNode* getRhsExpression(const int p_MinPrecedence, ExpressionNode* p_Lhs)
+    ExpressionNode* getRhsExpression(const int p_Precedence, ExpressionNode* p_Lhs)
     {
         while (next())
         {
             Token current_token = peek();
-            const int current_precedence = getPrecedence(current_token);
+            const int current_precedence = Util::get_precedence(current_token.literal);
 
-            if (current_precedence < p_MinPrecedence)
+            if (current_precedence < p_Precedence)
             {
                 return p_Lhs;
             }
 
             consume();
 
-            ExpressionNode* rhs = nullptr;
-
-            if (!rhs)
-            {
-                rhs = getFunctionDefinition();
-            }
-            if (!rhs)
+            ExpressionNode* rhs = getFunctionDefinition();
+            if (rhs == nullptr)
             {
                 rhs = getPrefixExpression();
             }
-            if (!rhs)
+            if (rhs == nullptr)
             {
                 rhs = getPrimaryExpression();
+                // if (rhs->is(AstKind::CommentNode))
+                // {
+                //     rhs = getPrimaryExpression();
+                // }
             }
-
             LL_assert(rhs != nullptr, "Expected right hand side expression.");
 
             if (expectPeek(TokenType::PUNCTUATION))
@@ -1020,7 +975,7 @@ public:
                     rhs = getRhsExpression(current_precedence, rhs);
                     LL_assert(rhs != nullptr, "Expected right hand side expression.");
                 }
-                else if (current_precedence < getPrecedence(peek()))
+                else if (current_precedence < Util::get_precedence(peek().literal))
                 {
                     rhs = getRhsExpression(current_precedence + 1, rhs);
                     LL_assert(rhs != nullptr, "Expected right hand side expression.");
@@ -1035,19 +990,14 @@ public:
         return p_Lhs;
     }
 
-    bool next(std::size_t p_Offset = 0) const;
-
-    Token peek(std::size_t p_Offset = 0);
-
+    void consume(std::string& p_Out, TokenType p_Type);
     Token consume();
-
-    std::size_t mark() const;
-
+    [[nodiscard]] Token peek(std::size_t p_Offset = 0);
+    [[nodiscard]] bool next(std::size_t p_Offset = 0) const;
+    [[nodiscard]] bool expectPeek(TokenType p_Type, std::size_t p_Offset = 0);
+    [[nodiscard]] bool expectPeek(const std::string& p_Match, std::size_t p_Offset = 0);
+    [[nodiscard]] std::size_t mark() const;
     void revert(std::size_t p_Marked);
-
-    bool expectPeek(TokenType p_Type, std::size_t p_Offset = 0);
-
-    bool expectPeek(const std::string& p_Match, std::size_t p_Offset = 0);
 };
 
 

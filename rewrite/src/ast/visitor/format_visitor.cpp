@@ -17,9 +17,6 @@ using Util::get_precedence;
 
 
 
-
-
-
 void FormatVisitor::visit(AttributeNode* p_Node)
 {
     std::stringstream stream;
@@ -79,7 +76,7 @@ void FormatVisitor::visit(BinaryOpNode* p_Node)
     {
         const BinaryOpNode* rhs = dynamic_cast<BinaryOpNode*>(p_Node->rhs);
 
-        if (Util::get_precedence(rhs->op) < Util::get_precedence(p_Node->op))
+        if (get_precedence(rhs->op) < get_precedence(p_Node->op))
         {
             m_Result = string_wrap('(', m_Result, ')');
         }
@@ -109,7 +106,7 @@ void FormatVisitor::visit(UnaryOpNode* p_Node)
         case AstKind::BinaryOpNode:
         {
             const BinaryOpNode* value = dynamic_cast<BinaryOpNode*>(p_Node->value);
-            if (Util::get_precedence(value->op) < Util::get_precedence(p_Node->op, true))
+            if (get_precedence(value->op) < get_precedence(true))
             {
                 m_Result = string_wrap('(', m_Result, ')');
             }
@@ -181,13 +178,20 @@ void FormatVisitor::visit(FieldListNode* p_Node)
 
     for (ExpressionNode* node : p_Node->list)
     {
-        stream << std::string(TAB_WIDTH, ' ');
         node->accept(this);
-        stream << m_Result;
 
-        if (node != p_Node->list.back())
+        std::stringstream input_steam(m_Result);
+        std::string split;
+        while (std::getline(input_steam, split, '\n'))
         {
-            stream << ",\n";
+            stream << std::string(TAB_WIDTH, ' ');
+            stream << split;
+
+            if (input_steam.eof() && node != p_Node->list.back())
+            {
+                stream << ",";
+            }
+            stream << "\n";
         }
     }
     m_Result = stream.str();
@@ -253,7 +257,11 @@ void FormatVisitor::visit(BlockNode* p_Node)
         std::string split;
         while (std::getline(input_steam, split, '\n'))
         {
-            if (!p_Node->parent->is(AstKind::ChunkNode))
+            if (node->is(AstKind::SemicolonNode))
+            {
+                stream.seekp(-1, std::stringstream::cur);
+            }
+            else if (!p_Node->parent->is(AstKind::ChunkNode))
             {
                 stream << std::string(TAB_WIDTH, ' ');
             }
@@ -271,7 +279,11 @@ void FormatVisitor::visit(BlockNode* p_Node)
 }
 void FormatVisitor::visit(ChunkNode* p_Node)
 {
-    p_Node->block->accept(this);
+    m_Result.clear();
+    if (p_Node->block != nullptr)
+    {
+        p_Node->block->accept(this);
+    }
 }
 
 void FormatVisitor::visit(AssignmentStatNode* p_Node)
@@ -287,6 +299,10 @@ void FormatVisitor::visit(AssignmentStatNode* p_Node)
 void FormatVisitor::visit(BreakStat* p_Node)
 {
     m_Result = "break";
+}
+void FormatVisitor::visit(ContinueStat* p_Node)
+{
+    m_Result = "continue";
 }
 void FormatVisitor::visit(DoStatNode* p_Node)
 {
@@ -503,7 +519,7 @@ void FormatVisitor::visit(TableConstructorNode* p_Node)
         stream << "{\n";
         p_Node->fieldList->accept(this);
         stream << m_Result;
-        stream << "\n}";
+        stream << "}";
         m_Result = stream.str();
     }
     else
@@ -515,7 +531,7 @@ void FormatVisitor::visit(TableIndexValueNode* p_Node)
 {
     std::stringstream stream;
     stream << "[";
-    p_Node->value->accept(this);
+    p_Node->index->accept(this);
     stream << m_Result;
     stream << "]";
     stream << " = ";
@@ -526,7 +542,7 @@ void FormatVisitor::visit(TableIndexValueNode* p_Node)
 void FormatVisitor::visit(TableNameValueNode* p_Node)
 {
     std::stringstream stream;
-    p_Node->value->accept(this);
+    p_Node->name->accept(this);
     stream << m_Result;
     stream << " = ";
     p_Node->value->accept(this);

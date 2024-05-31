@@ -1,7 +1,6 @@
 #ifndef ASTVISITOR_H
 #define ASTVISITOR_H
 
-
 #include <ast/attribute_node.h>
 #include <ast/boolean_node.h>
 #include <ast/identifier_node.h>
@@ -26,6 +25,7 @@
 
 #include <ast/assignment_stat_node.h>
 #include <ast/break_stat.h>
+#include <ast/continue_stat.h>
 #include <ast/do_stat_node.h>
 #include <ast/generic_for_stat_node.h>
 #include <ast/goto_stat_node.h>
@@ -75,6 +75,7 @@ class BlockNode;
 class ChunkNode;
 class AssignmentStatNode;
 class BreakStat;
+class ContinueStat;
 class DoStatNode;
 class GenericForStatNode;
 class GotoStatNode;
@@ -121,6 +122,7 @@ public:
     virtual void visit(ChunkNode* p_Node) = 0;
     virtual void visit(AssignmentStatNode* p_Node) = 0;
     virtual void visit(BreakStat* p_Node) = 0;
+    virtual void visit(ContinueStat* p_Node) = 0;
     virtual void visit(DoStatNode* p_Node) = 0;
     virtual void visit(GenericForStatNode* p_Node) = 0;
     virtual void visit(GotoStatNode* p_Node) = 0;
