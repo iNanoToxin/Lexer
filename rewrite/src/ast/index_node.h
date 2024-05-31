@@ -9,7 +9,11 @@ public:
     ExpressionNode* root;
     ExpressionNode* index;
 
-    explicit IndexNode(ExpressionNode* p_Root, ExpressionNode* p_Index) : ExpressionNode(AstKind::IndexNode), root(p_Root), index(p_Index) {}
+    explicit IndexNode(ExpressionNode* p_Root, ExpressionNode* p_Index) : ExpressionNode(AstKind::IndexNode), root(p_Root), index(p_Index)
+    {
+        if (root) root->parent = this;
+        if (index) index->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

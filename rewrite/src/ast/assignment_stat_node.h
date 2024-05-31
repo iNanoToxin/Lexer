@@ -9,7 +9,11 @@ public:
     ExpressionNode* variableList;
     ExpressionNode* expressionList;
 
-    explicit AssignmentStatNode(ExpressionNode* p_VariableList, ExpressionNode* p_ExpressionList) : ExpressionNode(AstKind::AssignmentStatNode), variableList(p_VariableList), expressionList(p_ExpressionList) {}
+    explicit AssignmentStatNode(ExpressionNode* p_VariableList, ExpressionNode* p_ExpressionList) : ExpressionNode(AstKind::AssignmentStatNode), variableList(p_VariableList), expressionList(p_ExpressionList)
+    {
+        if (variableList) variableList->parent = this;
+        if (expressionList) expressionList->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

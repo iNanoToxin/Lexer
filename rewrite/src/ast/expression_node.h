@@ -5,6 +5,8 @@
 
 #include "ast_node.h"
 
+
+
 class ExpressionNode : public AstNode
 {
 public:
@@ -20,5 +22,7 @@ inline void ExpressionNode::destroy()
 {
     delete this;
 }
+
+using ExpressionPair = std::pair<ExpressionNode*, ExpressionNode*>;
 
 #endif

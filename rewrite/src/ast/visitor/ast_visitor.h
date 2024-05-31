@@ -23,15 +23,15 @@
 
 #include <ast/block_node.h>
 #include <ast/chunk_node.h>
-#include <ast/conditional_block_node.h>
 
 #include <ast/assignment_stat_node.h>
 #include <ast/break_stat.h>
 #include <ast/do_stat_node.h>
-#include <ast/for_stat_node.h>
+#include <ast/generic_for_stat_node.h>
 #include <ast/goto_stat_node.h>
 #include <ast/if_stat_node.h>
 #include <ast/local_stat_node.h>
+#include <ast/numeric_for_stat_node.h>
 #include <ast/repeat_stat_node.h>
 #include <ast/return_stat_node.h>
 #include <ast/while_stat_node.h>
@@ -73,14 +73,14 @@ class ParameterListNode;
 class VariableListNode;
 class BlockNode;
 class ChunkNode;
-class ConditionalBlockNode;
 class AssignmentStatNode;
 class BreakStat;
 class DoStatNode;
-class ForStatNode;
+class GenericForStatNode;
 class GotoStatNode;
 class IfStatNode;
 class LocalStatNode;
+class NumericForStatNode;
 class RepeatStatNode;
 class ReturnStatNode;
 class WhileStatNode;
@@ -119,14 +119,14 @@ public:
     virtual void visit(VariableListNode* p_Node) = 0;
     virtual void visit(BlockNode* p_Node) = 0;
     virtual void visit(ChunkNode* p_Node) = 0;
-    virtual void visit(ConditionalBlockNode* p_Node) = 0;
     virtual void visit(AssignmentStatNode* p_Node) = 0;
     virtual void visit(BreakStat* p_Node) = 0;
     virtual void visit(DoStatNode* p_Node) = 0;
-    virtual void visit(ForStatNode* p_Node) = 0;
+    virtual void visit(GenericForStatNode* p_Node) = 0;
     virtual void visit(GotoStatNode* p_Node) = 0;
     virtual void visit(IfStatNode* p_Node) = 0;
     virtual void visit(LocalStatNode* p_Node) = 0;
+    virtual void visit(NumericForStatNode* p_Node) = 0;
     virtual void visit(RepeatStatNode* p_Node) = 0;
     virtual void visit(ReturnStatNode* p_Node) = 0;
     virtual void visit(WhileStatNode* p_Node) = 0;

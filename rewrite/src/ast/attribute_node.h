@@ -9,7 +9,11 @@ public:
     ExpressionNode* value;
     ExpressionNode* attribute;
 
-    explicit AttributeNode(ExpressionNode* p_Value, ExpressionNode* p_Attribute) : ExpressionNode(AstKind::AttributeNode), value(p_Value), attribute(p_Attribute) {}
+    explicit AttributeNode(ExpressionNode* p_Value, ExpressionNode* p_Attribute) : ExpressionNode(AstKind::AttributeNode), value(p_Value), attribute(p_Attribute)
+    {
+        if (value) value->parent = this;
+        if (attribute) attribute->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

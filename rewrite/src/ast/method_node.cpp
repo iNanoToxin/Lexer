@@ -8,6 +8,6 @@ void MethodNode::accept(AstVisitor* p_Visitor) {
 void MethodNode::destroy()
 {
     root->destroy();
-    name->destroy();
+    method->destroy();
     delete this;
 }

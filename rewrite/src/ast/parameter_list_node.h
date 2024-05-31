@@ -10,7 +10,13 @@ class ParameterListNode final : public ExpressionNode
 public:
     std::vector<ExpressionNode*> list;
 
-    explicit ParameterListNode(std::vector<ExpressionNode*> p_List) : ExpressionNode(AstKind::ParameterListNode), list(std::move(p_List)) {}
+    explicit ParameterListNode(std::vector<ExpressionNode*> p_List) : ExpressionNode(AstKind::ParameterListNode), list(std::move(p_List))
+    {
+        for (ExpressionNode* node : list)
+        {
+            node->parent = this;
+        }
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

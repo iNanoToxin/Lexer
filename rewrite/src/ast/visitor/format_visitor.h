@@ -28,14 +28,14 @@ public:
     void visit(VariableListNode* p_Node) override;
     void visit(BlockNode* p_Node) override;
     void visit(ChunkNode* p_Node) override;
-    void visit(ConditionalBlockNode* p_Node) override;
     void visit(AssignmentStatNode* p_Node) override;
     void visit(BreakStat* p_Node) override;
     void visit(DoStatNode* p_Node) override;
-    void visit(ForStatNode* p_Node) override;
+    void visit(GenericForStatNode* p_Node) override;
     void visit(GotoStatNode* p_Node) override;
     void visit(IfStatNode* p_Node) override;
     void visit(LocalStatNode* p_Node) override;
+    void visit(NumericForStatNode* p_Node) override;
     void visit(RepeatStatNode* p_Node) override;
     void visit(ReturnStatNode* p_Node) override;
     void visit(WhileStatNode* p_Node) override;

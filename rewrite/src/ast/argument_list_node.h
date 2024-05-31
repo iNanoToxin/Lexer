@@ -7,9 +7,12 @@
 class ArgumentListNode final : public ExpressionNode
 {
 public:
-    std::vector<ExpressionNode*> list;
+    ExpressionNode* list;
 
-    explicit ArgumentListNode(std::vector<ExpressionNode*> p_List) : ExpressionNode(AstKind::ArgumentListNode), list(std::move(p_List)) {}
+    explicit ArgumentListNode(ExpressionNode* p_List) : ExpressionNode(AstKind::ArgumentListNode), list(p_List)
+    {
+        if (list) list->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

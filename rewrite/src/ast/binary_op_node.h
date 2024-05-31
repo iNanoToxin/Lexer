@@ -12,7 +12,11 @@ public:
     ExpressionNode* rhs;
     std::string op;
 
-    explicit BinaryOpNode(ExpressionNode* p_Lhs, std::string p_Operator, ExpressionNode* p_Rhs) : ExpressionNode(AstKind::BinaryOpNode), lhs(p_Lhs), rhs(p_Rhs), op(std::move(p_Operator)) {}
+    explicit BinaryOpNode(ExpressionNode* p_Lhs, std::string p_Operator, ExpressionNode* p_Rhs) : ExpressionNode(AstKind::BinaryOpNode), lhs(p_Lhs), rhs(p_Rhs), op(std::move(p_Operator))
+    {
+        if (lhs) lhs->parent = this;
+        if (rhs) rhs->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

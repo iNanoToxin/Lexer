@@ -9,7 +9,11 @@ public:
     ExpressionNode* name;
     ExpressionNode* body;
 
-    explicit FuncDefNode(ExpressionNode* p_Name, ExpressionNode* p_Body) : ExpressionNode(AstKind::FuncDefNode), name(p_Name), body(p_Body) {}
+    explicit FuncDefNode(ExpressionNode* p_Name, ExpressionNode* p_Body) : ExpressionNode(AstKind::FuncDefNode), name(p_Name), body(p_Body)
+    {
+        if (name) name->parent = this;
+        if (body) body->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

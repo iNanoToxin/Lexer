@@ -9,7 +9,11 @@ public:
     ExpressionNode* block;
     ExpressionNode* condition;
 
-    explicit RepeatStatNode(ExpressionNode* p_Block, ExpressionNode* p_Condition) : ExpressionNode(AstKind::RepeatStatNode), block(p_Block), condition(p_Condition) {}
+    explicit RepeatStatNode(ExpressionNode* p_Block, ExpressionNode* p_Condition) : ExpressionNode(AstKind::RepeatStatNode), block(p_Block), condition(p_Condition)
+    {
+        if (block) block->parent = this;
+        if (condition) condition->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

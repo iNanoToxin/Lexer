@@ -9,7 +9,11 @@ public:
     ExpressionNode* parameters;
     ExpressionNode* block;
 
-    explicit FuncBodyNode(ExpressionNode* p_Ptr1, ExpressionNode* p_Ptr2) : ExpressionNode(AstKind::FuncBodyNode), parameters(p_Ptr1), block(p_Ptr2) {}
+    explicit FuncBodyNode(ExpressionNode* p_ParameterList, ExpressionNode* p_Block) : ExpressionNode(AstKind::FuncBodyNode), parameters(p_ParameterList), block(p_Block)
+    {
+        if (parameters) parameters->parent = this;
+        if (block) block->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

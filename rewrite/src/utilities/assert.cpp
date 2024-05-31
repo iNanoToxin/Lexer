@@ -1,9 +1,9 @@
-#include "assert.h"
+#include "./assert.h"
 
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
-void assert_condition(int p_Line, const char* p_File, const char* p_Condition, bool p_Success, const char* p_Message, const char* p_Identifier)
+void assert_condition(const int p_Line, const char* p_File, const char* p_Condition, const bool p_Success, const std::string& p_Message, const char* p_Identifier)
 {
     if (p_Success) return;
 
@@ -21,7 +21,7 @@ void assert_condition(int p_Line, const char* p_File, const char* p_Condition, b
     std::exit(0);
 }
 
-void failure(int p_Line, const char* p_File, const char* p_Condition, const char* p_Message, const char* p_Identifier)
+void failure(const int p_Line, const char* p_File, const std::string& p_Condition, const std::string& p_Message, const char* p_Identifier)
 {
     std::stringstream stream;
     stream << "Failure: " << p_Condition << "\n";

@@ -20,14 +20,14 @@ void EvalVisitor::visit(ParameterListNode* p_Node) {}
 void EvalVisitor::visit(VariableListNode* p_Node) {}
 void EvalVisitor::visit(BlockNode* p_Node) {}
 void EvalVisitor::visit(ChunkNode* p_Node) {}
-void EvalVisitor::visit(ConditionalBlockNode* p_Node) {}
 void EvalVisitor::visit(AssignmentStatNode* p_Node) {}
 void EvalVisitor::visit(BreakStat* p_Node) {}
 void EvalVisitor::visit(DoStatNode* p_Node) {}
-void EvalVisitor::visit(ForStatNode* p_Node) {}
+void EvalVisitor::visit(GenericForStatNode* p_Node) {}
 void EvalVisitor::visit(GotoStatNode* p_Node) {}
 void EvalVisitor::visit(IfStatNode* p_Node) {}
 void EvalVisitor::visit(LocalStatNode* p_Node) {}
+void EvalVisitor::visit(NumericForStatNode* p_Node) {}
 void EvalVisitor::visit(RepeatStatNode* p_Node) {}
 void EvalVisitor::visit(ReturnStatNode* p_Node) {}
 void EvalVisitor::visit(WhileStatNode* p_Node) {}

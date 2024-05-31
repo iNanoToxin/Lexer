@@ -7,9 +7,10 @@ void IfStatNode::accept(AstVisitor* p_Visitor) {
 
 void IfStatNode::destroy()
 {
-    for (ExpressionNode* node : conditionalBlocks)
+    for (auto [first, second] : conditionalBlocks)
     {
-        node->destroy();
+        first->destroy();
+        second->destroy();
     }
     delete this;
 }

@@ -10,7 +10,10 @@ class LabelNode final : public ExpressionNode
 public:
     ExpressionNode* label;
 
-    explicit LabelNode(ExpressionNode* p_Label) : ExpressionNode(AstKind::LabelNode), label(p_Label) {}
+    explicit LabelNode(ExpressionNode* p_Label) : ExpressionNode(AstKind::LabelNode), label(p_Label)
+    {
+        if (label) label->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

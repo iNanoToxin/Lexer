@@ -3,9 +3,16 @@ Key = "keyhere"
 -- fake getfenv
 
 
+
 local getfenv = function()
     return _G
 end
+
+for i, v in next, lol do
+
+end
+while true do end
+
 
 local a, b = {}, 0
 local c, d, e, f, g = 70, 17, 62, 33, 51

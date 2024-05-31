@@ -23,11 +23,10 @@ enum class AstKind
     VariableListNode,
     BlockNode,
     ChunkNode,
-    ConditionalBlockNode,
     AssignmentStatNode,
     BreakStat,
     DoStatNode,
-    ForStatNode,
+    NumericForStatNode,
     GotoStatNode,
     IfStatNode,
     LocalStatNode,
@@ -52,8 +51,9 @@ enum class AstKind
 class AstNode
 {
 public:
+    AstNode* parent;
     AstKind kind;
-    explicit AstNode(const AstKind& p_Kind) : kind(p_Kind) {}
+    explicit AstNode(const AstKind& p_Kind) : parent(nullptr), kind(p_Kind) {}
     virtual ~AstNode() = default;
     virtual void accept(class AstVisitor* p_Visitor) = 0;
     virtual void destroy() = 0;
@@ -85,11 +85,10 @@ public:
             case AstKind::VariableListNode: return "VariableListNode";
             case AstKind::BlockNode: return "BlockNode";
             case AstKind::ChunkNode: return "ChunkNode";
-            case AstKind::ConditionalBlockNode: return "ConditionalBlockNode";
             case AstKind::AssignmentStatNode: return "AssignmentStatNode";
             case AstKind::BreakStat: return "BreakStat";
             case AstKind::DoStatNode: return "DoStatNode";
-            case AstKind::ForStatNode: return "ForStatNode";
+            case AstKind::NumericForStatNode: return "NumericForStatNode";
             case AstKind::GotoStatNode: return "GotoStatNode";
             case AstKind::IfStatNode: return "IfStatNode";
             case AstKind::LocalStatNode: return "LocalStatNode";

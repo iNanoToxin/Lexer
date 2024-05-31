@@ -8,7 +8,10 @@ class GotoStatNode final : public ExpressionNode
 public:
     ExpressionNode* label;
 
-    explicit GotoStatNode(ExpressionNode* p_Label) : ExpressionNode(AstKind::GotoStatNode), label(p_Label) {}
+    explicit GotoStatNode(ExpressionNode* p_Label) : ExpressionNode(AstKind::GotoStatNode), label(p_Label)
+    {
+        if (label) label->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;

@@ -8,7 +8,10 @@ class TableConstructorNode final : public ExpressionNode
 public:
     ExpressionNode* fieldList;
 
-    explicit TableConstructorNode(ExpressionNode* p_FieldList) : ExpressionNode(AstKind::TableConstructorNode), fieldList(p_FieldList) {}
+    explicit TableConstructorNode(ExpressionNode* p_FieldList) : ExpressionNode(AstKind::TableConstructorNode), fieldList(p_FieldList)
+    {
+        if (fieldList) fieldList->parent = this;
+    }
 
     void accept(AstVisitor* p_Visitor) override;
     void destroy() override;
