@@ -38,14 +38,14 @@ class Parser
     std::vector<Token> m_Tokens;
 
 public:
-    ExpressionNode* getName()
+    std::shared_ptr<ExpressionNode> getName()
     {
         return expectPeek(TokenType::IDENTIFIER) ? getPrimaryExpression() : nullptr;
     }
 
-    ExpressionNode* getAttributeName()
+    std::shared_ptr<ExpressionNode> getAttributeName()
     {
-        ExpressionNode* variable = getName();
+        std::shared_ptr<ExpressionNode> variable = getName();
 
         if (variable == nullptr)
         {
@@ -56,20 +56,20 @@ public:
         {
             consume();
 
-            ExpressionNode* attribute = getName();
+            std::shared_ptr<ExpressionNode> attribute = getName();
             LL_assert(attribute != nullptr, "Expected attribute after `<`.");
             LL_assert(expectPeek(">"), "Expected `>` after attribute.");
             consume();
-            return new AttributeNode(variable, attribute);
+            return AttributeNode::create(variable, attribute);
         }
         return variable;
     }
 
-    ExpressionNode* getAttributeList()
+    std::shared_ptr<ExpressionNode> getAttributeList()
     {
-        std::vector<ExpressionNode*> list;
+        std::vector<std::shared_ptr<ExpressionNode>> list;
 
-        if (ExpressionNode* attribute = getAttributeName())
+        if (std::shared_ptr<ExpressionNode> attribute = getAttributeName())
         {
             list.push_back(attribute);
         }
@@ -82,18 +82,18 @@ public:
         {
             consume();
 
-            ExpressionNode* attribute = getAttributeName();
+            std::shared_ptr<ExpressionNode> attribute = getAttributeName();
             LL_assert(attribute != nullptr, "Expected attribute variable after `,` in attribute list.");
             list.push_back(attribute);
         }
-        return new AttributeListNode(list);
+        return AttributeListNode::create(list);
     }
 
-    ExpressionNode* getExpressionList()
+    std::shared_ptr<ExpressionNode> getExpressionList()
     {
-        std::vector<ExpressionNode*> list;
+        std::vector<std::shared_ptr<ExpressionNode>> list;
 
-        if (ExpressionNode* expression = getExpression())
+        if (std::shared_ptr<ExpressionNode> expression = getExpression())
         {
             list.push_back(expression);
         }
@@ -106,15 +106,15 @@ public:
         {
             consume();
 
-            ExpressionNode* expression = getExpression();
+            std::shared_ptr<ExpressionNode> expression = getExpression();
             LL_assert(expression != nullptr, "Expression expected after `,` in expression list.");
 
             list.push_back(expression);
         }
-        return new ExpressionListNode(list);
+        return ExpressionListNode::create(list);
     }
 
-    ExpressionNode* getReturnStatement()
+    std::shared_ptr<ExpressionNode> getReturnStatement()
     {
         if (!expectPeek("return"))
         {
@@ -122,18 +122,18 @@ public:
         }
         consume();
 
-        ExpressionNode* expression_list = getExpressionList();
+        std::shared_ptr<ExpressionNode> expression_list = getExpressionList();
         if (expectPeek(";"))
         {
             consume();
         }
 
-        return new ReturnStatNode(expression_list);
+        return ReturnStatNode::create(expression_list);
     }
 
-    ExpressionNode* getFunctionName()
+    std::shared_ptr<ExpressionNode> getFunctionName()
     {
-        ExpressionNode* root = getName();
+        std::shared_ptr<ExpressionNode> root = getName();
         if (root == nullptr)
         {
             return nullptr;
@@ -143,28 +143,28 @@ public:
         {
             consume();
 
-            ExpressionNode* name = getName();
+            std::shared_ptr<ExpressionNode> name = getName();
             LL_assert(name != nullptr, "Expected name after `.` in function name.");
 
-            root = new MemberNode(root, name);
+            root = MemberNode::create(root, name);
         }
 
         if (expectPeek(":"))
         {
             consume();
 
-            ExpressionNode* name = getName();
+            std::shared_ptr<ExpressionNode> name = getName();
             LL_assert(name != nullptr, "Expected name after `:` in function name.");
 
-            root = new MethodNode(root, name);
+            root = MethodNode::create(root, name);
         }
 
-        return new FuncNameNode(root);
+        return FuncNameNode::create(root);
     }
 
-    ExpressionNode* getNameList(const bool p_IsParameterList = false)
+    std::shared_ptr<ExpressionNode> getNameList(const bool p_IsParameterList = false)
     {
-        std::vector<ExpressionNode*> list;
+        std::vector<std::shared_ptr<ExpressionNode>> list;
 
         bool running = false;
         do
@@ -174,10 +174,10 @@ public:
             if (p_IsParameterList && expectPeek("..."))
             {
                 list.push_back(getPrimaryExpression());
-                return new ParameterListNode(list);
+                return ParameterListNode::create(list);
             }
 
-            if (ExpressionNode* name = getName())
+            if (std::shared_ptr<ExpressionNode> name = getName())
             {
                 list.push_back(name);
             }
@@ -198,57 +198,57 @@ public:
 
         if (p_IsParameterList)
         {
-            return new ParameterListNode(list);
+            return ParameterListNode::create(list);
         }
-        return new NameListNode(list);
+        return NameListNode::create(list);
     }
 
-    ExpressionNode* getParameterList()
+    std::shared_ptr<ExpressionNode> getParameterList()
     {
         return getNameList(true);
     }
 
-    ExpressionNode* getField()
+    std::shared_ptr<ExpressionNode> getField()
     {
         if (expectPeek("["))
         {
             consume();
 
-            ExpressionNode* index = getExpression();
+            std::shared_ptr<ExpressionNode> index = getExpression();
             LL_assert(index != nullptr, "Expected index in table field.");
             LL_assert(expectPeek("]"), "Expected `]` after index.");
             consume();
             LL_assert(expectPeek("="), "Expected `=` after `]` in table field.");
             consume();
 
-            ExpressionNode* value = getExpression();
-            LL_assert(value, "Expected value after `=` in table field.");
+            std::shared_ptr<ExpressionNode> value = getExpression();
+            LL_assert(value != nullptr, "Expected value after `=` in table field.");
 
-            return new TableIndexValueNode(index, value);
+            return TableIndexValueNode::create(index, value);
         }
         if (expectPeek(TokenType::IDENTIFIER) && expectPeek("=", 1))
         {
-            ExpressionNode* index = getName();
+            std::shared_ptr<ExpressionNode> index = getName();
             LL_assert(expectPeek("="), "`Expected `=` after index in table field.");
             consume();
 
-            ExpressionNode* value = getExpression();
-            LL_assert(value, "Expected value after `=` in table field.");
+            std::shared_ptr<ExpressionNode> value = getExpression();
+            LL_assert(value != nullptr, "Expected value after `=` in table field.");
 
-            return new TableNameValueNode(index, value);
+            return TableNameValueNode::create(index, value);
         }
-        if (ExpressionNode* value = getExpression())
+        if (std::shared_ptr<ExpressionNode> value = getExpression())
         {
-            return new TableValueNode(value);
+            return TableValueNode::create(value);
         }
         return nullptr;
     }
 
-    ExpressionNode* getFieldList()
+    std::shared_ptr<ExpressionNode> getFieldList()
     {
-        std::vector<ExpressionNode*> list;
+        std::vector<std::shared_ptr<ExpressionNode>> list;
 
-        while (ExpressionNode* field = getField())
+        while (std::shared_ptr<ExpressionNode> field = getField())
         {
             list.push_back(field);
 
@@ -262,33 +262,33 @@ public:
         {
             return nullptr;
         }
-        return new FieldListNode(list);
+        return FieldListNode::create(list);
     }
 
-    ExpressionNode* getArgumentList()
+    std::shared_ptr<ExpressionNode> getArgumentList()
     {
         if (expectPeek("("))
         {
             consume();
 
-            ExpressionNode* argument_list = getExpressionList();
+            std::shared_ptr<ExpressionNode> argument_list = getExpressionList();
             LL_assert(expectPeek(")"), "Expected `)` after arguments.");
             consume();
 
-            return new ArgumentListNode(argument_list);
+            return ArgumentListNode::create(argument_list);
         }
         if (expectPeek(TokenType::STRING) || expectPeek(TokenType::STRING_RAW))
         {
-            return new ArgumentListNode(getPrimaryExpression());
+            return ArgumentListNode::create(getPrimaryExpression());
         }
-        if (ExpressionNode* table_constructor = getTableConstructor())
+        if (std::shared_ptr<ExpressionNode> table_constructor = getTableConstructor())
         {
-            return new ArgumentListNode(table_constructor);
+            return ArgumentListNode::create(table_constructor);
         }
         return nullptr;
     }
 
-    ExpressionNode* getTableConstructor()
+    std::shared_ptr<ExpressionNode> getTableConstructor()
     {
         if (!expectPeek("{"))
         {
@@ -296,24 +296,24 @@ public:
         }
         consume();
 
-        ExpressionNode* field_list = getFieldList();
+        std::shared_ptr<ExpressionNode> field_list = getFieldList();
         LL_assert(expectPeek("}"), "Expected `}` after field list in table constructor.");
         consume();
 
-        return new TableConstructorNode(field_list);
+        return TableConstructorNode::create(field_list);
     }
 
-    ExpressionNode* getVariable(const bool p_IsPrefixExpression = false)
+    std::shared_ptr<ExpressionNode> getVariable(const bool p_IsPrefixExpression = false)
     {
         const std::size_t marked = mark();
         bool is_valid_expression = true;
-        ExpressionNode* root = nullptr;
+        std::shared_ptr<ExpressionNode> root = nullptr;
 
         while (true)
         {
             if (root == nullptr)
             {
-                if (ExpressionNode* name = getName())
+                if (std::shared_ptr<ExpressionNode> name = getName())
                 {
                     root = name;
                     is_valid_expression = true;
@@ -337,39 +337,39 @@ public:
             {
                 consume();
 
-                ExpressionNode* index = getExpression();
+                std::shared_ptr<ExpressionNode> index = getExpression();
                 LL_assert(index != nullptr, "Expected expression after `[`.");
                 LL_assert(expectPeek("]"), "Expected `]` after expression.");
                 consume();
-                root = new IndexNode(root, index);
+                root = IndexNode::create(root, index);
                 is_valid_expression = true;
             }
             else if (expectPeek("."))
             {
                 consume();
 
-                ExpressionNode* member = getName();
+                std::shared_ptr<ExpressionNode> member = getName();
                 LL_assert(member != nullptr, "Expected member name after `.`.");
-                root = new MemberNode(root, member);
+                root = MemberNode::create(root, member);
                 is_valid_expression = true;
             }
             else if (expectPeek(":"))
             {
                 consume();
 
-                ExpressionNode* method = getName();
+                std::shared_ptr<ExpressionNode> method = getName();
                 LL_assert(method != nullptr, "Expected method name after `:`.");
-                root = new MethodNode(root, method);
+                root = MethodNode::create(root, method);
 
-                ExpressionNode* argument_list = getArgumentList();
-                LL_assert(argument_list, "Expected argument list after method name.");
-                root = new FuncCallNode(root, argument_list);
+                std::shared_ptr<ExpressionNode> argument_list = getArgumentList();
+                LL_assert(argument_list != nullptr, "Expected argument list after method name.");
+                root = FuncCallNode::create(root, argument_list);
 
                 is_valid_expression = false;
             }
-            else if (ExpressionNode* argument_list = getArgumentList())
+            else if (std::shared_ptr<ExpressionNode> argument_list = getArgumentList())
             {
-                root = new FuncCallNode(root, argument_list);
+                root = FuncCallNode::create(root, argument_list);
                 is_valid_expression = false;
             }
             else
@@ -386,15 +386,15 @@ public:
         return root;
     }
 
-    ExpressionNode* getPrefixExpression()
+    std::shared_ptr<ExpressionNode> getPrefixExpression()
     {
         return getVariable(true);
     }
 
-    ExpressionNode* getFunctionCall()
+    std::shared_ptr<ExpressionNode> getFunctionCall()
     {
         const std::size_t marked = mark();
-        ExpressionNode* expression = getPrefixExpression();
+        std::shared_ptr<ExpressionNode> expression = getPrefixExpression();
 
         if (expression == nullptr || !expression->is(AstKind::FuncCallNode))
         {
@@ -404,15 +404,15 @@ public:
         return expression;
     }
 
-    ExpressionNode* getVariableList()
+    std::shared_ptr<ExpressionNode> getVariableList()
     {
-        ExpressionNode* variable = getVariable();
+        std::shared_ptr<ExpressionNode> variable = getVariable();
         if (!variable)
         {
             return nullptr;
         }
 
-        std::vector<ExpressionNode*> list;
+        std::vector<std::shared_ptr<ExpressionNode>> list;
 
         list.push_back(variable);
 
@@ -421,14 +421,14 @@ public:
             consume();
 
             variable = getVariable();
-            LL_assert(variable, "Expression expected in variable list.");
+            LL_assert(variable != nullptr, "Expression expected in variable list.");
             list.push_back(variable);
         }
 
-        return new VariableListNode(list);
+        return VariableListNode::create(list);
     }
 
-    ExpressionNode* getFunctionBody()
+    std::shared_ptr<ExpressionNode> getFunctionBody()
     {
         if (!expectPeek("("))
         {
@@ -436,19 +436,19 @@ public:
         }
         consume();
 
-        ExpressionNode* parameter_list = getParameterList();
+        std::shared_ptr<ExpressionNode> parameter_list = getParameterList();
 
         LL_assert(expectPeek(")"), "Expected `)` after parameter list in `function` body.");
         consume();
 
-        ExpressionNode* block = getBlock();
+        std::shared_ptr<ExpressionNode> block = getBlock();
         LL_assert(expectPeek("end"), "Expected `end` after `function` body.");
         consume();
 
-        return new FuncBodyNode(parameter_list, block);
+        return FuncBodyNode::create(parameter_list, block);
     }
 
-    ExpressionNode* getFunctionDefinition()
+    std::shared_ptr<ExpressionNode> getFunctionDefinition()
     {
         if (!expectPeek("function"))
         {
@@ -456,36 +456,36 @@ public:
         }
         consume();
 
-        ExpressionNode* function_body = getFunctionBody();
+        std::shared_ptr<ExpressionNode> function_body = getFunctionBody();
         LL_assert(function_body != nullptr, "Expected function body in `function` definition.");
 
-        return new FuncDefNode(nullptr, function_body);
+        return FuncDefNode::create(nullptr, function_body);
     }
 
-    ExpressionNode* getStatement()
+    std::shared_ptr<ExpressionNode> getStatement()
     {
         if (expectPeek(";"))
         {
             consume();
-            return new SemicolonNode();
+            return SemicolonNode::create();
         }
         if (expectPeek("break"))
         {
             consume();
-            return new BreakStat();
+            return BreakStat::create();
         }
         // For Luau continue
         if (expectPeek("continue"))
         {
             consume();
-            return new ContinueStat();
+            return ContinueStat::create();
         }
         if (expectPeek("if"))
         {
             consume();
             std::vector<ExpressionPair> list;
 
-            ExpressionNode* condition = getExpression();
+            std::shared_ptr<ExpressionNode> condition = getExpression();
             LL_assert(condition != nullptr, "Expected condition in `if` statement.");
             LL_assert(expectPeek("then"), "Expected `then` in `if` statement.");
             consume();
@@ -513,45 +513,45 @@ public:
             LL_assert(expectPeek("end"), "Expected `end` after `if` statement.");
             consume();
 
-            return new IfStatNode(list);
+            return IfStatNode::create(list);
         }
         if (expectPeek("while"))
         {
             consume();
 
-            ExpressionNode* condition = getExpression();
+            std::shared_ptr<ExpressionNode> condition = getExpression();
             LL_assert(condition != nullptr, "Expected condition in `while` statement.");
             LL_assert(expectPeek("do"), "Expected `do` in `while` statement.");
             consume();
 
-            ExpressionNode* block = getBlock();
+            std::shared_ptr<ExpressionNode> block = getBlock();
             LL_assert(expectPeek("end"), "Expected `end` after `while` statement.");
             consume();
 
-            return new WhileStatNode(condition, block);
+            return WhileStatNode::create(condition, block);
         }
         if (expectPeek("repeat"))
         {
             consume();
 
-            ExpressionNode* block = getBlock();
+            std::shared_ptr<ExpressionNode> block = getBlock();
             LL_assert(expectPeek("until"), "Expected `until` in `repeat` statement.");
             consume();
 
-            ExpressionNode* condition = getExpression();
-            LL_assert(condition, "Expected condition in `repeat` statement.");
+            std::shared_ptr<ExpressionNode> condition = getExpression();
+            LL_assert(condition != nullptr, "Expected condition in `repeat` statement.");
 
-            return new RepeatStatNode(block, condition);
+            return RepeatStatNode::create(block, condition);
         }
         if (expectPeek("do"))
         {
             consume();
 
-            ExpressionNode* block = getBlock();
+            std::shared_ptr<ExpressionNode> block = getBlock();
             LL_assert(expectPeek("end"), "Expected `end` after `do` statement.");
             consume();
 
-            return new DoStatNode(block);
+            return DoStatNode::create(block);
         }
         if (expectPeek("local"))
         {
@@ -561,42 +561,42 @@ public:
             {
                 consume();
 
-                ExpressionNode* name = getName();
+                std::shared_ptr<ExpressionNode> name = getName();
                 LL_assert(name != nullptr, "Expected name in `local` function.");
 
-                ExpressionNode* body = getFunctionBody();
+                std::shared_ptr<ExpressionNode> body = getFunctionBody();
                 LL_assert(body != nullptr, "Expected function body in `local` function.");
 
-                return new LocalStatNode(new FuncDefNode(name, body));
+                return LocalStatNode::create(FuncDefNode::create(name, body));
             }
             else
             {
-                ExpressionNode* variable_list = getAttributeList();
+                std::shared_ptr<ExpressionNode> variable_list = getAttributeList();
                 LL_assert(variable_list != nullptr, "Expected attribute name list in `local` statement.");
 
                 if (expectPeek("="))
                 {
                     consume();
 
-                    ExpressionNode* expression_list = getExpressionList();
+                    std::shared_ptr<ExpressionNode> expression_list = getExpressionList();
                     LL_assert(expression_list != nullptr, "Expected expression list in `local` statement.");
 
-                    return new LocalStatNode(new AssignmentStatNode(variable_list, expression_list));
+                    return LocalStatNode::create(AssignmentStatNode::create(variable_list, expression_list));
                 }
-                return new LocalStatNode(variable_list);
+                return LocalStatNode::create(variable_list);
             }
         }
         if (expectPeek("function"))
         {
             consume();
 
-            ExpressionNode* name = getFunctionName();
+            std::shared_ptr<ExpressionNode> name = getFunctionName();
             LL_assert(name != nullptr, "expected name in function");
 
-            ExpressionNode* body = getFunctionBody();
-            LL_assert(body, "expected function body in function");
+            std::shared_ptr<ExpressionNode> body = getFunctionBody();
+            LL_assert(body != nullptr, "expected function body in function");
 
-            return new FuncDefNode(name, body);
+            return FuncDefNode::create(name, body);
         }
         if (expectPeek("for"))
         {
@@ -604,20 +604,20 @@ public:
 
             if (expectPeek("=", 1))
             {
-                ExpressionNode* name = getName();
+                std::shared_ptr<ExpressionNode> name = getName();
                 LL_assert(name != nullptr, "Expected name in numeric `for` statement.");
                 LL_assert(expectPeek("="), "Expected `=` in numeric `for` statement.");
                 consume();
 
-                ExpressionNode* init = getExpression();
+                std::shared_ptr<ExpressionNode> init = getExpression();
                 LL_assert(init != nullptr, "Expected expression in numeric `for` statement.");
                 LL_assert(expectPeek(","), "expected `,` in numeric `for` statement.");
                 consume();
 
-                ExpressionNode* goal = getExpression();
+                std::shared_ptr<ExpressionNode> goal = getExpression();
                 LL_assert(goal != nullptr, "Expected expression in numeric `for` statement.");
 
-                ExpressionNode* step = nullptr;
+                std::shared_ptr<ExpressionNode> step = nullptr;
                 if (expectPeek(","))
                 {
                     consume();
@@ -628,63 +628,63 @@ public:
                 LL_assert(expectPeek("do"), "Expected `do` in numeric `for` statement.");
                 consume();
 
-                ExpressionNode* block = getBlock();
+                std::shared_ptr<ExpressionNode> block = getBlock();
                 LL_assert(expectPeek("end"), "Expected `do` in numeric `for` statement.");
                 consume();
 
-                return new NumericForStatNode(name, init, goal, step, block);
+                return NumericForStatNode::create(name, init, goal, step, block);
             }
             else
             {
-                ExpressionNode* name_list = getNameList();
+                std::shared_ptr<ExpressionNode> name_list = getNameList();
                 LL_assert(name_list != nullptr, "Expected name list in generic `for` statement.");
                 LL_assert(expectPeek("in"), "Expected `in` after name list in generic `for` statement.");
                 consume();
 
-                ExpressionNode* expression_list = getExpressionList();
+                std::shared_ptr<ExpressionNode> expression_list = getExpressionList();
                 LL_assert(expression_list != nullptr, "Expected expression list in generic `for` statement.");
                 LL_assert(expectPeek("do"), "Expected `do` in generic `for` statement.");
                 consume();
 
-                ExpressionNode* block = getBlock();
+                std::shared_ptr<ExpressionNode> block = getBlock();
                 LL_assert(expectPeek("end"), "Expected `end` after generic `for` statement.");
                 consume();
 
-                return new GenericForStatNode(name_list, expression_list, block);
+                return GenericForStatNode::create(name_list, expression_list, block);
             }
         }
         if (expectPeek("goto"))
         {
             consume();
 
-            ExpressionNode* label = getName();
+            std::shared_ptr<ExpressionNode> label = getName();
             LL_assert(label != nullptr, "Expected label in `goto` statement.");
 
-            return new GotoStatNode(label);
+            return GotoStatNode::create(label);
         }
         if (expectPeek("::"))
         {
             consume();
 
-            ExpressionNode* label = getName();
+            std::shared_ptr<ExpressionNode> label = getName();
             LL_assert(label != nullptr, "Expected label in `label` statement.");
             LL_assert(expectPeek("::"), "expected `::` after label in `label` statement.");
             consume();
 
-            return new LabelNode(label);
+            return LabelNode::create(label);
         }
 
-        if (ExpressionNode* variable_list = getVariableList())
+        if (std::shared_ptr<ExpressionNode> variable_list = getVariableList())
         {
             LL_assert(expectPeek("="), "Expected `=` in assignment statement.");
             consume();
 
-            ExpressionNode* expression_list = getExpressionList();
+            std::shared_ptr<ExpressionNode> expression_list = getExpressionList();
             LL_assert(expression_list != nullptr, "Expected expression list in assignment statement.");
 
-            return new AssignmentStatNode(variable_list, expression_list);
+            return AssignmentStatNode::create(variable_list, expression_list);
         }
-        if (ExpressionNode* function_call = getFunctionCall())
+        if (std::shared_ptr<ExpressionNode> function_call = getFunctionCall())
         {
             return function_call;
         }
@@ -692,30 +692,30 @@ public:
         return nullptr;
     }
 
-    ExpressionNode* getBlock()
+    std::shared_ptr<ExpressionNode> getBlock()
     {
-        std::vector<ExpressionNode*> list;
+        std::vector<std::shared_ptr<ExpressionNode>> list;
 
-        while (ExpressionNode* stat = getStatement())
+        while (std::shared_ptr<ExpressionNode> stat = getStatement())
         {
             list.push_back(stat);
         }
 
-        if (ExpressionNode* stat = getReturnStatement())
+        if (std::shared_ptr<ExpressionNode> stat = getReturnStatement())
         {
             list.push_back(stat);
         }
 
-        return list.empty() ? nullptr : new BlockNode(list);
+        return list.empty() ? nullptr : BlockNode::create(list);
     }
 
-    ExpressionNode* getChunk()
+    std::shared_ptr<ExpressionNode> getChunk()
     {
-        return new ChunkNode(getBlock());
+        return ChunkNode::create(getBlock());
     }
 
 
-    ExpressionNode* parse(const std::string& p_Source)
+    std::shared_ptr<ExpressionNode> parse(const std::string& p_Source)
     {
         TokenStream stream;
         stream.tokenize(p_Source);
@@ -818,7 +818,7 @@ public:
 
 
 
-    ExpressionNode* getPrimaryExpression()
+    std::shared_ptr<ExpressionNode> getPrimaryExpression()
     {
         if (!next())
         {
@@ -831,12 +831,12 @@ public:
         {
             case TokenType::IDENTIFIER:
             {
-                return new IdentifierNode(consume().literal);
+                return IdentifierNode::create(consume().literal);
             }
             case TokenType::STRING_RAW:
             case TokenType::STRING:
             {
-                return new StringNode(consume().literal);
+                return StringNode::create(consume().literal);
             }
 
             case TokenType::COMMENT_RAW:
@@ -850,29 +850,29 @@ public:
             case TokenType::NUMBER:
             {
                 // std::optional<double> value = Util::to_number(consume().literal);
-                // return new NumberNode(*value);
+                // return NumberNode::create(*value);
                 consume();
-                return new NumberNode(5.0);
+                return NumberNode::create(5.0);
             }
 
             case TokenType::KEYWORD:
             {
                 if (is_boolean(current_token))
                 {
-                    return new BooleanNode(consume().literal == "true");
+                    return BooleanNode::create(consume().literal == "true");
                 }
                 if (is_unary_operator(current_token))
                 {
                     consume();
-                    ExpressionNode* expression = getExpression(Util::get_precedence(true));
+                    std::shared_ptr<ExpressionNode> expression = getExpression(Util::get_precedence(true));
                     LL_assert(expression != nullptr, fmt::format("Expected expression after `{}`.", current_token.literal));
 
-                    return new UnaryOpNode(current_token.literal, expression);
+                    return UnaryOpNode::create(current_token.literal, expression);
                 }
                 if (is_null(current_token))
                 {
                     consume();
-                    return new NilNode();
+                    return NilNode::create();
                 }
                 break;
             }
@@ -881,13 +881,13 @@ public:
                 if (current_token.is("..."))
                 {
                     consume();
-                    return new VarargsNode();
+                    return VarargsNode::create();
                 }
                 if (current_token.is("("))
                 {
                     consume();
 
-                    ExpressionNode* expression = getExpression();
+                    std::shared_ptr<ExpressionNode> expression = getExpression();
                     LL_assert(expression != nullptr, "Expected expression.");
                     LL_assert(expectPeek(")"), "Expected `)` after `(`.");
                     consume();
@@ -900,20 +900,20 @@ public:
                 if (is_unary_operator(current_token))
                 {
                     consume();
-                    ExpressionNode* expression = getExpression(Util::get_precedence(true));
+                    std::shared_ptr<ExpressionNode> expression = getExpression(Util::get_precedence(true));
                     LL_assert(expression != nullptr, fmt::format("Expected expression after `{}`.", current_token.literal));
 
                     if (current_token.is("-"))
                     {
-                        return new UnaryOpNode("-", expression);
+                        return UnaryOpNode::create("-", expression);
                     }
                     if (current_token.is("~"))
                     {
-                        return new UnaryOpNode("~", expression);
+                        return UnaryOpNode::create("~", expression);
                     }
                     if (current_token.is("#"))
                     {
-                        return new UnaryOpNode("#", expression);
+                        return UnaryOpNode::create("#", expression);
                     }
                 }
                 break;
@@ -922,24 +922,24 @@ public:
         return nullptr;
     }
 
-    ExpressionNode* getExpression(const int p_Precedence = 0)
+    std::shared_ptr<ExpressionNode> getExpression(const int p_Precedence = 0)
     {
-        if (ExpressionNode* function_definition = getFunctionDefinition())
+        if (std::shared_ptr<ExpressionNode> function_definition = getFunctionDefinition())
         {
             return getRhsExpression(p_Precedence, function_definition);
         }
-        if (ExpressionNode* prefix_expression = getPrefixExpression())
+        if (std::shared_ptr<ExpressionNode> prefix_expression = getPrefixExpression())
         {
             return getRhsExpression(p_Precedence, prefix_expression);
         }
-        if (ExpressionNode* primary_expression = getPrimaryExpression())
+        if (std::shared_ptr<ExpressionNode> primary_expression = getPrimaryExpression())
         {
             return getRhsExpression(p_Precedence, primary_expression);
         }
         return nullptr;
     }
 
-    ExpressionNode* getRhsExpression(const int p_Precedence, ExpressionNode* p_Lhs)
+    std::shared_ptr<ExpressionNode> getRhsExpression(const int p_Precedence, std::shared_ptr<ExpressionNode> p_Lhs)
     {
         while (next())
         {
@@ -953,7 +953,7 @@ public:
 
             consume();
 
-            ExpressionNode* rhs = getFunctionDefinition();
+            std::shared_ptr<ExpressionNode> rhs = getFunctionDefinition();
             if (rhs == nullptr)
             {
                 rhs = getPrefixExpression();
@@ -984,7 +984,7 @@ public:
 
             if (is_binary_operator(current_token))
             {
-                p_Lhs = new BinaryOpNode(p_Lhs, current_token.literal, rhs);
+                p_Lhs = BinaryOpNode::create(p_Lhs, current_token.literal, rhs);
             }
         }
         return p_Lhs;

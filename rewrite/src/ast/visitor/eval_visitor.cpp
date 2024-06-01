@@ -1,45 +1,45 @@
 #include "eval_visitor.h"
 
-void EvalVisitor::visit(BinaryOpNode* p_Node) {}
-void EvalVisitor::visit(NumberNode* p_Node) {}
-void EvalVisitor::visit(IdentifierNode* p_Node) {}
-void EvalVisitor::visit(StringNode* p_Node) {}
-void EvalVisitor::visit(BooleanNode* p_Node) {}
-void EvalVisitor::visit(AttributeNode* p_Node) {}
-void EvalVisitor::visit(NilNode* p_Node) {}
-void EvalVisitor::visit(VarargsNode* p_Node) {}
-void EvalVisitor::visit(UnaryOpNode* p_Node) {}
-void EvalVisitor::visit(ArgumentListNode* p_Node) {}
-void EvalVisitor::visit(AttributeListNode* p_Node) {}
-void EvalVisitor::visit(ExpressionListNode* p_Node) {}
-void EvalVisitor::visit(FieldListNode* p_Node) {}
-void EvalVisitor::visit(NameListNode* p_Node) {}
-void EvalVisitor::visit(ParameterListNode* p_Node) {}
-void EvalVisitor::visit(VariableListNode* p_Node) {}
-void EvalVisitor::visit(BlockNode* p_Node) {}
-void EvalVisitor::visit(ChunkNode* p_Node) {}
-void EvalVisitor::visit(AssignmentStatNode* p_Node) {}
-void EvalVisitor::visit(BreakStat* p_Node) {}
-void EvalVisitor::visit(ContinueStat* p_Node) {}
-void EvalVisitor::visit(DoStatNode* p_Node) {}
-void EvalVisitor::visit(GenericForStatNode* p_Node) {}
-void EvalVisitor::visit(GotoStatNode* p_Node) {}
-void EvalVisitor::visit(IfStatNode* p_Node) {}
-void EvalVisitor::visit(LocalStatNode* p_Node) {}
-void EvalVisitor::visit(NumericForStatNode* p_Node) {}
-void EvalVisitor::visit(RepeatStatNode* p_Node) {}
-void EvalVisitor::visit(ReturnStatNode* p_Node) {}
-void EvalVisitor::visit(WhileStatNode* p_Node) {}
-void EvalVisitor::visit(IndexNode* p_Node) {}
-void EvalVisitor::visit(MemberNode* p_Node) {}
-void EvalVisitor::visit(MethodNode* p_Node) {}
-void EvalVisitor::visit(TableConstructorNode* p_Node) {}
-void EvalVisitor::visit(TableIndexValueNode* p_Node) {}
-void EvalVisitor::visit(TableNameValueNode* p_Node) {}
-void EvalVisitor::visit(TableValueNode* p_Node) {}
-void EvalVisitor::visit(FuncBodyNode* p_Node) {}
-void EvalVisitor::visit(FuncCallNode* p_Node) {}
-void EvalVisitor::visit(FuncDefNode* p_Node) {}
-void EvalVisitor::visit(FuncNameNode* p_Node) {}
-void EvalVisitor::visit(LabelNode* p_Node) {}
-void EvalVisitor::visit(SemicolonNode* p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<NumberNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<StringNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<NilNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<NameListNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<BlockNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<BreakStat>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<ContinueStat>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<DoStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<GotoStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<LocalStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<NumericForStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<RepeatStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<ReturnStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<WhileStatNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<IndexNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<MemberNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<MethodNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<TableIndexValueNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<TableNameValueNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<TableValueNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<FuncBodyNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<FuncNameNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<LabelNode>& p_Node) {}
+void EvalVisitor::visit(const std::shared_ptr<SemicolonNode>& p_Node) {}

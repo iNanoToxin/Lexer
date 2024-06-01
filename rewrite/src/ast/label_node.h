@@ -8,15 +8,26 @@
 class LabelNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* label;
+    std::shared_ptr<ExpressionNode> label;
 
-    explicit LabelNode(ExpressionNode* p_Label) : ExpressionNode(AstKind::LabelNode), label(p_Label)
+    explicit LabelNode() : ExpressionNode(AstKind::LabelNode) {}
+
+    static std::shared_ptr<LabelNode> create(std::shared_ptr<ExpressionNode> p_Label)
     {
-        if (label) label->parent = this;
-    }
+        std::shared_ptr<LabelNode> node = std::make_shared<LabelNode>();
+        node->label = std::move(p_Label);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        if (node->label != nullptr)
+        {
+            node->label->parent = node;
+        }
+        return node;
+    }
+    static std::shared_ptr<LabelNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<LabelNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //LABEL_NODE_H

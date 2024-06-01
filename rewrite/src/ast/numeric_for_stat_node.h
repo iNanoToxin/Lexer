@@ -1,28 +1,57 @@
 #ifndef NUMERIC_FOR_STAT_NODE_H
 #define NUMERIC_FOR_STAT_NODE_H
 
+#include <utility>
+
 #include "expression_node.h"
 
 class NumericForStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* name;
-    ExpressionNode* init;
-    ExpressionNode* goal;
-    ExpressionNode* step;
-    ExpressionNode* block;
+    std::shared_ptr<ExpressionNode> name;
+    std::shared_ptr<ExpressionNode> init;
+    std::shared_ptr<ExpressionNode> goal;
+    std::shared_ptr<ExpressionNode> step;
+    std::shared_ptr<ExpressionNode> block;
 
-    explicit NumericForStatNode(ExpressionNode* p_Name, ExpressionNode* p_Init, ExpressionNode* p_Goal, ExpressionNode* p_Step, ExpressionNode* p_Block) : ExpressionNode(AstKind::NumericForStatNode), name(p_Name), init(p_Init), goal(p_Goal), step(p_Step), block(p_Block)
+    explicit NumericForStatNode() : ExpressionNode(AstKind::NumericForStatNode) {}
+
+    static std::shared_ptr<NumericForStatNode> create(std::shared_ptr<ExpressionNode> p_Name, std::shared_ptr<ExpressionNode> p_Init, std::shared_ptr<ExpressionNode> p_Goal, std::shared_ptr<ExpressionNode> p_Step, std::shared_ptr<ExpressionNode> p_Block)
     {
-        if (name) name->parent = this;
-        if (init) init->parent = this;
-        if (goal) goal->parent = this;
-        if (step) step->parent = this;
-        if (block) block->parent = this;
-    }
+        std::shared_ptr<NumericForStatNode> node = std::make_shared<NumericForStatNode>();
+        node->name = std::move(p_Name);
+        node->init = std::move(p_Init);
+        node->goal = std::move(p_Goal);
+        node->step = std::move(p_Step);
+        node->block = std::move(p_Block);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        if (node->name != nullptr)
+        {
+            node->name->parent = node;
+        }
+        if (node->init != nullptr)
+        {
+            node->init->parent = node;
+        }
+        if (node->goal != nullptr)
+        {
+            node->goal->parent = node;
+        }
+        if (node->step != nullptr)
+        {
+            node->step->parent = node;
+        }
+        if (node->block != nullptr)
+        {
+            node->block->parent = node;
+        }
+        return node;
+    }
+    static std::shared_ptr<NumericForStatNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<NumericForStatNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //NUMERIC_FOR_STAT_NODE_H

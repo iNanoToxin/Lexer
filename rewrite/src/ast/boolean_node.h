@@ -6,11 +6,21 @@
 class BooleanNode final : public ExpressionNode
 {
 public:
-    bool value;
+    bool value{};
 
-    explicit BooleanNode(bool p_Value) : ExpressionNode(AstKind::BooleanNode), value(p_Value) {}
+    explicit BooleanNode() : ExpressionNode(AstKind::BooleanNode) {}
 
-    void accept(AstVisitor* p_Visitor) override;
+    static std::shared_ptr<BooleanNode> create(const bool p_Value)
+    {
+        std::shared_ptr<BooleanNode> node = std::make_shared<BooleanNode>();
+        node->value = p_Value;
+        return node;
+    }
+    static std::shared_ptr<BooleanNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<BooleanNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 

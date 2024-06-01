@@ -201,7 +201,7 @@ void TokenStream::tokenize(const std::string& p_Source)
 }
 
 template <typename T>
-void TokenStream::parseNumericSequence(TokenType p_Type, T p_IsDigitSequence)
+void TokenStream::parseNumericSequence(const TokenType p_Type, T p_IsDigitSequence)
 {
     bool is_malformed = false;
     unsigned int length_sequence = 0;
@@ -332,7 +332,7 @@ void TokenStream::parseString()
     }
     else
     {
-        char quote = peek();
+        const char quote = peek();
         bump();
 
         while (next() && !startsWith(quote) && !startsWith('\n'))

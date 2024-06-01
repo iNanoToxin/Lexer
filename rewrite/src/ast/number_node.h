@@ -6,12 +6,21 @@
 
 class NumberNode final : public ExpressionNode {
 public:
-    int value;
+    int value{};
 
-    explicit NumberNode(const int p_Value) : ExpressionNode(AstKind::NumberNode), value(p_Value) {}
+    explicit NumberNode() : ExpressionNode(AstKind::NumberNode) {}
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+    static std::shared_ptr<NumberNode> create(const int p_Value)
+    {
+        std::shared_ptr<NumberNode> node = std::make_shared<NumberNode>();
+        node->value = p_Value;
+        return node;
+    }
+    static std::shared_ptr<NumberNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<NumberNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif

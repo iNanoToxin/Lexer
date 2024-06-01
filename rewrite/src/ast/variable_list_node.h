@@ -7,18 +7,29 @@
 class VariableListNode final : public ExpressionNode
 {
 public:
-    std::vector<ExpressionNode*> list;
+    std::vector<std::shared_ptr<ExpressionNode>> list;
 
-    explicit VariableListNode(std::vector<ExpressionNode*> p_List) : ExpressionNode(AstKind::VariableListNode), list(std::move(p_List))
+    explicit VariableListNode() : ExpressionNode(AstKind::VariableListNode) {}
+
+    static std::shared_ptr<VariableListNode> create(std::vector<std::shared_ptr<ExpressionNode>> p_List)
     {
-        for (ExpressionNode* node : list)
-        {
-            node->parent = this;
-        }
-    }
+        std::shared_ptr<VariableListNode> node = std::make_shared<VariableListNode>();
+        node->list = std::move(p_List);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        for (const std::shared_ptr<ExpressionNode>& child : node->list)
+        {
+            if (child != nullptr)
+            {
+                child->parent = node;
+            }
+        }
+        return node;
+    }
+    static std::shared_ptr<VariableListNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<VariableListNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //VARIABLE_LIST_NODE_H

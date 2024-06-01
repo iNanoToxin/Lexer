@@ -8,18 +8,29 @@
 class BlockNode final : public ExpressionNode
 {
 public:
-    std::vector<ExpressionNode*> statements;
+    std::vector<std::shared_ptr<ExpressionNode>> statements;
 
-    explicit BlockNode(std::vector<ExpressionNode*> p_Statements) : ExpressionNode(AstKind::BlockNode), statements(std::move(p_Statements))
+    explicit BlockNode() : ExpressionNode(AstKind::BlockNode) {}
+
+    static std::shared_ptr<BlockNode> create(std::vector<std::shared_ptr<ExpressionNode>> p_Statements)
     {
-        for (ExpressionNode* statement : statements)
-        {
-            if (statement) statement->parent = this;
-        }
-    }
+        std::shared_ptr<BlockNode> node = std::make_shared<BlockNode>();
+        node->statements = std::move(p_Statements);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        for (const std::shared_ptr<ExpressionNode>& statement : node->statements)
+        {
+            if (statement)
+            {
+                statement->parent = node;
+            }
+        }
+        return node;
+    }
+    static std::shared_ptr<BlockNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<BlockNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //BLOCK_NODE_H

@@ -1,20 +1,33 @@
 #ifndef DO_STAT_NODE_H
 #define DO_STAT_NODE_H
 
+#include <utility>
+
 #include "expression_node.h"
 
 class DoStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* block;
+    std::shared_ptr<ExpressionNode> block;
 
-    explicit DoStatNode(ExpressionNode* p_Block) : ExpressionNode(AstKind::DoStatNode), block(p_Block)
+    explicit DoStatNode() : ExpressionNode(AstKind::DoStatNode) {}
+
+    static std::shared_ptr<DoStatNode> create(std::shared_ptr<ExpressionNode> p_Block)
     {
-        if (block) block->parent = this;
-    }
+        std::shared_ptr<DoStatNode> node = std::make_shared<DoStatNode>();
+        node->block = std::move(p_Block);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        if (node->block != nullptr)
+        {
+            node->block->parent = node;
+        }
+        return node;
+    }
+    static std::shared_ptr<DoStatNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<DoStatNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //DO_STAT_NODE_H

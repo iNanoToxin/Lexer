@@ -1,22 +1,39 @@
 #ifndef FUNC_DEF_NODE_H
 #define FUNC_DEF_NODE_H
 
+#include <utility>
+
 #include "expression_node.h"
 
 class FuncDefNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* name;
-    ExpressionNode* body;
+    std::shared_ptr<ExpressionNode> name;
+    std::shared_ptr<ExpressionNode> body;
 
-    explicit FuncDefNode(ExpressionNode* p_Name, ExpressionNode* p_Body) : ExpressionNode(AstKind::FuncDefNode), name(p_Name), body(p_Body)
+    explicit FuncDefNode() : ExpressionNode(AstKind::FuncDefNode) {}
+
+    static std::shared_ptr<FuncDefNode> create(std::shared_ptr<ExpressionNode> p_Name, std::shared_ptr<ExpressionNode> p_Body)
     {
-        if (name) name->parent = this;
-        if (body) body->parent = this;
-    }
+        std::shared_ptr<FuncDefNode> node = std::make_shared<FuncDefNode>();
+        node->name = std::move(p_Name);
+        node->body = std::move(p_Body);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        if (node->name != nullptr)
+        {
+            node->name->parent = node;
+        }
+        if (node->body != nullptr)
+        {
+            node->body->parent = node;
+        }
+        return node;
+    }
+    static std::shared_ptr<FuncDefNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<FuncDefNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //FUNC_DEF_NODE_H

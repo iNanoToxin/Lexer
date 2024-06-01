@@ -1,20 +1,33 @@
 #ifndef LOCAL_STAT_NODE_H
 #define LOCAL_STAT_NODE_H
 
+#include <utility>
+
 #include "expression_node.h"
 
 class LocalStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* statement;
+    std::shared_ptr<ExpressionNode> statement;
 
-    explicit LocalStatNode(ExpressionNode* p_Statement) : ExpressionNode(AstKind::LocalStatNode), statement(p_Statement)
+    explicit LocalStatNode() : ExpressionNode(AstKind::LocalStatNode) {}
+
+    static std::shared_ptr<LocalStatNode> create(std::shared_ptr<ExpressionNode> p_Statement)
     {
-        if (statement) statement->parent = this;
-    }
+        std::shared_ptr<LocalStatNode> node = std::make_shared<LocalStatNode>();
+        node->statement = std::move(p_Statement);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        if (node->statement != nullptr)
+        {
+            node->statement->parent = node;
+        }
+        return node;
+    }
+    static std::shared_ptr<LocalStatNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<LocalStatNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //LOCAL_STAT_NODE_H

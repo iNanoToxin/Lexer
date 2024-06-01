@@ -2,6 +2,7 @@
 #define EXPRESSIONNODE_H
 
 #include <iostream>
+#include <memory>
 #include "ast_node.h"
 
 class ExpressionNode : public AstNode
@@ -12,14 +13,8 @@ public:
     // {
     //     std::cout << "Object `" << get_kind_name() << "` destroyed." << std::endl;
     // }
-    void destroy() override;
 };
 
-inline void ExpressionNode::destroy()
-{
-    delete this;
-}
-
-using ExpressionPair = std::pair<ExpressionNode*, ExpressionNode*>;
+using ExpressionPair = std::pair<std::shared_ptr<ExpressionNode>, std::shared_ptr<ExpressionNode>>;
 
 #endif

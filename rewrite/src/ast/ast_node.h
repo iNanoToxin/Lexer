@@ -25,7 +25,9 @@ enum class AstKind
     ChunkNode,
     AssignmentStatNode,
     BreakStat,
+    ContinueStat,
     DoStatNode,
+    GenericForStatNode,
     NumericForStatNode,
     GotoStatNode,
     IfStatNode,
@@ -48,15 +50,16 @@ enum class AstKind
     SemicolonNode
 };
 
-class AstNode
+class AstVisitor;
+
+class AstNode : public std::enable_shared_from_this<AstNode>
 {
 public:
-    AstNode* parent;
+    std::weak_ptr<AstNode> parent;
     AstKind kind;
-    explicit AstNode(const AstKind& p_Kind) : parent(nullptr), kind(p_Kind) {}
+    explicit AstNode(const AstKind& p_Kind) : kind(p_Kind) {}
     virtual ~AstNode() = default;
-    virtual void accept(class AstVisitor* p_Visitor) = 0;
-    virtual void destroy() = 0;
+    virtual void accept(AstVisitor& p_Visitor) = 0;
 
     [[nodiscard]] bool is(const AstKind& p_Kind) const
     {

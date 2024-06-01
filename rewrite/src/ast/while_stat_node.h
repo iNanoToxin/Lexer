@@ -1,22 +1,39 @@
 #ifndef WHILE_STAT_NODE_H
 #define WHILE_STAT_NODE_H
 
+#include <utility>
+
 #include "expression_node.h"
 
 class WhileStatNode final : public ExpressionNode
 {
 public:
-    ExpressionNode* condition;
-    ExpressionNode* block;
+    std::shared_ptr<ExpressionNode> condition;
+    std::shared_ptr<ExpressionNode> block;
 
-    explicit WhileStatNode(ExpressionNode* p_Condition, ExpressionNode* p_Block) : ExpressionNode(AstKind::WhileStatNode), condition(p_Condition), block(p_Block)
+    explicit WhileStatNode() : ExpressionNode(AstKind::WhileStatNode) {}
+
+    static std::shared_ptr<WhileStatNode> create(std::shared_ptr<ExpressionNode> p_Condition, std::shared_ptr<ExpressionNode> p_Block)
     {
-        if (condition) condition->parent = this;
-        if (block) block->parent = this;
-    }
+        std::shared_ptr<WhileStatNode> node = std::make_shared<WhileStatNode>();
+        node->condition = std::move(p_Condition);
+        node->block = std::move(p_Block);
 
-    void accept(AstVisitor* p_Visitor) override;
-    void destroy() override;
+        if (node->condition != nullptr)
+        {
+            node->condition->parent = node;
+        }
+        if (node->block != nullptr)
+        {
+            node->block->parent = node;
+        }
+        return node;
+    }
+    static std::shared_ptr<WhileStatNode> cast(const std::shared_ptr<AstNode>& p_Node)
+    {
+        return std::dynamic_pointer_cast<WhileStatNode>(p_Node);
+    }
+    void accept(AstVisitor& p_Visitor) override;
 };
 
 #endif //WHILE_STAT_NODE_H
