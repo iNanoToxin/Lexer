@@ -1,12 +1,12 @@
 #ifndef NIL_NODE_H
 #define NIL_NODE_H
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class NilNode final : public ExpressionNode
+class NilNode final : public AstNode
 {
 public:
-    explicit NilNode() : ExpressionNode(AstKind::NilNode) {}
+    explicit NilNode() : AstNode(AstKind::NilNode) {}
 
     static std::shared_ptr<NilNode> create()
     {

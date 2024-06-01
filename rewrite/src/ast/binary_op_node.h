@@ -3,18 +3,18 @@
 
 #include <string>
 #include <utility>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class BinaryOpNode final : public ExpressionNode
+class BinaryOpNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> lhs;
-    std::shared_ptr<ExpressionNode> rhs;
+    std::shared_ptr<AstNode> lhs;
+    std::shared_ptr<AstNode> rhs;
     std::string op;
 
-    explicit BinaryOpNode() : ExpressionNode(AstKind::BinaryOpNode) {}
+    explicit BinaryOpNode() : AstNode(AstKind::BinaryOpNode) {}
 
-    static std::shared_ptr<BinaryOpNode> create(std::shared_ptr<ExpressionNode> p_Lhs, std::string p_Operator, std::shared_ptr<ExpressionNode> p_Rhs)
+    static std::shared_ptr<BinaryOpNode> create(std::shared_ptr<AstNode> p_Lhs, std::string p_Operator, std::shared_ptr<AstNode> p_Rhs)
     {
         std::shared_ptr<BinaryOpNode> node = std::make_shared<BinaryOpNode>();
         node->lhs = std::move(p_Lhs);

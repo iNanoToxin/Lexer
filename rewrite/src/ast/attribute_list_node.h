@@ -2,21 +2,21 @@
 #define ATTRIBUTE_LIST_NODE_H
 
 #include <vector>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class AttributeListNode final : public ExpressionNode
+class AttributeListNode final : public AstNode
 {
 public:
-    std::vector<std::shared_ptr<ExpressionNode>> list;
+    std::vector<std::shared_ptr<AstNode>> list;
 
-    explicit AttributeListNode() : ExpressionNode(AstKind::AttributeListNode) {}
+    explicit AttributeListNode() : AstNode(AstKind::AttributeListNode) {}
 
-    static std::shared_ptr<AttributeListNode> create(std::vector<std::shared_ptr<ExpressionNode>> p_List)
+    static std::shared_ptr<AttributeListNode> create(std::vector<std::shared_ptr<AstNode>> p_List)
     {
         std::shared_ptr<AttributeListNode> node = std::make_shared<AttributeListNode>();
         node->list = std::move(p_List);
 
-        for (const std::shared_ptr<ExpressionNode>& child : node->list)
+        for (const std::shared_ptr<AstNode>& child : node->list)
         {
             if (child != nullptr)
             {

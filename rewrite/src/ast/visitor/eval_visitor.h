@@ -2,12 +2,12 @@
 #define EVALVISITOR_H
 
 #include "ast_visitor.h"
-#include "../expression_node.h"
+#include "../ast_node.h"
 
 class EvalVisitor final : public AstVisitor
 {
 private:
-    std::shared_ptr<ExpressionNode> m_Result = nullptr;
+    std::shared_ptr<AstNode> m_Result = nullptr;
 public:
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
@@ -53,7 +53,7 @@ public:
     void visit(const std::shared_ptr<LabelNode>& p_Node) override;
     void visit(const std::shared_ptr<SemicolonNode>& p_Node) override;
 
-    [[nodiscard]] std::shared_ptr<ExpressionNode> getResult() const
+    [[nodiscard]] std::shared_ptr<AstNode> getResult() const
     {
         return m_Result;
     }

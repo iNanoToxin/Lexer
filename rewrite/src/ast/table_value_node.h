@@ -3,16 +3,16 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class TableValueNode final : public ExpressionNode
+class TableValueNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> value;
+    std::shared_ptr<AstNode> value;
 
-    explicit TableValueNode() : ExpressionNode(AstKind::TableValueNode) {}
+    explicit TableValueNode() : AstNode(AstKind::TableValueNode) {}
 
-    static std::shared_ptr<TableValueNode> create(std::shared_ptr<ExpressionNode> p_Value)
+    static std::shared_ptr<TableValueNode> create(std::shared_ptr<AstNode> p_Value)
     {
         std::shared_ptr<TableValueNode> node = std::make_shared<TableValueNode>();
         node->value = std::move(p_Value);

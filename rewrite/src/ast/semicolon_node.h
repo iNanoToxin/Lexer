@@ -1,12 +1,12 @@
 #ifndef SEMICOLON_NODE_H
 #define SEMICOLON_NODE_H
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class SemicolonNode final : public ExpressionNode
+class SemicolonNode final : public AstNode
 {
 public:
-    explicit SemicolonNode() : ExpressionNode(AstKind::SemicolonNode) {}
+    explicit SemicolonNode() : AstNode(AstKind::SemicolonNode) {}
 
     static std::shared_ptr<SemicolonNode> create()
     {

@@ -3,17 +3,17 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class WhileStatNode final : public ExpressionNode
+class WhileStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> condition;
-    std::shared_ptr<ExpressionNode> block;
+    std::shared_ptr<AstNode> condition;
+    std::shared_ptr<AstNode> block;
 
-    explicit WhileStatNode() : ExpressionNode(AstKind::WhileStatNode) {}
+    explicit WhileStatNode() : AstNode(AstKind::WhileStatNode) {}
 
-    static std::shared_ptr<WhileStatNode> create(std::shared_ptr<ExpressionNode> p_Condition, std::shared_ptr<ExpressionNode> p_Block)
+    static std::shared_ptr<WhileStatNode> create(std::shared_ptr<AstNode> p_Condition, std::shared_ptr<AstNode> p_Block)
     {
         std::shared_ptr<WhileStatNode> node = std::make_shared<WhileStatNode>();
         node->condition = std::move(p_Condition);

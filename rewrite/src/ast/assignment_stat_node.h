@@ -3,17 +3,17 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class AssignmentStatNode final : public ExpressionNode
+class AssignmentStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> variableList;
-    std::shared_ptr<ExpressionNode> expressionList;
+    std::shared_ptr<AstNode> variableList;
+    std::shared_ptr<AstNode> expressionList;
 
-    explicit AssignmentStatNode() : ExpressionNode(AstKind::AssignmentStatNode) {}
+    explicit AssignmentStatNode() : AstNode(AstKind::AssignmentStatNode) {}
 
-    static std::shared_ptr<AssignmentStatNode> create(std::shared_ptr<ExpressionNode> p_VariableList, std::shared_ptr<ExpressionNode> p_ExpressionList)
+    static std::shared_ptr<AssignmentStatNode> create(std::shared_ptr<AstNode> p_VariableList, std::shared_ptr<AstNode> p_ExpressionList)
     {
         std::shared_ptr<AssignmentStatNode> node = std::make_shared<AssignmentStatNode>();
         node->variableList = std::move(p_VariableList);

@@ -1,13 +1,13 @@
 #ifndef BREAK_STAT_H
 #define BREAK_STAT_H
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class BreakStat final : public ExpressionNode
+class BreakStat final : public AstNode
 {
 public:
 
-    explicit BreakStat() : ExpressionNode(AstKind::BreakStat) {}
+    explicit BreakStat() : AstNode(AstKind::BreakStat) {}
 
     static std::shared_ptr<BreakStat> create()
     {

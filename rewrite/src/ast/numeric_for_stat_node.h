@@ -3,20 +3,20 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class NumericForStatNode final : public ExpressionNode
+class NumericForStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> name;
-    std::shared_ptr<ExpressionNode> init;
-    std::shared_ptr<ExpressionNode> goal;
-    std::shared_ptr<ExpressionNode> step;
-    std::shared_ptr<ExpressionNode> block;
+    std::shared_ptr<AstNode> name;
+    std::shared_ptr<AstNode> init;
+    std::shared_ptr<AstNode> goal;
+    std::shared_ptr<AstNode> step;
+    std::shared_ptr<AstNode> block;
 
-    explicit NumericForStatNode() : ExpressionNode(AstKind::NumericForStatNode) {}
+    explicit NumericForStatNode() : AstNode(AstKind::NumericForStatNode) {}
 
-    static std::shared_ptr<NumericForStatNode> create(std::shared_ptr<ExpressionNode> p_Name, std::shared_ptr<ExpressionNode> p_Init, std::shared_ptr<ExpressionNode> p_Goal, std::shared_ptr<ExpressionNode> p_Step, std::shared_ptr<ExpressionNode> p_Block)
+    static std::shared_ptr<NumericForStatNode> create(std::shared_ptr<AstNode> p_Name, std::shared_ptr<AstNode> p_Init, std::shared_ptr<AstNode> p_Goal, std::shared_ptr<AstNode> p_Step, std::shared_ptr<AstNode> p_Block)
     {
         std::shared_ptr<NumericForStatNode> node = std::make_shared<NumericForStatNode>();
         node->name = std::move(p_Name);

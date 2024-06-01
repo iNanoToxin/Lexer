@@ -4,17 +4,17 @@
 #include <utility>
 #include <string>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class UnaryOpNode final : public ExpressionNode
+class UnaryOpNode final : public AstNode
 {
 public:
     std::string op;
-    std::shared_ptr<ExpressionNode> value;
+    std::shared_ptr<AstNode> value;
 
-    explicit UnaryOpNode() : ExpressionNode(AstKind::UnaryOpNode) {}
+    explicit UnaryOpNode() : AstNode(AstKind::UnaryOpNode) {}
 
-    static std::shared_ptr<UnaryOpNode> create(std::string p_Operation, std::shared_ptr<ExpressionNode> p_Value)
+    static std::shared_ptr<UnaryOpNode> create(std::string p_Operation, std::shared_ptr<AstNode> p_Value)
     {
         std::shared_ptr<UnaryOpNode> node = std::make_shared<UnaryOpNode>();
         node->op = std::move(p_Operation);

@@ -3,21 +3,21 @@
 
 #include <utility>
 #include <vector>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class FieldListNode final : public ExpressionNode
+class FieldListNode final : public AstNode
 {
 public:
-    std::vector<std::shared_ptr<ExpressionNode>> list;
+    std::vector<std::shared_ptr<AstNode>> list;
 
-    explicit FieldListNode() : ExpressionNode(AstKind::FieldListNode) {}
+    explicit FieldListNode() : AstNode(AstKind::FieldListNode) {}
 
-    static std::shared_ptr<FieldListNode> create(std::vector<std::shared_ptr<ExpressionNode>> p_List)
+    static std::shared_ptr<FieldListNode> create(std::vector<std::shared_ptr<AstNode>> p_List)
     {
         std::shared_ptr<FieldListNode> node = std::make_shared<FieldListNode>();
         node->list = std::move(p_List);
 
-        for (const std::shared_ptr<ExpressionNode>& child : node->list)
+        for (const std::shared_ptr<AstNode>& child : node->list)
         {
             if (child != nullptr)
             {

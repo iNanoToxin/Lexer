@@ -4,14 +4,14 @@
 #include <utility>
 #include <string>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class IdentifierNode final : public ExpressionNode
+class IdentifierNode final : public AstNode
 {
 public:
     std::string value;
 
-    explicit IdentifierNode() : ExpressionNode(AstKind::IdentifierNode) {}
+    explicit IdentifierNode() : AstNode(AstKind::IdentifierNode) {}
 
     static std::shared_ptr<IdentifierNode> create(std::string p_Value)
     {

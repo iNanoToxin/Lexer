@@ -1,6 +1,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <optional>
 #include <string>
 
 namespace Util
@@ -13,6 +14,8 @@ namespace Util
 
     int get_precedence(bool p_IsUnaryOp);
     int get_precedence(const std::string& p_Op);
+
+    std::optional<double> to_number(const std::string& p_Number);
 }
 
 #endif //UTIL_H

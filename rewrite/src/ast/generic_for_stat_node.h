@@ -3,18 +3,18 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class GenericForStatNode final : public ExpressionNode
+class GenericForStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> nameList;
-    std::shared_ptr<ExpressionNode> expressionList;
-    std::shared_ptr<ExpressionNode> block;
+    std::shared_ptr<AstNode> nameList;
+    std::shared_ptr<AstNode> expressionList;
+    std::shared_ptr<AstNode> block;
 
-    explicit GenericForStatNode() : ExpressionNode(AstKind::GenericForStatNode) {}
+    explicit GenericForStatNode() : AstNode(AstKind::GenericForStatNode) {}
 
-    static std::shared_ptr<GenericForStatNode> create(std::shared_ptr<ExpressionNode> p_NameList, std::shared_ptr<ExpressionNode> p_ExpressionList, std::shared_ptr<ExpressionNode> p_Block)
+    static std::shared_ptr<GenericForStatNode> create(std::shared_ptr<AstNode> p_NameList, std::shared_ptr<AstNode> p_ExpressionList, std::shared_ptr<AstNode> p_Block)
     {
         std::shared_ptr<GenericForStatNode> node = std::make_shared<GenericForStatNode>();
         node->nameList = std::move(p_NameList);

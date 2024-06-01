@@ -1,5 +1,6 @@
 #include "util.h"
 
+#include <cmath>
 #include <fstream>
 #include <sstream>
 #include <fmt/format.h>
@@ -107,4 +108,120 @@ int Util::get_precedence(const std::string& p_Op) {
         return 12;
     }
     return -1;
+}
+
+std::optional<double> Util::to_number(const std::string& p_Number) {
+    double integer = 0;
+    double fractional = 0;
+    double exponential = 1;
+
+    bool is_fractional = false;
+    bool is_base_16 = false;
+
+    int base = 10;
+    int i = 0;
+    int j = 0;
+    int n = p_Number.size() - 1;
+
+    while (i < n && isspace(p_Number[i]))
+    {
+        i++;
+    }
+
+    while (n >= 0 && isspace(p_Number[n]))
+    {
+        n--;
+    }
+
+    if (i + 1 <= n && p_Number[i] == '0' && (p_Number[i + 1] == 'x' || p_Number[i + 1] == 'X'))
+    {
+        is_base_16 = true;
+        base = 16;
+        i += 2;
+    }
+
+    while (i <= n)
+    {
+        char c = p_Number[i++];
+
+        if (c == '.')
+        {
+            if (is_fractional)
+            {
+                return std::nullopt;
+            }
+            is_fractional = true;
+            continue;
+        }
+
+        int num = c - '0';
+
+        if (is_base_16)
+        {
+            if (c == 'p' || c == 'P')
+            {
+                int exp = 0;
+                while (i <= n && isdigit(p_Number[i]))
+                {
+                    exp *= 10;
+                    exp += p_Number[i++] - '0';
+                }
+                exponential = std::pow(2, exp);
+                break;
+            }
+
+            if (!isxdigit(c))
+            {
+                return std::nullopt;
+            }
+
+            if (c >= 'a' && c <= 'f')
+            {
+                num = c - 'a' + 10;
+            }
+            else if (c >= 'A' && c <= 'f')
+            {
+                num = c - 'A' + 10;
+            }
+        }
+        else
+        {
+            if (c == 'e' || c == 'E')
+            {
+                int exp = 0;
+                while (i <= n && isdigit(p_Number[i]))
+                {
+                    exp *= 10;
+                    exp += p_Number[i++] - '0';
+                }
+                exponential = std::pow(10, exp);
+                break;
+            }
+
+            if (!isdigit(c))
+            {
+                return std::nullopt;
+            }
+        }
+
+        if (is_fractional)
+        {
+            j++;
+            fractional *= base;
+            fractional += num;
+        }
+        else
+        {
+            integer *= base;
+            integer += num;
+        }
+    }
+
+    if (i <= n)
+    {
+        return std::nullopt;
+    }
+
+    fractional /= std::pow(is_base_16 ? 16 : 10, j);
+    return (integer + fractional) * exponential;
 }

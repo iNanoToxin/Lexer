@@ -3,21 +3,21 @@
 
 #include <utility>
 #include <vector>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class IfStatNode final : public ExpressionNode
+class IfStatNode final : public AstNode
 {
 public:
-    std::vector<ExpressionPair> conditionalBlocks;
+    std::vector<AstNodePair> conditionalBlocks;
 
-    explicit IfStatNode() : ExpressionNode(AstKind::IfStatNode) {}
+    explicit IfStatNode() : AstNode(AstKind::IfStatNode) {}
 
-    static std::shared_ptr<IfStatNode> create(std::vector<ExpressionPair> p_ConditionalBlocks)
+    static std::shared_ptr<IfStatNode> create(std::vector<AstNodePair> p_ConditionalBlocks)
     {
         std::shared_ptr<IfStatNode> node = std::make_shared<IfStatNode>();
         node->conditionalBlocks = std::move(p_ConditionalBlocks);
 
-        for (const ExpressionPair& pair : node->conditionalBlocks)
+        for (const AstNodePair& pair : node->conditionalBlocks)
         {
             if (pair.first != nullptr)
             {

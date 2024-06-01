@@ -12,7 +12,7 @@
 int main()
 {
     Parser parser;
-    const std::shared_ptr<ExpressionNode> chunk = parser.parse(Util::read_file(INPUT_FILE));
+    const std::shared_ptr<AstNode> chunk = parser.parse(Util::read_file(INPUT_FILE));
 
 
     FormatVisitor formatter;

@@ -3,16 +3,16 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class DoStatNode final : public ExpressionNode
+class DoStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> block;
+    std::shared_ptr<AstNode> block;
 
-    explicit DoStatNode() : ExpressionNode(AstKind::DoStatNode) {}
+    explicit DoStatNode() : AstNode(AstKind::DoStatNode) {}
 
-    static std::shared_ptr<DoStatNode> create(std::shared_ptr<ExpressionNode> p_Block)
+    static std::shared_ptr<DoStatNode> create(std::shared_ptr<AstNode> p_Block)
     {
         std::shared_ptr<DoStatNode> node = std::make_shared<DoStatNode>();
         node->block = std::move(p_Block);

@@ -2,21 +2,21 @@
 #define VARIABLE_LIST_NODE_H
 
 #include <vector>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class VariableListNode final : public ExpressionNode
+class VariableListNode final : public AstNode
 {
 public:
-    std::vector<std::shared_ptr<ExpressionNode>> list;
+    std::vector<std::shared_ptr<AstNode>> list;
 
-    explicit VariableListNode() : ExpressionNode(AstKind::VariableListNode) {}
+    explicit VariableListNode() : AstNode(AstKind::VariableListNode) {}
 
-    static std::shared_ptr<VariableListNode> create(std::vector<std::shared_ptr<ExpressionNode>> p_List)
+    static std::shared_ptr<VariableListNode> create(std::vector<std::shared_ptr<AstNode>> p_List)
     {
         std::shared_ptr<VariableListNode> node = std::make_shared<VariableListNode>();
         node->list = std::move(p_List);
 
-        for (const std::shared_ptr<ExpressionNode>& child : node->list)
+        for (const std::shared_ptr<AstNode>& child : node->list)
         {
             if (child != nullptr)
             {

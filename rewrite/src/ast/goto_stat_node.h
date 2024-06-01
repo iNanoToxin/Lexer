@@ -3,16 +3,16 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class GotoStatNode final : public ExpressionNode
+class GotoStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> label;
+    std::shared_ptr<AstNode> label;
 
-    explicit GotoStatNode() : ExpressionNode(AstKind::GotoStatNode) {}
+    explicit GotoStatNode() : AstNode(AstKind::GotoStatNode) {}
 
-    static std::shared_ptr<GotoStatNode> create(std::shared_ptr<ExpressionNode> p_Label)
+    static std::shared_ptr<GotoStatNode> create(std::shared_ptr<AstNode> p_Label)
     {
         std::shared_ptr<GotoStatNode> node = std::make_shared<GotoStatNode>();
         node->label = std::move(p_Label);

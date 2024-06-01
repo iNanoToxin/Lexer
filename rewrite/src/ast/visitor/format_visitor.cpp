@@ -10,13 +10,6 @@
 
 #define TAB_WIDTH 4
 
-
-
-
-
-
-
-
 void FormatVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
 {
     std::stringstream stream;
@@ -146,7 +139,7 @@ void FormatVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const std::shared_ptr<ExpressionNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& node : p_Node->list)
     {
         node->accept(*this);
         stream << m_Result;
@@ -162,7 +155,7 @@ void FormatVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const std::shared_ptr<ExpressionNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& node : p_Node->list)
     {
         node->accept(*this);
         stream << m_Result;
@@ -178,7 +171,7 @@ void FormatVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const std::shared_ptr<ExpressionNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& node : p_Node->list)
     {
         node->accept(*this);
 
@@ -202,7 +195,7 @@ void FormatVisitor::visit(const std::shared_ptr<NameListNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const std::shared_ptr<ExpressionNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& node : p_Node->list)
     {
         node->accept(*this);
         stream << m_Result;
@@ -218,7 +211,7 @@ void FormatVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const std::shared_ptr<ExpressionNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& node : p_Node->list)
     {
         node->accept(*this);
         stream << m_Result;
@@ -234,7 +227,7 @@ void FormatVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const std::shared_ptr<ExpressionNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& node : p_Node->list)
     {
         node->accept(*this);
         stream << m_Result;
@@ -251,7 +244,7 @@ void FormatVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const std::shared_ptr<ExpressionNode>& node : p_Node->statements)
+    for (const std::shared_ptr<AstNode>& node : p_Node->statements)
     {
         node->accept(*this);
 
@@ -357,7 +350,7 @@ void FormatVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const ExpressionPair& pair : p_Node->conditionalBlocks)
+    for (const AstNodePair& pair : p_Node->conditionalBlocks)
     {
         if (pair.first == nullptr)
         {

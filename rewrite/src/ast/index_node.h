@@ -3,17 +3,17 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class IndexNode final : public ExpressionNode
+class IndexNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> root;
-    std::shared_ptr<ExpressionNode> index;
+    std::shared_ptr<AstNode> root;
+    std::shared_ptr<AstNode> index;
 
-    explicit IndexNode() : ExpressionNode(AstKind::IndexNode) {}
+    explicit IndexNode() : AstNode(AstKind::IndexNode) {}
 
-    static std::shared_ptr<IndexNode> create(std::shared_ptr<ExpressionNode> p_Root, std::shared_ptr<ExpressionNode> p_Index)
+    static std::shared_ptr<IndexNode> create(std::shared_ptr<AstNode> p_Root, std::shared_ptr<AstNode> p_Index)
     {
         std::shared_ptr<IndexNode> node = std::make_shared<IndexNode>();
         node->root = std::move(p_Root);

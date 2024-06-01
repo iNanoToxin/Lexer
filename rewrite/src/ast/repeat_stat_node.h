@@ -3,17 +3,17 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class RepeatStatNode final : public ExpressionNode
+class RepeatStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> block;
-    std::shared_ptr<ExpressionNode> condition;
+    std::shared_ptr<AstNode> block;
+    std::shared_ptr<AstNode> condition;
 
-    explicit RepeatStatNode() : ExpressionNode(AstKind::RepeatStatNode) {}
+    explicit RepeatStatNode() : AstNode(AstKind::RepeatStatNode) {}
 
-    static std::shared_ptr<RepeatStatNode> create(std::shared_ptr<ExpressionNode> p_Block, std::shared_ptr<ExpressionNode> p_Condition)
+    static std::shared_ptr<RepeatStatNode> create(std::shared_ptr<AstNode> p_Block, std::shared_ptr<AstNode> p_Condition)
     {
         std::shared_ptr<RepeatStatNode> node = std::make_shared<RepeatStatNode>();
         node->block = std::move(p_Block);

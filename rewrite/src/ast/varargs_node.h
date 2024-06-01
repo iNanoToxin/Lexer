@@ -1,12 +1,12 @@
 #ifndef VARARGS_NODE_H
 #define VARARGS_NODE_H
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class VarargsNode final : public ExpressionNode
+class VarargsNode final : public AstNode
 {
 public:
-    explicit VarargsNode() : ExpressionNode(AstKind::VarargsNode) {}
+    explicit VarargsNode() : AstNode(AstKind::VarargsNode) {}
 
     static std::shared_ptr<VarargsNode> create()
     {

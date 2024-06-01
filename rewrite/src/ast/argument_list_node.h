@@ -2,16 +2,16 @@
 #define ARGUMENT_LIST_NODE_H
 
 #include <utility>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class ArgumentListNode final : public ExpressionNode
+class ArgumentListNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> list;
+    std::shared_ptr<AstNode> list;
 
-    explicit ArgumentListNode() : ExpressionNode(AstKind::ArgumentListNode) {}
+    explicit ArgumentListNode() : AstNode(AstKind::ArgumentListNode) {}
 
-    static std::shared_ptr<ArgumentListNode> create(std::shared_ptr<ExpressionNode> p_List)
+    static std::shared_ptr<ArgumentListNode> create(std::shared_ptr<AstNode> p_List)
     {
         std::shared_ptr<ArgumentListNode> node = std::make_shared<ArgumentListNode>();
         node->list = std::move(p_List);

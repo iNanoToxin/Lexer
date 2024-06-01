@@ -4,14 +4,14 @@
 #include <utility>
 #include <string>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class StringNode final : public ExpressionNode
+class StringNode final : public AstNode
 {
 public:
     std::string value;
 
-    explicit StringNode() : ExpressionNode(AstKind::StringNode) {}
+    explicit StringNode() : AstNode(AstKind::StringNode) {}
 
     static std::shared_ptr<StringNode> create(std::string p_Value)
     {

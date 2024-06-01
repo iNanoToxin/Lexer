@@ -1,14 +1,14 @@
 #ifndef BOOLEAN_NODE_H
 #define BOOLEAN_NODE_H
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class BooleanNode final : public ExpressionNode
+class BooleanNode final : public AstNode
 {
 public:
     bool value{};
 
-    explicit BooleanNode() : ExpressionNode(AstKind::BooleanNode) {}
+    explicit BooleanNode() : AstNode(AstKind::BooleanNode) {}
 
     static std::shared_ptr<BooleanNode> create(const bool p_Value)
     {

@@ -3,16 +3,16 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class FuncNameNode final : public ExpressionNode
+class FuncNameNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> name;
+    std::shared_ptr<AstNode> name;
 
-    explicit FuncNameNode() : ExpressionNode(AstKind::FuncNameNode) {}
+    explicit FuncNameNode() : AstNode(AstKind::FuncNameNode) {}
 
-    static std::shared_ptr<FuncNameNode> create(std::shared_ptr<ExpressionNode> p_Name)
+    static std::shared_ptr<FuncNameNode> create(std::shared_ptr<AstNode> p_Name)
     {
         std::shared_ptr<FuncNameNode> node = std::make_shared<FuncNameNode>();
         node->name = std::move(p_Name);

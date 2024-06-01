@@ -3,16 +3,16 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class LocalStatNode final : public ExpressionNode
+class LocalStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> statement;
+    std::shared_ptr<AstNode> statement;
 
-    explicit LocalStatNode() : ExpressionNode(AstKind::LocalStatNode) {}
+    explicit LocalStatNode() : AstNode(AstKind::LocalStatNode) {}
 
-    static std::shared_ptr<LocalStatNode> create(std::shared_ptr<ExpressionNode> p_Statement)
+    static std::shared_ptr<LocalStatNode> create(std::shared_ptr<AstNode> p_Statement)
     {
         std::shared_ptr<LocalStatNode> node = std::make_shared<LocalStatNode>();
         node->statement = std::move(p_Statement);

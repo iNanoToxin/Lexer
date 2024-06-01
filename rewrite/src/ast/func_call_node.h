@@ -3,17 +3,17 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class FuncCallNode final : public ExpressionNode
+class FuncCallNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> root;
-    std::shared_ptr<ExpressionNode> args;
+    std::shared_ptr<AstNode> root;
+    std::shared_ptr<AstNode> args;
 
-    explicit FuncCallNode() : ExpressionNode(AstKind::FuncCallNode) {}
+    explicit FuncCallNode() : AstNode(AstKind::FuncCallNode) {}
 
-    static std::shared_ptr<FuncCallNode> create(std::shared_ptr<ExpressionNode> p_Root, std::shared_ptr<ExpressionNode> p_Args)
+    static std::shared_ptr<FuncCallNode> create(std::shared_ptr<AstNode> p_Root, std::shared_ptr<AstNode> p_Args)
     {
         std::shared_ptr<FuncCallNode> node = std::make_shared<FuncCallNode>();
         node->root = std::move(p_Root);

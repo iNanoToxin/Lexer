@@ -2,13 +2,13 @@
 #define NUMBERNODE_H
 
 #include <string>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class NumberNode final : public ExpressionNode {
+class NumberNode final : public AstNode {
 public:
     int value{};
 
-    explicit NumberNode() : ExpressionNode(AstKind::NumberNode) {}
+    explicit NumberNode() : AstNode(AstKind::NumberNode) {}
 
     static std::shared_ptr<NumberNode> create(const int p_Value)
     {

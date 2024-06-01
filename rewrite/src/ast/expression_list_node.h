@@ -2,21 +2,21 @@
 #define EXPRESSION_LIST_NODE_H
 
 #include <vector>
-#include "expression_node.h"
+#include "ast_node.h"
 
-class ExpressionListNode final : public ExpressionNode
+class ExpressionListNode final : public AstNode
 {
 public:
-    std::vector<std::shared_ptr<ExpressionNode>> list;
+    std::vector<std::shared_ptr<AstNode>> list;
 
-    explicit ExpressionListNode() : ExpressionNode(AstKind::ExpressionListNode) {}
+    explicit ExpressionListNode() : AstNode(AstKind::ExpressionListNode) {}
 
-    static std::shared_ptr<ExpressionListNode> create(std::vector<std::shared_ptr<ExpressionNode>> p_List)
+    static std::shared_ptr<ExpressionListNode> create(std::vector<std::shared_ptr<AstNode>> p_List)
     {
         std::shared_ptr<ExpressionListNode> node = std::make_shared<ExpressionListNode>();
         node->list = std::move(p_List);
 
-        for (const std::shared_ptr<ExpressionNode>& child : node->list)
+        for (const std::shared_ptr<AstNode>& child : node->list)
         {
             if (child != nullptr)
             {

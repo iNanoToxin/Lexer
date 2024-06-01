@@ -3,16 +3,16 @@
 
 #include <utility>
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class ChunkNode final : public ExpressionNode
+class ChunkNode final : public AstNode
 {
 public:
-    std::shared_ptr<ExpressionNode> block;
+    std::shared_ptr<AstNode> block;
 
-    explicit ChunkNode() : ExpressionNode(AstKind::ChunkNode) {}
+    explicit ChunkNode() : AstNode(AstKind::ChunkNode) {}
 
-    static std::shared_ptr<ChunkNode> create(std::shared_ptr<ExpressionNode> p_Block)
+    static std::shared_ptr<ChunkNode> create(std::shared_ptr<AstNode> p_Block)
     {
         std::shared_ptr<ChunkNode> node = std::make_shared<ChunkNode>();
         node->block = std::move(p_Block);

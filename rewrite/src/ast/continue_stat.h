@@ -1,12 +1,12 @@
 #ifndef CONTINUE_STAT_H
 #define CONTINUE_STAT_H
 
-#include "expression_node.h"
+#include "ast_node.h"
 
-class ContinueStat final : public ExpressionNode
+class ContinueStat final : public AstNode
 {
 public:
-    explicit ContinueStat() : ExpressionNode(AstKind::ContinueStat) {}
+    explicit ContinueStat() : AstNode(AstKind::ContinueStat) {}
 
     static std::shared_ptr<ContinueStat> create()
     {
