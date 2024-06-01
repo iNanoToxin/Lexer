@@ -1,7 +1,7 @@
 #include "parser.h"
 
 #include <fmt/format.h>
-#include "ast/visitor/ast_visitor.h"
+#include "ast/visitors/ast_visitor.h"
 #include "utilities/assert.h"
 #include "utilities/util.h"
 
@@ -72,92 +72,92 @@ std::shared_ptr<AstNode> Parser::parse(const std::string& p_Source) {
     // #define PRINT_TOKENS
 
     #ifdef PRINT_TOKENS
+    {
+        std::clog << "VIEW TOKENS: " << stream.getTokens().size() << "\n";
+
+        std::size_t max_length = 0;
+        for (Token& Token: stream.getTokens())
         {
-            std::clog << "VIEW TOKENS: " << stream.getTokens().size() << "\n";
-
-            std::size_t max_length = 0;
-            for (Token& Token: stream.getTokens())
+            if (Token.literal.size() <= 15)
             {
-                if (Token.literal.size() <= 15)
-                {
-                    max_length = std::max(max_length, Token.literal.size());
-                }
+                max_length = std::max(max_length, Token.literal.size());
             }
-
-            for (Token& Token: stream.getTokens())
-            {
-                std::string type;
-
-                switch (Token.type)
-                {
-                    case TokenType::IDENTIFIER:
-                    {
-                        type = "IDENTIFIER";
-                        break;
-                    }
-                    case TokenType::STRING_RAW:
-                    {
-                        type = "STRING_RAW";
-                        break;
-                    }
-                    case TokenType::STRING:
-                    {
-                        type = "STRING";
-                        break;
-                    }
-                    case TokenType::COMMENT_RAW:
-                    {
-                        type = "COMMENT_RAW";
-                        break;
-                    }
-                    case TokenType::COMMENT:
-                    {
-                        type = "COMMENT";
-                        break;
-                    }
-                    case TokenType::NUMBER_HEXADECIMAL:
-                    {
-                        type = "NUMBER_HEXADECIMAL";
-                        break;
-                    }
-                    case TokenType::NUMBER_BINARY:
-                    {
-                        type = "NUMBER_BINARY";
-                        break;
-                    }
-                    case TokenType::NUMBER:
-                    {
-                        type = "NUMBER";
-                        break;
-                    }
-                    case TokenType::KEYWORD:
-                    {
-                        type = "KEYWORD";
-                        break;
-                    }
-                    case TokenType::PUNCTUATION:
-                    {
-                        type = "PUNCTUATION";
-                        break;
-                    }
-                }
-
-                // if (!(Token.type == TokenType::STRING)) {
-                //     continue;
-                // }
-
-                if (Token.literal.size() <= 15)
-                {
-                    std::cout << Token.literal << std::string(max_length - Token.literal.size(), ' ') << " -> " << (type) << "\n";
-                }
-                else
-                {
-                    std::cout << Token.literal << " -> " << (type) << "\n";
-                }
-            }
-
-            std::cout << "\n";
         }
+
+        for (Token& Token: stream.getTokens())
+        {
+            std::string type;
+
+            switch (Token.type)
+            {
+                case TokenType::IDENTIFIER:
+                {
+                    type = "IDENTIFIER";
+                    break;
+                }
+                case TokenType::STRING_RAW:
+                {
+                    type = "STRING_RAW";
+                    break;
+                }
+                case TokenType::STRING:
+                {
+                    type = "STRING";
+                    break;
+                }
+                case TokenType::COMMENT_RAW:
+                {
+                    type = "COMMENT_RAW";
+                    break;
+                }
+                case TokenType::COMMENT:
+                {
+                    type = "COMMENT";
+                    break;
+                }
+                case TokenType::NUMBER_HEXADECIMAL:
+                {
+                    type = "NUMBER_HEXADECIMAL";
+                    break;
+                }
+                case TokenType::NUMBER_BINARY:
+                {
+                    type = "NUMBER_BINARY";
+                    break;
+                }
+                case TokenType::NUMBER:
+                {
+                    type = "NUMBER";
+                    break;
+                }
+                case TokenType::KEYWORD:
+                {
+                    type = "KEYWORD";
+                    break;
+                }
+                case TokenType::PUNCTUATION:
+                {
+                    type = "PUNCTUATION";
+                    break;
+                }
+            }
+
+            // if (!(Token.type == TokenType::STRING)) {
+            //     continue;
+            // }
+
+            if (Token.literal.size() <= 15)
+            {
+                std::cout << Token.literal << std::string(max_length - Token.literal.size(), ' ') << " -> " << (type) << "\n";
+            }
+            else
+            {
+                std::cout << Token.literal << " -> " << (type) << "\n";
+            }
+        }
+
+        std::cout << "\n";
+    }
     #endif
 
     return getChunk();

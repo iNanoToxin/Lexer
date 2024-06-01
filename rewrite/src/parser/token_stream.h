@@ -1,6 +1,4 @@
-#ifndef LUA_TOKENIZER_H
-#define LUA_TOKENIZER_H
-
+#pragma once
 #include <string>
 #include <vector>
 
@@ -79,5 +77,3 @@ bool is_escape_character(char p_Char);
 bool is_symbol(char p_Char);
 bool is_white_space(char p_Char);
 bool is_keyword(const std::string& p_String);
-
-#endif

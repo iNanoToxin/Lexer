@@ -1,6 +1,4 @@
-#ifndef UTIL_H
-#define UTIL_H
-
+#pragma once
 #include <optional>
 #include <string>
 
@@ -17,5 +15,3 @@ namespace Util
 
     std::optional<double> to_number(const std::string& p_Number);
 }
-
-#endif //UTIL_H

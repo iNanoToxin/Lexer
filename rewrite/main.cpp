@@ -1,9 +1,8 @@
 #include <iostream>
-#include "ast/visitor/eval_visitor.h"
-#include "ast/visitor/format_visitor.h"
+#include "ast/visitors/eval_visitor.h"
+#include "ast/visitors/format_visitor.h"
 #include "parser/parser.h"
 #include "utilities/util.h"
-
 
 #define INPUT_FILE R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\lua\tests\test_3.lua)"
 #define OUTPUT_FILE R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\lua\tests\output.lua)"

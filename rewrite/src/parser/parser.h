@@ -1,11 +1,9 @@
-#ifndef LUA_PARSER_H
-#define LUA_PARSER_H
-
+#pragma once
 #include <memory>
 #include <string>
 #include <vector>
 #include "token_stream.h"
-#include "ast/ast_node.h"
+#include "ast/nodes/ast_node.h"
 
 bool is_binary_operator(const Token& p_CurrentToken);
 bool is_field_separator(const Token& p_CurrentToken);
@@ -66,5 +64,3 @@ public:
     [[nodiscard]] std::size_t mark() const;
     void revert(std::size_t p_Marked);
 };
-
-#endif //LUA_PARSER_H
