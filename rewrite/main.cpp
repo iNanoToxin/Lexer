@@ -6,7 +6,7 @@
 #include "utilities/util.h"
 
 #define FILE(a) "C:\\Users\\dylan\\JetBrains\\CLionProjects\\Lexer\\rewrite\\tests\\"#a".lua"
-#define CODE FILE(test_2)
+#define CODE FILE(test_1)
 
 int main()
 {
@@ -18,6 +18,7 @@ int main()
     const std::shared_ptr<AstNode> chunk = parser.parse(Util::read_file(CODE));
 
     chunk->accept(refactor);
+    chunk->accept(evaluator);
     chunk->accept(formatter);
 
 

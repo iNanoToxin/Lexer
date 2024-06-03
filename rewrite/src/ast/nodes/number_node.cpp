@@ -1,117 +1,60 @@
 #include "number_node.h"
-#include <cerrno>
 #include <limits>
-#include <optional>
 #include "../../utilities/assert.h"
 #include "ast/visitors/ast_visitor.h"
 
-#define MAXBY10 ((unsigned long long)(LLONG_MAX / 10))
-#define MAXLASTD ((int)(LLONG_MAX % 10))
-
-inline int hex_value(const int p_Char)
+inline bool l_str2_int(LuaInteger* p_Out, const std::string& p_Number)
 {
-    if (std::isdigit(p_Char)) return p_Char - '0';
-    return std::tolower(p_Char) - 'a' + 10;
+    try
+    {
+        std::size_t position;
+        if (p_Number.size() > 1 && p_Number[0] == '0' && std::tolower(p_Number[1]) == 'x')
+        {
+            *p_Out = std::stoll(p_Number, &position, 16);
+            return position == p_Number.size();
+        }
+        *p_Out = std::stoll(p_Number, &position);
+        return position == p_Number.size();
+    }
+    catch (...) {}
+    return false;
 }
 
-// static const char* l_str2d(const char* s, lua_Number* result)
-// {
-//     std::stoi();
-//     const char* endptr;
-//     const char* pmode = strpbrk(s, ".xXnN"); /* look for special chars */
-//     int mode = pmode ? ltolower(cast_uchar(*pmode)) : 0;
-//     if (mode == 'n') /* reject 'inf' and 'nan' */
-//         return NULL;
-//     endptr = l_str2dloc(s, result, mode); /* try to convert */
-//     if (endptr == NULL)
-//     {
-//         /* failed? may be a different locale */
-//         char buff[L_MAXLENNUM + 1];
-//         const char* pdot = strchr(s, '.');
-//         if (pdot == NULL || strlen(s) > L_MAXLENNUM) return NULL; /* string too long or no dot; fail */
-//         strcpy(buff, s); /* copy string to buffer */
-//         buff[pdot - s] = lua_getlocaledecpoint(); /* correct decimal point */
-//         endptr = l_str2dloc(buff, result, mode); /* try again */
-//         if (endptr != NULL) endptr = s + (endptr - buff); /* make relative to 's' */
-//     }
-//     return endptr;
-// }
-
-
-inline std::optional<LuaInteger> l_str2_int(const std::string& p_Num)
+inline bool l_str2_double(LuaDouble* p_Out, const std::string& p_Number)
 {
-    std::size_t integer = 0;
-    std::size_t index = 0;
-    bool is_empty = true;
-    bool is_negative = false;
-
-    while (std::isspace(p_Num[index])) index++;
-
-    if (p_Num[index] == '-')
+    try
     {
-        index++;
-        is_negative = true;
+        std::size_t position;
+        *p_Out = std::stod(p_Number, &position);
+        return position == p_Number.size();
     }
-    else if (p_Num[index] == '+')
+    catch (std::out_of_range&)
     {
-        index++;
+        *p_Out = std::numeric_limits<LuaDouble>::infinity();
     }
-
-    if (p_Num[index] == '0' && (p_Num[index + 1] == 'x' || p_Num[index + 1] == 'X'))
+    catch (std::invalid_argument&)
     {
-        index += 2;
-        while (std::isxdigit(p_Num[index]))
-        {
-            integer = integer * 16 + hex_value(p_Num[index]);
-            is_empty = false;
-            index++;
-        }
+        return false;
     }
-    else
-    {
-        while (std::isdigit(p_Num[index]))
-        {
-            int d = p_Num[index] - '0';
-            if (integer >= MAXBY10 && (integer > MAXBY10 || d > MAXLASTD + is_negative))
-            {
-                return std::optional<LuaInteger>{std::nullopt};
-            }
-            integer = integer * 10 + d;
-            is_empty = false;
-            index++;
-        }
-    }
-
-    while (std::isspace(p_Num[index])) index++;
-
-    if (is_empty || p_Num[index] != '\0')
-    {
-        return std::optional<LuaInteger>{std::nullopt};
-    }
-    return std::optional<LuaInteger>{is_negative ? 0u - integer : integer};
+    return true;
 }
 
 
 std::shared_ptr<NumberNode> NumberNode::create(const std::string& p_NumberLiteral)
 {
-    try
+    LuaInteger lua_integer = 0;
+    if (l_str2_int(&lua_integer, p_NumberLiteral))
     {
-        if (p_NumberLiteral.size() > 1 && p_NumberLiteral[0] == '0' && std::tolower(p_NumberLiteral[1]) == 'x')
-        {
-            return create(std::stoll(p_NumberLiteral, nullptr, 16));
-        }
-        return create(std::stoll(p_NumberLiteral));
+        return create(lua_integer);
     }
-    catch (std::out_of_range&) {}
 
-    try
+    LuaDouble lua_double = 0;
+    if (l_str2_double(&lua_double, p_NumberLiteral))
     {
-        return create(std::stod(p_NumberLiteral));
+        return create(lua_double);
     }
-    catch (std::out_of_range&)
-    {
-        return create(std::numeric_limits<LuaDouble>::infinity());
-    }
+    LL_failure("p_NumberLiteral != number", "Failed to convert string to number");
+    return nullptr;
 }
 
 std::shared_ptr<NumberNode> NumberNode::create(const LuaInteger p_Integer)

@@ -42,6 +42,28 @@ void EvalVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
     m_Result = p_Node;
 }
 
+template <typename T>
+void do_op(std::shared_ptr<AstNode>& p_Result, const std::shared_ptr<NumberNode>& p_Lhs, const T& p_Operation, const std::shared_ptr<NumberNode>& p_Rhs)
+{
+    LuaDouble lhs_value = p_Lhs->isInteger ? static_cast<LuaDouble>(p_Lhs->numInteger) : p_Lhs->numDouble;
+    LuaDouble rhs_value = p_Rhs->isInteger ? static_cast<LuaDouble>(p_Rhs->numInteger) : p_Rhs->numDouble;
+    lhs_value *= p_Lhs->isNegative ? -1.0 : 1.0;
+    rhs_value *= p_Rhs->isNegative ? -1.0 : 1.0;
+    const LuaDouble result = p_Operation(lhs_value, rhs_value);
+
+    if (result >= std::numeric_limits<LuaInteger>::min() &&
+        result <= std::numeric_limits<LuaInteger>::max() &&
+        std::floor(result) == result
+    )
+    {
+        p_Result = NumberNode::create(static_cast<LuaInteger>(result));
+    }
+    else
+    {
+        p_Result = NumberNode::create(result);
+    }
+}
+
 void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
 {
     if (p_Node->lhs != nullptr)
@@ -57,29 +79,47 @@ void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
 
     if (p_Node->lhs->kind == AstKind::NumberNode && p_Node->rhs->kind == AstKind::NumberNode)
     {
-        const std::shared_ptr<NumberNode> lhs = NumberNode::cast(p_Node->lhs);
-        const std::shared_ptr<NumberNode> rhs = NumberNode::cast(p_Node->rhs);
+        const std::shared_ptr<NumberNode>& lhs = NumberNode::cast(p_Node->lhs);
+        const std::shared_ptr<NumberNode>& rhs = NumberNode::cast(p_Node->rhs);
 
         switch (p_Node->opKind)
         {
             case BinaryOpKind::Plus:
             {
-                LuaDouble lhs_value = lhs->isInteger ? static_cast<LuaDouble>(lhs->numInteger) : lhs->numDouble;
-                LuaDouble rhs_value = rhs->isInteger ? static_cast<LuaDouble>(rhs->numInteger) : rhs->numDouble;
-                lhs_value *= lhs->isNegative ? -1.0 : 1.0;
-                rhs_value *= rhs->isNegative ? -1.0 : 1.0;
-                const LuaDouble result = lhs_value + rhs_value;
+                do_op(m_Result, lhs, std::plus(), rhs);
+                break;
+            }
+            case BinaryOpKind::Minus:
+            {
+                do_op(m_Result, lhs, std::minus(), rhs);
+                break;
+            }
+            case BinaryOpKind::Multiply:
+            {
+                do_op(m_Result, lhs, std::multiplies(), rhs);
+                break;
+            }
+            case BinaryOpKind::FloatDivision:
+            {
+                do_op(m_Result, lhs, std::divides(), rhs);
+                const std::shared_ptr<NumberNode>& number = NumberNode::cast(m_Result);
 
-                if (lhs_value + rhs_value >= std::numeric_limits<LuaInteger>::min() &&
-                    lhs_value + rhs_value <= std::numeric_limits<LuaInteger>::max() &&
-                    std::floor(result) == result
-                )
+                if (number->isInteger)
                 {
-                    m_Result = NumberNode::create(static_cast<LuaInteger>(result));
+                    number->isInteger = false;
+                    number->numDouble = number->numInteger;
                 }
-                else
+                break;
+            }
+            case BinaryOpKind::FloorDivision:
+            {
+                do_op(m_Result, lhs, std::divides(), rhs);
+                const std::shared_ptr<NumberNode>& number = NumberNode::cast(m_Result);
+
+                if (!number->isInteger)
                 {
-                    m_Result = NumberNode::create(result);
+                    number->isInteger = true;
+                    number->numInteger = std::floor(number->numDouble);
                 }
                 break;
             }
@@ -98,10 +138,6 @@ void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
             case BinaryOpKind::LeftShift:
             case BinaryOpKind::RightShift:
             case BinaryOpKind::Concat:
-            case BinaryOpKind::Minus:
-            case BinaryOpKind::Multiply:
-            case BinaryOpKind::FloatDivision:
-            case BinaryOpKind::FloorDivision:
             case BinaryOpKind::Modulus:
             case BinaryOpKind::Power:
             default:
