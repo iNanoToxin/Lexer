@@ -43,7 +43,7 @@ void EvalVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
 }
 
 template <typename T>
-void do_op(std::shared_ptr<AstNode>& p_Result, const std::shared_ptr<NumberNode>& p_Lhs, const T& p_Operation, const std::shared_ptr<NumberNode>& p_Rhs)
+std::shared_ptr<NumberNode> do_op(const std::shared_ptr<NumberNode>& p_Lhs, const T& p_Operation, const std::shared_ptr<NumberNode>& p_Rhs, bool p_ForceDouble = false)
 {
     LuaDouble lhs_value = p_Lhs->isInteger ? static_cast<LuaDouble>(p_Lhs->numInteger) : p_Lhs->numDouble;
     LuaDouble rhs_value = p_Rhs->isInteger ? static_cast<LuaDouble>(p_Rhs->numInteger) : p_Rhs->numDouble;
@@ -51,17 +51,15 @@ void do_op(std::shared_ptr<AstNode>& p_Result, const std::shared_ptr<NumberNode>
     rhs_value *= p_Rhs->isNegative ? -1.0 : 1.0;
     const LuaDouble result = p_Operation(lhs_value, rhs_value);
 
-    if (result >= std::numeric_limits<LuaInteger>::min() &&
+    if (!p_ForceDouble &&
+        result >= std::numeric_limits<LuaInteger>::min() &&
         result <= std::numeric_limits<LuaInteger>::max() &&
         std::floor(result) == result
     )
     {
-        p_Result = NumberNode::create(static_cast<LuaInteger>(result));
+        return NumberNode::create(static_cast<LuaInteger>(result));
     }
-    else
-    {
-        p_Result = NumberNode::create(result);
-    }
+    return NumberNode::create(result);
 }
 
 void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
@@ -86,41 +84,49 @@ void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
         {
             case BinaryOpKind::Plus:
             {
-                do_op(m_Result, lhs, std::plus(), rhs);
+                m_Result = do_op(lhs, std::plus(), rhs);
                 break;
             }
             case BinaryOpKind::Minus:
             {
-                do_op(m_Result, lhs, std::minus(), rhs);
+                m_Result = do_op(lhs, std::minus(), rhs);
                 break;
             }
             case BinaryOpKind::Multiply:
             {
-                do_op(m_Result, lhs, std::multiplies(), rhs);
+                m_Result = do_op(lhs, std::multiplies(), rhs);
                 break;
             }
             case BinaryOpKind::FloatDivision:
             {
-                do_op(m_Result, lhs, std::divides(), rhs);
-                const std::shared_ptr<NumberNode>& number = NumberNode::cast(m_Result);
-
-                if (number->isInteger)
-                {
-                    number->isInteger = false;
-                    number->numDouble = number->numInteger;
-                }
+                m_Result = do_op(lhs, std::divides(), rhs, true);
                 break;
             }
             case BinaryOpKind::FloorDivision:
             {
-                do_op(m_Result, lhs, std::divides(), rhs);
-                const std::shared_ptr<NumberNode>& number = NumberNode::cast(m_Result);
+                const std::shared_ptr<NumberNode> number = do_op(lhs, std::divides(), rhs);
 
                 if (!number->isInteger)
                 {
-                    number->isInteger = true;
-                    number->numInteger = std::floor(number->numDouble);
+                    number->numDouble = std::floor(number->numDouble);
                 }
+                m_Result = number;
+                break;
+            }
+            case BinaryOpKind::Modulus:
+            {
+                m_Result = do_op(lhs, [](LuaDouble x, LuaDouble y) -> LuaInteger
+                {
+                    return x - std::floor(x / y) * y;
+                }, rhs);
+                break;
+            }
+            case BinaryOpKind::Power:
+            {
+                m_Result = do_op(lhs, [](LuaDouble x, LuaDouble y) -> LuaDouble
+                {
+                    return std::pow(x, y);
+                }, rhs, true);
                 break;
             }
 
@@ -138,8 +144,6 @@ void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
             case BinaryOpKind::LeftShift:
             case BinaryOpKind::RightShift:
             case BinaryOpKind::Concat:
-            case BinaryOpKind::Modulus:
-            case BinaryOpKind::Power:
             default:
             {
                 m_Result = p_Node;
