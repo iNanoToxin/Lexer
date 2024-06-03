@@ -509,7 +509,7 @@ std::shared_ptr<AstNode> Parser::getFunctionCall() {
     const std::size_t marked = mark();
     std::shared_ptr<AstNode> expression = getPrefixExpression();
 
-    if (expression == nullptr || !expression->is(AstKind::FuncCallNode))
+    if (expression == nullptr || expression->kind != AstKind::FuncCallNode)
     {
         revert(marked);
         return nullptr;
@@ -864,8 +864,7 @@ std::shared_ptr<AstNode> Parser::getPrimaryExpression() {
         case TokenType::NUMBER_BINARY:
         case TokenType::NUMBER:
         {
-            const std::optional<double> value = Util::to_number(consume().literal);
-            return NumberNode::create(*value);
+            return NumberNode::create(consume().literal);
         }
 
         case TokenType::KEYWORD:
@@ -956,10 +955,6 @@ std::shared_ptr<AstNode> Parser::getRhsExpression(const int p_Precedence, std::s
         if (rhs == nullptr)
         {
             rhs = getPrimaryExpression();
-            // if (rhs->is(AstKind::CommentNode))
-            // {
-            //     rhs = getPrimaryExpression();
-            // }
         }
         LL_assert(rhs != nullptr, "Expected right hand side expression.");
 

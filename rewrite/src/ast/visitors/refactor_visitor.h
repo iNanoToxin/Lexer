@@ -1,12 +1,16 @@
 #pragma once
+#include <algorithm>
+#include <parser/token_stream.h>
+#include <utilities/assert.h>
 #include "ast_visitor.h"
-#include "ast/nodes/ast_node.h"
+#include "ast/scope/scope_tree.h"
 
-class EvalVisitor final : public AstVisitor
+
+class RefactorVisitor final : public AstVisitor
 {
 private:
     std::shared_ptr<AstNode> m_Result;
-
+    ScopeTree<std::string, std::shared_ptr<AstNode>> m_ScopeTree;
 public:
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
@@ -51,4 +55,48 @@ public:
     void visit(const std::shared_ptr<FuncNameNode>& p_Node) override;
     void visit(const std::shared_ptr<LabelNode>& p_Node) override;
     void visit(const std::shared_ptr<SemicolonNode>& p_Node) override;
+
+    void pushLocal(const std::shared_ptr<AstNode>& p_Node)
+    {
+        std::shared_ptr<IdentifierNode> identifier = nullptr;
+
+        if (p_Node->kind == AstKind::IdentifierNode)
+        {
+            identifier = IdentifierNode::cast(p_Node);
+        }
+        else if (p_Node->kind == AstKind::AttributeNode)
+        {
+            identifier = IdentifierNode::cast(AttributeNode::cast(p_Node)->value);
+        }
+        else
+        {
+            return;
+        }
+
+        // std::cout << "PUSHED: " << identifier->value << std::endl;
+
+        m_ScopeTree.setFront(identifier->value, identifier);
+
+        RETRY:
+        static int offset = 0;
+        static const std::string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+        std::size_t id = m_ScopeTree.totalCount() + offset;
+
+        std::string str;
+
+        while (id > 0)
+        {
+            id--;
+            str += chars[id % chars.size()];
+            id /= chars.size();
+        }
+        std::ranges::reverse(str);
+        identifier->value = str;
+
+        if (is_keyword(str))
+        {
+            offset++;
+            goto RETRY;
+        }
+    }
 };

@@ -2,7 +2,8 @@ Key = "keyhere"
 local getfenv = function() return _ENV end
 local a, b = {}, 0
 local c, d, e, f, g = 70, 17, 62, 33, 51
-h = 1
+local h = 1
+
 do
     if g * g == 53 or d + 61 < 44 then
         g, f, c = e - 84, h * 80, e - f

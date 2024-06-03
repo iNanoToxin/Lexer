@@ -52,5 +52,5 @@ public:
     void visit(const std::shared_ptr<LabelNode>& p_Node) override;
     void visit(const std::shared_ptr<SemicolonNode>& p_Node) override;
 
-    [[nodiscard]] std::string getResult() const;
+    std::string getResult() const;
 };

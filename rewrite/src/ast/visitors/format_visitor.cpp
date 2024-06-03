@@ -4,8 +4,10 @@
 #include <sstream>
 #include <string>
 #include "../../utilities/util.h"
+#include "../../utilities/assert.h"
 
 #define TAB_WIDTH 4
+// #define FPRINT_ALL
 
 void FormatVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
 {
@@ -32,7 +34,20 @@ void FormatVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 }
 void FormatVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
 {
-    m_Result = std::to_string(p_Node->value);
+    std::stringstream stream;
+    if (p_Node->isNegative)
+    {
+        stream << "-";
+    }
+    if (p_Node->isInteger)
+    {
+        stream << std::to_string(p_Node->numInteger);
+    }
+    else
+    {
+        stream << std::to_string(p_Node->numDouble);
+    }
+    m_Result = stream.str();
 }
 void FormatVisitor::visit(const std::shared_ptr<StringNode>& p_Node)
 {
@@ -48,7 +63,7 @@ void FormatVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
     std::stringstream stream;
     p_Node->lhs->accept(*this);
 
-    if (p_Node->lhs->is(AstKind::BinaryOpNode))
+    if (p_Node->lhs->kind == AstKind::BinaryOpNode)
     {
         const std::shared_ptr<BinaryOpNode>& lhs = BinaryOpNode::cast(p_Node->lhs);
 
@@ -62,11 +77,11 @@ void FormatVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
     stream << " " << p_Node->op << " ";
     p_Node->rhs->accept(*this);
 
-    if (p_Node->rhs->is(AstKind::BinaryOpNode))
+    if (p_Node->rhs->kind == AstKind::BinaryOpNode)
     {
         const std::shared_ptr<BinaryOpNode>& rhs = BinaryOpNode::cast(p_Node->rhs);
 
-        if (Util::get_precedence(rhs->op) < Util::get_precedence(p_Node->op))
+        if (Util::get_precedence(p_Node->op) >= Util::get_precedence(rhs->op))
         {
             m_Result = Util::string_wrap('(', m_Result, ')');
         }
@@ -135,32 +150,30 @@ void FormatVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node)
 void FormatVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
 {
     std::stringstream stream;
+    std::string separator;
 
-    for (const std::shared_ptr<AstNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        node->accept(*this);
+        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
+        stream << separator;
+        child->accept(*this);
         stream << m_Result;
-
-        if (node != p_Node->list.back())
-        {
-            stream << ", ";
-        }
+        separator = ", ";
     }
     m_Result = stream.str();
 }
 void FormatVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
 {
     std::stringstream stream;
+    std::string separator;
 
-    for (const std::shared_ptr<AstNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        node->accept(*this);
+        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
+        stream << separator;
+        child->accept(*this);
         stream << m_Result;
-
-        if (node != p_Node->list.back())
-        {
-            stream << ", ";
-        }
+        separator = ", ";
     }
     m_Result = stream.str();
 }
@@ -191,48 +204,45 @@ void FormatVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node)
 void FormatVisitor::visit(const std::shared_ptr<NameListNode>& p_Node)
 {
     std::stringstream stream;
+    std::string separator;
 
-    for (const std::shared_ptr<AstNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        node->accept(*this);
+        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
+        stream << separator;
+        child->accept(*this);
         stream << m_Result;
-
-        if (node != p_Node->list.back())
-        {
-            stream << ", ";
-        }
+        separator = ", ";
     }
     m_Result = stream.str();
 }
 void FormatVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node)
 {
     std::stringstream stream;
+    std::string separator;
 
-    for (const std::shared_ptr<AstNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        node->accept(*this);
+        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
+        stream << separator;
+        child->accept(*this);
         stream << m_Result;
-
-        if (node != p_Node->list.back())
-        {
-            stream << ", ";
-        }
+        separator = ", ";
     }
     m_Result = stream.str();
 }
 void FormatVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
 {
     std::stringstream stream;
+    std::string separator;
 
-    for (const std::shared_ptr<AstNode>& node : p_Node->list)
+    for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        node->accept(*this);
+        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
+        stream << separator;
+        child->accept(*this);
         stream << m_Result;
-
-        if (node != p_Node->list.back())
-        {
-            stream << ", ";
-        }
+        separator = ", ";
     }
     m_Result = stream.str();
 }
@@ -249,11 +259,11 @@ void FormatVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
         std::string split;
         while (std::getline(input_steam, split, '\n'))
         {
-            if (node->is(AstKind::SemicolonNode))
+            if (node->kind == AstKind::SemicolonNode)
             {
                 stream.seekp(-1, std::stringstream::cur);
             }
-            else if (!p_Node->parent.lock()->is(AstKind::ChunkNode))
+            else if (p_Node->parent.lock()->kind != AstKind::ChunkNode)
             {
                 stream << std::string(TAB_WIDTH, ' ');
             }
@@ -264,7 +274,7 @@ void FormatVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
 
     m_Result = stream.str();
 
-    if (p_Node->parent.lock()->is(AstKind::ChunkNode) && m_Result.back() == '\n')
+    if (p_Node->parent.lock()->kind == AstKind::ChunkNode && m_Result.back() == '\n')
     {
         m_Result.pop_back();
     }
@@ -286,6 +296,87 @@ void FormatVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
     stream << " = ";
     p_Node->expressionList->accept(*this);
     stream << m_Result;
+
+    #ifdef FPRINT_ALL
+    std::vector<std::shared_ptr<AstNode>> list;
+
+    if (p_Node->variableList->kind == AstKind::VariableListNode)
+    {
+        list = VariableListNode::cast(p_Node->variableList)->list;
+    }
+    else
+    {
+        list = AttributeListNode::cast(p_Node->variableList)->list;
+    }
+
+
+    std::string seperator;
+    if (!list.empty())
+    {
+        stream << "\ninsert_log(";
+
+        stream << "\"ASSIGN: ";
+        for (const std::shared_ptr<AstNode>& child : list)
+        {
+            stream << seperator;
+            if (false)
+            {
+                const std::shared_ptr<IndexNode> node = IndexNode::cast(child);
+                node->root->accept(*this);
+                stream << m_Result;
+                stream << "[\" .. ";
+                node->index->accept(*this);
+                stream << m_Result;
+                stream << " .. \"]";
+            }
+            else
+            {
+                child->accept(*this);
+                stream << m_Result;
+            }
+            seperator = ", ";
+        }
+        stream << " = \", ";
+
+        seperator.clear();
+        for (const std::shared_ptr<AstNode>& child : list)
+        {
+            stream << seperator;
+            child->accept(*this);
+            stream << m_Result;
+            seperator = ", ";
+        }
+
+        /*for (const std::shared_ptr<AstNode>& child : list)
+        {
+            stream << seperator;
+            stream << "\"";
+
+            if (child->kind == AstKind::IndexNode)
+            {
+                const std::shared_ptr<IndexNode> node = IndexNode::cast(child);
+                node->root->accept(*this);
+                stream << m_Result;
+                stream << "[\" .. ";
+                node->index->accept(*this);
+                stream << m_Result;
+                stream << " .. \"]";
+            }
+            else
+            {
+                child->accept(*this);
+                stream << m_Result;
+            }
+
+            stream << " = \"..tostring(";
+            stream << m_Result;
+            stream << ")";
+            seperator = ", ";
+        }*/
+        stream << ")";
+    }
+    #endif
+
     m_Result = stream.str();
 }
 void FormatVisitor::visit(const std::shared_ptr<BreakStat>& p_Node)
@@ -363,6 +454,13 @@ void FormatVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
             pair.first->accept(*this);
             stream << m_Result;
             stream << " then\n";
+
+            #ifdef FPRINT_ALL
+            stream << std::string(TAB_WIDTH, ' ');
+            stream << "insert_log(\"EQ: ";
+            stream << m_Result;
+            stream << "\")\n";
+            #endif
         }
 
         if (pair.second != nullptr)
@@ -399,7 +497,7 @@ void FormatVisitor::visit(const std::shared_ptr<NumericForStatNode>& p_Node)
     if (p_Node->step != nullptr)
     {
         stream << ", ";
-        p_Node->name->accept(*this);
+        p_Node->step->accept(*this);
         stream << m_Result;
     }
 
@@ -606,6 +704,21 @@ void FormatVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node)
             break;
         }
     }
+
+    #ifdef FPRINT_ALL
+    if (p_Node->parent.lock()->kind != AstKind::BlockNode)
+    {
+        return;
+    }
+
+    std::stringstream stream;
+    stream << m_Result;
+    stream << "\ninsert_log(\"CALL: ";
+    stream << m_Result << std::endl;
+    stream.seekp(-1, std::stringstream::cur);
+    stream << "\")";
+    m_Result = stream.str();
+    #endif
 }
 void FormatVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node)
 {

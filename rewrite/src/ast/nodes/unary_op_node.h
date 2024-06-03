@@ -2,9 +2,18 @@
 #include <string>
 #include "ast_node.h"
 
+enum class UnaryOpKind
+{
+    Not,
+    Length,
+    Negate,
+    BitNot
+};
+
 class UnaryOpNode final : public AstNode
 {
 public:
+    UnaryOpKind opKind;
     std::string op;
     std::shared_ptr<AstNode> value;
 

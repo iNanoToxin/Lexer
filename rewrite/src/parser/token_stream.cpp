@@ -214,7 +214,8 @@ void TokenStream::parseNumericSequence(const TokenType p_Type, T p_IsDigitSequen
             {
                 break;
             }
-            else if (p_IsDigitSequence(peek()))
+
+            if (p_IsDigitSequence(peek()))
             {
                 length_sequence++;
             }

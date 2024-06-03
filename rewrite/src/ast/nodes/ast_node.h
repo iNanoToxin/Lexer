@@ -3,6 +3,10 @@
 #include <memory>
 #include <string>
 
+class AstNode;
+class AstVisitor;
+using AstNodePair = std::pair<std::shared_ptr<AstNode>, std::shared_ptr<AstNode>>;
+
 enum class AstKind
 {
     AttributeNode,
@@ -50,8 +54,6 @@ enum class AstKind
     SemicolonNode
 };
 
-class AstVisitor;
-
 class AstNode : public std::enable_shared_from_this<AstNode>
 {
 public:
@@ -66,8 +68,5 @@ public:
     // }
 
     virtual void accept(AstVisitor& p_Visitor) = 0;
-    [[nodiscard]] bool is(const AstKind& p_Kind) const;
-    [[nodiscard]] std::string getKindName() const;
+    std::string getKindName() const;
 };
-
-using AstNodePair = std::pair<std::shared_ptr<AstNode>, std::shared_ptr<AstNode>>;

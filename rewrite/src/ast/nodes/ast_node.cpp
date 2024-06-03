@@ -3,11 +3,6 @@
 
 AstNode::AstNode(const AstKind& p_Kind) : kind(p_Kind) {}
 
-bool AstNode::is(const AstKind& p_Kind) const
-{
-    return kind == p_Kind;
-}
-
 std::string AstNode::getKindName() const
 {
     switch (kind)

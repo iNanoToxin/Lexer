@@ -1,9 +1,24 @@
-#include "eval_visitor.h"
+#include "refactor_visitor.h"
 #include <cmath>
 #include <limits>
 #include <utilities/assert.h>
 
-void EvalVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
+bool check_parents(const std::shared_ptr<AstNode>& p_Node, const std::vector<AstKind>& p_List)
+{
+    std::shared_ptr<AstNode> curr = p_Node;
+
+    for (const AstKind& kind : p_List)
+    {
+        if (curr == nullptr || curr->kind != kind)
+        {
+            return false;
+        }
+        curr = curr->parent.lock();
+    }
+    return true;
+}
+
+void RefactorVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
 {
     if (p_Node->value != nullptr)
     {
@@ -17,32 +32,49 @@ void EvalVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
 {
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
+{
+    if (p_Node->parent.lock()->kind == AstKind::TableNameValueNode)
+    {
+        m_Result = p_Node;
+        return;
+    }
+
+
+    if (const std::shared_ptr<AstNode>& value = m_ScopeTree.get(p_Node->value))
+    {
+        if (p_Node->parent.lock()->kind != AstKind::AttributeListNode)
+        {
+            // std::cout << "var: " << name << ", value: " << value->toString(0) << std::endl;
+
+            m_Result = value;
+            return;
+        }
+    }
+    m_Result = p_Node;
+}
+void RefactorVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 {
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
 {
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<StringNode>& p_Node)
 {
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<StringNode>& p_Node)
-{
-    m_Result = p_Node;
-}
-void EvalVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
 {
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
 {
     if (p_Node->lhs != nullptr)
     {
@@ -54,115 +86,19 @@ void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
         p_Node->rhs->accept(*this);
         p_Node->rhs = m_Result;
     }
-
-    if (p_Node->lhs->kind == AstKind::NumberNode && p_Node->rhs->kind == AstKind::NumberNode)
-    {
-        const std::shared_ptr<NumberNode> lhs = NumberNode::cast(p_Node->lhs);
-        const std::shared_ptr<NumberNode> rhs = NumberNode::cast(p_Node->rhs);
-
-        switch (p_Node->opKind)
-        {
-            case BinaryOpKind::Plus:
-            {
-                LuaDouble lhs_value = lhs->isInteger ? static_cast<LuaDouble>(lhs->numInteger) : lhs->numDouble;
-                LuaDouble rhs_value = rhs->isInteger ? static_cast<LuaDouble>(rhs->numInteger) : rhs->numDouble;
-                lhs_value *= lhs->isNegative ? -1.0 : 1.0;
-                rhs_value *= rhs->isNegative ? -1.0 : 1.0;
-                const LuaDouble result = lhs_value + rhs_value;
-
-                if (lhs_value + rhs_value >= std::numeric_limits<LuaInteger>::min() &&
-                    lhs_value + rhs_value <= std::numeric_limits<LuaInteger>::max() &&
-                    std::floor(result) == result
-                )
-                {
-                    m_Result = NumberNode::create(static_cast<LuaInteger>(result));
-                }
-                else
-                {
-                    m_Result = NumberNode::create(result);
-                }
-                break;
-            }
-
-            case BinaryOpKind::Or:
-            case BinaryOpKind::And:
-            case BinaryOpKind::LessThan:
-            case BinaryOpKind::GreaterThan:
-            case BinaryOpKind::LessEqual:
-            case BinaryOpKind::GreaterEqual:
-            case BinaryOpKind::NotEqual:
-            case BinaryOpKind::Equal:
-            case BinaryOpKind::BitOr:
-            case BinaryOpKind::BitExOr:
-            case BinaryOpKind::BitAnd:
-            case BinaryOpKind::LeftShift:
-            case BinaryOpKind::RightShift:
-            case BinaryOpKind::Concat:
-            case BinaryOpKind::Minus:
-            case BinaryOpKind::Multiply:
-            case BinaryOpKind::FloatDivision:
-            case BinaryOpKind::FloorDivision:
-            case BinaryOpKind::Modulus:
-            case BinaryOpKind::Power:
-            default:
-            {
-                m_Result = p_Node;
-                break;
-            }
-        }
-        return;
-    }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
 {
     if (p_Node->value != nullptr)
     {
         p_Node->value->accept(*this);
         p_Node->value = m_Result;
     }
-
-    if (p_Node->value->kind == AstKind::NumberNode)
-    {
-        const std::shared_ptr<NumberNode> number = NumberNode::cast(p_Node->value);
-
-        switch (p_Node->opKind)
-        {
-            case UnaryOpKind::Negate:
-            {
-                if (number->isInteger)
-                {
-                    number->numInteger *= -1;
-                }
-                else
-                {
-                    number->numDouble *= -1;
-                }
-                break;
-            }
-            case UnaryOpKind::Not:
-            {
-                m_Result = BooleanNode::create(false);
-                break;
-            }
-            case UnaryOpKind::BitNot:
-            {
-                LL_assert(number->isInteger, "Unary operation `BitNot` cannot be performed on double.");
-                number->numInteger = ~number->numInteger;
-                break;
-            }
-            default:
-            {
-                m_Result = p_Node;
-                break;
-            }
-        }
-        return;
-    }
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node)
 {
     if (p_Node->list != nullptr)
     {
@@ -171,7 +107,20 @@ void EvalVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
+{
+    for (std::shared_ptr<AstNode>& child : p_Node->list)
+    {
+        if (child != nullptr)
+        {
+            child->accept(*this);
+            child = m_Result;
+            pushLocal(child);
+        }
+    }
+    m_Result = p_Node;
+}
+void RefactorVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
 {
     for (std::shared_ptr<AstNode>& child : p_Node->list)
     {
@@ -183,7 +132,7 @@ void EvalVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node)
 {
     for (std::shared_ptr<AstNode>& child : p_Node->list)
     {
@@ -195,7 +144,7 @@ void EvalVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<NameListNode>& p_Node)
 {
     for (std::shared_ptr<AstNode>& child : p_Node->list)
     {
@@ -207,31 +156,20 @@ void EvalVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<NameListNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node)
 {
     for (std::shared_ptr<AstNode>& child : p_Node->list)
     {
         if (child != nullptr)
         {
-            child->accept(*this);
-            child = m_Result;
+            // child->accept(*this);
+            // child = m_Result;
+            pushLocal(child);
         }
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node)
-{
-    for (std::shared_ptr<AstNode>& child : p_Node->list)
-    {
-        if (child != nullptr)
-        {
-            child->accept(*this);
-            child = m_Result;
-        }
-    }
-    m_Result = p_Node;
-}
-void EvalVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
 {
     for (std::shared_ptr<AstNode>& child : p_Node->list)
     {
@@ -244,8 +182,9 @@ void EvalVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
 {
+    m_ScopeTree.push();
     for (std::shared_ptr<AstNode>& statement : p_Node->statements)
     {
         if (statement != nullptr)
@@ -254,9 +193,10 @@ void EvalVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
             statement = m_Result;
         }
     }
+    m_ScopeTree.pop();
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
 {
     if (p_Node->block != nullptr)
     {
@@ -266,29 +206,29 @@ void EvalVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
 {
-    if (p_Node->variableList != nullptr)
-    {
-        p_Node->variableList->accept(*this);
-        p_Node->variableList = m_Result;
-    }
     if (p_Node->expressionList != nullptr)
     {
         p_Node->expressionList->accept(*this);
         p_Node->expressionList = m_Result;
     }
+    if (p_Node->variableList != nullptr)
+    {
+        p_Node->variableList->accept(*this);
+        p_Node->variableList = m_Result;
+    }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<BreakStat>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<BreakStat>& p_Node)
 {
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<ContinueStat>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<ContinueStat>& p_Node)
 {
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<DoStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<DoStatNode>& p_Node)
 {
     if (p_Node->block != nullptr)
     {
@@ -297,7 +237,7 @@ void EvalVisitor::visit(const std::shared_ptr<DoStatNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node)
 {
     if (p_Node->nameList != nullptr)
     {
@@ -316,7 +256,7 @@ void EvalVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<GotoStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<GotoStatNode>& p_Node)
 {
     if (p_Node->label != nullptr)
     {
@@ -325,7 +265,7 @@ void EvalVisitor::visit(const std::shared_ptr<GotoStatNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
 {
     for (AstNodePair& pair : p_Node->conditionalBlocks)
     {
@@ -342,7 +282,7 @@ void EvalVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<LocalStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<LocalStatNode>& p_Node)
 {
     if (p_Node->statement != nullptr)
     {
@@ -351,13 +291,9 @@ void EvalVisitor::visit(const std::shared_ptr<LocalStatNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<NumericForStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<NumericForStatNode>& p_Node)
 {
-    if (p_Node->name != nullptr)
-    {
-        p_Node->name->accept(*this);
-        p_Node->name = m_Result;
-    }
+    m_ScopeTree.push();
     if (p_Node->init != nullptr)
     {
         p_Node->init->accept(*this);
@@ -373,14 +309,21 @@ void EvalVisitor::visit(const std::shared_ptr<NumericForStatNode>& p_Node)
         p_Node->step->accept(*this);
         p_Node->step = m_Result;
     }
+    if (p_Node->name != nullptr)
+    {
+        // p_Node->name->accept(*this);
+        // p_Node->name = m_Result;
+        pushLocal(p_Node->name);
+    }
     if (p_Node->block != nullptr)
     {
         p_Node->block->accept(*this);
         p_Node->block = m_Result;
     }
+    m_ScopeTree.pop();
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<RepeatStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<RepeatStatNode>& p_Node)
 {
     if (p_Node->block != nullptr)
     {
@@ -394,7 +337,7 @@ void EvalVisitor::visit(const std::shared_ptr<RepeatStatNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<ReturnStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<ReturnStatNode>& p_Node)
 {
     if (p_Node->args != nullptr)
     {
@@ -403,7 +346,7 @@ void EvalVisitor::visit(const std::shared_ptr<ReturnStatNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<WhileStatNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<WhileStatNode>& p_Node)
 {
     if (p_Node->condition != nullptr)
     {
@@ -418,7 +361,7 @@ void EvalVisitor::visit(const std::shared_ptr<WhileStatNode>& p_Node)
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<IndexNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<IndexNode>& p_Node)
 {
     if (p_Node->root != nullptr)
     {
@@ -432,7 +375,7 @@ void EvalVisitor::visit(const std::shared_ptr<IndexNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<MemberNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<MemberNode>& p_Node)
 {
     if (p_Node->root != nullptr)
     {
@@ -446,7 +389,7 @@ void EvalVisitor::visit(const std::shared_ptr<MemberNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<MethodNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<MethodNode>& p_Node)
 {
     if (p_Node->root != nullptr)
     {
@@ -461,7 +404,7 @@ void EvalVisitor::visit(const std::shared_ptr<MethodNode>& p_Node)
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
 {
     if (p_Node->fieldList != nullptr)
     {
@@ -470,7 +413,7 @@ void EvalVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<TableIndexValueNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<TableIndexValueNode>& p_Node)
 {
     if (p_Node->index != nullptr)
     {
@@ -484,7 +427,7 @@ void EvalVisitor::visit(const std::shared_ptr<TableIndexValueNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<TableNameValueNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<TableNameValueNode>& p_Node)
 {
     if (p_Node->name != nullptr)
     {
@@ -498,7 +441,7 @@ void EvalVisitor::visit(const std::shared_ptr<TableNameValueNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<TableValueNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<TableValueNode>& p_Node)
 {
     if (p_Node->value != nullptr)
     {
@@ -508,8 +451,9 @@ void EvalVisitor::visit(const std::shared_ptr<TableValueNode>& p_Node)
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<FuncBodyNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<FuncBodyNode>& p_Node)
 {
+    m_ScopeTree.push();
     if (p_Node->parameters != nullptr)
     {
         p_Node->parameters->accept(*this);
@@ -520,9 +464,10 @@ void EvalVisitor::visit(const std::shared_ptr<FuncBodyNode>& p_Node)
         p_Node->block->accept(*this);
         p_Node->block = m_Result;
     }
+    m_ScopeTree.pop();
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node)
 {
     if (p_Node->root != nullptr)
     {
@@ -536,12 +481,17 @@ void EvalVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node)
 {
     if (p_Node->name != nullptr)
     {
         p_Node->name->accept(*this);
         p_Node->name = m_Result;
+
+        if (p_Node->parent.lock()->kind == AstKind::LocalStatNode)
+        {
+            pushLocal(p_Node->name);
+        }
     }
     if (p_Node->body != nullptr)
     {
@@ -550,7 +500,7 @@ void EvalVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<FuncNameNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<FuncNameNode>& p_Node)
 {
     if (p_Node->name != nullptr)
     {
@@ -560,7 +510,7 @@ void EvalVisitor::visit(const std::shared_ptr<FuncNameNode>& p_Node)
     m_Result = p_Node;
 }
 
-void EvalVisitor::visit(const std::shared_ptr<LabelNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<LabelNode>& p_Node)
 {
     if (p_Node->label != nullptr)
     {
@@ -569,7 +519,7 @@ void EvalVisitor::visit(const std::shared_ptr<LabelNode>& p_Node)
     }
     m_Result = p_Node;
 }
-void EvalVisitor::visit(const std::shared_ptr<SemicolonNode>& p_Node)
+void RefactorVisitor::visit(const std::shared_ptr<SemicolonNode>& p_Node)
 {
     m_Result = p_Node;
 }

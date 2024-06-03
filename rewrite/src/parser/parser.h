@@ -2,17 +2,9 @@
 #include <memory>
 #include <string>
 #include <vector>
+
 #include "token_stream.h"
 #include "ast/nodes/ast_node.h"
-
-bool is_binary_operator(const Token& p_CurrentToken);
-bool is_field_separator(const Token& p_CurrentToken);
-bool is_unary_operator(const Token& p_CurrentToken);
-bool is_boolean(const Token& p_CurrentToken);
-bool is_conditional(const Token& p_CurrentToken);
-bool is_null(const Token& p_CurrentToken);
-bool is_rhs_associative(const Token& p_Token);
-
 
 class Parser
 {
@@ -57,10 +49,10 @@ public:
 
     void consume(std::string& p_Out, TokenType p_Type);
     Token consume();
-    [[nodiscard]] Token peek(std::size_t p_Offset = 0);
-    [[nodiscard]] bool next(std::size_t p_Offset = 0) const;
-    [[nodiscard]] bool expectPeek(TokenType p_Type, std::size_t p_Offset = 0);
-    [[nodiscard]] bool expectPeek(const std::string& p_Match, std::size_t p_Offset = 0);
-    [[nodiscard]] std::size_t mark() const;
+    Token peek(std::size_t p_Offset = 0);
+    bool next(std::size_t p_Offset = 0) const;
+    bool expectPeek(TokenType p_Type, std::size_t p_Offset = 0);
+    bool expectPeek(const std::string& p_Match, std::size_t p_Offset = 0);
+    std::size_t mark() const;
     void revert(std::size_t p_Marked);
 };
