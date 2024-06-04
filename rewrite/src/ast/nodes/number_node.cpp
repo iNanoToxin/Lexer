@@ -1,55 +1,19 @@
 #include "number_node.h"
 #include <limits>
-#include "../../utilities/assert.h"
+#include "utilities/assert.h"
 #include "ast/visitors/ast_visitor.h"
+#include "utilities/math.h"
 
-inline bool l_str2_int(LuaInteger* p_Out, const std::string& p_Number)
-{
-    try
-    {
-        std::size_t position;
-        if (p_Number.size() > 1 && p_Number[0] == '0' && std::tolower(p_Number[1]) == 'x')
-        {
-            *p_Out = std::stoll(p_Number, &position, 16);
-            return position == p_Number.size();
-        }
-        *p_Out = std::stoll(p_Number, &position);
-        return position == p_Number.size();
-    }
-    catch (...) {}
-    return false;
-}
-
-inline bool l_str2_double(LuaDouble* p_Out, const std::string& p_Number)
-{
-    try
-    {
-        std::size_t position;
-        *p_Out = std::stod(p_Number, &position);
-        return position == p_Number.size();
-    }
-    catch (std::out_of_range&)
-    {
-        *p_Out = std::numeric_limits<LuaDouble>::infinity();
-    }
-    catch (std::invalid_argument&)
-    {
-        return false;
-    }
-    return true;
-}
-
-
-std::shared_ptr<NumberNode> NumberNode::create(const std::string& p_NumberLiteral)
+std::shared_ptr<NumberNode> NumberNode::create(const std::string& p_Number)
 {
     LuaInteger lua_integer = 0;
-    if (l_str2_int(&lua_integer, p_NumberLiteral))
+    if (Math::string_to_integer(&lua_integer, p_Number))
     {
         return create(lua_integer);
     }
 
     LuaDouble lua_double = 0;
-    if (l_str2_double(&lua_double, p_NumberLiteral))
+    if (Math::string_to_double(&lua_double, p_Number))
     {
         return create(lua_double);
     }
@@ -60,16 +24,14 @@ std::shared_ptr<NumberNode> NumberNode::create(const std::string& p_NumberLitera
 std::shared_ptr<NumberNode> NumberNode::create(const LuaInteger p_Integer)
 {
     std::shared_ptr<NumberNode> node = std::make_shared<NumberNode>();
-    node->numInteger = p_Integer;
-    node->isInteger = true;
+    node->setInt(p_Integer);
     return node;
 }
 
 std::shared_ptr<NumberNode> NumberNode::create(const LuaDouble p_Double)
 {
     std::shared_ptr<NumberNode> node = std::make_shared<NumberNode>();
-    node->numDouble = p_Double;
-    node->isInteger = false;
+    node->setDouble(p_Double);
     return node;
 }
 
@@ -81,4 +43,63 @@ std::shared_ptr<NumberNode> NumberNode::cast(const std::shared_ptr<AstNode>& p_N
 void NumberNode::accept(AstVisitor& p_Visitor)
 {
     p_Visitor.visit(cast(shared_from_this()));
+}
+
+void NumberNode::setInt(const LuaInteger p_Integer)
+{
+    m_IsInteger = true;
+    m_Int = p_Integer;
+}
+
+void NumberNode::negate()
+{
+    if (isInt())
+    {
+        m_Int *= -1;
+    }
+    else
+    {
+        m_Double *= -1;
+    }
+}
+
+LuaInteger NumberNode::getInt() const
+{
+    return m_Int;
+}
+
+void NumberNode::setDouble(const LuaDouble p_Double)
+{
+    m_IsInteger = false;
+    m_Double = p_Double;
+}
+
+LuaDouble NumberNode::getDouble() const
+{
+    return m_Double;
+}
+
+bool NumberNode::isInt() const
+{
+    return m_IsInteger;
+}
+
+bool NumberNode::isNegative() const
+{
+    return isInt() ? m_Int < 0 : m_Double < 0.0;
+}
+
+bool NumberNode::isConvertibleToInt() const
+{
+    return isInt() || Math::is_convertible_to_int(m_Double);
+}
+
+LuaDouble NumberNode::toDouble() const
+{
+    return isInt() ? static_cast<LuaDouble>(getInt()) : getDouble();
+}
+
+LuaInteger NumberNode::toInt() const
+{
+    return isInt() ? getInt() : static_cast<LuaInteger>(getDouble());
 }

@@ -34,20 +34,14 @@ void FormatVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 }
 void FormatVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
 {
-    std::stringstream stream;
-    if (p_Node->isNegative)
+    if (p_Node->isInt())
     {
-        stream << "-";
-    }
-    if (p_Node->isInteger)
-    {
-        stream << std::to_string(p_Node->numInteger);
+        m_Result = std::to_string(p_Node->getInt());
     }
     else
     {
-        stream << std::to_string(p_Node->numDouble);
+        m_Result = std::to_string(p_Node->getDouble());
     }
-    m_Result = stream.str();
 }
 void FormatVisitor::visit(const std::shared_ptr<StringNode>& p_Node)
 {

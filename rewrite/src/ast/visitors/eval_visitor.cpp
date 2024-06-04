@@ -1,7 +1,7 @@
 #include "eval_visitor.h"
 #include <cmath>
-#include <limits>
-#include <utilities/assert.h>
+#include "utilities/assert.h"
+#include "utilities/math.h"
 
 void EvalVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
 {
@@ -42,25 +42,7 @@ void EvalVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
     m_Result = p_Node;
 }
 
-template <typename T>
-std::shared_ptr<NumberNode> do_op(const std::shared_ptr<NumberNode>& p_Lhs, const T& p_Operation, const std::shared_ptr<NumberNode>& p_Rhs, bool p_ForceDouble = false)
-{
-    LuaDouble lhs_value = p_Lhs->isInteger ? static_cast<LuaDouble>(p_Lhs->numInteger) : p_Lhs->numDouble;
-    LuaDouble rhs_value = p_Rhs->isInteger ? static_cast<LuaDouble>(p_Rhs->numInteger) : p_Rhs->numDouble;
-    lhs_value *= p_Lhs->isNegative ? -1.0 : 1.0;
-    rhs_value *= p_Rhs->isNegative ? -1.0 : 1.0;
-    const LuaDouble result = p_Operation(lhs_value, rhs_value);
 
-    if (!p_ForceDouble &&
-        result >= std::numeric_limits<LuaInteger>::min() &&
-        result <= std::numeric_limits<LuaInteger>::max() &&
-        std::floor(result) == result
-    )
-    {
-        return NumberNode::create(static_cast<LuaInteger>(result));
-    }
-    return NumberNode::create(result);
-}
 
 void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
 {
@@ -75,84 +57,85 @@ void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
         p_Node->rhs = m_Result;
     }
 
-    if (p_Node->lhs->kind == AstKind::NumberNode && p_Node->rhs->kind == AstKind::NumberNode)
-    {
-        const std::shared_ptr<NumberNode>& lhs = NumberNode::cast(p_Node->lhs);
-        const std::shared_ptr<NumberNode>& rhs = NumberNode::cast(p_Node->rhs);
-
-        switch (p_Node->opKind)
-        {
-            case BinaryOpKind::Plus:
-            {
-                m_Result = do_op(lhs, std::plus(), rhs);
-                break;
-            }
-            case BinaryOpKind::Minus:
-            {
-                m_Result = do_op(lhs, std::minus(), rhs);
-                break;
-            }
-            case BinaryOpKind::Multiply:
-            {
-                m_Result = do_op(lhs, std::multiplies(), rhs);
-                break;
-            }
-            case BinaryOpKind::FloatDivision:
-            {
-                m_Result = do_op(lhs, std::divides(), rhs, true);
-                break;
-            }
-            case BinaryOpKind::FloorDivision:
-            {
-                const std::shared_ptr<NumberNode> number = do_op(lhs, std::divides(), rhs);
-
-                if (!number->isInteger)
-                {
-                    number->numDouble = std::floor(number->numDouble);
-                }
-                m_Result = number;
-                break;
-            }
-            case BinaryOpKind::Modulus:
-            {
-                m_Result = do_op(lhs, [](LuaDouble x, LuaDouble y) -> LuaInteger
-                {
-                    return x - std::floor(x / y) * y;
-                }, rhs);
-                break;
-            }
-            case BinaryOpKind::Power:
-            {
-                m_Result = do_op(lhs, [](LuaDouble x, LuaDouble y) -> LuaDouble
-                {
-                    return std::pow(x, y);
-                }, rhs, true);
-                break;
-            }
-
-            case BinaryOpKind::Or:
-            case BinaryOpKind::And:
-            case BinaryOpKind::LessThan:
-            case BinaryOpKind::GreaterThan:
-            case BinaryOpKind::LessEqual:
-            case BinaryOpKind::GreaterEqual:
-            case BinaryOpKind::NotEqual:
-            case BinaryOpKind::Equal:
-            case BinaryOpKind::BitOr:
-            case BinaryOpKind::BitExOr:
-            case BinaryOpKind::BitAnd:
-            case BinaryOpKind::LeftShift:
-            case BinaryOpKind::RightShift:
-            case BinaryOpKind::Concat:
-            default:
-            {
-                m_Result = p_Node;
-                break;
-            }
-        }
-        return;
-    }
     m_Result = p_Node;
+
+    switch (p_Node->opKind)
+    {
+        case BinaryOpKind::Plus:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::plus, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::Minus:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::minus, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::Multiply:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::multiply, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::FloatDivision:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::float_divide, p_Node->rhs, true);
+            break;
+        }
+        case BinaryOpKind::FloorDivision:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::floor_division, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::Modulus:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::mod, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::Power:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::pow, p_Node->rhs, true);
+            break;
+        }
+        case BinaryOpKind::BitOr:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_or, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::BitExOr:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_xor, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::BitAnd:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_and, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::LeftShift:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_shift_left, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::RightShift:
+        {
+            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_shift_right, p_Node->rhs);
+            break;
+        }
+
+        case BinaryOpKind::Or:
+        case BinaryOpKind::And:
+        case BinaryOpKind::LessThan:
+        case BinaryOpKind::GreaterThan:
+        case BinaryOpKind::LessEqual:
+        case BinaryOpKind::GreaterEqual:
+        case BinaryOpKind::NotEqual:
+        case BinaryOpKind::Equal:
+        case BinaryOpKind::Concat:
+        default:
+        {
+            break;
+        }
+    }
 }
 void EvalVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
 {
@@ -162,6 +145,8 @@ void EvalVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
         p_Node->value = m_Result;
     }
 
+    m_Result = p_Node;
+
     if (p_Node->value->kind == AstKind::NumberNode)
     {
         const std::shared_ptr<NumberNode> number = NumberNode::cast(p_Node->value);
@@ -170,14 +155,8 @@ void EvalVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
         {
             case UnaryOpKind::Negate:
             {
-                if (number->isInteger)
-                {
-                    number->numInteger *= -1;
-                }
-                else
-                {
-                    number->numDouble *= -1;
-                }
+                number->negate();
+                m_Result = number;
                 break;
             }
             case UnaryOpKind::Not:
@@ -187,19 +166,14 @@ void EvalVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
             }
             case UnaryOpKind::BitNot:
             {
-                LL_assert(number->isInteger, "Unary operation `BitNot` cannot be performed on double.");
-                number->numInteger = ~number->numInteger;
+                LL_assert(number->isConvertibleToInt(), "Unary operation `BitNot` cannot be performed on double.");
+                number->setInt(~number->toInt());
+                m_Result = number;
                 break;
             }
-            default:
-            {
-                m_Result = p_Node;
-                break;
-            }
+            default: break;
         }
-        return;
     }
-    m_Result = p_Node;
 }
 
 void EvalVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node)
