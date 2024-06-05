@@ -29,13 +29,13 @@ BinaryOpKind get_binary_operator_kind(const std::string& p_Operator)
     return BinaryOpKind{};
 }
 
-std::shared_ptr<BinaryOpNode> BinaryOpNode::create(std::shared_ptr<AstNode> p_Lhs, std::string p_Operator, std::shared_ptr<AstNode> p_Rhs)
+std::shared_ptr<BinaryOpNode> BinaryOpNode::create(const std::shared_ptr<AstNode>& p_Lhs, const std::string& p_Operator, const std::shared_ptr<AstNode>& p_Rhs)
 {
     std::shared_ptr<BinaryOpNode> node = std::make_shared<BinaryOpNode>();
     node->opKind = get_binary_operator_kind(p_Operator);
-    node->op = std::move(p_Operator);
-    node->lhs = std::move(p_Lhs);
-    node->rhs = std::move(p_Rhs);
+    node->op = p_Operator;
+    node->lhs = p_Lhs;
+    node->rhs = p_Rhs;
 
     if (node->lhs != nullptr)
     {

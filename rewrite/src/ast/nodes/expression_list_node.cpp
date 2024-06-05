@@ -1,10 +1,10 @@
 #include "expression_list_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<ExpressionListNode> ExpressionListNode::create(std::vector<std::shared_ptr<AstNode>> p_List)
+std::shared_ptr<ExpressionListNode> ExpressionListNode::create(const std::vector<std::shared_ptr<AstNode>>& p_List)
 {
     std::shared_ptr<ExpressionListNode> node = std::make_shared<ExpressionListNode>();
-    node->list = std::move(p_List);
+    node->list = p_List;
 
     for (const std::shared_ptr<AstNode>& child : node->list)
     {

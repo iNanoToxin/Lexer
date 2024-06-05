@@ -1,10 +1,10 @@
 #include "identifier_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<IdentifierNode> IdentifierNode::create(std::string p_Value)
+std::shared_ptr<IdentifierNode> IdentifierNode::create(const std::string& p_Value)
 {
     std::shared_ptr<IdentifierNode> node = std::make_shared<IdentifierNode>();
-    node->value = std::move(p_Value);
+    node->value = p_Value;
     return node;
 }
 

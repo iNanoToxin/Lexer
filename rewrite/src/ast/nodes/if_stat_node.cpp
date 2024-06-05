@@ -1,10 +1,10 @@
 #include "if_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<IfStatNode> IfStatNode::create(std::list<AstNodePair> p_ConditionalBlocks)
+std::shared_ptr<IfStatNode> IfStatNode::create(const std::list<AstNodePair>& p_ConditionalBlocks)
 {
     std::shared_ptr<IfStatNode> node = std::make_shared<IfStatNode>();
-    node->blocks = std::move(p_ConditionalBlocks);
+    node->blocks = p_ConditionalBlocks;
 
     for (const AstNodePair& pair : node->blocks)
     {

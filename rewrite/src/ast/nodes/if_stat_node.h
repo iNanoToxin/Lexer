@@ -9,7 +9,7 @@ public:
 
     explicit IfStatNode() : AstNode(AstKind::IfStatNode) {}
 
-    static std::shared_ptr<IfStatNode> create(std::list<AstNodePair> p_ConditionalBlocks);
+    static std::shared_ptr<IfStatNode> create(const std::list<AstNodePair>& p_ConditionalBlocks);
     static std::shared_ptr<IfStatNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

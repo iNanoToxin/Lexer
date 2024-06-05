@@ -11,6 +11,7 @@ class RefactorVisitor final : public AstVisitor
 private:
     std::shared_ptr<AstNode> m_Result;
     ScopeTree<std::string, std::shared_ptr<AstNode>> m_ScopeTree;
+
 public:
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
@@ -77,9 +78,9 @@ public:
 
         m_ScopeTree.setFront(identifier->value, identifier);
 
-        RETRY:
+    RETRY:
         static int offset = 0;
-        static const std::string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
+        static const std::string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         std::size_t id = m_ScopeTree.totalCount() + offset;
 
         std::string str;
@@ -90,7 +91,7 @@ public:
             str += chars[id % chars.size()];
             id /= chars.size();
         }
-        std::ranges::reverse(str);
+        std::reverse(str.begin(), str.end());
         identifier->value = str;
 
         if (is_keyword(str))

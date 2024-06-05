@@ -8,7 +8,7 @@ public:
 
     explicit ChunkNode() : AstNode(AstKind::ChunkNode) {}
 
-    static std::shared_ptr<ChunkNode> create(std::shared_ptr<AstNode> p_Block);
+    static std::shared_ptr<ChunkNode> create(const std::shared_ptr<AstNode>& p_Block);
     static std::shared_ptr<ChunkNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

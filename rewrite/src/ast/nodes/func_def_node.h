@@ -9,7 +9,7 @@ public:
 
     explicit FuncDefNode() : AstNode(AstKind::FuncDefNode) {}
 
-    static std::shared_ptr<FuncDefNode> create(std::shared_ptr<AstNode> p_Name, std::shared_ptr<AstNode> p_Body);
+    static std::shared_ptr<FuncDefNode> create(const std::shared_ptr<AstNode>& p_Name, const std::shared_ptr<AstNode>& p_Body);
     static std::shared_ptr<FuncDefNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

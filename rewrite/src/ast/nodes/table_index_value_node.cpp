@@ -1,11 +1,11 @@
 #include "table_index_value_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<TableIndexValueNode> TableIndexValueNode::create(std::shared_ptr<AstNode> p_Index, std::shared_ptr<AstNode> p_Value)
+std::shared_ptr<TableIndexValueNode> TableIndexValueNode::create(const std::shared_ptr<AstNode>& p_Index, const std::shared_ptr<AstNode>& p_Value)
 {
     std::shared_ptr<TableIndexValueNode> node = std::make_shared<TableIndexValueNode>();
-    node->index = std::move(p_Index);
-    node->value = std::move(p_Value);
+    node->index = p_Index;
+    node->value = p_Value;
 
     if (node->index != nullptr)
     {

@@ -8,7 +8,7 @@ public:
 
     explicit ArgumentListNode() : AstNode(AstKind::ArgumentListNode) {}
 
-    static std::shared_ptr<ArgumentListNode> create(std::shared_ptr<AstNode> p_List);
+    static std::shared_ptr<ArgumentListNode> create(const std::shared_ptr<AstNode>& p_List);
     static std::shared_ptr<ArgumentListNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

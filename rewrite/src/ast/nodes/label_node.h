@@ -8,7 +8,7 @@ public:
 
     explicit LabelNode() : AstNode(AstKind::LabelNode) {}
 
-    static std::shared_ptr<LabelNode> create(std::shared_ptr<AstNode> p_Label);
+    static std::shared_ptr<LabelNode> create(const std::shared_ptr<AstNode>& p_Label);
     static std::shared_ptr<LabelNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

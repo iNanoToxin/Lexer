@@ -1,11 +1,11 @@
 #include "assignment_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<AssignmentStatNode> AssignmentStatNode::create(std::shared_ptr<AstNode> p_VariableList, std::shared_ptr<AstNode> p_ExpressionList)
+std::shared_ptr<AssignmentStatNode> AssignmentStatNode::create(const std::shared_ptr<AstNode>& p_VariableList, const std::shared_ptr<AstNode>& p_ExpressionList)
 {
     std::shared_ptr<AssignmentStatNode> node = std::make_shared<AssignmentStatNode>();
-    node->variableList = std::move(p_VariableList);
-    node->expressionList = std::move(p_ExpressionList);
+    node->variableList = p_VariableList;
+    node->expressionList = p_ExpressionList;
 
     if (node->variableList != nullptr)
     {

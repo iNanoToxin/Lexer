@@ -1,10 +1,10 @@
 #include "func_name_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<FuncNameNode> FuncNameNode::create(std::shared_ptr<AstNode> p_Name)
+std::shared_ptr<FuncNameNode> FuncNameNode::create(const std::shared_ptr<AstNode>& p_Name)
 {
     std::shared_ptr<FuncNameNode> node = std::make_shared<FuncNameNode>();
-    node->name = std::move(p_Name);
+    node->name = p_Name;
 
     if (node->name != nullptr)
     {

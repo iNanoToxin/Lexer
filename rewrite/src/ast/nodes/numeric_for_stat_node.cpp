@@ -1,14 +1,14 @@
 #include "numeric_for_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<NumericForStatNode> NumericForStatNode::create(std::shared_ptr<AstNode> p_Name, std::shared_ptr<AstNode> p_Init, std::shared_ptr<AstNode> p_Goal, std::shared_ptr<AstNode> p_Step, std::shared_ptr<AstNode> p_Block)
+std::shared_ptr<NumericForStatNode> NumericForStatNode::create(const std::shared_ptr<AstNode>& p_Name, const std::shared_ptr<AstNode>& p_Init, const std::shared_ptr<AstNode>& p_Goal, const std::shared_ptr<AstNode>& p_Step, const std::shared_ptr<AstNode>& p_Block)
 {
     std::shared_ptr<NumericForStatNode> node = std::make_shared<NumericForStatNode>();
-    node->name = std::move(p_Name);
-    node->init = std::move(p_Init);
-    node->goal = std::move(p_Goal);
-    node->step = std::move(p_Step);
-    node->block = std::move(p_Block);
+    node->name = p_Name;
+    node->init = p_Init;
+    node->goal = p_Goal;
+    node->step = p_Step;
+    node->block = p_Block;
 
     if (node->name != nullptr)
     {

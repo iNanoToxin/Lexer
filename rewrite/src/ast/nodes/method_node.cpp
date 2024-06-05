@@ -1,11 +1,11 @@
 #include "method_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<MethodNode> MethodNode::create(std::shared_ptr<AstNode> p_Root, std::shared_ptr<AstNode> p_Name)
+std::shared_ptr<MethodNode> MethodNode::create(const std::shared_ptr<AstNode>& p_Root, const std::shared_ptr<AstNode>& p_Name)
 {
     std::shared_ptr<MethodNode> node = std::make_shared<MethodNode>();
-    node->root = std::move(p_Root);
-    node->method = std::move(p_Name);
+    node->root = p_Root;
+    node->method = p_Name;
 
     if (node->root != nullptr)
     {

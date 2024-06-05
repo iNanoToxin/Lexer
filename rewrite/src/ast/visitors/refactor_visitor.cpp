@@ -1,22 +1,4 @@
 #include "refactor_visitor.h"
-#include <cmath>
-#include <limits>
-#include <utilities/assert.h>
-
-bool check_parents(const std::shared_ptr<AstNode>& p_Node, const std::vector<AstKind>& p_List)
-{
-    std::shared_ptr<AstNode> curr = p_Node;
-
-    for (const AstKind& kind : p_List)
-    {
-        if (curr == nullptr || curr->kind != kind)
-        {
-            return false;
-        }
-        curr = curr->getParent();
-    }
-    return true;
-}
 
 void RefactorVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
 {

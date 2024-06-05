@@ -1,11 +1,11 @@
 #include "repeat_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<RepeatStatNode> RepeatStatNode::create(std::shared_ptr<AstNode> p_Block, std::shared_ptr<AstNode> p_Condition)
+std::shared_ptr<RepeatStatNode> RepeatStatNode::create(const std::shared_ptr<AstNode>& p_Block, const std::shared_ptr<AstNode>& p_Condition)
 {
     std::shared_ptr<RepeatStatNode> node = std::make_shared<RepeatStatNode>();
-    node->block = std::move(p_Block);
-    node->condition = std::move(p_Condition);
+    node->block = p_Block;
+    node->condition = p_Condition;
 
     if (node->block != nullptr)
     {

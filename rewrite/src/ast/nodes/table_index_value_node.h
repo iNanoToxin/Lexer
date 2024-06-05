@@ -9,7 +9,7 @@ public:
 
     explicit TableIndexValueNode() : AstNode(AstKind::TableIndexValueNode) {}
 
-    static std::shared_ptr<TableIndexValueNode> create(std::shared_ptr<AstNode> p_Index, std::shared_ptr<AstNode> p_Value);
+    static std::shared_ptr<TableIndexValueNode> create(const std::shared_ptr<AstNode>& p_Index, const std::shared_ptr<AstNode>& p_Value);
     static std::shared_ptr<TableIndexValueNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

@@ -9,7 +9,7 @@ public:
 
     explicit FieldListNode() : AstNode(AstKind::FieldListNode) {}
 
-    static std::shared_ptr<FieldListNode> create(std::vector<std::shared_ptr<AstNode>> p_List);
+    static std::shared_ptr<FieldListNode> create(const std::vector<std::shared_ptr<AstNode>>& p_List);
     static std::shared_ptr<FieldListNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

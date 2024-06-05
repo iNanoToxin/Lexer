@@ -12,12 +12,12 @@ UnaryOpKind get_unary_operator_kind(const std::string& p_Operator)
     return UnaryOpKind{};
 }
 
-std::shared_ptr<UnaryOpNode> UnaryOpNode::create(std::string p_Operation, std::shared_ptr<AstNode> p_Value)
+std::shared_ptr<UnaryOpNode> UnaryOpNode::create(const std::string& p_Operation, const std::shared_ptr<AstNode>& p_Value)
 {
     std::shared_ptr<UnaryOpNode> node = std::make_shared<UnaryOpNode>();
     node->opKind = get_unary_operator_kind(p_Operation);
-    node->op = std::move(p_Operation);
-    node->value = std::move(p_Value);
+    node->op = p_Operation;
+    node->value = p_Value;
 
     if (node->value != nullptr)
     {

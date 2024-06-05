@@ -8,7 +8,7 @@ public:
 
     explicit GotoStatNode() : AstNode(AstKind::GotoStatNode) {}
 
-    static std::shared_ptr<GotoStatNode> create(std::shared_ptr<AstNode> p_Label);
+    static std::shared_ptr<GotoStatNode> create(const std::shared_ptr<AstNode>& p_Label);
     static std::shared_ptr<GotoStatNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

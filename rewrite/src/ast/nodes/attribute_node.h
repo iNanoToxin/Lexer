@@ -9,7 +9,7 @@ public:
 
     explicit AttributeNode() : AstNode(AstKind::AttributeNode) {}
 
-    static std::shared_ptr<AttributeNode> create(std::shared_ptr<AstNode> p_Value, std::shared_ptr<AstNode> p_Attribute);
+    static std::shared_ptr<AttributeNode> create(const std::shared_ptr<AstNode>& p_Value, const std::shared_ptr<AstNode>& p_Attribute);
     static std::shared_ptr<AttributeNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

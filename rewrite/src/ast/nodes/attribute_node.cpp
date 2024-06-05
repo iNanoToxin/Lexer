@@ -1,11 +1,11 @@
 #include "attribute_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<AttributeNode> AttributeNode::create(std::shared_ptr<AstNode> p_Value, std::shared_ptr<AstNode> p_Attribute)
+std::shared_ptr<AttributeNode> AttributeNode::create(const std::shared_ptr<AstNode>& p_Value, const std::shared_ptr<AstNode>& p_Attribute)
 {
     std::shared_ptr<AttributeNode> node = std::make_shared<AttributeNode>();
-    node->value = std::move(p_Value);
-    node->attribute = std::move(p_Attribute);
+    node->value = p_Value;
+    node->attribute = p_Attribute;
 
     if (node->value != nullptr)
     {

@@ -1,10 +1,10 @@
 #include "attribute_list_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<AttributeListNode> AttributeListNode::create(std::vector<std::shared_ptr<AstNode>> p_List)
+std::shared_ptr<AttributeListNode> AttributeListNode::create(const std::vector<std::shared_ptr<AstNode>>& p_List)
 {
     std::shared_ptr<AttributeListNode> node = std::make_shared<AttributeListNode>();
-    node->list = std::move(p_List);
+    node->list = p_List;
 
     for (const std::shared_ptr<AstNode>& child : node->list)
     {

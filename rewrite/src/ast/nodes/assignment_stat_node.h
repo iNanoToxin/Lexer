@@ -9,7 +9,7 @@ public:
 
     explicit AssignmentStatNode() : AstNode(AstKind::AssignmentStatNode) {}
 
-    static std::shared_ptr<AssignmentStatNode> create(std::shared_ptr<AstNode> p_VariableList, std::shared_ptr<AstNode> p_ExpressionList);
+    static std::shared_ptr<AssignmentStatNode> create(const std::shared_ptr<AstNode>& p_VariableList, const std::shared_ptr<AstNode>& p_ExpressionList);
     static std::shared_ptr<AssignmentStatNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

@@ -43,7 +43,6 @@ void EvalVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
     m_Result = p_Node;
 }
 
-
 void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
 {
     if (p_Node->lhs != nullptr)
@@ -321,7 +320,6 @@ void EvalVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
             if (m_Result == nullptr)
             {
                 it = p_Node->statements.erase(it);
-                std::cout << "BlockNode->statements.erase(it)" << std::endl;
                 continue;
             }
             *it = m_Result;
@@ -416,11 +414,9 @@ void EvalVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
                 {
                     merge_blocks(it->second, p_Node->getParent(), p_Node);
                     p_Node->blocks.clear();
-                    std::cout << "IfStatNode->blocks.clear()" << std::endl;
                     break;
                 }
                 it = p_Node->blocks.erase(it);
-                std::cout << "IfStatNode->blocks.erase(it)" << std::endl;
                 continue;
             }
         }
@@ -889,5 +885,4 @@ void merge_blocks(
         block_b->statements.insert(index, statement);
     }
     block_a->statements.clear();
-    std::cout << "BlockNode->statements.clear()" << std::endl;
 }

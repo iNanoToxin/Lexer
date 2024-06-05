@@ -1,12 +1,12 @@
 #include "generic_for_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<GenericForStatNode> GenericForStatNode::create(std::shared_ptr<AstNode> p_NameList, std::shared_ptr<AstNode> p_ExpressionList, std::shared_ptr<AstNode> p_Block)
+std::shared_ptr<GenericForStatNode> GenericForStatNode::create(const std::shared_ptr<AstNode>& p_NameList, const std::shared_ptr<AstNode>& p_ExpressionList, const std::shared_ptr<AstNode>& p_Block)
 {
     std::shared_ptr<GenericForStatNode> node = std::make_shared<GenericForStatNode>();
-    node->nameList = std::move(p_NameList);
-    node->expressionList = std::move(p_ExpressionList);
-    node->block = std::move(p_Block);
+    node->nameList = p_NameList;
+    node->expressionList = p_ExpressionList;
+    node->block = p_Block;
 
     if (node->nameList != nullptr)
     {

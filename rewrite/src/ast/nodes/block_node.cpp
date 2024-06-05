@@ -1,10 +1,10 @@
 #include "block_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<BlockNode> BlockNode::create(std::list<std::shared_ptr<AstNode>> p_Statements)
+std::shared_ptr<BlockNode> BlockNode::create(const std::list<std::shared_ptr<AstNode>>& p_Statements)
 {
     std::shared_ptr<BlockNode> node = std::make_shared<BlockNode>();
-    node->statements = std::move(p_Statements);
+    node->statements = p_Statements;
 
     for (const std::shared_ptr<AstNode>& statement : node->statements)
     {

@@ -37,7 +37,7 @@ public:
 
     explicit BinaryOpNode() : AstNode(AstKind::BinaryOpNode) {}
 
-    static std::shared_ptr<BinaryOpNode> create(std::shared_ptr<AstNode> p_Lhs, std::string p_Operator, std::shared_ptr<AstNode> p_Rhs);
+    static std::shared_ptr<BinaryOpNode> create(const std::shared_ptr<AstNode>& p_Lhs, const std::string& p_Operator, const std::shared_ptr<AstNode>& p_Rhs);
     static std::shared_ptr<BinaryOpNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

@@ -1,10 +1,10 @@
 #include "return_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<ReturnStatNode> ReturnStatNode::create(std::shared_ptr<AstNode> p_Args)
+std::shared_ptr<ReturnStatNode> ReturnStatNode::create(const std::shared_ptr<AstNode>& p_Args)
 {
     std::shared_ptr<ReturnStatNode> node = std::make_shared<ReturnStatNode>();
-    node->args = std::move(p_Args);
+    node->args = p_Args;
 
     if (node->args != nullptr)
     {

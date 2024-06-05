@@ -9,7 +9,7 @@ public:
 
     explicit NameListNode() : AstNode(AstKind::NameListNode) {}
 
-    static std::shared_ptr<NameListNode> create(std::vector<std::shared_ptr<AstNode>> p_List);
+    static std::shared_ptr<NameListNode> create(const std::vector<std::shared_ptr<AstNode>>& p_List);
     static std::shared_ptr<NameListNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

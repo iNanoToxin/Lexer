@@ -1,11 +1,11 @@
 #include "func_body_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<FuncBodyNode> FuncBodyNode::create(std::shared_ptr<AstNode> p_ParameterList, std::shared_ptr<AstNode> p_Block)
+std::shared_ptr<FuncBodyNode> FuncBodyNode::create(const std::shared_ptr<AstNode>& p_ParameterList, const std::shared_ptr<AstNode>& p_Block)
 {
     std::shared_ptr<FuncBodyNode> node = std::make_shared<FuncBodyNode>();
-    node->parameters = std::move(p_ParameterList);
-    node->block = std::move(p_Block);
+    node->parameters = p_ParameterList;
+    node->block = p_Block;
 
     if (node->parameters != nullptr)
     {

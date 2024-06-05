@@ -1,11 +1,11 @@
 #include "index_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<IndexNode> IndexNode::create(std::shared_ptr<AstNode> p_Root, std::shared_ptr<AstNode> p_Index)
+std::shared_ptr<IndexNode> IndexNode::create(const std::shared_ptr<AstNode>& p_Root, const std::shared_ptr<AstNode>& p_Index)
 {
     std::shared_ptr<IndexNode> node = std::make_shared<IndexNode>();
-    node->root = std::move(p_Root);
-    node->index = std::move(p_Index);
+    node->root = p_Root;
+    node->index = p_Index;
 
     if (node->root != nullptr)
     {

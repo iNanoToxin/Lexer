@@ -9,7 +9,7 @@ public:
 
     explicit WhileStatNode() : AstNode(AstKind::WhileStatNode) {}
 
-    static std::shared_ptr<WhileStatNode> create(std::shared_ptr<AstNode> p_Condition, std::shared_ptr<AstNode> p_Block);
+    static std::shared_ptr<WhileStatNode> create(const std::shared_ptr<AstNode>& p_Condition, const std::shared_ptr<AstNode>& p_Block);
     static std::shared_ptr<WhileStatNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

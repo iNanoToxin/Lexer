@@ -8,7 +8,7 @@ public:
 
     explicit FuncNameNode() : AstNode(AstKind::FuncNameNode) {}
 
-    static std::shared_ptr<FuncNameNode> create(std::shared_ptr<AstNode> p_Name);
+    static std::shared_ptr<FuncNameNode> create(const std::shared_ptr<AstNode>& p_Name);
     static std::shared_ptr<FuncNameNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

@@ -1,10 +1,10 @@
 #include "do_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<DoStatNode> DoStatNode::create(std::shared_ptr<AstNode> p_Block)
+std::shared_ptr<DoStatNode> DoStatNode::create(const std::shared_ptr<AstNode>& p_Block)
 {
     std::shared_ptr<DoStatNode> node = std::make_shared<DoStatNode>();
-    node->block = std::move(p_Block);
+    node->block = p_Block;
 
     if (node->block != nullptr)
     {

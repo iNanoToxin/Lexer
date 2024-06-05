@@ -9,7 +9,7 @@
 #include "lua.h"
 #include "lnumutils.h"
 #define FILE(a) "C:\\Users\\dylan\\JetBrains\\CLionProjects\\Lexer\\rewrite\\tests\\"#a".lua"
-#define CODE FILE(test_1)
+#define CODE FILE(test_3)
 
 
 
@@ -22,7 +22,7 @@ int main()
     Parser parser;
     const std::shared_ptr<AstNode> chunk = parser.parse(Util::read_file(CODE));
 
-    // chunk->accept(refactor);
+    chunk->accept(refactor);
     chunk->accept(evaluator);
     chunk->accept(formatter);
 

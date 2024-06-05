@@ -19,7 +19,7 @@ public:
 
     explicit UnaryOpNode() : AstNode(AstKind::UnaryOpNode) {}
 
-    static std::shared_ptr<UnaryOpNode> create(std::string p_Operation, std::shared_ptr<AstNode> p_Value);
+    static std::shared_ptr<UnaryOpNode> create(const std::string& p_Operation, const std::shared_ptr<AstNode>& p_Value);
     static std::shared_ptr<UnaryOpNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
 };

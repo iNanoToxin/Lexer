@@ -1,10 +1,10 @@
 #include "goto_stat_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<GotoStatNode> GotoStatNode::create(std::shared_ptr<AstNode> p_Label)
+std::shared_ptr<GotoStatNode> GotoStatNode::create(const std::shared_ptr<AstNode>& p_Label)
 {
     std::shared_ptr<GotoStatNode> node = std::make_shared<GotoStatNode>();
-    node->label = std::move(p_Label);
+    node->label = p_Label;
 
     if (node->label != nullptr)
     {

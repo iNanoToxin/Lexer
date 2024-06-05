@@ -1,10 +1,10 @@
 #include "parameter_list_node.h"
 #include "ast/visitors/ast_visitor.h"
 
-std::shared_ptr<ParameterListNode> ParameterListNode::create(std::vector<std::shared_ptr<AstNode>> p_List)
+std::shared_ptr<ParameterListNode> ParameterListNode::create(const std::vector<std::shared_ptr<AstNode>>& p_List)
 {
     std::shared_ptr<ParameterListNode> node = std::make_shared<ParameterListNode>();
-    node->list = std::move(p_List);
+    node->list = p_List;
 
     for (const std::shared_ptr<AstNode>& child : node->list)
     {
