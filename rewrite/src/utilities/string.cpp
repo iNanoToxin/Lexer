@@ -2,18 +2,19 @@
 
 namespace String
 {
-    std::string unquote(const std::string& p_String)
+    int unquote(std::string& p_Result, const std::string& p_String)
     {
-        std::size_t i = 1;
-
         if (p_String.starts_with("["))
         {
+            std::size_t i = 0;
             while (i < p_String.size() && p_String[i] == '=')
             {
                 i++;
             }
-            i++;
+            p_Result = std::string{p_String.begin() + 2 + i, p_String.end() - 2 - i};
+            return i;
         }
-        return std::string{p_String.begin() + i, p_String.end() - i};
+        p_Result = std::string{p_String.begin() + 1, p_String.end() - 1};
+        return 0;
     }
 }

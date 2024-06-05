@@ -8,7 +8,7 @@ std::shared_ptr<TableValueNode> TableValueNode::create(std::shared_ptr<AstNode> 
 
     if (node->value != nullptr)
     {
-        node->value->parent = node;
+        node->value->setParent(node);
     }
     return node;
 }

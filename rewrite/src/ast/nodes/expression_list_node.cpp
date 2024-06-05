@@ -10,7 +10,7 @@ std::shared_ptr<ExpressionListNode> ExpressionListNode::create(std::vector<std::
     {
         if (child != nullptr)
         {
-            child->parent = node;
+            child->setParent(node);
         }
     }
     return node;

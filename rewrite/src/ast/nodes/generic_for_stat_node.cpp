@@ -10,15 +10,15 @@ std::shared_ptr<GenericForStatNode> GenericForStatNode::create(std::shared_ptr<A
 
     if (node->nameList != nullptr)
     {
-        node->nameList->parent = node;
+        node->nameList->setParent(node);
     }
     if (node->expressionList != nullptr)
     {
-        node->expressionList->parent = node;
+        node->expressionList->setParent(node);
     }
     if (node->block != nullptr)
     {
-        node->block->parent = node;
+        node->block->setParent(node);
     }
     return node;
 }

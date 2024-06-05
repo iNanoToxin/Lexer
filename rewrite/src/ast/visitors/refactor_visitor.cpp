@@ -13,7 +13,7 @@ bool check_parents(const std::shared_ptr<AstNode>& p_Node, const std::vector<Ast
         {
             return false;
         }
-        curr = curr->parent.lock();
+        curr = curr->getParent();
     }
     return true;
 }
@@ -38,7 +38,7 @@ void RefactorVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
 }
 void RefactorVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
 {
-    if (p_Node->parent.lock()->kind == AstKind::TableNameValueNode)
+    if (p_Node->getParent()->kind == AstKind::TableNameValueNode)
     {
         m_Result = p_Node;
         return;
@@ -47,7 +47,7 @@ void RefactorVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
 
     if (const std::shared_ptr<AstNode>& value = m_ScopeTree.get(p_Node->value))
     {
-        if (p_Node->parent.lock()->kind != AstKind::AttributeListNode)
+        if (p_Node->getParent()->kind != AstKind::AttributeListNode)
         {
             // std::cout << "var: " << name << ", value: " << value->toString(0) << std::endl;
 
@@ -267,7 +267,7 @@ void RefactorVisitor::visit(const std::shared_ptr<GotoStatNode>& p_Node)
 }
 void RefactorVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
 {
-    for (AstNodePair& pair : p_Node->conditionalBlocks)
+    for (AstNodePair& pair : p_Node->blocks)
     {
         if (pair.first != nullptr)
         {
@@ -488,7 +488,7 @@ void RefactorVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node)
         p_Node->name->accept(*this);
         p_Node->name = m_Result;
 
-        if (p_Node->parent.lock()->kind == AstKind::LocalStatNode)
+        if (p_Node->getParent()->kind == AstKind::LocalStatNode)
         {
             pushLocal(p_Node->name);
         }

@@ -11,4 +11,6 @@ public:
     static std::shared_ptr<BooleanNode> create(bool p_Value);
     static std::shared_ptr<BooleanNode> cast(const std::shared_ptr<AstNode>& p_Node);
     void accept(AstVisitor& p_Visitor) override;
+
+    void flip();
 };

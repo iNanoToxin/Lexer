@@ -9,11 +9,11 @@ std::shared_ptr<RepeatStatNode> RepeatStatNode::create(std::shared_ptr<AstNode> 
 
     if (node->block != nullptr)
     {
-        node->block->parent = node;
+        node->block->setParent(node);
     }
     if (node->condition != nullptr)
     {
-        node->condition->parent = node;
+        node->condition->setParent(node);
     }
     return node;
 }

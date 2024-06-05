@@ -10,7 +10,7 @@ std::shared_ptr<NameListNode> NameListNode::create(std::vector<std::shared_ptr<A
     {
         if (child != nullptr)
         {
-            child->parent = node;
+            child->setParent(node);
         }
     }
     return node;

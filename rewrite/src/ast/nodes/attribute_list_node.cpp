@@ -10,7 +10,7 @@ std::shared_ptr<AttributeListNode> AttributeListNode::create(std::vector<std::sh
     {
         if (child != nullptr)
         {
-            child->parent = node;
+            child->setParent(node);
         }
     }
     return node;

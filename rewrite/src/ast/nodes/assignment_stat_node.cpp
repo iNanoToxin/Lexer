@@ -9,11 +9,11 @@ std::shared_ptr<AssignmentStatNode> AssignmentStatNode::create(std::shared_ptr<A
 
     if (node->variableList != nullptr)
     {
-        node->variableList->parent = node;
+        node->variableList->setParent(node);
     }
     if (node->expressionList != nullptr)
     {
-        node->expressionList->parent = node;
+        node->expressionList->setParent(node);
     }
     return node;
 }

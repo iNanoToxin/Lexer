@@ -8,7 +8,7 @@ std::shared_ptr<LocalStatNode> LocalStatNode::create(std::shared_ptr<AstNode> p_
 
     if (node->statement != nullptr)
     {
-        node->statement->parent = node;
+        node->statement->setParent(node);
     }
     return node;
 }

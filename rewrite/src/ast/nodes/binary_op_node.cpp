@@ -39,11 +39,11 @@ std::shared_ptr<BinaryOpNode> BinaryOpNode::create(std::shared_ptr<AstNode> p_Lh
 
     if (node->lhs != nullptr)
     {
-        node->lhs->parent = node;
+        node->lhs->setParent(node);
     }
     if (node->rhs != nullptr)
     {
-        node->rhs->parent = node;
+        node->rhs->setParent(node);
     }
     return node;
 }

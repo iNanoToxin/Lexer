@@ -1,5 +1,7 @@
 #include "format_visitor.h"
 
+#include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -40,12 +42,22 @@ void FormatVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
     }
     else
     {
-        m_Result = std::to_string(p_Node->getDouble());
+        std::ostringstream stream;
+        stream << std::setprecision(15);
+        stream << std::noshowpoint;
+        stream << p_Node->getDouble();
+
+        if (std::floor(p_Node->getDouble()) == p_Node->getDouble())
+        {
+            stream << ".0";
+        }
+        m_Result = stream.str();
     }
+    // m_Result = p_Node->toString();
 }
 void FormatVisitor::visit(const std::shared_ptr<StringNode>& p_Node)
 {
-    m_Result = p_Node->value;
+    m_Result = p_Node->getString();
 }
 void FormatVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
 {
@@ -257,7 +269,7 @@ void FormatVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
             {
                 stream.seekp(-1, std::stringstream::cur);
             }
-            else if (p_Node->parent.lock()->kind != AstKind::ChunkNode)
+            else if (p_Node->getParent()->kind != AstKind::ChunkNode)
             {
                 stream << std::string(TAB_WIDTH, ' ');
             }
@@ -268,7 +280,7 @@ void FormatVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
 
     m_Result = stream.str();
 
-    if (p_Node->parent.lock()->kind == AstKind::ChunkNode && m_Result.back() == '\n')
+    if (p_Node->getParent()->kind == AstKind::ChunkNode && m_Result.back() == '\n')
     {
         m_Result.pop_back();
     }
@@ -432,7 +444,7 @@ void FormatVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
 {
     std::stringstream stream;
 
-    for (const AstNodePair& pair : p_Node->conditionalBlocks)
+    for (const AstNodePair& pair : p_Node->blocks)
     {
         if (pair.first == nullptr)
         {
@@ -440,7 +452,7 @@ void FormatVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
         }
         else
         {
-            if (pair != p_Node->conditionalBlocks.front())
+            if (pair != p_Node->blocks.front())
             {
                 stream << "else";
             }
@@ -700,7 +712,7 @@ void FormatVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node)
     }
 
     #ifdef FPRINT_ALL
-    if (p_Node->parent.lock()->kind != AstKind::BlockNode)
+    if (p_Node->getParent()->kind != AstKind::BlockNode)
     {
         return;
     }

@@ -9,11 +9,11 @@ std::shared_ptr<FuncBodyNode> FuncBodyNode::create(std::shared_ptr<AstNode> p_Pa
 
     if (node->parameters != nullptr)
     {
-        node->parameters->parent = node;
+        node->parameters->setParent(node);
     }
     if (node->block != nullptr)
     {
-        node->block->parent = node;
+        node->block->setParent(node);
     }
     return node;
 }

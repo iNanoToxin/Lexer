@@ -17,3 +17,8 @@ void BooleanNode::accept(AstVisitor& p_Visitor)
 {
     p_Visitor.visit(cast(shared_from_this()));
 }
+
+void BooleanNode::flip()
+{
+    value = !value;
+}

@@ -8,7 +8,7 @@ std::shared_ptr<FuncNameNode> FuncNameNode::create(std::shared_ptr<AstNode> p_Na
 
     if (node->name != nullptr)
     {
-        node->name->parent = node;
+        node->name->setParent(node);
     }
     return node;
 }

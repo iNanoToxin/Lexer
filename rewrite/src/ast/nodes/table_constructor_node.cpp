@@ -8,7 +8,7 @@ std::shared_ptr<TableConstructorNode> TableConstructorNode::create(std::shared_p
 
     if (node->fieldList != nullptr)
     {
-        node->fieldList->parent = node;
+        node->fieldList->setParent(node);
     }
     return node;
 }

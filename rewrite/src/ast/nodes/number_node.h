@@ -29,4 +29,6 @@ public:
     bool isConvertibleToInt() const;
     LuaDouble toDouble() const;
     LuaInteger toInt() const;
+
+    std::string toString() const;
 };

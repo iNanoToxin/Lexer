@@ -569,7 +569,7 @@ std::shared_ptr<AstNode> Parser::getStatement() {
     if (expectPeek("if"))
     {
         consume();
-        std::vector<AstNodePair> list;
+        std::list<AstNodePair> list;
 
         std::shared_ptr<AstNode> condition = getExpression();
         LL_assert(condition != nullptr, "Expected condition in `if` statement.");
@@ -795,7 +795,7 @@ std::shared_ptr<AstNode> Parser::getReturnStatement() {
 }
 
 std::shared_ptr<AstNode> Parser::getBlock() {
-    std::vector<std::shared_ptr<AstNode>> list;
+    std::list<std::shared_ptr<AstNode>> list;
 
     while (std::shared_ptr<AstNode> stat = getStatement())
     {

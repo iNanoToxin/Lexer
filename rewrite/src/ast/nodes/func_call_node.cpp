@@ -9,11 +9,11 @@ std::shared_ptr<FuncCallNode> FuncCallNode::create(std::shared_ptr<AstNode> p_Ro
 
     if (node->root != nullptr)
     {
-        node->root->parent = node;
+        node->root->setParent(node);
     }
     if (node->args != nullptr)
     {
-        node->args->parent = node;
+        node->args->setParent(node);
     }
     return node;
 }

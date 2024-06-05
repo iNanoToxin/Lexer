@@ -10,7 +10,7 @@ std::shared_ptr<ParameterListNode> ParameterListNode::create(std::vector<std::sh
     {
         if (child != nullptr)
         {
-            child->parent = node;
+            child->setParent(node);
         }
     }
     return node;

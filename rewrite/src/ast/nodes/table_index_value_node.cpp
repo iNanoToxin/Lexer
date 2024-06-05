@@ -9,11 +9,11 @@ std::shared_ptr<TableIndexValueNode> TableIndexValueNode::create(std::shared_ptr
 
     if (node->index != nullptr)
     {
-        node->index->parent = node;
+        node->index->setParent(node);
     }
     if (node->value != nullptr)
     {
-        node->value->parent = node;
+        node->value->setParent(node);
     }
     return node;
 }

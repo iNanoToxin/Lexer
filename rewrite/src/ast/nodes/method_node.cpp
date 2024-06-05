@@ -9,11 +9,11 @@ std::shared_ptr<MethodNode> MethodNode::create(std::shared_ptr<AstNode> p_Root, 
 
     if (node->root != nullptr)
     {
-        node->root->parent = node;
+        node->root->setParent(node);
     }
     if (node->method != nullptr)
     {
-        node->method->parent = node;
+        node->method->setParent(node);
     }
     return node;
 }

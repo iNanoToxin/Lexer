@@ -62,6 +62,32 @@ LuaDouble ArithmeticOp::mod(const LuaDouble p_X, const LuaDouble p_Y)
     return p_X - std::floor(p_X / p_Y) * p_Y;
 }
 
+bool EqualityOp::less_than(const LuaDouble p_X, const LuaDouble p_Y)
+{
+    return p_X < p_Y;
+}
+bool EqualityOp::less_then_or_equal(const LuaDouble p_X, const LuaDouble p_Y)
+{
+    return p_X <= p_Y;
+}
+bool EqualityOp::greater_than(const LuaDouble p_X, const LuaDouble p_Y)
+{
+    return p_X > p_Y;
+}
+bool EqualityOp::greater_then_or_equal(const LuaDouble p_X, const LuaDouble p_Y)
+{
+    return p_X >= p_Y;
+}
+bool EqualityOp::equal(const LuaDouble p_X, const LuaDouble p_Y)
+{
+    return p_X == p_Y;
+}
+bool EqualityOp::not_equal(const LuaDouble p_X, const LuaDouble p_Y)
+{
+    return p_X != p_Y;
+}
+
+
 bool Math::string_to_integer(LuaInteger* p_Out, const std::string& p_Number)
 {
     try
@@ -104,56 +130,4 @@ bool Math::is_convertible_to_int(const LuaDouble p_Double)
         return false;
     }
     return std::floor(p_Double) == p_Double;
-}
-
-bool Math::perform_binary_op(
-    std::shared_ptr<AstNode>& p_Result,
-    const std::shared_ptr<AstNode>& p_Lhs,
-    double (*p_Operation)(double, double),
-    const std::shared_ptr<AstNode>& p_Rhs,
-    const bool p_ForceDouble
-)
-{
-    LuaDouble x, y;
-
-    if (p_Lhs->kind == AstKind::NumberNode)
-    {
-        x = NumberNode::cast(p_Lhs)->toDouble();
-    }
-    else if (p_Lhs->kind == AstKind::StringNode)
-    {
-        if (!string_to_double(&x, StringNode::cast(p_Lhs)->unquote()))
-        {
-            return false;
-        }
-    }
-    else
-    {
-        return false;
-    }
-
-    if (p_Rhs->kind == AstKind::NumberNode)
-    {
-        y = NumberNode::cast(p_Rhs)->toDouble();
-    }
-    else if (p_Rhs->kind == AstKind::StringNode)
-    {
-        if (!string_to_double(&y, StringNode::cast(p_Rhs)->unquote()))
-        {
-            return false;
-        }
-    }
-    else
-    {
-        return false;
-    }
-
-    const std::shared_ptr<NumberNode>& result = NumberNode::create(p_Operation(x, y));
-
-    if (!p_ForceDouble && result->isConvertibleToInt())
-    {
-        result->setInt(result->toInt());
-    }
-    p_Result = result;
-    return true;
 }

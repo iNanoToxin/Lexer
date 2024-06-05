@@ -8,7 +8,7 @@ std::shared_ptr<DoStatNode> DoStatNode::create(std::shared_ptr<AstNode> p_Block)
 
     if (node->block != nullptr)
     {
-        node->block->parent = node;
+        node->block->setParent(node);
     }
     return node;
 }

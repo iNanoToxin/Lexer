@@ -10,7 +10,7 @@ std::shared_ptr<VariableListNode> VariableListNode::create(std::vector<std::shar
     {
         if (child != nullptr)
         {
-            child->parent = node;
+            child->setParent(node);
         }
     }
     return node;

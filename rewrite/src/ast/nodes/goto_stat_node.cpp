@@ -8,7 +8,7 @@ std::shared_ptr<GotoStatNode> GotoStatNode::create(std::shared_ptr<AstNode> p_La
 
     if (node->label != nullptr)
     {
-        node->label->parent = node;
+        node->label->setParent(node);
     }
     return node;
 }

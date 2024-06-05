@@ -5,7 +5,8 @@
 std::shared_ptr<StringNode> StringNode::create(std::string p_Value)
 {
     std::shared_ptr<StringNode> node = std::make_shared<StringNode>();
-    node->value = std::move(p_Value);
+    node->m_String = std::move(p_Value);
+    String::unquote(node->m_Content, node->m_String);
     return node;
 }
 
@@ -19,7 +20,22 @@ void StringNode::accept(AstVisitor& p_Visitor)
     p_Visitor.visit(cast(shared_from_this()));
 }
 
-std::string StringNode::unquote() const
+std::string StringNode::getContent() const
 {
-    return String::unquote(value);
+    return m_Content;
+}
+
+std::string StringNode::getString() const
+{
+    return m_String;
+}
+
+std::size_t StringNode::getLength() const
+{
+    return m_Content.size();
+}
+
+bool StringNode::isLongString() const
+{
+    return m_String.starts_with('[');
 }

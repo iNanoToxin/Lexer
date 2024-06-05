@@ -3,19 +3,526 @@
     [0] = {
         Kind: Block
         [0] = {
-            Kind: AssignmentStatement
+            Kind: LocalStatement
             [0] = {
-                Kind: VariableList
+                Kind: AssignmentStatement
                 [0] = {
-                    Kind: Identifier
-                    [0] = 'KEY'
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'sum'
+                    }
                 }
-            }
-            [1] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: String
-                    [0] = "OwO"
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "+"
+                        [1] = {
+                            Kind: BinaryOperation
+                            [0] = "+"
+                            [1] = {
+                                Kind: BinaryOperation
+                                [0] = "+"
+                                [1] = {
+                                    Kind: BinaryOperation
+                                    [0] = "+"
+                                    [1] = {
+                                        Kind: BinaryOperation
+                                        [0] = "+"
+                                        [1] = {
+                                            Kind: BinaryOperation
+                                            [0] = "+"
+                                            [1] = {
+                                                Kind: BinaryOperation
+                                                [0] = "+"
+                                                [1] = {
+                                                    Kind: BinaryOperation
+                                                    [0] = "+"
+                                                    [1] = {
+                                                        Kind: BinaryOperation
+                                                        [0] = "+"
+                                                        [1] = {
+                                                            Kind: BinaryOperation
+                                                            [0] = "+"
+                                                            [1] = {
+                                                                Kind: BinaryOperation
+                                                                [0] = "+"
+                                                                [1] = {
+                                                                    Kind: BinaryOperation
+                                                                    [0] = "+"
+                                                                    [1] = {
+                                                                        Kind: BinaryOperation
+                                                                        [0] = "+"
+                                                                        [1] = {
+                                                                            Kind: BinaryOperation
+                                                                            [0] = "+"
+                                                                            [1] = {
+                                                                                Kind: BinaryOperation
+                                                                                [0] = "+"
+                                                                                [1] = {
+                                                                                    Kind: BinaryOperation
+                                                                                    [0] = "+"
+                                                                                    [1] = {
+                                                                                        Kind: BinaryOperation
+                                                                                        [0] = "+"
+                                                                                        [1] = {
+                                                                                            Kind: BinaryOperation
+                                                                                            [0] = "+"
+                                                                                            [1] = {
+                                                                                                Kind: BinaryOperation
+                                                                                                [0] = "+"
+                                                                                                [1] = {
+                                                                                                    Kind: BinaryOperation
+                                                                                                    [0] = "+"
+                                                                                                    [1] = {
+                                                                                                        Kind: BinaryOperation
+                                                                                                        [0] = "+"
+                                                                                                        [1] = {
+                                                                                                            Kind: BinaryOperation
+                                                                                                            [0] = "+"
+                                                                                                            [1] = {
+                                                                                                                Kind: BinaryOperation
+                                                                                                                [0] = "+"
+                                                                                                                [1] = {
+                                                                                                                    Kind: BinaryOperation
+                                                                                                                    [0] = "+"
+                                                                                                                    [1] = {
+                                                                                                                        Kind: BinaryOperation
+                                                                                                                        [0] = "+"
+                                                                                                                        [1] = {
+                                                                                                                            Kind: BinaryOperation
+                                                                                                                            [0] = "+"
+                                                                                                                            [1] = {
+                                                                                                                                Kind: BinaryOperation
+                                                                                                                                [0] = "+"
+                                                                                                                                [1] = {
+                                                                                                                                    Kind: BinaryOperation
+                                                                                                                                    [0] = "+"
+                                                                                                                                    [1] = {
+                                                                                                                                        Kind: BinaryOperation
+                                                                                                                                        [0] = "+"
+                                                                                                                                        [1] = {
+                                                                                                                                            Kind: BinaryOperation
+                                                                                                                                            [0] = "+"
+                                                                                                                                            [1] = {
+                                                                                                                                                Kind: BinaryOperation
+                                                                                                                                                [0] = "+"
+                                                                                                                                                [1] = {
+                                                                                                                                                    Kind: BinaryOperation
+                                                                                                                                                    [0] = "/"
+                                                                                                                                                    [1] = {
+                                                                                                                                                        Kind: Numeric
+                                                                                                                                                        [0] = 47395834458145
+                                                                                                                                                    }
+                                                                                                                                                    [2] = {
+                                                                                                                                                        Kind: Numeric
+                                                                                                                                                        [0] = 0
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                                [2] = {
+                                                                                                                                                    Kind: BinaryOperation
+                                                                                                                                                    [0] = "/"
+                                                                                                                                                    [1] = {
+                                                                                                                                                        Kind: Numeric
+                                                                                                                                                        [0] = 85839087547834
+                                                                                                                                                    }
+                                                                                                                                                    [2] = {
+                                                                                                                                                        Kind: Numeric
+                                                                                                                                                        [0] = 0
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                            [2] = {
+                                                                                                                                                Kind: BinaryOperation
+                                                                                                                                                [0] = "/"
+                                                                                                                                                [1] = {
+                                                                                                                                                    Kind: Numeric
+                                                                                                                                                    [0] = 43239386108139
+                                                                                                                                                }
+                                                                                                                                                [2] = {
+                                                                                                                                                    Kind: Numeric
+                                                                                                                                                    [0] = 0
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                        [2] = {
+                                                                                                                                            Kind: BinaryOperation
+                                                                                                                                            [0] = "/"
+                                                                                                                                            [1] = {
+                                                                                                                                                Kind: Numeric
+                                                                                                                                                [0] = 54729930718345
+                                                                                                                                            }
+                                                                                                                                            [2] = {
+                                                                                                                                                Kind: Numeric
+                                                                                                                                                [0] = 0
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                    [2] = {
+                                                                                                                                        Kind: BinaryOperation
+                                                                                                                                        [0] = "/"
+                                                                                                                                        [1] = {
+                                                                                                                                            Kind: Numeric
+                                                                                                                                            [0] = 69183743289251
+                                                                                                                                        }
+                                                                                                                                        [2] = {
+                                                                                                                                            Kind: Numeric
+                                                                                                                                            [0] = 0
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                                [2] = {
+                                                                                                                                    Kind: BinaryOperation
+                                                                                                                                    [0] = "/"
+                                                                                                                                    [1] = {
+                                                                                                                                        Kind: Numeric
+                                                                                                                                        [0] = 6393623083282
+                                                                                                                                    }
+                                                                                                                                    [2] = {
+                                                                                                                                        Kind: Numeric
+                                                                                                                                        [0] = 10000000000000
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                            [2] = {
+                                                                                                                                Kind: BinaryOperation
+                                                                                                                                [0] = "/"
+                                                                                                                                [1] = {
+                                                                                                                                    Kind: Numeric
+                                                                                                                                    [0] = 52517446765381
+                                                                                                                                }
+                                                                                                                                [2] = {
+                                                                                                                                    Kind: Numeric
+                                                                                                                                    [0] = 0
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                        [2] = {
+                                                                                                                            Kind: BinaryOperation
+                                                                                                                            [0] = "/"
+                                                                                                                            [1] = {
+                                                                                                                                Kind: Numeric
+                                                                                                                                [0] = 50320566351785
+                                                                                                                            }
+                                                                                                                            [2] = {
+                                                                                                                                Kind: Numeric
+                                                                                                                                [0] = 0
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                    [2] = {
+                                                                                                                        Kind: BinaryOperation
+                                                                                                                        [0] = "/"
+                                                                                                                        [1] = {
+                                                                                                                            Kind: Numeric
+                                                                                                                            [0] = 54599659113517
+                                                                                                                        }
+                                                                                                                        [2] = {
+                                                                                                                            Kind: Numeric
+                                                                                                                            [0] = 0
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                [2] = {
+                                                                                                                    Kind: BinaryOperation
+                                                                                                                    [0] = "/"
+                                                                                                                    [1] = {
+                                                                                                                        Kind: Numeric
+                                                                                                                        [0] = 33904894944964
+                                                                                                                    }
+                                                                                                                    [2] = {
+                                                                                                                        Kind: Numeric
+                                                                                                                        [0] = 0
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                            [2] = {
+                                                                                                                Kind: BinaryOperation
+                                                                                                                [0] = "/"
+                                                                                                                [1] = {
+                                                                                                                    Kind: Numeric
+                                                                                                                    [0] = 59034175514036
+                                                                                                                }
+                                                                                                                [2] = {
+                                                                                                                    Kind: Numeric
+                                                                                                                    [0] = 0
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                        [2] = {
+                                                                                                            Kind: BinaryOperation
+                                                                                                            [0] = "/"
+                                                                                                            [1] = {
+                                                                                                                Kind: Numeric
+                                                                                                                [0] = 11138935209468
+                                                                                                            }
+                                                                                                            [2] = {
+                                                                                                                Kind: Numeric
+                                                                                                                [0] = 0
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                    [2] = {
+                                                                                                        Kind: BinaryOperation
+                                                                                                        [0] = "/"
+                                                                                                        [1] = {
+                                                                                                            Kind: Numeric
+                                                                                                            [0] = 29823940592327
+                                                                                                        }
+                                                                                                        [2] = {
+                                                                                                            Kind: Numeric
+                                                                                                            [0] = 0
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                [2] = {
+                                                                                                    Kind: BinaryOperation
+                                                                                                    [0] = "/"
+                                                                                                    [1] = {
+                                                                                                        Kind: Numeric
+                                                                                                        [0] = 38009392270218
+                                                                                                    }
+                                                                                                    [2] = {
+                                                                                                        Kind: Numeric
+                                                                                                        [0] = 0
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                            [2] = {
+                                                                                                Kind: BinaryOperation
+                                                                                                [0] = "/"
+                                                                                                [1] = {
+                                                                                                    Kind: Numeric
+                                                                                                    [0] = 73539859014528
+                                                                                                }
+                                                                                                [2] = {
+                                                                                                    Kind: Numeric
+                                                                                                    [0] = 0
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                        [2] = {
+                                                                                            Kind: BinaryOperation
+                                                                                            [0] = "/"
+                                                                                            [1] = {
+                                                                                                Kind: Numeric
+                                                                                                [0] = 47706770813518
+                                                                                            }
+                                                                                            [2] = {
+                                                                                                Kind: Numeric
+                                                                                                [0] = 0
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                    [2] = {
+                                                                                        Kind: BinaryOperation
+                                                                                        [0] = "/"
+                                                                                        [1] = {
+                                                                                            Kind: Numeric
+                                                                                            [0] = 61642312459879
+                                                                                        }
+                                                                                        [2] = {
+                                                                                            Kind: Numeric
+                                                                                            [0] = 0
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                [2] = {
+                                                                                    Kind: BinaryOperation
+                                                                                    [0] = "/"
+                                                                                    [1] = {
+                                                                                        Kind: Numeric
+                                                                                        [0] = 55184983960615
+                                                                                    }
+                                                                                    [2] = {
+                                                                                        Kind: Numeric
+                                                                                        [0] = 0
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            [2] = {
+                                                                                Kind: BinaryOperation
+                                                                                [0] = "/"
+                                                                                [1] = {
+                                                                                    Kind: Numeric
+                                                                                    [0] = 30599426847269
+                                                                                }
+                                                                                [2] = {
+                                                                                    Kind: Numeric
+                                                                                    [0] = 0
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        [2] = {
+                                                                            Kind: BinaryOperation
+                                                                            [0] = "/"
+                                                                            [1] = {
+                                                                                Kind: Numeric
+                                                                                [0] = 65718576145836
+                                                                            }
+                                                                            [2] = {
+                                                                                Kind: Numeric
+                                                                                [0] = 0
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    [2] = {
+                                                                        Kind: BinaryOperation
+                                                                        [0] = "/"
+                                                                        [1] = {
+                                                                            Kind: Numeric
+                                                                            [0] = 45062286662999
+                                                                        }
+                                                                        [2] = {
+                                                                            Kind: Numeric
+                                                                            [0] = 0
+                                                                        }
+                                                                    }
+                                                                }
+                                                                [2] = {
+                                                                    Kind: BinaryOperation
+                                                                    [0] = "/"
+                                                                    [1] = {
+                                                                        Kind: Numeric
+                                                                        [0] = 17349287272664
+                                                                    }
+                                                                    [2] = {
+                                                                        Kind: Numeric
+                                                                        [0] = 0
+                                                                    }
+                                                                }
+                                                            }
+                                                            [2] = {
+                                                                Kind: BinaryOperation
+                                                                [0] = "/"
+                                                                [1] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 64373258733019
+                                                                }
+                                                                [2] = {
+                                                                    Kind: Numeric
+                                                                    [0] = 0
+                                                                }
+                                                            }
+                                                        }
+                                                        [2] = {
+                                                            Kind: BinaryOperation
+                                                            [0] = "/"
+                                                            [1] = {
+                                                                Kind: Numeric
+                                                                [0] = 69199469310595
+                                                            }
+                                                            [2] = {
+                                                                Kind: Numeric
+                                                                [0] = 0
+                                                            }
+                                                        }
+                                                    }
+                                                    [2] = {
+                                                        Kind: BinaryOperation
+                                                        [0] = "/"
+                                                        [1] = {
+                                                            Kind: Numeric
+                                                            [0] = 72065584549425
+                                                        }
+                                                        [2] = {
+                                                            Kind: Numeric
+                                                            [0] = 0
+                                                        }
+                                                    }
+                                                }
+                                                [2] = {
+                                                    Kind: BinaryOperation
+                                                    [0] = "/"
+                                                    [1] = {
+                                                        Kind: Numeric
+                                                        [0] = 96574947534475
+                                                    }
+                                                    [2] = {
+                                                        Kind: Numeric
+                                                        [0] = 0
+                                                    }
+                                                }
+                                            }
+                                            [2] = {
+                                                Kind: BinaryOperation
+                                                [0] = "/"
+                                                [1] = {
+                                                    Kind: Numeric
+                                                    [0] = 46909934565382
+                                                }
+                                                [2] = {
+                                                    Kind: Numeric
+                                                    [0] = 0
+                                                }
+                                            }
+                                        }
+                                        [2] = {
+                                            Kind: BinaryOperation
+                                            [0] = "/"
+                                            [1] = {
+                                                Kind: Numeric
+                                                [0] = 58110454208167
+                                            }
+                                            [2] = {
+                                                Kind: Numeric
+                                                [0] = 0
+                                            }
+                                        }
+                                    }
+                                    [2] = {
+                                        Kind: BinaryOperation
+                                        [0] = "/"
+                                        [1] = {
+                                            Kind: Numeric
+                                            [0] = 86740131442213
+                                        }
+                                        [2] = {
+                                            Kind: Numeric
+                                            [0] = 0
+                                        }
+                                    }
+                                }
+                                [2] = {
+                                    Kind: BinaryOperation
+                                    [0] = "/"
+                                    [1] = {
+                                        Kind: Numeric
+                                        [0] = 20329269672087
+                                    }
+                                    [2] = {
+                                        Kind: Numeric
+                                        [0] = 0
+                                    }
+                                }
+                            }
+                            [2] = {
+                                Kind: BinaryOperation
+                                [0] = "/"
+                                [1] = {
+                                    Kind: Numeric
+                                    [0] = 20135675494003
+                                }
+                                [2] = {
+                                    Kind: Numeric
+                                    [0] = 0
+                                }
+                            }
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = "/"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 91479714888028
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 0
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -27,27 +534,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'd'
+                        [0] = 'difference'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'string'
-                        }
+                        Kind: BinaryOperation
+                        [0] = "-"
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'byte'
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
                         }
                     }
                 }
             }
         }
         [2] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'product'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "*"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
+                    }
+                }
+            }
         }
         [3] = {
             Kind: LocalStatement
@@ -57,27 +590,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'i'
+                        [0] = 'quotient'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'string'
-                        }
+                        Kind: BinaryOperation
+                        [0] = "/"
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'char'
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
                         }
                     }
                 }
             }
         }
         [4] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'floorDiv'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "//"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
+                    }
+                }
+            }
         }
         [5] = {
             Kind: LocalStatement
@@ -87,27 +646,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'c'
+                        [0] = 'modulus'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'string'
-                        }
+                        Kind: BinaryOperation
+                        [0] = "%"
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'sub'
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
                         }
                     }
                 }
             }
         }
         [6] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'power'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "^"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
+                    }
+                }
+            }
         }
         [7] = {
             Kind: LocalStatement
@@ -117,27 +702,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 's'
+                        [0] = 'bob'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'table'
-                        }
+                        Kind: BinaryOperation
+                        [0] = "~="
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'concat'
+                            Kind: Boolean
+                            [0] = 1
+                        }
+                        [2] = {
+                            Kind: TableConstructor
+                            [0] = nullptr
                         }
                     }
                 }
             }
         }
         [8] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'isEqual'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "=="
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
+                    }
+                }
+            }
         }
         [9] = {
             Kind: LocalStatement
@@ -147,27 +758,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'u'
+                        [0] = 'isNotEqual'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'math'
-                        }
+                        Kind: BinaryOperation
+                        [0] = "~="
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'ldexp'
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
                         }
                     }
                 }
             }
         }
         [10] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'isLess'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "<"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
+                    }
+                }
+            }
         }
         [11] = {
             Kind: LocalStatement
@@ -177,45 +814,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'D'
+                        [0] = 'isGreater'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = "or"
+                        [0] = ">"
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'getfenv'
+                            Kind: Numeric
+                            [0] = 5
                         }
                         [2] = {
-                            Kind: FunctionDefinition
-                            [0] = nullptr
-                            [1] = {
-                                Kind: FunctionBody
-                                [0] = nullptr
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: ReturnStatement
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = '_ENV'
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            Kind: Numeric
+                            [0] = 3
                         }
                     }
                 }
             }
         }
         [12] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'isLessOrEqual'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "<="
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
+                    }
+                }
+            }
         }
         [13] = {
             Kind: LocalStatement
@@ -225,20 +870,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'J'
+                        [0] = 'isGreaterOrEqual'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Identifier
-                        [0] = 'setmetatable'
+                        Kind: BinaryOperation
+                        [0] = ">="
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
                     }
                 }
             }
         }
         [14] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'andResult'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "and"
+                        [1] = {
+                            Kind: Boolean
+                            [0] = 1
+                        }
+                        [2] = {
+                            Kind: Boolean
+                            [0] = 0
+                        }
+                    }
+                }
+            }
         }
         [15] = {
             Kind: LocalStatement
@@ -248,20 +926,49 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'f'
+                        [0] = 'orResult'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Identifier
-                        [0] = 'select'
+                        Kind: BinaryOperation
+                        [0] = "or"
+                        [1] = {
+                            Kind: Boolean
+                            [0] = 1
+                        }
+                        [2] = {
+                            Kind: Boolean
+                            [0] = 0
+                        }
                     }
                 }
             }
         }
         [16] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'notResult'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: UnaryOperation
+                        [0] = "not"
+                        [1] = {
+                            Kind: Boolean
+                            [0] = 1
+                        }
+                    }
+                }
+            }
         }
         [17] = {
             Kind: LocalStatement
@@ -271,27 +978,53 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'a'
+                        [0] = 'bitAnd'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Member
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'table'
-                        }
+                        Kind: BinaryOperation
+                        [0] = "&"
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'unpack'
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
                         }
                     }
                 }
             }
         }
         [18] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'bitOr'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "|"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
+                    }
+                }
+            }
         }
         [19] = {
             Kind: LocalStatement
@@ -301,795 +1034,105 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'h'
+                        [0] = 'bitXor'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Identifier
-                        [0] = 'tonumber'
+                        Kind: BinaryOperation
+                        [0] = "~"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 3
+                        }
                     }
                 }
             }
         }
         [20] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'bitNot'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: UnaryOperation
+                        [0] = "~"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                    }
+                }
+            }
         }
         [21] = {
             Kind: LocalStatement
             [0] = {
-                Kind: FunctionDefinition
+                Kind: AssignmentStatement
                 [0] = {
-                    Kind: Identifier
-                    [0] = 'A'
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'bitLeftShift'
+                    }
                 }
                 [1] = {
-                    Kind: FunctionBody
+                    Kind: ExpressionList
                     [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'd'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'n'
-                                    }
-                                    [2] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: String
-                                        [0] = ""
-                                    }
-                                    [1] = {
-                                        Kind: String
-                                        [0] = ""
-                                    }
-                                    [2] = {
-                                        Kind: TableConstructor
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
+                        Kind: BinaryOperation
+                        [0] = "<<"
                         [1] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'o'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Numeric
-                                        [0] = 256
-                                    }
-                                }
-                            }
+                            Kind: Numeric
+                            [0] = 5
                         }
                         [2] = {
-                            Kind: Semicolon
-                        }
-                        [3] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 't'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                        [4] = {
-                            Kind: ForStatement
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'l'
-                            }
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 0
-                            }
-                            [2] = {
-                                Kind: BinaryOperation
-                                [0] = "-"
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'o'
-                                }
-                                [2] = {
-                                    Kind: Numeric
-                                    [0] = 1
-                                }
-                            }
-                            [3] = nullptr
-                            [4] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 't'
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'l'
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [5] = {
-                            Kind: Semicolon
-                        }
-                        [6] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                        }
-                        [7] = {
-                            Kind: Semicolon
-                        }
-                        [8] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: FunctionDefinition
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'r'
-                                }
-                                [1] = {
-                                    Kind: FunctionBody
-                                    [0] = nullptr
-                                    [1] = {
-                                        Kind: Block
-                                        [0] = {
-                                            Kind: LocalStatement
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: AttributeList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'e'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'h'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: FunctionCall
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'c'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: ArgumentList
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'd'
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'l'
-                                                                            }
-                                                                            [2] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'l'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 36
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "+"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 1
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: Semicolon
-                                        }
-                                        [3] = {
-                                            Kind: LocalStatement
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: AttributeList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'n'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'h'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: FunctionCall
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'c'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: ArgumentList
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'd'
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'l'
-                                                                            }
-                                                                            [2] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "-"
-                                                                                [1] = {
-                                                                                    Kind: BinaryOperation
-                                                                                    [0] = "+"
-                                                                                    [1] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'l'
-                                                                                    }
-                                                                                    [2] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'e'
-                                                                                    }
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 1
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 36
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [4] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: VariableList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "+"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Identifier
-                                                        [0] = 'e'
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [5] = {
-                                            Kind: Semicolon
-                                        }
-                                        [6] = {
-                                            Kind: ReturnStatement
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'n'
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [9] = {
-                            Kind: Semicolon
-                        }
-                        [10] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'e'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'i'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'r'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = nullptr
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [11] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'e'
-                                }
-                            }
-                        }
-                        [12] = {
-                            Kind: Semicolon
-                        }
-                        [13] = {
-                            Kind: WhileStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "<"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                    [2] = {
-                                        Kind: UnaryOperation
-                                        [0] = "#"
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'd'
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: LocalStatement
-                                        [0] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: AttributeList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'r'
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = nullptr
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: IfStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: Index
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 't'
-                                                }
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Index
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 't'
-                                                            }
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'l'
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ConditionalBlock
-                                            [0] = nullptr
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = ".."
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'e'
-                                                            }
-                                                            [2] = {
-                                                                Kind: FunctionCall
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'c'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: ArgumentList
-                                                                    [0] = {
-                                                                        Kind: ExpressionList
-                                                                        [0] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'e'
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: Numeric
-                                                                            [0] = 1
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: Numeric
-                                                                            [0] = 1
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Semicolon
-                                    }
-                                    [3] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: VariableList
-                                            [0] = {
-                                                Kind: Index
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 't'
-                                                }
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o'
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = ".."
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'e'
-                                                }
-                                                [2] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'c'
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'n'
-                                                            }
-                                                            [1] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [4] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: VariableList
-                                            [0] = {
-                                                Kind: Index
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'a'
-                                                }
-                                                [1] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "+"
-                                                    [1] = {
-                                                        Kind: UnaryOperation
-                                                        [0] = "#"
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'a'
-                                                        }
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 1
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                            [2] = {
-                                                Kind: Identifier
-                                                [0] = 'o'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'n'
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'n'
-                                            }
-                                            [2] = {
-                                                Kind: BinaryOperation
-                                                [0] = "+"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 1
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [14] = {
-                            Kind: Semicolon
-                        }
-                        [15] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Member
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'table'
-                                        }
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'concat'
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'a'
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            Kind: Numeric
+                            [0] = 1
                         }
                     }
                 }
             }
         }
         [22] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'bitRightShift'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = ">>"
+                        [1] = {
+                            Kind: Numeric
+                            [0] = 5
+                        }
+                        [2] = {
+                            Kind: Numeric
+                            [0] = 1
+                        }
+                    }
+                }
+            }
         }
         [23] = {
             Kind: LocalStatement
@@ -1099,25 +1142,28 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 't'
+                        [0] = 'concat'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: FunctionCall
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'A'
-                        }
+                        Kind: BinaryOperation
+                        [0] = ".."
                         [1] = {
-                            Kind: ArgumentList
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: String
-                                    [0] = "1M1K2752762752742761H27622S22U23H23E22O1K1O27623922P22O23G21G22S23922V22V23523421H1G27626H1S26C26J2501S27526D142812521427526G1428A25528A1K26K2841K25928J1L27727727927527B27527D27F27H27J27523623923H23C27U21G27L27N27W27626L28028228J26H28726J28927526K28D1K28F29H28J28L2782771I27626C27625B27626J1421G1K25428A24426M29A25A28424426D1K28124Y29S28G24Z28G28I27529O27527X27622C27623F22R23F21O21E21Q21D21E22221D21C22221C21D2B021J2AY21J2AX21O21Q2AW2B821E2BB2AS2B92222AW2AY21E2B221C1W1X1Y1Z2182192131W2BO2BQ2BS2BN2BP2191K1N27622N22922527I27627T22O23D23522O2392CC23A2921K1J27622322327F23423523028G1K29928829C29E25028G26D1C2812501C2752681K28A24P2762712AA26J2AC2D31K2AN2582762702D51K2D727526Z2DJ24X27524426K2762532DH21G21W1K24O29Z2AA1C29Z2572D21K26829J25628G2DI27524W2762D42752512EE27624Q2762AH28K28J"
-                                }
+                            Kind: String
+                            [0] = "Hello"
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = ".."
+                            [1] = {
+                                Kind: String
+                                [0] = " "
+                            }
+                            [2] = {
+                                Kind: String
+                                [0] = "World"
                             }
                         }
                     }
@@ -1125,7 +1171,48 @@
             }
         }
         [24] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'combined1'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "&"
+                        [1] = {
+                            Kind: BinaryOperation
+                            [0] = "+"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 5
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 3
+                            }
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = "-"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 10
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 2
+                            }
+                        }
+                    }
+                }
+            }
         }
         [25] = {
             Kind: LocalStatement
@@ -1135,472 +1222,36 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'o'
+                        [0] = 'combined2'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
                         Kind: BinaryOperation
-                        [0] = "or"
+                        [0] = "|"
                         [1] = {
                             Kind: BinaryOperation
-                            [0] = "and"
+                            [0] = "*"
                             [1] = {
-                                Kind: Identifier
-                                [0] = 'bit'
+                                Kind: Numeric
+                                [0] = 5
                             }
                             [2] = {
-                                Kind: Member
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'bit'
-                                }
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'bxor'
-                                }
+                                Kind: Numeric
+                                [0] = 3
                             }
                         }
                         [2] = {
-                            Kind: FunctionDefinition
-                            [0] = nullptr
+                            Kind: BinaryOperation
+                            [0] = "^"
                             [1] = {
-                                Kind: FunctionBody
-                                [0] = {
-                                    Kind: ParameterList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: LocalStatement
-                                        [0] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: AttributeList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'n'
-                                                }
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 1
-                                                }
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: WhileStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "and"
-                                                [1] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = ">"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 0
-                                                    }
-                                                }
-                                                [2] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = ">"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'e'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 0
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: LocalStatement
-                                                    [0] = {
-                                                        Kind: AssignmentStatement
-                                                        [0] = {
-                                                            Kind: AttributeList
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'c'
-                                                            }
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'a'
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "%"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 2
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "%"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'e'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 2
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: IfStatement
-                                                    [0] = {
-                                                        Kind: ConditionalBlock
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "~="
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'c'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Identifier
-                                                                [0] = 'a'
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: Block
-                                                            [0] = {
-                                                                Kind: AssignmentStatement
-                                                                [0] = {
-                                                                    Kind: VariableList
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'o'
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: BinaryOperation
-                                                                        [0] = "+"
-                                                                        [1] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'o'
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'n'
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [2] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "/"
-                                                            [1] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "-"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'c'
-                                                                }
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 2
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "/"
-                                                            [1] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "-"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'e'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'a'
-                                                                }
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 2
-                                                            }
-                                                        }
-                                                        [2] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "*"
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'n'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 2
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: IfStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "<"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [2] = {
-                                                    Kind: Identifier
-                                                    [0] = 'e'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: WhileStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = ">"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: LocalStatement
-                                                    [0] = {
-                                                        Kind: AssignmentStatement
-                                                        [0] = {
-                                                            Kind: AttributeList
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'e'
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "%"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 2
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: IfStatement
-                                                    [0] = {
-                                                        Kind: ConditionalBlock
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = ">"
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'e'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 0
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: Block
-                                                            [0] = {
-                                                                Kind: AssignmentStatement
-                                                                [0] = {
-                                                                    Kind: VariableList
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'o'
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: BinaryOperation
-                                                                        [0] = "+"
-                                                                        [1] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'o'
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'n'
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [2] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "/"
-                                                            [1] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "-"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'e'
-                                                                }
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 2
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "*"
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'n'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 2
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [4] = {
-                                        Kind: ReturnStatement
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'o'
-                                            }
-                                        }
-                                    }
-                                }
+                                Kind: Numeric
+                                [0] = 2
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 3
                             }
                         }
                     }
@@ -1610,269 +1261,90 @@
         [26] = {
             Kind: LocalStatement
             [0] = {
-                Kind: FunctionDefinition
+                Kind: AssignmentStatement
                 [0] = {
-                    Kind: Identifier
-                    [0] = 'l'
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'combined3'
+                    }
                 }
                 [1] = {
-                    Kind: FunctionBody
+                    Kind: ExpressionList
                     [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'n'
-                        }
+                        Kind: BinaryOperation
+                        [0] = "and"
                         [1] = {
-                            Kind: Identifier
-                            [0] = 'l'
+                            Kind: BinaryOperation
+                            [0] = ">"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 5
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 3
+                            }
                         }
                         [2] = {
-                            Kind: Identifier
-                            [0] = 'e'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: IfStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'e'
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: LocalStatement
-                                        [0] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: AttributeList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "%"
-                                                    [1] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "/"
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                        [2] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "^"
-                                                            [1] = {
-                                                                Kind: Numeric
-                                                                [0] = 2
-                                                            }
-                                                            [2] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "-"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 1
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    [2] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "^"
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 2
-                                                        }
-                                                        [2] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "+"
-                                                            [1] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "-"
-                                                                [1] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "-"
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'e'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 1
-                                                                    }
-                                                                }
-                                                                [2] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "-"
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'l'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 1
-                                                                    }
-                                                                }
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: Semicolon
-                                    }
-                                    [2] = {
-                                        Kind: ReturnStatement
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "-"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [2] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "%"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 1
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            Kind: BinaryOperation
+                            [0] = "<"
                             [1] = {
-                                Kind: ConditionalBlock
-                                [0] = nullptr
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: LocalStatement
-                                        [0] = {
-                                            Kind: AssignmentStatement
-                                            [0] = {
-                                                Kind: AttributeList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "^"
-                                                    [1] = {
-                                                        Kind: Numeric
-                                                        [0] = 2
-                                                    }
-                                                    [2] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "-"
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: Semicolon
-                                    }
-                                    [2] = {
-                                        Kind: ReturnStatement
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "or"
-                                                [1] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "and"
-                                                    [1] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = ">="
-                                                        [1] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "%"
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'n'
-                                                            }
-                                                            [2] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "+"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                            }
-                                                        }
-                                                        [2] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 1
-                                                    }
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                Kind: Numeric
+                                [0] = 2
                             }
-                        }
-                        [1] = {
-                            Kind: Semicolon
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 4
+                            }
                         }
                     }
                 }
             }
         }
         [27] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'combined4'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "or"
+                        [1] = {
+                            Kind: BinaryOperation
+                            [0] = "=="
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 5
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 3
+                            }
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = "<="
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 2
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 4
+                            }
+                        }
+                    }
+                }
+            }
         }
         [28] = {
             Kind: LocalStatement
@@ -1882,318 +1354,124 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'e'
+                        [0] = 'combined5'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Numeric
-                        [0] = 1
+                        Kind: BinaryOperation
+                        [0] = "+"
+                        [1] = {
+                            Kind: BinaryOperation
+                            [0] = "&"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 5
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 3
+                            }
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = "|"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 10
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 2
+                            }
+                        }
                     }
                 }
             }
         }
         [29] = {
-            Kind: Semicolon
+            Kind: LocalStatement
+            [0] = {
+                Kind: AssignmentStatement
+                [0] = {
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'combined6'
+                    }
+                }
+                [1] = {
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "*"
+                        [1] = {
+                            Kind: BinaryOperation
+                            [0] = "~"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 5
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 3
+                            }
+                        }
+                        [2] = {
+                            Kind: BinaryOperation
+                            [0] = ">>"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 8
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 2
+                            }
+                        }
+                    }
+                }
+            }
         }
         [30] = {
             Kind: LocalStatement
             [0] = {
-                Kind: FunctionDefinition
+                Kind: AssignmentStatement
                 [0] = {
-                    Kind: Identifier
-                    [0] = 'n'
+                    Kind: AttributeList
+                    [0] = {
+                        Kind: Identifier
+                        [0] = 'combined7'
+                    }
                 }
                 [1] = {
-                    Kind: FunctionBody
-                    [0] = nullptr
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
-                                    }
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                    [2] = {
-                                        Kind: Identifier
-                                        [0] = 'n'
-                                    }
-                                    [3] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'd'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 't'
-                                                }
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'e'
-                                                }
-                                                [2] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "+"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'e'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 3
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    Kind: ExpressionList
+                    [0] = {
+                        Kind: BinaryOperation
+                        [0] = "=="
                         [1] = {
-                            Kind: Semicolon
+                            Kind: BinaryOperation
+                            [0] = "+"
+                            [1] = {
+                                Kind: Numeric
+                                [0] = 5
+                            }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 3
+                            }
                         }
                         [2] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'c'
-                                }
-                            }
+                            Kind: BinaryOperation
+                            [0] = "-"
                             [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'o'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'c'
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 20
-                                            }
-                                        }
-                                    }
-                                }
+                                Kind: Numeric
+                                [0] = 10
                             }
-                        }
-                        [3] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'l'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'o'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'l'
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 20
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [4] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'n'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'o'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'n'
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 20
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [5] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'o'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'a'
-                                            }
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 20
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [6] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'e'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                }
-                            }
-                        }
-                        [7] = {
-                            Kind: Semicolon
-                        }
-                        [8] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: BinaryOperation
-                                        [0] = "+"
-                                        [1] = {
-                                            Kind: BinaryOperation
-                                            [0] = "+"
-                                            [1] = {
-                                                Kind: BinaryOperation
-                                                [0] = "*"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'a'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 16777216
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: BinaryOperation
-                                                [0] = "*"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'n'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 65536
-                                                }
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: BinaryOperation
-                                            [0] = "*"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'l'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 256
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
-                                    }
-                                }
+                            [2] = {
+                                Kind: Numeric
+                                [0] = 2
                             }
                         }
                     }
@@ -2201,659 +1479,6 @@
             }
         }
         [31] = {
-            Kind: Semicolon
-        }
-        [32] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'r'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = nullptr
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'o'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: FunctionCall
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'd'
-                                                    }
-                                                    [1] = {
-                                                        Kind: ArgumentList
-                                                        [0] = {
-                                                            Kind: ExpressionList
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 't'
-                                                            }
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'e'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Identifier
-                                                                [0] = 'e'
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 20
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: Semicolon
-                        }
-                        [2] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'e'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                        }
-                        [3] = {
-                            Kind: Semicolon
-                        }
-                        [4] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'l'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [33] = {
-            Kind: Semicolon
-        }
-        [34] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'A'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = nullptr
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'n'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = nullptr
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: Semicolon
-                        }
-                        [2] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'o'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'n'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = nullptr
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [3] = {
-                            Kind: Semicolon
-                        }
-                        [4] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Numeric
-                                        [0] = 1
-                                    }
-                                }
-                            }
-                        }
-                        [5] = {
-                            Kind: Semicolon
-                        }
-                        [6] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'n'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: BinaryOperation
-                                        [0] = "+"
-                                        [1] = {
-                                            Kind: BinaryOperation
-                                            [0] = "*"
-                                            [1] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'o'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 20
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: BinaryOperation
-                                                [0] = "^"
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 2
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 32
-                                                }
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: Identifier
-                                            [0] = 'e'
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [7] = {
-                            Kind: Semicolon
-                        }
-                        [8] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'l'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o'
-                                                }
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 21
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 31
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [9] = {
-                            Kind: Semicolon
-                        }
-                        [10] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: BinaryOperation
-                                        [0] = "^"
-                                        [1] = {
-                                            Kind: UnaryOperation
-                                            [0] = "-"
-                                            [1] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                        [2] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'l'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'o'
-                                                    }
-                                                    [1] = {
-                                                        Kind: Numeric
-                                                        [0] = 32
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [11] = {
-                            Kind: Semicolon
-                        }
-                        [12] = {
-                            Kind: IfStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 0
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: IfStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "=="
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'n'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: ReturnStatement
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "*"
-                                                            [1] = {
-                                                                Kind: Identifier
-                                                                [0] = 'l'
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 0
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ConditionalBlock
-                                            [0] = nullptr
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: Semicolon
-                                                }
-                                                [2] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: VariableList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'c'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Numeric
-                                                            [0] = 0
-                                                        }
-                                                    }
-                                                }
-                                                [3] = {
-                                                    Kind: Semicolon
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: Semicolon
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "=="
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                    [2] = {
-                                        Kind: Numeric
-                                        [0] = 2047
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: ReturnStatement
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "or"
-                                                [1] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "and"
-                                                    [1] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "=="
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 0
-                                                        }
-                                                    }
-                                                    [2] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "*"
-                                                        [1] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [2] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "/"
-                                                            [1] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 0
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                [2] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "*"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                    [2] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "/"
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 0
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 0
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [13] = {
-                            Kind: Semicolon
-                        }
-                        [14] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "*"
-                                    [1] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'u'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = {
-                                                Kind: ExpressionList
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [1] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "-"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'e'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Numeric
-                                                        [0] = 1023
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: BinaryOperation
-                                        [0] = "+"
-                                        [1] = {
-                                            Kind: Identifier
-                                            [0] = 'c'
-                                        }
-                                        [2] = {
-                                            Kind: BinaryOperation
-                                            [0] = "/"
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'n'
-                                            }
-                                            [2] = {
-                                                Kind: BinaryOperation
-                                                [0] = "^"
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 2
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 52
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [35] = {
-            Kind: Semicolon
-        }
-        [36] = {
             Kind: LocalStatement
             [0] = {
                 Kind: AssignmentStatement
@@ -2861,6087 +1486,38 @@
                     Kind: AttributeList
                     [0] = {
                         Kind: Identifier
-                        [0] = 'u'
+                        [0] = 'combined8'
                     }
                 }
                 [1] = {
                     Kind: ExpressionList
                     [0] = {
-                        Kind: Identifier
-                        [0] = 'n'
-                    }
-                }
-            }
-        }
-        [37] = {
-            Kind: Semicolon
-        }
-        [38] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'h'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'l'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AttributeList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'n'
-                                }
-                            }
-                        }
+                        Kind: BinaryOperation
+                        [0] = "~="
                         [1] = {
-                            Kind: Semicolon
-                        }
-                        [2] = {
-                            Kind: IfStatement
-                            [0] = {
-                                Kind: ConditionalBlock
-                                [0] = {
-                                    Kind: UnaryOperation
-                                    [0] = "not"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Block
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: VariableList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'l'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'u'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = nullptr
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: Semicolon
-                                    }
-                                    [2] = {
-                                        Kind: IfStatement
-                                        [0] = {
-                                            Kind: ConditionalBlock
-                                            [0] = {
-                                                Kind: BinaryOperation
-                                                [0] = "=="
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Block
-                                                [0] = {
-                                                    Kind: ReturnStatement
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: String
-                                                            [0] = ""
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: Semicolon
-                                    }
-                                }
-                            }
-                        }
-                        [3] = {
-                            Kind: Semicolon
-                        }
-                        [4] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'n'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 't'
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                            [2] = {
-                                                Kind: BinaryOperation
-                                                [0] = "-"
-                                                [1] = {
-                                                    Kind: BinaryOperation
-                                                    [0] = "+"
-                                                    [1] = {
-                                                        Kind: Identifier
-                                                        [0] = 'e'
-                                                    }
-                                                    [2] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 1
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [5] = {
-                            Kind: Semicolon
-                        }
-                        [6] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'e'
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: BinaryOperation
-                                    [0] = "+"
-                                    [1] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                    [2] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                }
-                            }
-                        }
-                        [7] = {
-                            Kind: Semicolon
-                        }
-                        [8] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                        [9] = {
-                            Kind: ForStatement
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'l'
-                            }
+                            Kind: BinaryOperation
+                            [0] = "*"
                             [1] = {
                                 Kind: Numeric
-                                [0] = 1
+                                [0] = 5
                             }
                             [2] = {
-                                Kind: UnaryOperation
-                                [0] = "#"
-                                [1] = {
-                                    Kind: Identifier
-                                    [0] = 'n'
-                                }
+                                Kind: Numeric
+                                [0] = 3
                             }
-                            [3] = nullptr
-                            [4] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'l'
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'i'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'o'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: FunctionCall
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'd'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: ArgumentList
-                                                                        [0] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: FunctionCall
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'c'
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: ArgumentList
-                                                                                    [0] = {
-                                                                                        Kind: ExpressionList
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'n'
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'l'
-                                                                                        }
-                                                                                        [2] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'l'
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 20
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [10] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 's'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [39] = {
-            Kind: Semicolon
-        }
-        [40] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: AssignmentStatement
-                [0] = {
-                    Kind: AttributeList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'e'
-                    }
-                }
-                [1] = {
-                    Kind: ExpressionList
-                    [0] = {
-                        Kind: Identifier
-                        [0] = 'n'
-                    }
-                }
-            }
-        }
-        [41] = {
-            Kind: Semicolon
-        }
-        [42] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'i'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Varargs
-                            [0] = '...'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: TableConstructor
-                                    [0] = {
-                                        Kind: FieldList
-                                        [0] = {
-                                            Kind: TableValue
-                                            [0] = {
-                                                Kind: Varargs
-                                                [0] = '...'
-                                            }
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'f'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: String
-                                                [0] = "#"
-                                            }
-                                            [1] = {
-                                                Kind: Varargs
-                                                [0] = '...'
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [43] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'K'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = nullptr
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 't'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = {
-                                            Kind: FieldList
-                                            [0] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [4] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [5] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [6] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [7] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [8] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [9] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [10] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [11] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [12] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [13] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [14] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [15] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: Semicolon
                         }
                         [2] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = {
-                                            Kind: FieldList
-                                            [0] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [3] = {
-                            Kind: Semicolon
-                        }
-                        [4] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                        [5] = {
-                            Kind: Semicolon
-                        }
-                        [6] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = {
-                                            Kind: FieldList
-                                            [0] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 't'
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Null
-                                                    [0] = 'nil'
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'e'
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Null
-                                                    [0] = 'nil'
-                                                }
-                                            }
-                                            [4] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'c'
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [7] = {
-                            Kind: Semicolon
-                        }
-                        [8] = {
-                            Kind: ForStatement
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'l'
-                            }
+                            Kind: BinaryOperation
+                            [0] = "^"
                             [1] = {
                                 Kind: Numeric
-                                [0] = 1
+                                [0] = 2
                             }
                             [2] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'n'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = nullptr
-                                }
-                            }
-                            [3] = nullptr
-                            [4] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                            [1] = {
-                                                Kind: BinaryOperation
-                                                [0] = "-"
-                                                [1] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [2] = {
-                                                    Kind: Numeric
-                                                    [0] = 1
-                                                }
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: FunctionCall
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'K'
-                                            }
-                                            [1] = {
-                                                Kind: ArgumentList
-                                                [0] = nullptr
-                                            }
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Semicolon
-                                }
-                            }
-                        }
-                        [9] = {
-                            Kind: Semicolon
-                        }
-                        [10] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 4
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'r'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                        [11] = {
-                            Kind: Semicolon
-                        }
-                        [12] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: FunctionCall
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'n'
-                                        }
-                                        [1] = {
-                                            Kind: ArgumentList
-                                            [0] = nullptr
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [13] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'c'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: TableConstructor
-                                        [0] = {
-                                            Kind: FieldList
-                                            [0] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [2] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: TableValue
-                                                [0] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [14] = {
-                            Kind: Semicolon
-                        }
-                        [15] = {
-                            Kind: ForStatement
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'n'
-                            }
-                            [1] = {
                                 Kind: Numeric
-                                [0] = 1
-                            }
-                            [2] = {
-                                Kind: Identifier
-                                [0] = 'e'
-                            }
-                            [3] = nullptr
-                            [4] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: AttributeList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'r'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = nullptr
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Semicolon
-                                }
-                                [2] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AttributeList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'l'
-                                        }
-                                    }
-                                }
-                                [3] = {
-                                    Kind: Semicolon
-                                }
-                                [4] = {
-                                    Kind: IfStatement
-                                    [0] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "~="
-                                                        [1] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'r'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = nullptr
-                                                            }
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 0
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 3
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'A'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = nullptr
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 0
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'h'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = nullptr
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                }
-                                [5] = {
-                                    Kind: Semicolon
-                                }
-                                [6] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'c'
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'n'
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'l'
-                                        }
-                                    }
-                                }
-                                [7] = {
-                                    Kind: Semicolon
-                                }
+                                [0] = 3
                             }
                         }
-                        [16] = {
-                            Kind: Semicolon
-                        }
-                        [17] = {
-                            Kind: AssignmentStatement
-                            [0] = {
-                                Kind: VariableList
-                                [0] = {
-                                    Kind: Index
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'a'
-                                    }
-                                    [1] = {
-                                        Kind: Numeric
-                                        [0] = 2
-                                    }
-                                }
-                            }
-                            [1] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'c'
-                                }
-                            }
-                        }
-                        [18] = {
-                            Kind: ForStatement
-                            [0] = {
-                                Kind: Identifier
-                                [0] = 'a'
-                            }
-                            [1] = {
-                                Kind: Numeric
-                                [0] = 1
-                            }
-                            [2] = {
-                                Kind: FunctionCall
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'n'
-                                }
-                                [1] = {
-                                    Kind: ArgumentList
-                                    [0] = nullptr
-                                }
-                            }
-                            [3] = nullptr
-                            [4] = {
-                                Kind: Block
-                                [0] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: AttributeList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'c'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'n'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = nullptr
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 248
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [1] = {
-                                    Kind: Semicolon
-                                }
-                                [2] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: AttributeList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'n'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'o'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'n'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = nullptr
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 172
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [3] = {
-                                    Kind: Semicolon
-                                }
-                                [4] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: AttributeList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'o'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'c'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 2
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [5] = {
-                                    Kind: Semicolon
-                                }
-                                [6] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: AttributeList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: FunctionCall
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [1] = {
-                                                    Kind: ArgumentList
-                                                    [0] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 11
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [7] = {
-                                    Kind: Semicolon
-                                }
-                                [8] = {
-                                    Kind: LocalStatement
-                                    [0] = {
-                                        Kind: AssignmentStatement
-                                        [0] = {
-                                            Kind: AttributeList
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 'e'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: ExpressionList
-                                            [0] = {
-                                                Kind: TableConstructor
-                                                [0] = {
-                                                    Kind: FieldList
-                                                    [0] = {
-                                                        Kind: TableValue
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: TableValue
-                                                        [0] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'l'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'c'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 3
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 11
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    [2] = {
-                                                        Kind: TableValue
-                                                        [0] = {
-                                                            Kind: Null
-                                                            [0] = 'nil'
-                                                        }
-                                                    }
-                                                    [3] = {
-                                                        Kind: TableValue
-                                                        [0] = {
-                                                            Kind: Null
-                                                            [0] = 'nil'
-                                                        }
-                                                    }
-                                                    [4] = {
-                                                        Kind: TableValue
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                [9] = {
-                                    Kind: Semicolon
-                                }
-                                [10] = {
-                                    Kind: IfStatement
-                                    [0] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'o'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 0
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 3
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'c'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 12
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 20
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                            [2] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 5
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'c'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 21
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 29
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'o'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 1
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 3
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'n'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 12
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 33
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                    [2] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'o'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 2
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 3
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "-"
-                                                        [1] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'l'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 12
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 32
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 1048575
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                    [3] = {
-                                        Kind: ConditionalBlock
-                                        [0] = {
-                                            Kind: BinaryOperation
-                                            [0] = "=="
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'o'
-                                            }
-                                            [2] = {
-                                                Kind: Numeric
-                                                [0] = 3
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 3
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: BinaryOperation
-                                                        [0] = "-"
-                                                        [1] = {
-                                                            Kind: FunctionCall
-                                                            [0] = {
-                                                                Kind: Identifier
-                                                                [0] = 'l'
-                                                            }
-                                                            [1] = {
-                                                                Kind: ArgumentList
-                                                                [0] = {
-                                                                    Kind: ExpressionList
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 12
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 32
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [2] = {
-                                                            Kind: Numeric
-                                                            [0] = 1048575
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                            [2] = {
-                                                Kind: AssignmentStatement
-                                                [0] = {
-                                                    Kind: VariableList
-                                                    [0] = {
-                                                        Kind: Index
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                        [1] = {
-                                                            Kind: Numeric
-                                                            [0] = 5
-                                                        }
-                                                    }
-                                                }
-                                                [1] = {
-                                                    Kind: ExpressionList
-                                                    [0] = {
-                                                        Kind: FunctionCall
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                        [1] = {
-                                                            Kind: ArgumentList
-                                                            [0] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'c'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 21
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Numeric
-                                                                    [0] = 29
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                }
-                                [11] = {
-                                    Kind: Semicolon
-                                }
-                                [12] = {
-                                    Kind: AssignmentStatement
-                                    [0] = {
-                                        Kind: VariableList
-                                        [0] = {
-                                            Kind: Index
-                                            [0] = {
-                                                Kind: Identifier
-                                                [0] = 't'
-                                            }
-                                            [1] = {
-                                                Kind: Identifier
-                                                [0] = 'a'
-                                            }
-                                        }
-                                    }
-                                    [1] = {
-                                        Kind: ExpressionList
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'e'
-                                        }
-                                    }
-                                }
-                                [13] = {
-                                    Kind: Semicolon
-                                }
-                            }
-                        }
-                        [19] = {
-                            Kind: Semicolon
-                        }
-                        [20] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: Identifier
-                                    [0] = 'a'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [44] = {
-            Kind: Semicolon
-        }
-        [45] = {
-            Kind: LocalStatement
-            [0] = {
-                Kind: FunctionDefinition
-                [0] = {
-                    Kind: Identifier
-                    [0] = 'r'
-                }
-                [1] = {
-                    Kind: FunctionBody
-                    [0] = {
-                        Kind: ParameterList
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'l'
-                        }
-                        [1] = {
-                            Kind: Identifier
-                            [0] = 'A'
-                        }
-                        [2] = {
-                            Kind: Identifier
-                            [0] = 't'
-                        }
-                    }
-                    [1] = {
-                        Kind: Block
-                        [0] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'e'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Index
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'l'
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 1
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [1] = {
-                            Kind: Semicolon
-                        }
-                        [2] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'o'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Index
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'l'
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 2
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [3] = {
-                            Kind: Semicolon
-                        }
-                        [4] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'n'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Index
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'l'
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 3
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [5] = {
-                            Kind: Semicolon
-                        }
-                        [6] = {
-                            Kind: LocalStatement
-                            [0] = {
-                                Kind: AssignmentStatement
-                                [0] = {
-                                    Kind: AttributeList
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'l'
-                                    }
-                                }
-                                [1] = {
-                                    Kind: ExpressionList
-                                    [0] = {
-                                        Kind: Index
-                                        [0] = {
-                                            Kind: Identifier
-                                            [0] = 'l'
-                                        }
-                                        [1] = {
-                                            Kind: Numeric
-                                            [0] = 4
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        [7] = {
-                            Kind: Semicolon
-                        }
-                        [8] = {
-                            Kind: ReturnStatement
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionDefinition
-                                    [0] = nullptr
-                                    [1] = {
-                                        Kind: FunctionBody
-                                        [0] = {
-                                            Kind: ParameterList
-                                            [0] = {
-                                                Kind: Varargs
-                                                [0] = '...'
-                                            }
-                                        }
-                                        [1] = {
-                                            Kind: Block
-                                            [0] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'K'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [1] = {
-                                                Kind: Semicolon
-                                            }
-                                            [2] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'd'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'o'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [3] = {
-                                                Kind: Semicolon
-                                            }
-                                            [4] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 's'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [5] = {
-                                                Kind: Semicolon
-                                            }
-                                            [6] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'n'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [7] = {
-                                                Kind: Semicolon
-                                            }
-                                            [8] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'l'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'i'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [9] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'o'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: Numeric
-                                                            [0] = 1
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [10] = {
-                                                Kind: Semicolon
-                                            }
-                                            [11] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'c'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: UnaryOperation
-                                                            [0] = "-"
-                                                            [1] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [12] = {
-                                                Kind: Semicolon
-                                            }
-                                            [13] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'h'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: TableConstructor
-                                                            [0] = nullptr
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [14] = {
-                                                Kind: Semicolon
-                                            }
-                                            [15] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'u'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: TableConstructor
-                                                            [0] = {
-                                                                Kind: FieldList
-                                                                [0] = {
-                                                                    Kind: TableValue
-                                                                    [0] = {
-                                                                        Kind: Varargs
-                                                                        [0] = '...'
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [16] = {
-                                                Kind: Semicolon
-                                            }
-                                            [17] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'i'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "-"
-                                                            [1] = {
-                                                                Kind: FunctionCall
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'f'
-                                                                }
-                                                                [1] = {
-                                                                    Kind: ArgumentList
-                                                                    [0] = {
-                                                                        Kind: ExpressionList
-                                                                        [0] = {
-                                                                            Kind: String
-                                                                            [0] = "#"
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: Varargs
-                                                                            [0] = '...'
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [18] = {
-                                                Kind: Semicolon
-                                            }
-                                            [19] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'f'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: TableConstructor
-                                                            [0] = nullptr
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [20] = {
-                                                Kind: Semicolon
-                                            }
-                                            [21] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'e'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: TableConstructor
-                                                            [0] = nullptr
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [22] = {
-                                                Kind: Semicolon
-                                            }
-                                            [23] = {
-                                                Kind: ForStatement
-                                                [0] = {
-                                                    Kind: Identifier
-                                                    [0] = 'l'
-                                                }
-                                                [1] = {
-                                                    Kind: Numeric
-                                                    [0] = 0
-                                                }
-                                                [2] = {
-                                                    Kind: Identifier
-                                                    [0] = 'i'
-                                                }
-                                                [3] = nullptr
-                                                [4] = {
-                                                    Kind: Block
-                                                    [0] = {
-                                                        Kind: IfStatement
-                                                        [0] = {
-                                                            Kind: ConditionalBlock
-                                                            [0] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = ">="
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'n'
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: Block
-                                                                [0] = {
-                                                                    Kind: AssignmentStatement
-                                                                    [0] = {
-                                                                        Kind: VariableList
-                                                                        [0] = {
-                                                                            Kind: Index
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'h'
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "-"
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'l'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: ExpressionList
-                                                                        [0] = {
-                                                                            Kind: Index
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'u'
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "+"
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'l'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 1
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Semicolon
-                                                                }
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: ConditionalBlock
-                                                            [0] = nullptr
-                                                            [1] = {
-                                                                Kind: Block
-                                                                [0] = {
-                                                                    Kind: AssignmentStatement
-                                                                    [0] = {
-                                                                        Kind: VariableList
-                                                                        [0] = {
-                                                                            Kind: Index
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'e'
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'l'
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: ExpressionList
-                                                                        [0] = {
-                                                                            Kind: Index
-                                                                            [0] = {
-                                                                                Kind: Identifier
-                                                                                [0] = 'u'
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "+"
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'l'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 1
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Semicolon
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: Semicolon
-                                                    }
-                                                }
-                                            }
-                                            [24] = {
-                                                Kind: Semicolon
-                                            }
-                                            [25] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AssignmentStatement
-                                                    [0] = {
-                                                        Kind: AttributeList
-                                                        [0] = {
-                                                            Kind: Identifier
-                                                            [0] = 'i'
-                                                        }
-                                                    }
-                                                    [1] = {
-                                                        Kind: ExpressionList
-                                                        [0] = {
-                                                            Kind: BinaryOperation
-                                                            [0] = "+"
-                                                            [1] = {
-                                                                Kind: BinaryOperation
-                                                                [0] = "-"
-                                                                [1] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'i'
-                                                                }
-                                                                [2] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'n'
-                                                                }
-                                                            }
-                                                            [2] = {
-                                                                Kind: Numeric
-                                                                [0] = 1
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [26] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AttributeList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'l'
-                                                    }
-                                                }
-                                            }
-                                            [27] = {
-                                                Kind: Semicolon
-                                            }
-                                            [28] = {
-                                                Kind: LocalStatement
-                                                [0] = {
-                                                    Kind: AttributeList
-                                                    [0] = {
-                                                        Kind: Identifier
-                                                        [0] = 'n'
-                                                    }
-                                                }
-                                            }
-                                            [29] = {
-                                                Kind: Semicolon
-                                            }
-                                            [30] = {
-                                                Kind: WhileStatement
-                                                [0] = {
-                                                    Kind: ConditionalBlock
-                                                    [0] = {
-                                                        Kind: Boolean
-                                                        [0] = 1
-                                                    }
-                                                    [1] = {
-                                                        Kind: Block
-                                                        [0] = {
-                                                            Kind: AssignmentStatement
-                                                            [0] = {
-                                                                Kind: VariableList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'l'
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Index
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'K'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'o'
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [1] = {
-                                                            Kind: Semicolon
-                                                        }
-                                                        [2] = {
-                                                            Kind: AssignmentStatement
-                                                            [0] = {
-                                                                Kind: VariableList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'n'
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: Index
-                                                                    [0] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'l'
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 1
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [3] = {
-                                                            Kind: Semicolon
-                                                        }
-                                                        [4] = {
-                                                            Kind: IfStatement
-                                                            [0] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "<="
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 8
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: IfStatement
-                                                                        [0] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "<="
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 3
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: IfStatement
-                                                                                    [0] = {
-                                                                                        Kind: ConditionalBlock
-                                                                                        [0] = {
-                                                                                            Kind: BinaryOperation
-                                                                                            [0] = "<="
-                                                                                            [1] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'n'
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: Numeric
-                                                                                                [0] = 1
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Block
-                                                                                            [0] = {
-                                                                                                Kind: IfStatement
-                                                                                                [0] = {
-                                                                                                    Kind: ConditionalBlock
-                                                                                                    [0] = {
-                                                                                                        Kind: BinaryOperation
-                                                                                                        [0] = ">"
-                                                                                                        [1] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'n'
-                                                                                                        }
-                                                                                                        [2] = {
-                                                                                                            Kind: Numeric
-                                                                                                            [0] = 0
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Block
-                                                                                                        [0] = {
-                                                                                                            Kind: LocalStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: AssignmentStatement
-                                                                                                                [0] = {
-                                                                                                                    Kind: AttributeList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'n'
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: ExpressionList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Index
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'l'
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: Numeric
-                                                                                                                            [0] = 2
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                        [2] = {
-                                                                                                            Kind: LocalStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: AssignmentStatement
-                                                                                                                [0] = {
-                                                                                                                    Kind: AttributeList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 't'
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: ExpressionList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: TableConstructor
-                                                                                                                        [0] = nullptr
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [3] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                        [4] = {
-                                                                                                            Kind: LocalStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: AssignmentStatement
-                                                                                                                [0] = {
-                                                                                                                    Kind: AttributeList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'o'
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: ExpressionList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Numeric
-                                                                                                                        [0] = 0
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [5] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                        [6] = {
-                                                                                                            Kind: LocalStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: AssignmentStatement
-                                                                                                                [0] = {
-                                                                                                                    Kind: AttributeList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'l'
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: ExpressionList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: BinaryOperation
-                                                                                                                        [0] = "-"
-                                                                                                                        [1] = {
-                                                                                                                            Kind: BinaryOperation
-                                                                                                                            [0] = "+"
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'n'
-                                                                                                                            }
-                                                                                                                            [2] = {
-                                                                                                                                Kind: Index
-                                                                                                                                [0] = {
-                                                                                                                                    Kind: Identifier
-                                                                                                                                    [0] = 'l'
-                                                                                                                                }
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: Numeric
-                                                                                                                                    [0] = 3
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                        [2] = {
-                                                                                                                            Kind: Numeric
-                                                                                                                            [0] = 1
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [7] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                        [8] = {
-                                                                                                            Kind: ForStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: BinaryOperation
-                                                                                                                [0] = "+"
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'n'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 1
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [2] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                            [3] = nullptr
-                                                                                                            [4] = {
-                                                                                                                Kind: Block
-                                                                                                                [0] = {
-                                                                                                                    Kind: AssignmentStatement
-                                                                                                                    [0] = {
-                                                                                                                        Kind: VariableList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'o'
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: ExpressionList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: BinaryOperation
-                                                                                                                            [0] = "+"
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'o'
-                                                                                                                            }
-                                                                                                                            [2] = {
-                                                                                                                                Kind: Numeric
-                                                                                                                                [0] = 1
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Semicolon
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: AssignmentStatement
-                                                                                                                    [0] = {
-                                                                                                                        Kind: VariableList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Index
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 't'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'o'
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: ExpressionList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Index
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'e'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'l'
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [3] = {
-                                                                                                                    Kind: Semicolon
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [9] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                        [10] = {
-                                                                                                            Kind: FunctionCall
-                                                                                                            [0] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'e'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'n'
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: ArgumentList
-                                                                                                                [0] = {
-                                                                                                                    Kind: ExpressionList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: FunctionCall
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'a'
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: ArgumentList
-                                                                                                                            [0] = {
-                                                                                                                                Kind: ExpressionList
-                                                                                                                                [0] = {
-                                                                                                                                    Kind: Identifier
-                                                                                                                                    [0] = 't'
-                                                                                                                                }
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: Numeric
-                                                                                                                                    [0] = 1
-                                                                                                                                }
-                                                                                                                                [2] = {
-                                                                                                                                    Kind: BinaryOperation
-                                                                                                                                    [0] = "-"
-                                                                                                                                    [1] = {
-                                                                                                                                        Kind: Identifier
-                                                                                                                                        [0] = 'l'
-                                                                                                                                    }
-                                                                                                                                    [2] = {
-                                                                                                                                        Kind: Identifier
-                                                                                                                                        [0] = 'n'
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [11] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                        [12] = {
-                                                                                                            Kind: AssignmentStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: VariableList
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'c'
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: ExpressionList
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'n'
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [13] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ConditionalBlock
-                                                                                                    [0] = nullptr
-                                                                                                    [1] = {
-                                                                                                        Kind: Block
-                                                                                                        [0] = {
-                                                                                                            Kind: IfStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: ConditionalBlock
-                                                                                                                [0] = {
-                                                                                                                    Kind: BinaryOperation
-                                                                                                                    [0] = "~="
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Index
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'e'
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: Index
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'l'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Numeric
-                                                                                                                                [0] = 2
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [2] = {
-                                                                                                                        Kind: Index
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'e'
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: Index
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'l'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Numeric
-                                                                                                                                [0] = 5
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Block
-                                                                                                                    [0] = {
-                                                                                                                        Kind: AssignmentStatement
-                                                                                                                        [0] = {
-                                                                                                                            Kind: VariableList
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'o'
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: ExpressionList
-                                                                                                                            [0] = {
-                                                                                                                                Kind: BinaryOperation
-                                                                                                                                [0] = "+"
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: Identifier
-                                                                                                                                    [0] = 'o'
-                                                                                                                                }
-                                                                                                                                [2] = {
-                                                                                                                                    Kind: Numeric
-                                                                                                                                    [0] = 1
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Semicolon
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: ConditionalBlock
-                                                                                                                [0] = nullptr
-                                                                                                                [1] = {
-                                                                                                                    Kind: Block
-                                                                                                                    [0] = {
-                                                                                                                        Kind: AssignmentStatement
-                                                                                                                        [0] = {
-                                                                                                                            Kind: VariableList
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'o'
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: ExpressionList
-                                                                                                                            [0] = {
-                                                                                                                                Kind: BinaryOperation
-                                                                                                                                [0] = "+"
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: Identifier
-                                                                                                                                    [0] = 'o'
-                                                                                                                                }
-                                                                                                                                [2] = {
-                                                                                                                                    Kind: Index
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: Identifier
-                                                                                                                                        [0] = 'l'
-                                                                                                                                    }
-                                                                                                                                    [1] = {
-                                                                                                                                        Kind: Numeric
-                                                                                                                                        [0] = 3
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Semicolon
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Semicolon
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ConditionalBlock
-                                                                                        [0] = {
-                                                                                            Kind: BinaryOperation
-                                                                                            [0] = ">"
-                                                                                            [1] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'n'
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: Numeric
-                                                                                                [0] = 2
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Block
-                                                                                            [0] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'o'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 2
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'd'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: TableConstructor
-                                                                                                            [0] = nullptr
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [3] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [4] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'n'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: Numeric
-                                                                                                            [0] = 0
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [5] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [6] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 't'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: BinaryOperation
-                                                                                                            [0] = "-"
-                                                                                                            [1] = {
-                                                                                                                Kind: BinaryOperation
-                                                                                                                [0] = "+"
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'o'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Index
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'l'
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Numeric
-                                                                                                                        [0] = 3
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [2] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 1
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [7] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [8] = {
-                                                                                                Kind: ForStatement
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: BinaryOperation
-                                                                                                    [0] = "+"
-                                                                                                    [1] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'o'
-                                                                                                    }
-                                                                                                    [2] = {
-                                                                                                        Kind: Numeric
-                                                                                                        [0] = 1
-                                                                                                    }
-                                                                                                }
-                                                                                                [2] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 't'
-                                                                                                }
-                                                                                                [3] = nullptr
-                                                                                                [4] = {
-                                                                                                    Kind: Block
-                                                                                                    [0] = {
-                                                                                                        Kind: AssignmentStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: VariableList
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'n'
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: BinaryOperation
-                                                                                                                [0] = "+"
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'n'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 1
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                    [2] = {
-                                                                                                        Kind: AssignmentStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: VariableList
-                                                                                                            [0] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'd'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'n'
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'e'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [3] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [9] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [10] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'a'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: TableConstructor
-                                                                                                            [0] = {
-                                                                                                                Kind: FieldList
-                                                                                                                [0] = {
-                                                                                                                    Kind: TableValue
-                                                                                                                    [0] = {
-                                                                                                                        Kind: FunctionCall
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Index
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'e'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'o'
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: ArgumentList
-                                                                                                                            [0] = {
-                                                                                                                                Kind: ExpressionList
-                                                                                                                                [0] = {
-                                                                                                                                    Kind: FunctionCall
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: Identifier
-                                                                                                                                        [0] = 'a'
-                                                                                                                                    }
-                                                                                                                                    [1] = {
-                                                                                                                                        Kind: ArgumentList
-                                                                                                                                        [0] = {
-                                                                                                                                            Kind: ExpressionList
-                                                                                                                                            [0] = {
-                                                                                                                                                Kind: Identifier
-                                                                                                                                                [0] = 'd'
-                                                                                                                                            }
-                                                                                                                                            [1] = {
-                                                                                                                                                Kind: Numeric
-                                                                                                                                                [0] = 1
-                                                                                                                                            }
-                                                                                                                                            [2] = {
-                                                                                                                                                Kind: BinaryOperation
-                                                                                                                                                [0] = "-"
-                                                                                                                                                [1] = {
-                                                                                                                                                    Kind: Identifier
-                                                                                                                                                    [0] = 't'
-                                                                                                                                                }
-                                                                                                                                                [2] = {
-                                                                                                                                                    Kind: Identifier
-                                                                                                                                                    [0] = 'o'
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [11] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [12] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'l'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: BinaryOperation
-                                                                                                            [0] = "-"
-                                                                                                            [1] = {
-                                                                                                                Kind: BinaryOperation
-                                                                                                                [0] = "+"
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'o'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Index
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'l'
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Numeric
-                                                                                                                        [0] = 5
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [2] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 2
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [13] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [14] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: VariableList
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'n'
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: Numeric
-                                                                                                        [0] = 0
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [15] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [16] = {
-                                                                                                Kind: ForStatement
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'o'
-                                                                                                }
-                                                                                                [2] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [3] = nullptr
-                                                                                                [4] = {
-                                                                                                    Kind: Block
-                                                                                                    [0] = {
-                                                                                                        Kind: AssignmentStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: VariableList
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'n'
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: BinaryOperation
-                                                                                                                [0] = "+"
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'n'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 1
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                    [2] = {
-                                                                                                        Kind: AssignmentStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: VariableList
-                                                                                                            [0] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'e'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'a'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'n'
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [3] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [17] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [18] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: VariableList
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'c'
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'l'
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [19] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [2] = {
-                                                                                        Kind: ConditionalBlock
-                                                                                        [0] = nullptr
-                                                                                        [1] = {
-                                                                                            Kind: Block
-                                                                                            [0] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: VariableList
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'e'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 2
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'e'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 3
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'e'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 5
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "<="
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 5
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: IfStatement
-                                                                                    [0] = {
-                                                                                        Kind: ConditionalBlock
-                                                                                        [0] = {
-                                                                                            Kind: BinaryOperation
-                                                                                            [0] = "=="
-                                                                                            [1] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'n'
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: Numeric
-                                                                                                [0] = 4
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Block
-                                                                                            [0] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: VariableList
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'e'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 2
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'e'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 3
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'e'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 5
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ConditionalBlock
-                                                                                        [0] = nullptr
-                                                                                        [1] = {
-                                                                                            Kind: Block
-                                                                                            [0] = {
-                                                                                                Kind: DoStatement
-                                                                                                [0] = {
-                                                                                                    Kind: Block
-                                                                                                    [0] = {
-                                                                                                        Kind: ReturnStatement
-                                                                                                        [0] = nullptr
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "<="
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 6
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: AssignmentStatement
-                                                                                    [0] = {
-                                                                                        Kind: VariableList
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'o'
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ExpressionList
-                                                                                        [0] = {
-                                                                                            Kind: BinaryOperation
-                                                                                            [0] = "+"
-                                                                                            [1] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'o'
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 3
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [3] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = ">"
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 7
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'l'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: AssignmentStatement
-                                                                                    [0] = {
-                                                                                        Kind: VariableList
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'c'
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ExpressionList
-                                                                                        [0] = {
-                                                                                            Kind: BinaryOperation
-                                                                                            [0] = "-"
-                                                                                            [1] = {
-                                                                                                Kind: BinaryOperation
-                                                                                                [0] = "+"
-                                                                                                [1] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [2] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'i'
-                                                                                                }
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: Numeric
-                                                                                                [0] = 1
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [3] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [4] = {
-                                                                                    Kind: ForStatement
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'n'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'l'
-                                                                                    }
-                                                                                    [2] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'c'
-                                                                                    }
-                                                                                    [3] = nullptr
-                                                                                    [4] = {
-                                                                                        Kind: Block
-                                                                                        [0] = {
-                                                                                            Kind: LocalStatement
-                                                                                            [0] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AttributeList
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'l'
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'h'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: BinaryOperation
-                                                                                                            [0] = "-"
-                                                                                                            [1] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'n'
-                                                                                                            }
-                                                                                                            [2] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Semicolon
-                                                                                        }
-                                                                                        [2] = {
-                                                                                            Kind: AssignmentStatement
-                                                                                            [0] = {
-                                                                                                Kind: VariableList
-                                                                                                [0] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'e'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'n'
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: ExpressionList
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                        [3] = {
-                                                                                            Kind: Semicolon
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [5] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [4] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = nullptr
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: AssignmentStatement
-                                                                                    [0] = {
-                                                                                        Kind: VariableList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'e'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ExpressionList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'A'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 3
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "<="
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 13
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: IfStatement
-                                                                        [0] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "<="
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 10
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: IfStatement
-                                                                                    [0] = {
-                                                                                        Kind: ConditionalBlock
-                                                                                        [0] = {
-                                                                                            Kind: BinaryOperation
-                                                                                            [0] = "=="
-                                                                                            [1] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'n'
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: Numeric
-                                                                                                [0] = 9
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Block
-                                                                                            [0] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'a'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 's'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 3
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [2] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AttributeList
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'c'
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [3] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [4] = {
-                                                                                                Kind: LocalStatement
-                                                                                                [0] = {
-                                                                                                    Kind: AssignmentStatement
-                                                                                                    [0] = {
-                                                                                                        Kind: AttributeList
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'n'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ExpressionList
-                                                                                                        [0] = {
-                                                                                                            Kind: TableConstructor
-                                                                                                            [0] = nullptr
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [5] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [6] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: VariableList
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'c'
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: FunctionCall
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'J'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ArgumentList
-                                                                                                            [0] = {
-                                                                                                                Kind: ExpressionList
-                                                                                                                [0] = {
-                                                                                                                    Kind: TableConstructor
-                                                                                                                    [0] = nullptr
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: TableConstructor
-                                                                                                                    [0] = {
-                                                                                                                        Kind: FieldList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: TableNameValue
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = '__index'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: FunctionDefinition
-                                                                                                                                [0] = nullptr
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: FunctionBody
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: ParameterList
-                                                                                                                                        [0] = {
-                                                                                                                                            Kind: Identifier
-                                                                                                                                            [0] = 'e'
-                                                                                                                                        }
-                                                                                                                                        [1] = {
-                                                                                                                                            Kind: Identifier
-                                                                                                                                            [0] = 'l'
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                    [1] = {
-                                                                                                                                        Kind: Block
-                                                                                                                                        [0] = {
-                                                                                                                                            Kind: LocalStatement
-                                                                                                                                            [0] = {
-                                                                                                                                                Kind: AssignmentStatement
-                                                                                                                                                [0] = {
-                                                                                                                                                    Kind: AttributeList
-                                                                                                                                                    [0] = {
-                                                                                                                                                        Kind: Identifier
-                                                                                                                                                        [0] = 'l'
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                                [1] = {
-                                                                                                                                                    Kind: ExpressionList
-                                                                                                                                                    [0] = {
-                                                                                                                                                        Kind: Index
-                                                                                                                                                        [0] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'n'
-                                                                                                                                                        }
-                                                                                                                                                        [1] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'l'
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                        [1] = {
-                                                                                                                                            Kind: Semicolon
-                                                                                                                                        }
-                                                                                                                                        [2] = {
-                                                                                                                                            Kind: ReturnStatement
-                                                                                                                                            [0] = {
-                                                                                                                                                Kind: ExpressionList
-                                                                                                                                                [0] = {
-                                                                                                                                                    Kind: Index
-                                                                                                                                                    [0] = {
-                                                                                                                                                        Kind: Index
-                                                                                                                                                        [0] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'l'
-                                                                                                                                                        }
-                                                                                                                                                        [1] = {
-                                                                                                                                                            Kind: Numeric
-                                                                                                                                                            [0] = 1
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                    [1] = {
-                                                                                                                                                        Kind: Index
-                                                                                                                                                        [0] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'l'
-                                                                                                                                                        }
-                                                                                                                                                        [1] = {
-                                                                                                                                                            Kind: Numeric
-                                                                                                                                                            [0] = 2
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: TableNameValue
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = '__newindex'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: FunctionDefinition
-                                                                                                                                [0] = nullptr
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: FunctionBody
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: ParameterList
-                                                                                                                                        [0] = {
-                                                                                                                                            Kind: Identifier
-                                                                                                                                            [0] = 'o'
-                                                                                                                                        }
-                                                                                                                                        [1] = {
-                                                                                                                                            Kind: Identifier
-                                                                                                                                            [0] = 'l'
-                                                                                                                                        }
-                                                                                                                                        [2] = {
-                                                                                                                                            Kind: Identifier
-                                                                                                                                            [0] = 'e'
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                    [1] = {
-                                                                                                                                        Kind: Block
-                                                                                                                                        [0] = {
-                                                                                                                                            Kind: LocalStatement
-                                                                                                                                            [0] = {
-                                                                                                                                                Kind: AssignmentStatement
-                                                                                                                                                [0] = {
-                                                                                                                                                    Kind: AttributeList
-                                                                                                                                                    [0] = {
-                                                                                                                                                        Kind: Identifier
-                                                                                                                                                        [0] = 'l'
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                                [1] = {
-                                                                                                                                                    Kind: ExpressionList
-                                                                                                                                                    [0] = {
-                                                                                                                                                        Kind: Index
-                                                                                                                                                        [0] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'n'
-                                                                                                                                                        }
-                                                                                                                                                        [1] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'l'
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                        [1] = {
-                                                                                                                                            Kind: AssignmentStatement
-                                                                                                                                            [0] = {
-                                                                                                                                                Kind: VariableList
-                                                                                                                                                [0] = {
-                                                                                                                                                    Kind: Index
-                                                                                                                                                    [0] = {
-                                                                                                                                                        Kind: Index
-                                                                                                                                                        [0] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'l'
-                                                                                                                                                        }
-                                                                                                                                                        [1] = {
-                                                                                                                                                            Kind: Numeric
-                                                                                                                                                            [0] = 1
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                    [1] = {
-                                                                                                                                                        Kind: Index
-                                                                                                                                                        [0] = {
-                                                                                                                                                            Kind: Identifier
-                                                                                                                                                            [0] = 'l'
-                                                                                                                                                        }
-                                                                                                                                                        [1] = {
-                                                                                                                                                            Kind: Numeric
-                                                                                                                                                            [0] = 2
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                            [1] = {
-                                                                                                                                                Kind: ExpressionList
-                                                                                                                                                [0] = {
-                                                                                                                                                    Kind: Identifier
-                                                                                                                                                    [0] = 'e'
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                        [2] = {
-                                                                                                                                            Kind: Semicolon
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [7] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [8] = {
-                                                                                                Kind: ForStatement
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'c'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 1
-                                                                                                }
-                                                                                                [2] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'l'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Numeric
-                                                                                                        [0] = 5
-                                                                                                    }
-                                                                                                }
-                                                                                                [3] = nullptr
-                                                                                                [4] = {
-                                                                                                    Kind: Block
-                                                                                                    [0] = {
-                                                                                                        Kind: AssignmentStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: VariableList
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'o'
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: BinaryOperation
-                                                                                                                [0] = "+"
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'o'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 1
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                    [2] = {
-                                                                                                        Kind: LocalStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: AssignmentStatement
-                                                                                                            [0] = {
-                                                                                                                Kind: AttributeList
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'l'
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: ExpressionList
-                                                                                                                [0] = {
-                                                                                                                    Kind: Index
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'K'
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'o'
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [3] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                    [4] = {
-                                                                                                        Kind: IfStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: ConditionalBlock
-                                                                                                            [0] = {
-                                                                                                                Kind: BinaryOperation
-                                                                                                                [0] = "=="
-                                                                                                                [1] = {
-                                                                                                                    Kind: Index
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 'l'
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Numeric
-                                                                                                                        [0] = 1
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Numeric
-                                                                                                                    [0] = 15
-                                                                                                                }
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Block
-                                                                                                                [0] = {
-                                                                                                                    Kind: AssignmentStatement
-                                                                                                                    [0] = {
-                                                                                                                        Kind: VariableList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Index
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'n'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: BinaryOperation
-                                                                                                                                [0] = "-"
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: Identifier
-                                                                                                                                    [0] = 'c'
-                                                                                                                                }
-                                                                                                                                [2] = {
-                                                                                                                                    Kind: Numeric
-                                                                                                                                    [0] = 1
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: ExpressionList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: TableConstructor
-                                                                                                                            [0] = {
-                                                                                                                                Kind: FieldList
-                                                                                                                                [0] = {
-                                                                                                                                    Kind: TableValue
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: Identifier
-                                                                                                                                        [0] = 'e'
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: TableValue
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: Index
-                                                                                                                                        [0] = {
-                                                                                                                                            Kind: Identifier
-                                                                                                                                            [0] = 'l'
-                                                                                                                                        }
-                                                                                                                                        [1] = {
-                                                                                                                                            Kind: Numeric
-                                                                                                                                            [0] = 3
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Semicolon
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ConditionalBlock
-                                                                                                            [0] = nullptr
-                                                                                                            [1] = {
-                                                                                                                Kind: Block
-                                                                                                                [0] = {
-                                                                                                                    Kind: AssignmentStatement
-                                                                                                                    [0] = {
-                                                                                                                        Kind: VariableList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Index
-                                                                                                                            [0] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'n'
-                                                                                                                            }
-                                                                                                                            [1] = {
-                                                                                                                                Kind: BinaryOperation
-                                                                                                                                [0] = "-"
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: Identifier
-                                                                                                                                    [0] = 'c'
-                                                                                                                                }
-                                                                                                                                [2] = {
-                                                                                                                                    Kind: Numeric
-                                                                                                                                    [0] = 1
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: ExpressionList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: TableConstructor
-                                                                                                                            [0] = {
-                                                                                                                                Kind: FieldList
-                                                                                                                                [0] = {
-                                                                                                                                    Kind: TableValue
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: Identifier
-                                                                                                                                        [0] = 'A'
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                                [1] = {
-                                                                                                                                    Kind: TableValue
-                                                                                                                                    [0] = {
-                                                                                                                                        Kind: Index
-                                                                                                                                        [0] = {
-                                                                                                                                            Kind: Identifier
-                                                                                                                                            [0] = 'l'
-                                                                                                                                        }
-                                                                                                                                        [1] = {
-                                                                                                                                            Kind: Numeric
-                                                                                                                                            [0] = 3
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Semicolon
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [5] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                    [6] = {
-                                                                                                        Kind: AssignmentStatement
-                                                                                                        [0] = {
-                                                                                                            Kind: VariableList
-                                                                                                            [0] = {
-                                                                                                                Kind: Index
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'f'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: BinaryOperation
-                                                                                                                    [0] = "+"
-                                                                                                                    [1] = {
-                                                                                                                        Kind: UnaryOperation
-                                                                                                                        [0] = "#"
-                                                                                                                        [1] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'f'
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                    [2] = {
-                                                                                                                        Kind: Numeric
-                                                                                                                        [0] = 1
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'n'
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [7] = {
-                                                                                                        Kind: Semicolon
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [9] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                            [10] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: VariableList
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'e'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 2
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: FunctionCall
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'r'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ArgumentList
-                                                                                                            [0] = {
-                                                                                                                Kind: ExpressionList
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'a'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'c'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 't'
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [11] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ConditionalBlock
-                                                                                        [0] = nullptr
-                                                                                        [1] = {
-                                                                                            Kind: Block
-                                                                                            [0] = {
-                                                                                                Kind: AssignmentStatement
-                                                                                                [0] = {
-                                                                                                    Kind: VariableList
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'e'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Index
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 2
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: ExpressionList
-                                                                                                    [0] = {
-                                                                                                        Kind: FunctionCall
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'r'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: ArgumentList
-                                                                                                            [0] = {
-                                                                                                                Kind: ExpressionList
-                                                                                                                [0] = {
-                                                                                                                    Kind: Index
-                                                                                                                    [0] = {
-                                                                                                                        Kind: Identifier
-                                                                                                                        [0] = 's'
-                                                                                                                    }
-                                                                                                                    [1] = {
-                                                                                                                        Kind: Index
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'l'
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: Numeric
-                                                                                                                            [0] = 3
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: Null
-                                                                                                                    [0] = 'nil'
-                                                                                                                }
-                                                                                                                [2] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 't'
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Semicolon
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = "<="
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 11
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'n'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'c'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: BinaryOperation
-                                                                                                [0] = "-"
-                                                                                                [1] = {
-                                                                                                    Kind: BinaryOperation
-                                                                                                    [0] = "+"
-                                                                                                    [1] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'n'
-                                                                                                    }
-                                                                                                    [2] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'l'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Numeric
-                                                                                                            [0] = 3
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                [2] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [3] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [4] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'o'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: TableConstructor
-                                                                                                [0] = nullptr
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [5] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [6] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'l'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: Numeric
-                                                                                                [0] = 0
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [7] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [8] = {
-                                                                                    Kind: ForStatement
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'n'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'n'
-                                                                                    }
-                                                                                    [2] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'c'
-                                                                                    }
-                                                                                    [3] = nullptr
-                                                                                    [4] = {
-                                                                                        Kind: Block
-                                                                                        [0] = {
-                                                                                            Kind: AssignmentStatement
-                                                                                            [0] = {
-                                                                                                Kind: VariableList
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: ExpressionList
-                                                                                                [0] = {
-                                                                                                    Kind: BinaryOperation
-                                                                                                    [0] = "+"
-                                                                                                    [1] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'l'
-                                                                                                    }
-                                                                                                    [2] = {
-                                                                                                        Kind: Numeric
-                                                                                                        [0] = 1
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Semicolon
-                                                                                        }
-                                                                                        [2] = {
-                                                                                            Kind: AssignmentStatement
-                                                                                            [0] = {
-                                                                                                Kind: VariableList
-                                                                                                [0] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'o'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'l'
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: ExpressionList
-                                                                                                [0] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'e'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'n'
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                        [3] = {
-                                                                                            Kind: Semicolon
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [9] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [10] = {
-                                                                                    Kind: DoStatement
-                                                                                    [0] = {
-                                                                                        Kind: Block
-                                                                                        [0] = {
-                                                                                            Kind: ReturnStatement
-                                                                                            [0] = {
-                                                                                                Kind: ExpressionList
-                                                                                                [0] = {
-                                                                                                    Kind: FunctionCall
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'a'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ArgumentList
-                                                                                                        [0] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'o'
-                                                                                                            }
-                                                                                                            [1] = {
-                                                                                                                Kind: Numeric
-                                                                                                                [0] = 1
-                                                                                                            }
-                                                                                                            [2] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [11] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = ">"
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 12
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'n'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'l'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: TableConstructor
-                                                                                                [0] = nullptr
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [3] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [4] = {
-                                                                                    Kind: LocalStatement
-                                                                                    [0] = {
-                                                                                        Kind: AssignmentStatement
-                                                                                        [0] = {
-                                                                                            Kind: AttributeList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'o'
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ExpressionList
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'c'
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [5] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [6] = {
-                                                                                    Kind: ForStatement
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'n'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: BinaryOperation
-                                                                                        [0] = "+"
-                                                                                        [1] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'n'
-                                                                                        }
-                                                                                        [2] = {
-                                                                                            Kind: Numeric
-                                                                                            [0] = 1
-                                                                                        }
-                                                                                    }
-                                                                                    [2] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'o'
-                                                                                    }
-                                                                                    [3] = nullptr
-                                                                                    [4] = {
-                                                                                        Kind: Block
-                                                                                        [0] = {
-                                                                                            Kind: AssignmentStatement
-                                                                                            [0] = {
-                                                                                                Kind: VariableList
-                                                                                                [0] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'l'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: BinaryOperation
-                                                                                                        [0] = "+"
-                                                                                                        [1] = {
-                                                                                                            Kind: UnaryOperation
-                                                                                                            [0] = "#"
-                                                                                                            [1] = {
-                                                                                                                Kind: Identifier
-                                                                                                                [0] = 'l'
-                                                                                                            }
-                                                                                                        }
-                                                                                                        [2] = {
-                                                                                                            Kind: Numeric
-                                                                                                            [0] = 1
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: ExpressionList
-                                                                                                [0] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'e'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'n'
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Semicolon
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [7] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                                [8] = {
-                                                                                    Kind: DoStatement
-                                                                                    [0] = {
-                                                                                        Kind: Block
-                                                                                        [0] = {
-                                                                                            Kind: ReturnStatement
-                                                                                            [0] = {
-                                                                                                Kind: ExpressionList
-                                                                                                [0] = {
-                                                                                                    Kind: FunctionCall
-                                                                                                    [0] = {
-                                                                                                        Kind: Index
-                                                                                                        [0] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'e'
-                                                                                                        }
-                                                                                                        [1] = {
-                                                                                                            Kind: Identifier
-                                                                                                            [0] = 'n'
-                                                                                                        }
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: ArgumentList
-                                                                                                        [0] = {
-                                                                                                            Kind: ExpressionList
-                                                                                                            [0] = {
-                                                                                                                Kind: FunctionCall
-                                                                                                                [0] = {
-                                                                                                                    Kind: Identifier
-                                                                                                                    [0] = 'a'
-                                                                                                                }
-                                                                                                                [1] = {
-                                                                                                                    Kind: ArgumentList
-                                                                                                                    [0] = {
-                                                                                                                        Kind: ExpressionList
-                                                                                                                        [0] = {
-                                                                                                                            Kind: Identifier
-                                                                                                                            [0] = 'l'
-                                                                                                                        }
-                                                                                                                        [1] = {
-                                                                                                                            Kind: Numeric
-                                                                                                                            [0] = 1
-                                                                                                                        }
-                                                                                                                        [2] = {
-                                                                                                                            Kind: BinaryOperation
-                                                                                                                            [0] = "-"
-                                                                                                                            [1] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'o'
-                                                                                                                            }
-                                                                                                                            [2] = {
-                                                                                                                                Kind: Identifier
-                                                                                                                                [0] = 'n'
-                                                                                                                            }
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [9] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [3] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = nullptr
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: AssignmentStatement
-                                                                                    [0] = {
-                                                                                        Kind: VariableList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'e'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ExpressionList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 't'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'd'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Index
-                                                                                                    [0] = {
-                                                                                                        Kind: Identifier
-                                                                                                        [0] = 'l'
-                                                                                                    }
-                                                                                                    [1] = {
-                                                                                                        Kind: Numeric
-                                                                                                        [0] = 3
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                }
-                                                            }
-                                                            [2] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "<="
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 15
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: IfStatement
-                                                                        [0] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = {
-                                                                                Kind: BinaryOperation
-                                                                                [0] = ">"
-                                                                                [1] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                                [2] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 14
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: AssignmentStatement
-                                                                                    [0] = {
-                                                                                        Kind: VariableList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'e'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ExpressionList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'e'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 3
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: ConditionalBlock
-                                                                            [0] = nullptr
-                                                                            [1] = {
-                                                                                Kind: Block
-                                                                                [0] = {
-                                                                                    Kind: AssignmentStatement
-                                                                                    [0] = {
-                                                                                        Kind: VariableList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'e'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 2
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: ExpressionList
-                                                                                        [0] = {
-                                                                                            Kind: Index
-                                                                                            [0] = {
-                                                                                                Kind: Identifier
-                                                                                                [0] = 'd'
-                                                                                            }
-                                                                                            [1] = {
-                                                                                                Kind: Index
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 3
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Semicolon
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                }
-                                                            }
-                                                            [3] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "<="
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 16
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: AssignmentStatement
-                                                                        [0] = {
-                                                                            Kind: VariableList
-                                                                            [0] = {
-                                                                                Kind: Index
-                                                                                [0] = {
-                                                                                    Kind: Index
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'e'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Index
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'l'
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Numeric
-                                                                                            [0] = 2
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Index
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'd'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Index
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'l'
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Numeric
-                                                                                            [0] = 3
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: Index
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'e'
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Index
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'l'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Numeric
-                                                                                        [0] = 5
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                }
-                                                            }
-                                                            [4] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = ">"
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'n'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 17
-                                                                    }
-                                                                }
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: LocalStatement
-                                                                        [0] = {
-                                                                            Kind: AssignmentStatement
-                                                                            [0] = {
-                                                                                Kind: AttributeList
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'o'
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: ExpressionList
-                                                                                [0] = {
-                                                                                    Kind: Index
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'l'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Numeric
-                                                                                        [0] = 2
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: LocalStatement
-                                                                        [0] = {
-                                                                            Kind: AssignmentStatement
-                                                                            [0] = {
-                                                                                Kind: AttributeList
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'c'
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: ExpressionList
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'c'
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [3] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                    [4] = {
-                                                                        Kind: LocalStatement
-                                                                        [0] = {
-                                                                            Kind: AssignmentStatement
-                                                                            [0] = {
-                                                                                Kind: AttributeList
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'n'
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: ExpressionList
-                                                                                [0] = {
-                                                                                    Kind: TableConstructor
-                                                                                    [0] = nullptr
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [5] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                    [6] = {
-                                                                        Kind: LocalStatement
-                                                                        [0] = {
-                                                                            Kind: AssignmentStatement
-                                                                            [0] = {
-                                                                                Kind: AttributeList
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'l'
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: ExpressionList
-                                                                                [0] = {
-                                                                                    Kind: Numeric
-                                                                                    [0] = 0
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [7] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                    [8] = {
-                                                                        Kind: ForStatement
-                                                                        [0] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'o'
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'o'
-                                                                        }
-                                                                        [2] = {
-                                                                            Kind: Identifier
-                                                                            [0] = 'c'
-                                                                        }
-                                                                        [3] = nullptr
-                                                                        [4] = {
-                                                                            Kind: Block
-                                                                            [0] = {
-                                                                                Kind: AssignmentStatement
-                                                                                [0] = {
-                                                                                    Kind: VariableList
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'l'
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: ExpressionList
-                                                                                    [0] = {
-                                                                                        Kind: BinaryOperation
-                                                                                        [0] = "+"
-                                                                                        [1] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'l'
-                                                                                        }
-                                                                                        [2] = {
-                                                                                            Kind: Numeric
-                                                                                            [0] = 1
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            [1] = {
-                                                                                Kind: Semicolon
-                                                                            }
-                                                                            [2] = {
-                                                                                Kind: AssignmentStatement
-                                                                                [0] = {
-                                                                                    Kind: VariableList
-                                                                                    [0] = {
-                                                                                        Kind: Index
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'n'
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'l'
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: ExpressionList
-                                                                                    [0] = {
-                                                                                        Kind: Index
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'e'
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'o'
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            [3] = {
-                                                                                Kind: Semicolon
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [9] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                    [10] = {
-                                                                        Kind: DoStatement
-                                                                        [0] = {
-                                                                            Kind: Block
-                                                                            [0] = {
-                                                                                Kind: ReturnStatement
-                                                                                [0] = {
-                                                                                    Kind: ExpressionList
-                                                                                    [0] = {
-                                                                                        Kind: FunctionCall
-                                                                                        [0] = {
-                                                                                            Kind: Identifier
-                                                                                            [0] = 'a'
-                                                                                        }
-                                                                                        [1] = {
-                                                                                            Kind: ArgumentList
-                                                                                            [0] = {
-                                                                                                Kind: ExpressionList
-                                                                                                [0] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'n'
-                                                                                                }
-                                                                                                [1] = {
-                                                                                                    Kind: Numeric
-                                                                                                    [0] = 1
-                                                                                                }
-                                                                                                [2] = {
-                                                                                                    Kind: Identifier
-                                                                                                    [0] = 'l'
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [11] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                }
-                                                            }
-                                                            [5] = {
-                                                                Kind: ConditionalBlock
-                                                                [0] = nullptr
-                                                                [1] = {
-                                                                    Kind: Block
-                                                                    [0] = {
-                                                                        Kind: AssignmentStatement
-                                                                        [0] = {
-                                                                            Kind: VariableList
-                                                                            [0] = {
-                                                                                Kind: Index
-                                                                                [0] = {
-                                                                                    Kind: Identifier
-                                                                                    [0] = 'e'
-                                                                                }
-                                                                                [1] = {
-                                                                                    Kind: Index
-                                                                                    [0] = {
-                                                                                        Kind: Identifier
-                                                                                        [0] = 'l'
-                                                                                    }
-                                                                                    [1] = {
-                                                                                        Kind: Numeric
-                                                                                        [0] = 2
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        [1] = {
-                                                                            Kind: ExpressionList
-                                                                            [0] = {
-                                                                                Kind: TableConstructor
-                                                                                [0] = nullptr
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    [1] = {
-                                                                        Kind: Semicolon
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [5] = {
-                                                            Kind: Semicolon
-                                                        }
-                                                        [6] = {
-                                                            Kind: AssignmentStatement
-                                                            [0] = {
-                                                                Kind: VariableList
-                                                                [0] = {
-                                                                    Kind: Identifier
-                                                                    [0] = 'o'
-                                                                }
-                                                            }
-                                                            [1] = {
-                                                                Kind: ExpressionList
-                                                                [0] = {
-                                                                    Kind: BinaryOperation
-                                                                    [0] = "+"
-                                                                    [1] = {
-                                                                        Kind: Identifier
-                                                                        [0] = 'o'
-                                                                    }
-                                                                    [2] = {
-                                                                        Kind: Numeric
-                                                                        [0] = 1
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        [7] = {
-                                                            Kind: Semicolon
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            [31] = {
-                                                Kind: Semicolon
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        [46] = {
-            Kind: Semicolon
-        }
-        [47] = {
-            Kind: ReturnStatement
-            [0] = {
-                Kind: ExpressionList
-                [0] = {
-                    Kind: FunctionCall
-                    [0] = {
-                        Kind: FunctionCall
-                        [0] = {
-                            Kind: Identifier
-                            [0] = 'r'
-                        }
-                        [1] = {
-                            Kind: ArgumentList
-                            [0] = {
-                                Kind: ExpressionList
-                                [0] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'K'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = nullptr
-                                    }
-                                }
-                                [1] = {
-                                    Kind: TableConstructor
-                                    [0] = nullptr
-                                }
-                                [2] = {
-                                    Kind: FunctionCall
-                                    [0] = {
-                                        Kind: Identifier
-                                        [0] = 'D'
-                                    }
-                                    [1] = {
-                                        Kind: ArgumentList
-                                        [0] = nullptr
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    [1] = {
-                        Kind: ArgumentList
-                        [0] = nullptr
                     }
                 }
             }

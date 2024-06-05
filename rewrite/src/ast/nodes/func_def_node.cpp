@@ -9,11 +9,11 @@ std::shared_ptr<FuncDefNode> FuncDefNode::create(std::shared_ptr<AstNode> p_Name
 
     if (node->name != nullptr)
     {
-        node->name->parent = node;
+        node->name->setParent(node);
     }
     if (node->body != nullptr)
     {
-        node->body->parent = node;
+        node->body->setParent(node);
     }
     return node;
 }

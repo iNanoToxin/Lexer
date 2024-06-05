@@ -8,7 +8,7 @@ std::shared_ptr<LabelNode> LabelNode::create(std::shared_ptr<AstNode> p_Label)
 
     if (node->label != nullptr)
     {
-        node->label->parent = node;
+        node->label->setParent(node);
     }
     return node;
 }

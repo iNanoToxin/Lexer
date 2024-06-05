@@ -21,7 +21,7 @@ do {                                                      \
 int main() {
     std::string luaSource;
     {
-        std::ifstream file(R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\lua\tests\test_1.lua)");
+        std::ifstream file(R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\rewrite\tests\test_1.lua)");
         f_assert(file.is_open(), "failed to open file");
 
         std::stringstream stream;
@@ -36,7 +36,7 @@ int main() {
     // std::string generated = p.parse(luaSource)->toString(0);
 
     {
-        std::ofstream file(R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\lua\tests\output.lua)");
+        std::ofstream file(R"(C:\Users\dylan\JetBrains\CLionProjects\Lexer\rewrite\tests\output.lua)");
         f_assert(file.is_open(), "Failed to open the file.");
         file << generated;
         file.close();

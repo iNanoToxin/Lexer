@@ -52,3 +52,33 @@ public:
     void visit(const std::shared_ptr<LabelNode>& p_Node) override;
     void visit(const std::shared_ptr<SemicolonNode>& p_Node) override;
 };
+
+bool perform_binary_op(
+        std::shared_ptr<AstNode>& p_Result,
+        const std::shared_ptr<AstNode>& p_Lhs,
+        double (*p_Operation)(double, double),
+        const std::shared_ptr<AstNode>& p_Rhs,
+        bool p_ForceDouble = false
+    );
+
+bool perform_comparison(
+    std::shared_ptr<AstNode>& p_Result,
+    const std::shared_ptr<AstNode>& p_Lhs,
+    bool (*p_Operation)(double, double),
+    const std::shared_ptr<AstNode>& p_Rhs
+);
+
+bool perform_concatenation(
+    std::shared_ptr<AstNode>& p_Result,
+    const std::shared_ptr<AstNode>& p_Lhs,
+    const std::shared_ptr<AstNode>& p_Rhs
+);
+
+bool is_allowed_comparison(const std::shared_ptr<AstNode>& p_Node);
+bool convert_to_bool(bool* p_Bool, const std::shared_ptr<AstNode>& p_Node);
+
+void merge_blocks(
+    const std::shared_ptr<AstNode>& p_BlockA,
+    const std::shared_ptr<AstNode>& p_BlockB,
+    const std::shared_ptr<AstNode>& p_Node
+);

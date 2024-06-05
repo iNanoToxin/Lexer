@@ -12,23 +12,23 @@ std::shared_ptr<NumericForStatNode> NumericForStatNode::create(std::shared_ptr<A
 
     if (node->name != nullptr)
     {
-        node->name->parent = node;
+        node->name->setParent(node);
     }
     if (node->init != nullptr)
     {
-        node->init->parent = node;
+        node->init->setParent(node);
     }
     if (node->goal != nullptr)
     {
-        node->goal->parent = node;
+        node->goal->setParent(node);
     }
     if (node->step != nullptr)
     {
-        node->step->parent = node;
+        node->step->setParent(node);
     }
     if (node->block != nullptr)
     {
-        node->block->parent = node;
+        node->block->setParent(node);
     }
     return node;
 }

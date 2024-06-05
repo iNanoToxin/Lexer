@@ -46,6 +46,7 @@ public:
     void parseExponential();
     void parseNumber();
     void parseLongBrackets();
+    void parseEscapeString();
     void parseString();
     void parseComment();
     void parseWord();

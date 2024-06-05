@@ -3,5 +3,5 @@
 
 namespace String
 {
-    std::string unquote(const std::string& p_String);
+    int unquote(std::string& p_Result, const std::string& p_String);
 }

@@ -8,7 +8,7 @@ std::shared_ptr<ReturnStatNode> ReturnStatNode::create(std::shared_ptr<AstNode> 
 
     if (node->args != nullptr)
     {
-        node->args->parent = node;
+        node->args->setParent(node);
     }
     return node;
 }

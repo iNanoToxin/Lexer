@@ -9,11 +9,11 @@ std::shared_ptr<MemberNode> MemberNode::create(std::shared_ptr<AstNode> p_Root, 
 
     if (node->root != nullptr)
     {
-        node->root->parent = node;
+        node->root->setParent(node);
     }
     if (node->member != nullptr)
     {
-        node->member->parent = node;
+        node->member->setParent(node);
     }
     return node;
 }

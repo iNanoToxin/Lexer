@@ -10,7 +10,7 @@ std::shared_ptr<FieldListNode> FieldListNode::create(std::vector<std::shared_ptr
     {
         if (child != nullptr)
         {
-            child->parent = node;
+            child->setParent(node);
         }
     }
     return node;

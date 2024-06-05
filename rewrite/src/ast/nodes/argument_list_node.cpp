@@ -8,7 +8,7 @@ std::shared_ptr<ArgumentListNode> ArgumentListNode::create(std::shared_ptr<AstNo
 
     if (node->list != nullptr)
     {
-        node->list->parent = node;
+        node->list->getParent() = node;
     }
     return node;
 }

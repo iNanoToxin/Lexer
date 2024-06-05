@@ -9,11 +9,11 @@ std::shared_ptr<WhileStatNode> WhileStatNode::create(std::shared_ptr<AstNode> p_
 
     if (node->condition != nullptr)
     {
-        node->condition->parent = node;
+        node->condition->setParent(node);
     }
     if (node->block != nullptr)
     {
-        node->block->parent = node;
+        node->block->setParent(node);
     }
     return node;
 }

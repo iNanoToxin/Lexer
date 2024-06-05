@@ -4,7 +4,7 @@
 
 UnaryOpKind get_unary_operator_kind(const std::string& p_Operator)
 {
-    if (p_Operator == "not") return UnaryOpKind::BitNot;
+    if (p_Operator == "not") return UnaryOpKind::Not;
     if (p_Operator == "#") return UnaryOpKind::Length;
     if (p_Operator == "-") return UnaryOpKind::Negate;
     if (p_Operator == "~") return UnaryOpKind::BitNot;
@@ -21,7 +21,7 @@ std::shared_ptr<UnaryOpNode> UnaryOpNode::create(std::string p_Operation, std::s
 
     if (node->value != nullptr)
     {
-        node->value->parent = node;
+        node->value->setParent(node);
     }
     return node;
 }

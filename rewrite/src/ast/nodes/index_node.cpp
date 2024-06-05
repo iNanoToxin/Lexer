@@ -9,11 +9,11 @@ std::shared_ptr<IndexNode> IndexNode::create(std::shared_ptr<AstNode> p_Root, st
 
     if (node->root != nullptr)
     {
-        node->root->parent = node;
+        node->root->setParent(node);
     }
     if (node->index != nullptr)
     {
-        node->index->parent = node;
+        node->index->setParent(node);
     }
     return node;
 }

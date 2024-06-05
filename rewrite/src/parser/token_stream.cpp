@@ -324,6 +324,42 @@ void TokenStream::parseLongBrackets()
     }
 }
 
+void TokenStream::parseEscapeString()
+{
+    LL_assert(peek() == '\\', "Expected backslash.");
+    bump();
+    switch (peek())
+    {
+        case '\r':
+        {
+            bump();
+            if (peek() == '\n')
+            {
+                bump();
+            }
+            break;
+        }
+        case '\0':
+        {
+            break;
+        }
+        case 'z':
+        {
+            bump();
+            while (std::isspace(peek()))
+            {
+                bump();
+            }
+            break;
+        }
+        default:
+        {
+            bump();
+            break;
+        }
+    }
+}
+
 void TokenStream::parseString()
 {
     if (startsWithLongBracket())
@@ -341,19 +377,15 @@ void TokenStream::parseString()
             // Handle escape characters in strings.
             if (startsWith('\\'))
             {
-                if (!next(1))
-                {
-                    LL_failure("Malformed string.", "Invalid escape sequence.");
-                }
+                parseEscapeString();
+            }
+            else
+            {
                 bump();
             }
-            bump();
         }
 
-        if (!startsWith(quote))
-        {
-            LL_assert("Malformed string.", "Unclosed quote.");
-        }
+        LL_assert(startsWith(quote), "Unclosed quote.");
 
         bump();
         addToken(TokenType::STRING);
@@ -479,7 +511,8 @@ char TokenStream::peek(const std::size_t p_Offset) const
     return m_Source.at(m_Index + p_Offset);
 }
 
-Tokens TokenStream::getTokens() {
+Tokens TokenStream::getTokens()
+{
     return m_Tokens;
 }
 

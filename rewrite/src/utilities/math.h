@@ -11,8 +11,6 @@ namespace BitwiseOp
     LuaDouble bit_shift_right(LuaDouble p_X, LuaDouble p_Y);
 }
 
-
-
 namespace ArithmeticOp
 {
     LuaDouble plus(LuaDouble p_X, LuaDouble p_Y);
@@ -24,18 +22,20 @@ namespace ArithmeticOp
     LuaDouble mod(LuaDouble p_X, LuaDouble p_Y);
 }
 
+namespace EqualityOp
+{
+    bool less_than(LuaDouble p_X, LuaDouble p_Y);
+    bool less_then_or_equal(LuaDouble p_X, LuaDouble p_Y);
+    bool greater_than(LuaDouble p_X, LuaDouble p_Y);
+    bool greater_then_or_equal(LuaDouble p_X, LuaDouble p_Y);
+    bool equal(LuaDouble p_X, LuaDouble p_Y);
+    bool not_equal(LuaDouble p_X, LuaDouble p_Y);
+}
+
 namespace Math
 {
     bool string_to_integer(LuaInteger* p_Out, const std::string& p_Number);
     bool string_to_double(LuaDouble* p_Out, const std::string& p_Number);
 
     bool is_convertible_to_int(LuaDouble p_Double);
-
-    bool perform_binary_op(
-        std::shared_ptr<AstNode>& p_Result,
-        const std::shared_ptr<AstNode>& p_Lhs,
-        double (*p_Operation)(double, double),
-        const std::shared_ptr<AstNode>& p_Rhs,
-        bool p_ForceDouble = false
-    );
 }

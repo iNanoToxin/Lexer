@@ -1,5 +1,6 @@
 #include "eval_visitor.h"
 #include <cmath>
+#include <sstream>
 #include "utilities/assert.h"
 #include "utilities/math.h"
 
@@ -43,7 +44,6 @@ void EvalVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
 }
 
 
-
 void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
 {
     if (p_Node->lhs != nullptr)
@@ -63,76 +63,118 @@ void EvalVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
     {
         case BinaryOpKind::Plus:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::plus, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::plus, p_Node->rhs);
             break;
         }
         case BinaryOpKind::Minus:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::minus, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::minus, p_Node->rhs);
             break;
         }
         case BinaryOpKind::Multiply:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::multiply, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::multiply, p_Node->rhs);
             break;
         }
         case BinaryOpKind::FloatDivision:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::float_divide, p_Node->rhs, true);
+            perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::float_divide, p_Node->rhs, true);
             break;
         }
         case BinaryOpKind::FloorDivision:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::floor_division, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::floor_division, p_Node->rhs);
             break;
         }
         case BinaryOpKind::Modulus:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::mod, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::mod, p_Node->rhs);
             break;
         }
         case BinaryOpKind::Power:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::pow, p_Node->rhs, true);
+            perform_binary_op(m_Result, p_Node->lhs, &ArithmeticOp::pow, p_Node->rhs, true);
             break;
         }
         case BinaryOpKind::BitOr:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_or, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_or, p_Node->rhs);
             break;
         }
         case BinaryOpKind::BitExOr:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_xor, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_xor, p_Node->rhs);
             break;
         }
         case BinaryOpKind::BitAnd:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_and, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_and, p_Node->rhs);
             break;
         }
         case BinaryOpKind::LeftShift:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_shift_left, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_shift_left, p_Node->rhs);
             break;
         }
         case BinaryOpKind::RightShift:
         {
-            Math::perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_shift_right, p_Node->rhs);
+            perform_binary_op(m_Result, p_Node->lhs, &BitwiseOp::bit_shift_right, p_Node->rhs);
+            break;
+        }
+
+        case BinaryOpKind::LessThan:
+        {
+            perform_comparison(m_Result, p_Node->lhs, &EqualityOp::less_than, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::LessEqual:
+        {
+            perform_comparison(m_Result, p_Node->lhs, &EqualityOp::less_then_or_equal, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::GreaterThan:
+        {
+            perform_comparison(m_Result, p_Node->lhs, &EqualityOp::greater_than, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::GreaterEqual:
+        {
+            perform_comparison(m_Result, p_Node->lhs, &EqualityOp::greater_then_or_equal, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::Equal:
+        {
+            perform_comparison(m_Result, p_Node->lhs, &EqualityOp::equal, p_Node->rhs);
+            break;
+        }
+        case BinaryOpKind::NotEqual:
+        {
+            perform_comparison(m_Result, p_Node->lhs, &EqualityOp::not_equal, p_Node->rhs);
             break;
         }
 
         case BinaryOpKind::Or:
-        case BinaryOpKind::And:
-        case BinaryOpKind::LessThan:
-        case BinaryOpKind::GreaterThan:
-        case BinaryOpKind::LessEqual:
-        case BinaryOpKind::GreaterEqual:
-        case BinaryOpKind::NotEqual:
-        case BinaryOpKind::Equal:
-        case BinaryOpKind::Concat:
-        default:
         {
+            bool lhs_bool, rhs_bool;
+            if (convert_to_bool(&lhs_bool, p_Node->lhs) && convert_to_bool(&rhs_bool, p_Node->rhs))
+            {
+                m_Result = lhs_bool ? p_Node->lhs : p_Node->rhs;
+            }
+            break;
+        }
+        case BinaryOpKind::And:
+        {
+            bool lhs_bool, rhs_bool;
+            if (convert_to_bool(&lhs_bool, p_Node->lhs) && convert_to_bool(&rhs_bool, p_Node->rhs))
+            {
+                m_Result = lhs_bool ? p_Node->rhs : p_Node->lhs;
+            }
+            break;
+        }
+
+        case BinaryOpKind::Concat:
+        {
+            perform_concatenation(m_Result, p_Node->lhs, p_Node->rhs);
             break;
         }
     }
@@ -147,31 +189,41 @@ void EvalVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
 
     m_Result = p_Node;
 
-    if (p_Node->value->kind == AstKind::NumberNode)
+    switch (p_Node->opKind)
     {
-        const std::shared_ptr<NumberNode> number = NumberNode::cast(p_Node->value);
-
-        switch (p_Node->opKind)
+        case UnaryOpKind::Negate:
         {
-            case UnaryOpKind::Negate:
+            if (p_Node->value->kind == AstKind::NumberNode)
             {
+                const std::shared_ptr<NumberNode>& number = NumberNode::cast(p_Node->value);
                 number->negate();
                 m_Result = number;
-                break;
             }
-            case UnaryOpKind::Not:
+            break;
+        }
+        case UnaryOpKind::Not:
+        {
+            bool result;
+            if (convert_to_bool(&result, p_Node->value))
             {
-                m_Result = BooleanNode::create(false);
-                break;
+                m_Result = BooleanNode::create(!result);
             }
-            case UnaryOpKind::BitNot:
+            break;
+        }
+        case UnaryOpKind::BitNot:
+        {
+            if (p_Node->value->kind == AstKind::NumberNode)
             {
+                const std::shared_ptr<NumberNode> number = NumberNode::cast(p_Node->value);
                 LL_assert(number->isConvertibleToInt(), "Unary operation `BitNot` cannot be performed on double.");
                 number->setInt(~number->toInt());
                 m_Result = number;
-                break;
             }
-            default: break;
+            break;
+        }
+        default:
+        {
+            break;
         }
     }
 }
@@ -260,13 +312,21 @@ void EvalVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
 
 void EvalVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
 {
-    for (std::shared_ptr<AstNode>& statement : p_Node->statements)
+    auto it = p_Node->statements.begin();
+    while (it != p_Node->statements.end())
     {
-        if (statement != nullptr)
+        if (*it != nullptr)
         {
-            statement->accept(*this);
-            statement = m_Result;
+            (*it)->accept(*this);
+            if (m_Result == nullptr)
+            {
+                it = p_Node->statements.erase(it);
+                std::cout << "BlockNode->statements.erase(it)" << std::endl;
+                continue;
+            }
+            *it = m_Result;
         }
+        it++;
     }
     m_Result = p_Node;
 }
@@ -341,20 +401,43 @@ void EvalVisitor::visit(const std::shared_ptr<GotoStatNode>& p_Node)
 }
 void EvalVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
 {
-    for (AstNodePair& pair : p_Node->conditionalBlocks)
+    auto it = p_Node->blocks.begin();
+    while (it != p_Node->blocks.end())
     {
-        if (pair.first != nullptr)
+        if (it->first != nullptr)
         {
-            pair.first->accept(*this);
-            pair.first = m_Result;
+            it->first->accept(*this);
+            it->first = m_Result;
+
+            bool is_true;
+            if (convert_to_bool(&is_true, m_Result))
+            {
+                if (is_true)
+                {
+                    merge_blocks(it->second, p_Node->getParent(), p_Node);
+                    p_Node->blocks.clear();
+                    std::cout << "IfStatNode->blocks.clear()" << std::endl;
+                    break;
+                }
+                it = p_Node->blocks.erase(it);
+                std::cout << "IfStatNode->blocks.erase(it)" << std::endl;
+                continue;
+            }
         }
-        if (pair.second != nullptr)
+        else if (p_Node->blocks.size() == 1)
         {
-            pair.second->accept(*this);
-            pair.second = m_Result;
+            merge_blocks(it->second, p_Node->getParent(), p_Node);
+            p_Node->blocks.clear();
+            break;
         }
+        if (it->second != nullptr)
+        {
+            it->second->accept(*this);
+            it->second = m_Result;
+        }
+        it++;
     }
-    m_Result = p_Node;
+    m_Result = p_Node->blocks.empty() ? nullptr : p_Node;
 }
 void EvalVisitor::visit(const std::shared_ptr<LocalStatNode>& p_Node)
 {
@@ -406,6 +489,17 @@ void EvalVisitor::visit(const std::shared_ptr<RepeatStatNode>& p_Node)
         p_Node->condition->accept(*this);
         p_Node->condition = m_Result;
     }
+
+    bool condition;
+    if (convert_to_bool(&condition, m_Result))
+    {
+        if (condition)
+        {
+            merge_blocks(p_Node->block, p_Node->getParent(), p_Node);
+            m_Result = nullptr;
+            return;
+        }
+    }
     m_Result = p_Node;
 }
 void EvalVisitor::visit(const std::shared_ptr<ReturnStatNode>& p_Node)
@@ -424,6 +518,17 @@ void EvalVisitor::visit(const std::shared_ptr<WhileStatNode>& p_Node)
         p_Node->condition->accept(*this);
         p_Node->condition = m_Result;
     }
+
+    bool condition;
+    if (convert_to_bool(&condition, m_Result))
+    {
+        if (!condition)
+        {
+            m_Result = nullptr;
+            return;
+        }
+    }
+
     if (p_Node->block != nullptr)
     {
         p_Node->block->accept(*this);
@@ -586,4 +691,203 @@ void EvalVisitor::visit(const std::shared_ptr<LabelNode>& p_Node)
 void EvalVisitor::visit(const std::shared_ptr<SemicolonNode>& p_Node)
 {
     m_Result = p_Node;
+}
+
+
+bool perform_binary_op(
+    std::shared_ptr<AstNode>& p_Result,
+    const std::shared_ptr<AstNode>& p_Lhs,
+    double (*p_Operation)(double, double),
+    const std::shared_ptr<AstNode>& p_Rhs,
+    const bool p_ForceDouble
+)
+{
+    LuaDouble x, y;
+
+    if (p_Lhs->kind == AstKind::NumberNode)
+    {
+        x = NumberNode::cast(p_Lhs)->toDouble();
+    }
+    else if (p_Lhs->kind == AstKind::StringNode)
+    {
+        if (!Math::string_to_double(&x, StringNode::cast(p_Lhs)->getContent()))
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+
+    if (p_Rhs->kind == AstKind::NumberNode)
+    {
+        y = NumberNode::cast(p_Rhs)->toDouble();
+    }
+    else if (p_Rhs->kind == AstKind::StringNode)
+    {
+        if (!Math::string_to_double(&y, StringNode::cast(p_Rhs)->getContent()))
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+
+    const std::shared_ptr<NumberNode>& result = NumberNode::create(p_Operation(x, y));
+
+    if (!p_ForceDouble && result->isConvertibleToInt())
+    {
+        result->setInt(result->toInt());
+    }
+    p_Result = result;
+    return true;
+}
+
+bool perform_comparison(
+    std::shared_ptr<AstNode>& p_Result,
+    const std::shared_ptr<AstNode>& p_Lhs,
+    bool (*p_Operation)(double, double),
+    const std::shared_ptr<AstNode>& p_Rhs
+)
+{
+    // if (p_Lhs->kind == AstKind::StringNode && p_Rhs->kind == AstKind::StringNode)
+    // {
+    //     const std::shared_ptr<StringNode>& lhs = StringNode::cast(p_Lhs);
+    //     const std::shared_ptr<StringNode>& rhs = StringNode::cast(p_Rhs);
+    //
+    //     p_Result = BooleanNode::create(p_Operation(lhs->getContent().compare(rhs.getContent()), 0));
+    //     return true;
+    // }
+
+    if (p_Lhs->kind == AstKind::NumberNode && p_Rhs->kind == AstKind::NumberNode)
+    {
+        const std::shared_ptr<NumberNode>& lhs = NumberNode::cast(p_Lhs);
+        const std::shared_ptr<NumberNode>& rhs = NumberNode::cast(p_Rhs);
+
+        p_Result = BooleanNode::create(p_Operation(lhs->toDouble(), rhs->toDouble()));
+        return true;
+    }
+    if (p_Lhs->kind == AstKind::BooleanNode && p_Rhs->kind == AstKind::BooleanNode)
+    {
+        const std::shared_ptr<BooleanNode>& lhs = BooleanNode::cast(p_Lhs);
+        const std::shared_ptr<BooleanNode>& rhs = BooleanNode::cast(p_Rhs);
+
+        p_Result = BooleanNode::create(p_Operation(lhs->value, rhs->value));
+        return true;
+    }
+
+    if (p_Operation == EqualityOp::equal || p_Operation == EqualityOp::not_equal)
+    {
+        if (is_allowed_comparison(p_Lhs) && is_allowed_comparison(p_Rhs))
+        {
+            if (p_Lhs->kind != p_Rhs->kind)
+            {
+                p_Result = BooleanNode::create(p_Operation != EqualityOp::equal);
+                return true;
+            }
+            else if (p_Lhs->kind == AstKind::NilNode && p_Rhs->kind == AstKind::NilNode)
+            {
+                p_Result = BooleanNode::create(p_Operation == EqualityOp::equal);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool perform_concatenation(std::shared_ptr<AstNode>& p_Result, const std::shared_ptr<AstNode>& p_Lhs, const std::shared_ptr<AstNode>& p_Rhs)
+{
+    if (p_Lhs->kind == AstKind::StringNode && p_Rhs->kind == AstKind::StringNode)
+    {
+        const std::shared_ptr<StringNode>& lhs = StringNode::cast(p_Lhs);
+        const std::shared_ptr<StringNode>& rhs = StringNode::cast(p_Rhs);
+        std::stringstream stream;
+        stream << '"';
+        stream << lhs->getContent();
+        stream << rhs->getContent();
+        stream << '"';
+
+        p_Result = StringNode::create(stream.str());
+    }
+    return true;
+}
+
+bool is_allowed_comparison(const std::shared_ptr<AstNode>& p_Node)
+{
+    switch (p_Node->kind)
+    {
+        case AstKind::FuncDefNode:
+        case AstKind::TableConstructorNode:
+        case AstKind::StringNode:
+        case AstKind::NumberNode:
+        case AstKind::BooleanNode:
+        case AstKind::NilNode:
+        {
+            return true;
+        }
+        default:
+        {
+            return false;
+        }
+    }
+}
+
+bool convert_to_bool(bool* p_Bool, const std::shared_ptr<AstNode>& p_Node)
+{
+    switch (p_Node->kind)
+    {
+        case AstKind::BooleanNode:
+        {
+            *p_Bool = BooleanNode::cast(p_Node)->value;
+            return true;
+        }
+        case AstKind::FuncDefNode:
+        case AstKind::TableConstructorNode:
+        case AstKind::StringNode:
+        case AstKind::NumberNode:
+        {
+            *p_Bool = true;
+            return true;
+        }
+        case AstKind::NilNode:
+        {
+            *p_Bool = false;
+            return true;
+        }
+        default:
+        {
+            return false;
+        }
+    }
+}
+
+void merge_blocks(
+    const std::shared_ptr<AstNode>& p_BlockA,
+    const std::shared_ptr<AstNode>& p_BlockB,
+    const std::shared_ptr<AstNode>& p_Node
+)
+{
+    if (p_BlockA == nullptr) return;
+    if (p_BlockB == nullptr) return;
+    if (p_Node == nullptr) return;
+
+    const std::shared_ptr<BlockNode>& block_a = BlockNode::cast(p_BlockA);
+    const std::shared_ptr<BlockNode>& block_b = BlockNode::cast(p_BlockB);
+
+    auto index = block_b->statements.begin();
+    while (*index != p_Node)
+    {
+        index++;
+    }
+    index++;
+
+    for (const std::shared_ptr<AstNode>& statement : block_a->statements)
+    {
+        block_b->statements.insert(index, statement);
+    }
+    block_a->statements.clear();
+    std::cout << "BlockNode->statements.clear()" << std::endl;
 }

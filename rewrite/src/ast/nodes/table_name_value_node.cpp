@@ -9,11 +9,11 @@ std::shared_ptr<TableNameValueNode> TableNameValueNode::create(std::shared_ptr<A
 
     if (node->name != nullptr)
     {
-        node->name->parent = node;
+        node->name->setParent(node);
     }
     if (node->value != nullptr)
     {
-        node->value->parent = node;
+        node->value->setParent(node);
     }
     return node;
 }

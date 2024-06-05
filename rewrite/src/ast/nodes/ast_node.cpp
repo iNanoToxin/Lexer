@@ -1,8 +1,6 @@
 #include "ast_node.h"
 #include "../../utilities/assert.h"
 
-AstNode::AstNode(const AstKind& p_Kind) : kind(p_Kind) {}
-
 std::string AstNode::getKindName() const
 {
     switch (kind)
@@ -53,4 +51,14 @@ std::string AstNode::getKindName() const
     }
     LL_failure("kind != AstKind", "Unknown AstKind.");
     return std::string{};
+}
+
+void AstNode::setParent(const std::shared_ptr<AstNode>& p_Parent)
+{
+    m_Parent = p_Parent;
+}
+
+std::shared_ptr<AstNode> AstNode::getParent() const
+{
+    return m_Parent.lock();
 }

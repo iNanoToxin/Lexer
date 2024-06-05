@@ -9,11 +9,11 @@ std::shared_ptr<AttributeNode> AttributeNode::create(std::shared_ptr<AstNode> p_
 
     if (node->value != nullptr)
     {
-        node->value->parent = node;
+        node->value->setParent(node);
     }
     if (node->attribute != nullptr)
     {
-        node->attribute->parent = node;
+        node->attribute->setParent(node);
     }
     return node;
 }
