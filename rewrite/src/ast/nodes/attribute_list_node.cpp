@@ -25,3 +25,29 @@ void AttributeListNode::accept(AstVisitor& p_Visitor)
 {
     p_Visitor.visit(cast(shared_from_this()));
 }
+
+bool AttributeListNode::remove(const std::shared_ptr<AstNode>& p_Node, std::size_t* p_Index)
+{
+    for (auto it = list.begin(); it != list.end(); it++)
+    {
+        if (p_Node->kind == AstKind::IdentifierNode && *it == p_Node->getParent() || *it == p_Node)
+        {
+            if (p_Index != nullptr)
+            {
+                *p_Index = std::distance(list.begin(), it);
+            }
+            list.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AttributeListNode::remove(const std::size_t p_Index)
+{
+    if (p_Index >= list.size())
+    {
+        return false;
+    }
+    return remove(list[p_Index]);
+}

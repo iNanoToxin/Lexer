@@ -3,7 +3,19 @@
 #include <map>
 #include <ranges>
 #include <vector>
+#include "utilities/assert.h"
 #include "ast/nodes/ast_node.h"
+
+struct VariableInfo
+{
+    std::vector<std::shared_ptr<AstNode>> usages;
+    std::shared_ptr<AstNode> reference;
+    std::shared_ptr<AstNode> node;
+    std::shared_ptr<AstNode> value;
+    std::shared_ptr<AstNode> currentBlock;
+    bool constant;
+    int useCount;
+};
 
 class ScopeStack
 {
@@ -17,7 +29,7 @@ private:
     std::list<Node> m_List;
     std::size_t m_TotalCount = 0;
     std::size_t m_Count = 0;
-    std::vector<std::shared_ptr<AstNode>> m_Variables;
+    std::map<std::shared_ptr<AstNode>, VariableInfo> m_Variables;
 
 public:
     ScopeStack() = default;
@@ -34,6 +46,18 @@ public:
         m_List.pop_back();
     }
 
+    void incrementUseCount(const std::shared_ptr<AstNode>& p_Key)
+    {
+        LL_assert(m_Variables.contains(p_Key), "`p_Key` is not found in variable list");
+        m_Variables[p_Key].useCount++;
+    }
+
+    void addUsage(const std::shared_ptr<AstNode>& p_Key, const std::shared_ptr<AstNode>& p_Node)
+    {
+        LL_assert(m_Variables.contains(p_Key), "`p_Key` is not found in variable list");
+        m_Variables[p_Key].usages.push_back(p_Node);
+    }
+
     void setGlobal(const std::string& p_Key, const std::shared_ptr<AstNode>& p_Value)
     {
         LL_assert(p_Value->kind == AstKind::IdentifierNode, "Expected `p_Value` to be kind `AstKind::IdentifierNode`.");
@@ -42,7 +66,7 @@ public:
         m_Count++;
         m_List.front().count++;
         m_List.front().map[p_Key] = p_Value;
-        m_Variables.push_back(p_Value);
+        m_Variables[p_Value] = VariableInfo{.useCount = 0};
     }
 
     void setLocal(const std::string& p_Key, const std::shared_ptr<AstNode>& p_Value)
@@ -53,7 +77,7 @@ public:
         m_Count++;
         m_List.back().count++;
         m_List.back().map[p_Key] = p_Value;
-        m_Variables.push_back(p_Value);
+        m_Variables[p_Value] = VariableInfo{.useCount = 0};
     }
 
     std::shared_ptr<AstNode> get(const std::string& p_Key)
@@ -78,7 +102,7 @@ public:
         return m_TotalCount;
     }
 
-    std::vector<std::shared_ptr<AstNode>> getVaribles() const
+    std::map<std::shared_ptr<AstNode>, VariableInfo> getVariables() const
     {
         return m_Variables;
     }

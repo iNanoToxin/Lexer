@@ -1,27 +1,19 @@
 #pragma once
 #include <map>
+#include "ast/scope/scope_tree.h"
 #include "ast_visitor.h"
 #include "ast/nodes/ast_node.h"
-
-struct Variable
-{
-    std::shared_ptr<AstNode> reference;
-    std::shared_ptr<AstNode> node;
-    std::shared_ptr<AstNode> value;
-    std::shared_ptr<AstNode> currentBlock;
-    bool constant;
-};
 
 class EvalVisitor final : public AstVisitor
 {
 private:
     std::shared_ptr<AstNode> m_Result;
-    std::map<std::shared_ptr<AstNode>, Variable> m_Variables;
+    std::map<std::shared_ptr<AstNode>, VariableInfo> m_Variables;
 
     bool getReference(std::shared_ptr<AstNode>& p_Reference, const std::shared_ptr<AstNode>& p_Node) const;
 
 public:
-    void setVariables(const std::vector<std::shared_ptr<AstNode>>& p_Variables);
+    void setVariables(const std::map<std::shared_ptr<AstNode>, VariableInfo>& p_Variables);
 
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
@@ -101,3 +93,7 @@ void merge_blocks(
 std::vector<std::shared_ptr<AstNode>> get_variable_list(const std::shared_ptr<AstNode>& p_Node);
 
 std::shared_ptr<AstNode> get_block(const std::shared_ptr<AstNode>& p_Node);
+
+bool is_decendant_of(const std::shared_ptr<AstNode>& p_Node, const AstKind& p_Kind, std::shared_ptr<AstNode>* p_Out = nullptr);
+
+bool remove_assignment(const std::shared_ptr<AstNode>& p_Node);

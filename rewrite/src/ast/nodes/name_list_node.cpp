@@ -25,3 +25,29 @@ void NameListNode::accept(AstVisitor& p_Visitor)
 {
     p_Visitor.visit(cast(shared_from_this()));
 }
+
+bool NameListNode::remove(const std::shared_ptr<AstNode>& p_Node, std::size_t* p_Index)
+{
+    for (auto it = list.begin(); it != list.end(); it++)
+    {
+        if (*it == p_Node)
+        {
+            if (p_Index != nullptr)
+            {
+                *p_Index = std::distance(list.begin(), it);
+            }
+            list.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool NameListNode::remove(const std::size_t p_Index)
+{
+    if (p_Index >= list.size())
+    {
+        return false;
+    }
+    return remove(list[p_Index]);
+}

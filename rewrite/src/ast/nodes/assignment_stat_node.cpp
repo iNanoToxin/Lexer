@@ -27,3 +27,25 @@ void AssignmentStatNode::accept(AstVisitor& p_Visitor)
 {
     p_Visitor.visit(cast(shared_from_this()));
 }
+
+void AssignmentStatNode::remove(const std::shared_ptr<AstNode>& p_Node) {
+    if (variables->kind == AstKind::AttributeListNode)
+    {
+        const std::shared_ptr<AttributeListNode>& attribute_list = AttributeListNode::cast(variables);
+        const std::shared_ptr<VariableListNode>& vars = VariableListNode::cast(values);
+
+        // std::size_t index = 0;
+        // if (attribute_list->remove(p_Node, &index))
+        // {
+        //     std::cout << "CAN REMOVE: " << index << std::endl;
+        //     // vars->remove(0);
+        // }
+
+        vars->remove(0);
+
+        if (getParent()->kind == AstKind::LocalStatNode)
+        {
+            // block->remove(assignment->getParent());
+        }
+    }
+}

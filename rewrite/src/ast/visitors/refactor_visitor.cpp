@@ -33,6 +33,18 @@ void RefactorVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
         {
             p_Node->setReference(value);
             p_Node->setName(IdentifierNode::cast(value)->getName());
+            m_ScopeTree.addUsage(value, p_Node);
+
+            std::shared_ptr<AstNode> curr = p_Node;
+            while (curr != nullptr && curr->kind != AstKind::BlockNode && curr->kind != AstKind::VariableListNode)
+            {
+                curr = curr->getParent();
+            }
+
+            if (curr->kind != AstKind::VariableListNode)
+            {
+                m_ScopeTree.incrementUseCount(value);
+            }
         }
     }
 }

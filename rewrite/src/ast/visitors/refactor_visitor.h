@@ -101,8 +101,8 @@ public:
         }
     }
 
-    std::vector<std::shared_ptr<AstNode>> getVariables() const
+    std::map<std::shared_ptr<AstNode>, VariableInfo> getVariables() const
     {
-        return m_ScopeTree.getVaribles();
+        return m_ScopeTree.getVariables();
     }
 };

@@ -1,9 +1,7 @@
 #include "eval_visitor.h"
-
 #include <algorithm>
 #include <cmath>
 #include <sstream>
-
 #include "format_visitor.h"
 #include "utilities/assert.h"
 #include "utilities/math.h"
@@ -23,17 +21,17 @@ bool EvalVisitor::getReference(std::shared_ptr<AstNode>& p_Reference, const std:
     return false;
 }
 
-void EvalVisitor::setVariables(const std::vector<std::shared_ptr<AstNode>>& p_Variables)
+void EvalVisitor::setVariables(const std::map<std::shared_ptr<AstNode>, VariableInfo>& p_Variables)
 {
-    for (const std::shared_ptr<AstNode>& variable : p_Variables)
+    for (const auto& pair : p_Variables)
     {
-        m_Variables[variable] = Variable{
-            .reference = variable,
-            .node = variable,
-            .value = nullptr,
-            .currentBlock = get_block(variable),
-            .constant = true
-        };
+        VariableInfo info = pair.second;
+        info.reference = pair.first;
+        info.node = pair.first;
+        info.value = nullptr;
+        info.currentBlock = get_block(pair.first);
+        info.constant = true;
+        m_Variables[pair.first] = info;
     }
 }
 
@@ -49,6 +47,8 @@ void EvalVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
         p_Node->attribute->accept(*this);
         p_Node->attribute = m_Result;
     }
+
+    // remove_assignment(p_Node);
     m_Result = p_Node;
 }
 void EvalVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
@@ -114,9 +114,12 @@ void EvalVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
             // std::cout << str << std::endl;
             return;
         }
-        // std::cout << "found" << std::endl;
+
         m_Result = m_Variables[reference].value;
+        m_Variables[reference].useCount--;
+        // std::cout << "USE COUNT: " << p_Node->getName() << " : " << m_Variables[reference].useCount << std::endl;
     }
+    remove_assignment(p_Node);
 }
 void EvalVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 {
@@ -428,6 +431,16 @@ void EvalVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
         p_Node->block = m_Result;
     }
     m_Result = p_Node;
+
+    for (const auto& pair : m_Variables)
+    {
+        if (pair.second.useCount > 0) continue;
+
+        for (const std::shared_ptr<AstNode>& node : pair.second.usages)
+        {
+            remove_assignment(node);
+        }
+    }
 }
 
 void EvalVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
@@ -476,7 +489,7 @@ void EvalVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
 
                         // if (x < 27)
                         {
-                            std::cout << x << " ASSIGNED: " << r << " = " << v << std::endl;
+                            // std::cout << x << " ASSIGNED: " << r << " = " << v << std::endl;
                             m_Variables[reference].node = variables[i];
                             m_Variables[reference].value = values[i];
                             m_Variables[reference].currentBlock = get_block(variables[i]);
@@ -1065,4 +1078,65 @@ std::shared_ptr<AstNode> get_block(const std::shared_ptr<AstNode>& p_Node)
         curr = curr->getParent();
     }
     return curr;
+}
+
+bool is_decendant_of(const std::shared_ptr<AstNode>& p_Node, const AstKind& p_Kind, std::shared_ptr<AstNode>* p_Out)
+{
+    std::shared_ptr<AstNode> curr = p_Node;
+    while (curr != nullptr && curr->kind != AstKind::BlockNode && curr->kind != p_Kind)
+    {
+        curr = curr->getParent();
+    }
+    if (curr != nullptr && curr->kind == p_Kind)
+    {
+        if (p_Out != nullptr)
+        {
+            *p_Out = curr;
+        }
+        return true;
+    }
+    return false;
+}
+
+bool remove_assignment(const std::shared_ptr<AstNode>& p_Node)
+{
+    const std::shared_ptr<AstNode>& assignment_stat_node = p_Node->getAncestor(AstKind::AssignmentStatNode);
+
+    if (assignment_stat_node != nullptr)
+    {
+        const std::shared_ptr<AssignmentStatNode>& assignment = AssignmentStatNode::cast(assignment_stat_node);
+
+        const std::shared_ptr<BlockNode>& block = BlockNode::cast(p_Node->getBlock());
+
+        FormatVisitor f;
+        p_Node->accept(f);
+        std::cout << f.getResult() << std::endl;
+
+        /*if (assignment->variables->kind == AstKind::AttributeListNode)
+        {
+            std::vector<std::shared_ptr<AstNode>>& attribute_list = AttributeListNode::cast(assignment->variables)->list;
+            int offset = 0;
+            for (int i = 0; i < attribute_list.size(); i++)
+            {
+                if (attribute_list[i]->kind == AstKind::IdentifierNode && attribute_list[i] == p_Node)
+                {
+                    std::cout << "CAN REMOVE" << std::endl;
+                    attribute_list.erase(attribute_list.begin() + i - offset);
+
+                    if (i - offset < values.size())
+                    {
+                        values.erase(values.begin() + i - offset);
+                    }
+                    offset++;
+                }
+            }
+
+            if (assignment->getParent()->kind == AstKind::LocalStatNode)
+            {
+                // block->remove(assignment->getParent());
+            }
+        }*/
+        assignment->remove(p_Node);
+    }
+    return false;
 }

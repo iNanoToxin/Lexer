@@ -81,4 +81,24 @@ public:
     std::shared_ptr<AstNode> getReference() const;
     std::shared_ptr<AstNode> getParent() const;
     std::string getKindName() const;
+
+    std::shared_ptr<AstNode> getBlock() const
+    {
+        std::shared_ptr<AstNode> current = getParent();
+        while (current != nullptr && current->kind != AstKind::BlockNode)
+        {
+            current = current->getParent();
+        }
+        return current;
+    }
+
+    std::shared_ptr<AstNode> getAncestor(const AstKind& p_Kind) const
+    {
+        std::shared_ptr<AstNode> current = getParent();
+        while (current != nullptr && current->kind != AstKind::BlockNode && current->kind != p_Kind)
+        {
+            current = current->getParent();
+        }
+        return current != nullptr && current->kind == p_Kind ? current : nullptr;
+    }
 };
