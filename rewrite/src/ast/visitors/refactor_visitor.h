@@ -10,7 +10,7 @@ class RefactorVisitor final : public AstVisitor
 {
 private:
     std::shared_ptr<AstNode> m_Result;
-    ScopeTree<std::string, std::shared_ptr<AstNode>> m_ScopeTree;
+    ScopeStack m_ScopeTree;
 
 public:
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
@@ -76,7 +76,7 @@ public:
 
         // std::cout << "PUSHED: " << identifier->value << std::endl;
 
-        m_ScopeTree.setFront(identifier->value, identifier);
+        m_ScopeTree.setLocal(identifier->getName(), identifier);
 
     RETRY:
         static int offset = 0;
@@ -92,12 +92,17 @@ public:
             id /= chars.size();
         }
         std::reverse(str.begin(), str.end());
-        identifier->value = str;
+        identifier->setName(str);
 
         if (is_keyword(str))
         {
             offset++;
             goto RETRY;
         }
+    }
+
+    std::vector<std::shared_ptr<AstNode>> getVariables() const
+    {
+        return m_ScopeTree.getVaribles();
     }
 };

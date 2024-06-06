@@ -4,8 +4,8 @@
 class AssignmentStatNode final : public AstNode
 {
 public:
-    std::shared_ptr<AstNode> variableList;
-    std::shared_ptr<AstNode> expressionList;
+    std::shared_ptr<AstNode> variables;
+    std::shared_ptr<AstNode> values;
 
     explicit AssignmentStatNode() : AstNode(AstKind::AssignmentStatNode) {}
 

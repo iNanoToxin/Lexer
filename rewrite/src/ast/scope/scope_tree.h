@@ -1,66 +1,69 @@
 #pragma once
-#include "scope_node.h"
+#include <list>
+#include <map>
+#include <ranges>
+#include <vector>
+#include "ast/nodes/ast_node.h"
 
-template <class Key, class Value>
-class ScopeTree
+class ScopeStack
 {
 private:
+    struct Node
+    {
+        std::map<std::string, std::shared_ptr<AstNode>> map;
+        std::size_t count = 0;
+    };
+
+    std::list<Node> m_List;
     std::size_t m_TotalCount = 0;
     std::size_t m_Count = 0;
-public:
-    std::shared_ptr<ScopeNode<Key, Value>> head = nullptr;
-    std::shared_ptr<ScopeNode<Key, Value>> tail = nullptr;
+    std::vector<std::shared_ptr<AstNode>> m_Variables;
 
-    ScopeTree() = default;
+public:
+    ScopeStack() = default;
 
     void push()
     {
-        if (head == nullptr)
-        {
-            head = std::make_shared<ScopeNode<Key, Value>>();
-            tail = head;
-        }
-        else
-        {
-            head->next = std::make_shared<ScopeNode<Key, Value>>(head);
-            head = head->next;
-        }
+        m_List.emplace_back();
     }
 
     void pop()
     {
-        LL_assert(head != nullptr, "ScopeTree `head` is `nullptr`.");
-        m_Count -= head->count();
-        head = head->prev.lock();
+        LL_assert(!m_List.empty(), "ScopeTree is empty.");
+        m_Count -= m_List.back().count;
+        m_List.pop_back();
     }
 
-    void setBack(const Key& p_Key, const Value& p_Value)
+    void setGlobal(const std::string& p_Key, const std::shared_ptr<AstNode>& p_Value)
     {
-        LL_assert(tail != nullptr, "ScopeTree `tail` is `tail`.");
+        LL_assert(p_Value->kind == AstKind::IdentifierNode, "Expected `p_Value` to be kind `AstKind::IdentifierNode`.");
+        LL_assert(!m_List.empty(), "ScopeTree is empty.");
         m_TotalCount++;
         m_Count++;
-        tail->set(p_Key, p_Value);
+        m_List.front().count++;
+        m_List.front().map[p_Key] = p_Value;
+        m_Variables.push_back(p_Value);
     }
 
-    void setFront(const Key& p_Key, const Value& p_Value)
+    void setLocal(const std::string& p_Key, const std::shared_ptr<AstNode>& p_Value)
     {
-        LL_assert(head != nullptr, "ScopeTree `head` is `nullptr`.");
+        LL_assert(p_Value->kind == AstKind::IdentifierNode, "Expected `p_Value` to be kind `AstKind::IdentifierNode`.");
+        LL_assert(!m_List.empty(), "ScopeTree is empty.");
         m_TotalCount++;
         m_Count++;
-        head->set(p_Key, p_Value);
+        m_List.back().count++;
+        m_List.back().map[p_Key] = p_Value;
+        m_Variables.push_back(p_Value);
     }
 
-    Value get(const Key& p_Key) const
+    std::shared_ptr<AstNode> get(const std::string& p_Key)
     {
-        std::shared_ptr<ScopeNode<Key, Value>> temp = head;
-
-        while (temp != nullptr && !temp->contains(p_Key))
+        for (Node& node : m_List | std::views::reverse)
         {
-            temp = temp->prev.lock();
-        }
-        if (temp != nullptr)
-        {
-            return temp->get(p_Key);
+            if (node.map.contains(p_Key))
+            {
+                return node.map[p_Key];
+            }
         }
         return nullptr;
     }
@@ -73,5 +76,10 @@ public:
     std::size_t totalCount() const
     {
         return m_TotalCount;
+    }
+
+    std::vector<std::shared_ptr<AstNode>> getVaribles() const
+    {
+        return m_Variables;
     }
 };

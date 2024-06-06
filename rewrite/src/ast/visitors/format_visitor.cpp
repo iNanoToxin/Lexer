@@ -28,7 +28,7 @@ void FormatVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
 }
 void FormatVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
 {
-    m_Result = p_Node->value;
+    m_Result = p_Node->getName();
 }
 void FormatVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 {
@@ -42,18 +42,18 @@ void FormatVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
     }
     else
     {
-        std::ostringstream stream;
-        stream << std::setprecision(15);
-        stream << std::noshowpoint;
-        stream << p_Node->getDouble();
+        // std::ostringstream stream;
+        // stream << std::setprecision(15);
+        // stream << std::noshowpoint;
+        // stream << p_Node->getDouble();
 
-        if (std::floor(p_Node->getDouble()) == p_Node->getDouble())
-        {
-            stream << ".0";
-        }
-        m_Result = stream.str();
+        // if (std::floor(p_Node->getDouble()) == p_Node->getDouble())
+        // {
+        //     stream << ".0";
+        // }
+        // m_Result = stream.str();
+        m_Result = std::to_string(p_Node->getDouble());
     }
-    // m_Result = p_Node->toString();
 }
 void FormatVisitor::visit(const std::shared_ptr<StringNode>& p_Node)
 {
@@ -297,22 +297,22 @@ void FormatVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
 void FormatVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
 {
     std::stringstream stream;
-    p_Node->variableList->accept(*this);
+    p_Node->variables->accept(*this);
     stream << m_Result;
     stream << " = ";
-    p_Node->expressionList->accept(*this);
+    p_Node->values->accept(*this);
     stream << m_Result;
 
     #ifdef FPRINT_ALL
     std::vector<std::shared_ptr<AstNode>> list;
 
-    if (p_Node->variableList->kind == AstKind::VariableListNode)
+    if (p_Node->variables->kind == AstKind::VariableListNode)
     {
-        list = VariableListNode::cast(p_Node->variableList)->list;
+        list = VariableListNode::cast(p_Node->variables)->list;
     }
     else
     {
-        list = AttributeListNode::cast(p_Node->variableList)->list;
+        list = AttributeListNode::cast(p_Node->variables)->list;
     }
 
 

@@ -1,13 +1,28 @@
 #pragma once
+#include <map>
 #include "ast_visitor.h"
 #include "ast/nodes/ast_node.h"
+
+struct Variable
+{
+    std::shared_ptr<AstNode> reference;
+    std::shared_ptr<AstNode> node;
+    std::shared_ptr<AstNode> value;
+    std::shared_ptr<AstNode> currentBlock;
+    bool constant;
+};
 
 class EvalVisitor final : public AstVisitor
 {
 private:
     std::shared_ptr<AstNode> m_Result;
+    std::map<std::shared_ptr<AstNode>, Variable> m_Variables;
+
+    bool getReference(std::shared_ptr<AstNode>& p_Reference, const std::shared_ptr<AstNode>& p_Node) const;
 
 public:
+    void setVariables(const std::vector<std::shared_ptr<AstNode>>& p_Variables);
+
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
     void visit(const std::shared_ptr<IdentifierNode>& p_Node) override;
@@ -54,12 +69,12 @@ public:
 };
 
 bool perform_binary_op(
-        std::shared_ptr<AstNode>& p_Result,
-        const std::shared_ptr<AstNode>& p_Lhs,
-        double (*p_Operation)(double, double),
-        const std::shared_ptr<AstNode>& p_Rhs,
-        bool p_ForceDouble = false
-    );
+    std::shared_ptr<AstNode>& p_Result,
+    const std::shared_ptr<AstNode>& p_Lhs,
+    double (*p_Operation)(double, double),
+    const std::shared_ptr<AstNode>& p_Rhs,
+    bool p_ForceDouble = false
+);
 
 bool perform_comparison(
     std::shared_ptr<AstNode>& p_Result,
@@ -82,3 +97,7 @@ void merge_blocks(
     const std::shared_ptr<AstNode>& p_BlockB,
     const std::shared_ptr<AstNode>& p_Node
 );
+
+std::vector<std::shared_ptr<AstNode>> get_variable_list(const std::shared_ptr<AstNode>& p_Node);
+
+std::shared_ptr<AstNode> get_block(const std::shared_ptr<AstNode>& p_Node);

@@ -1,8 +1,41 @@
 #include "eval_visitor.h"
+
+#include <algorithm>
 #include <cmath>
 #include <sstream>
+
+#include "format_visitor.h"
 #include "utilities/assert.h"
 #include "utilities/math.h"
+
+bool EvalVisitor::getReference(std::shared_ptr<AstNode>& p_Reference, const std::shared_ptr<AstNode>& p_Node) const
+{
+    if (m_Variables.contains(p_Node))
+    {
+        p_Reference = p_Node;
+        return true;
+    }
+    else if (m_Variables.contains(p_Node->getReference()))
+    {
+        p_Reference = p_Node->getReference();
+        return true;
+    }
+    return false;
+}
+
+void EvalVisitor::setVariables(const std::vector<std::shared_ptr<AstNode>>& p_Variables)
+{
+    for (const std::shared_ptr<AstNode>& variable : p_Variables)
+    {
+        m_Variables[variable] = Variable{
+            .reference = variable,
+            .node = variable,
+            .value = nullptr,
+            .currentBlock = get_block(variable),
+            .constant = true
+        };
+    }
+}
 
 void EvalVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
 {
@@ -25,6 +58,65 @@ void EvalVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
 void EvalVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
 {
     m_Result = p_Node;
+
+    const std::shared_ptr<AstNode>& reference = p_Node->getReference();
+
+    if (reference != nullptr && m_Variables.contains(reference) && m_Variables[reference].value != nullptr)
+    {
+        if (get_block(p_Node) != m_Variables[reference].currentBlock)
+        {
+            return;
+        }
+
+        bool pass = true;
+        std::shared_ptr<AstNode> curr = p_Node;
+
+        while (curr != nullptr && curr->kind != AstKind::BlockNode)
+        {
+            if (curr->kind == AstKind::VariableListNode || curr->kind == AstKind::AttributeListNode)
+            {
+                pass = false;
+                break;
+            }
+            else if (curr->kind == AstKind::BinaryOpNode)
+            {
+                break;
+            }
+            else if (curr->kind == AstKind::NumericForStatNode)
+            {
+                pass = false;
+                break;
+            }
+            curr = curr->getParent();
+        }
+
+        if (!pass)
+        {
+            std::vector<std::string> arr;
+            std::string str;
+            curr = p_Node;
+
+            while (curr != nullptr && curr->kind != AstKind::BlockNode)
+            {
+                arr.push_back(curr->getKindName());
+                curr = curr->getParent();
+            }
+            std::reverse(arr.begin(), arr.end());
+
+            for (int i = 0; i < arr.size(); i++)
+            {
+                str += std::string(std::max(i * 2 - 1, 0), '-');
+                str += std::string(i > 0, '>');
+                str += arr[i];
+                str += "\n";
+            }
+
+            // std::cout << str << std::endl;
+            return;
+        }
+        // std::cout << "found" << std::endl;
+        m_Result = m_Variables[reference].value;
+    }
 }
 void EvalVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 {
@@ -340,16 +432,70 @@ void EvalVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
 
 void EvalVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
 {
-    if (p_Node->variableList != nullptr)
+    if (p_Node->variables != nullptr)
     {
-        p_Node->variableList->accept(*this);
-        p_Node->variableList = m_Result;
+        p_Node->variables->accept(*this);
+        p_Node->variables = m_Result;
     }
-    if (p_Node->expressionList != nullptr)
+    if (p_Node->values != nullptr)
     {
-        p_Node->expressionList->accept(*this);
-        p_Node->expressionList = m_Result;
+        p_Node->values->accept(*this);
+        p_Node->values = m_Result;
     }
+
+    if (p_Node->variables != nullptr && p_Node->values != nullptr)
+    {
+        const std::vector<std::shared_ptr<AstNode>>& variables = get_variable_list(p_Node->variables);
+        const std::vector<std::shared_ptr<AstNode>>& values = ExpressionListNode::cast(p_Node->values)->list;
+        const std::size_t min = std::min(variables.size(), values.size());
+
+        for (int i = 0; i < min; i++)
+        {
+            std::shared_ptr<AstNode> reference = nullptr;
+            if (getReference(reference, variables[i]))
+            {
+                FormatVisitor a;
+                reference->accept(a);
+                std::string r = a.getResult();
+                values[i]->accept(a);
+                std::string v = a.getResult();
+
+                switch (values[i]->kind)
+                {
+                    case AstKind::IdentifierNode:
+                    case AstKind::NumberNode:
+                    case AstKind::StringNode:
+                    // case AstKind::BinaryOpNode:
+                    // case AstKind::FuncCallNode:
+                    // case AstKind::FuncDefNode:
+                    case AstKind::IndexNode:
+                    case AstKind::MemberNode:
+                    {
+                        static int x = 0;
+                        x++;
+
+                        // if (x < 27)
+                        {
+                            std::cout << x << " ASSIGNED: " << r << " = " << v << std::endl;
+                            m_Variables[reference].node = variables[i];
+                            m_Variables[reference].value = values[i];
+                            m_Variables[reference].currentBlock = get_block(variables[i]);
+                            m_Variables[reference].constant = false;
+                        }
+
+                        break;
+                    }
+                    default:
+                    {
+                        // std::cout << "REMOVED_2: " << r << " = " << v << std::endl;
+                        m_Variables.erase(reference);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     m_Result = p_Node;
 }
 void EvalVisitor::visit(const std::shared_ptr<BreakStat>& p_Node)
@@ -882,7 +1028,41 @@ void merge_blocks(
 
     for (const std::shared_ptr<AstNode>& statement : block_a->statements)
     {
+        statement->setParent(block_b);
         block_b->statements.insert(index, statement);
     }
     block_a->statements.clear();
+}
+
+std::vector<std::shared_ptr<AstNode>> get_variable_list(const std::shared_ptr<AstNode>& p_Node)
+{
+    LL_assert(p_Node->kind == AstKind::VariableListNode || p_Node->kind == AstKind::AttributeListNode, "Expected variable list.");
+
+    if (p_Node->kind == AstKind::AttributeListNode)
+    {
+        std::vector<std::shared_ptr<AstNode>> list;
+        for (const std::shared_ptr<AstNode>& attribute_node : AttributeListNode::cast(p_Node)->list)
+        {
+            if (attribute_node->kind == AstKind::AttributeNode)
+            {
+                list.push_back(AttributeNode::cast(attribute_node)->value);
+            }
+            else
+            {
+                list.push_back(attribute_node);
+            }
+        }
+        return list;
+    }
+    return VariableListNode::cast(p_Node)->list;
+}
+
+std::shared_ptr<AstNode> get_block(const std::shared_ptr<AstNode>& p_Node)
+{
+    std::shared_ptr<AstNode> curr = p_Node;
+    while (curr != nullptr && curr->kind != AstKind::BlockNode)
+    {
+        curr = curr->getParent();
+    }
+    return curr;
 }

@@ -58,6 +58,7 @@ class AstNode : public std::enable_shared_from_this<AstNode>
 {
 private:
     std::weak_ptr<AstNode> m_Parent;
+    std::weak_ptr<AstNode> m_Reference;
 public:
     AstKind kind;
 
@@ -75,7 +76,9 @@ public:
     // }
 
     virtual void accept(AstVisitor& p_Visitor) = 0;
+    void setReference(const std::shared_ptr<AstNode>& p_Reference);
     void setParent(const std::shared_ptr<AstNode>& p_Parent);
+    std::shared_ptr<AstNode> getReference() const;
     std::shared_ptr<AstNode> getParent() const;
     std::string getKindName() const;
 };

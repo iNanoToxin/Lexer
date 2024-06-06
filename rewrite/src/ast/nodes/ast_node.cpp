@@ -62,3 +62,13 @@ std::shared_ptr<AstNode> AstNode::getParent() const
 {
     return m_Parent.lock();
 }
+
+void AstNode::setReference(const std::shared_ptr<AstNode>& p_Reference)
+{
+    m_Reference = p_Reference;
+}
+
+std::shared_ptr<AstNode> AstNode::getReference() const
+{
+    return m_Reference.lock();
+}

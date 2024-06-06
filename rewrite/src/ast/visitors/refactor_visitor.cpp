@@ -20,24 +20,21 @@ void RefactorVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
 }
 void RefactorVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
 {
+    m_Result = p_Node;
+
     if (p_Node->getParent()->kind == AstKind::TableNameValueNode)
     {
-        m_Result = p_Node;
         return;
     }
 
-
-    if (const std::shared_ptr<AstNode>& value = m_ScopeTree.get(p_Node->value))
+    if (const std::shared_ptr<AstNode>& value = m_ScopeTree.get(p_Node->getName()))
     {
         if (p_Node->getParent()->kind != AstKind::AttributeListNode)
         {
-            // std::cout << "var: " << name << ", value: " << value->toString(0) << std::endl;
-
-            m_Result = value;
-            return;
+            p_Node->setReference(value);
+            p_Node->setName(IdentifierNode::cast(value)->getName());
         }
     }
-    m_Result = p_Node;
 }
 void RefactorVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 {
@@ -190,15 +187,15 @@ void RefactorVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
 
 void RefactorVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
 {
-    if (p_Node->expressionList != nullptr)
+    if (p_Node->values != nullptr)
     {
-        p_Node->expressionList->accept(*this);
-        p_Node->expressionList = m_Result;
+        p_Node->values->accept(*this);
+        p_Node->values = m_Result;
     }
-    if (p_Node->variableList != nullptr)
+    if (p_Node->variables != nullptr)
     {
-        p_Node->variableList->accept(*this);
-        p_Node->variableList = m_Result;
+        p_Node->variables->accept(*this);
+        p_Node->variables = m_Result;
     }
     m_Result = p_Node;
 }

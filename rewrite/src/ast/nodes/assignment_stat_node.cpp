@@ -4,16 +4,16 @@
 std::shared_ptr<AssignmentStatNode> AssignmentStatNode::create(const std::shared_ptr<AstNode>& p_VariableList, const std::shared_ptr<AstNode>& p_ExpressionList)
 {
     std::shared_ptr<AssignmentStatNode> node = std::make_shared<AssignmentStatNode>();
-    node->variableList = p_VariableList;
-    node->expressionList = p_ExpressionList;
+    node->variables = p_VariableList;
+    node->values = p_ExpressionList;
 
-    if (node->variableList != nullptr)
+    if (node->variables != nullptr)
     {
-        node->variableList->setParent(node);
+        node->variables->setParent(node);
     }
-    if (node->expressionList != nullptr)
+    if (node->values != nullptr)
     {
-        node->expressionList->setParent(node);
+        node->values->setParent(node);
     }
     return node;
 }
