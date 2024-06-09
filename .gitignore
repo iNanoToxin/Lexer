@@ -1,2 +1,5 @@
+/.idea/
+/cmake-build-debug/
+
 /Lua/.idea/
 /Lua/cmake-build-debug/
