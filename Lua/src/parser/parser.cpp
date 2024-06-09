@@ -1,6 +1,5 @@
 #include "parser.h"
 
-#include <fmt/format.h>
 #include "ast/visitors/ast_visitor.h"
 #include "utilities/assert.h"
 #include "utilities/util.h"
@@ -882,7 +881,7 @@ std::shared_ptr<AstNode> Parser::getPrimaryExpression() {
             {
                 consume();
                 const std::shared_ptr<AstNode> expression = getExpression(Util::get_precedence(true));
-                LL_assert(expression != nullptr, fmt::format("Expected expression after `{}`.", current_token.literal));
+                LL_assert(expression != nullptr, std::string("Expected expression after `") + current_token.literal + "`.");
 
                 return UnaryOpNode::create(current_token.literal, expression);
             }
@@ -918,7 +917,7 @@ std::shared_ptr<AstNode> Parser::getPrimaryExpression() {
             {
                 consume();
                 const std::shared_ptr<AstNode> expression = getExpression(Util::get_precedence(true));
-                LL_assert(expression != nullptr, fmt::format("Expected expression after `{}`.", current_token.literal));
+                LL_assert(expression != nullptr, std::string("Expected expression after `") + current_token.literal + "`.");
 
                 if (current_token.is("-"))
                 {
