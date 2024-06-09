@@ -12,8 +12,8 @@
 #include "luacode.h"
 #include "lualib.h"
 
-#define PATH(FILE) "C:\\Users\\dylan\\JetBrains\\CLionProjects\\Lexer\\rewrite\\tests\\"#FILE
-#define CODE PATH(test_3.lua)
+#define PATH(FILE) "C:\\Users\\dylan\\JetBrains\\CLionProjects\\Lexer\\Lua\\tests\\"#FILE
+#define CODE PATH(test_4.lua)
 
 int compile_lua(const std::string& p_Source);
 
@@ -32,32 +32,6 @@ int main()
     chunk->accept(evaluator);
     chunk->accept(formatter);
     // chunk->accept(encoder);
-
-
-
-    /*refactor = RefactorVisitor();
-    evaluator = EvalVisitor();
-    formatter = FormatVisitor();
-    chunk->accept(refactor);
-    evaluator.setVariables(refactor.getVariables());
-    chunk->accept(evaluator);
-    chunk->accept(formatter);*/
-
-
-    /*char s[LUAI_MAXNUM2STR];
-    char* s2 = luai_num2str(s, 4343.0);
-    std::cout << s << " format: " << (s2[0] == '\0') << std::endl;
-
-    for (int i = 0; i < LUAI_MAXNUM2STR; i++)
-    {
-        if (s[i] == '\0')
-        {
-            break;
-        }
-        std::cout << s[i];
-    }
-    std::cout << std::endl;*/
-
 
     std::cout << "Finished formatting." << std::endl;
     Util::write_file(PATH(output.lua), formatter.getResult());
