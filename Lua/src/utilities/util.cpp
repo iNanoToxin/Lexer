@@ -3,7 +3,6 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
-#include <fmt/format.h>
 #include "./assert.h"
 
 std::string Util::read_file(const std::string& p_Path)
@@ -43,7 +42,7 @@ void Util::write_file(const std::string& p_Path, const std::string& p_Source)
 
 std::string Util::string_wrap(const char p_LWrap, const std::string& p_String, const char p_RWrap)
 {
-    return fmt::format("{}{}{}", p_LWrap, p_String, p_RWrap);
+    return p_LWrap + p_String + p_RWrap;
 }
 
 std::string Util::string_wrap(const std::string& p_String, const char p_Wrap)
