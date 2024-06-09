@@ -1,8 +1,2 @@
-/.idea/
-/cmake-build-debug/
-
-/lua/.idea/
-/lua/cmake-build-debug/
-
-/rewrite/.idea/
-/rewrite/cmake-build-debug/
+/Lua/.idea/
+/Lua/cmake-build-debug/
