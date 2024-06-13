@@ -7,7 +7,7 @@ public:
     static constexpr AstKind ClassKind = AstKind::TableConstructorNode;
 
 public:
-    std::shared_ptr<AstNode> fieldList;
+    std::shared_ptr<AstNode> fields;
 
     explicit TableConstructorNode() : AstNode(AstKind::TableConstructorNode) {}
 

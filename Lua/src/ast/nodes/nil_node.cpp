@@ -8,5 +8,5 @@ std::shared_ptr<NilNode> NilNode::create()
 
 void NilNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<NilNode>());
+    p_Visitor.visitNode(cast<NilNode>());
 }

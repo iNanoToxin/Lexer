@@ -7,8 +7,8 @@ public:
     static constexpr AstKind ClassKind = AstKind::GenericForStatNode;
 
 public:
-    std::shared_ptr<AstNode> nameList;
-    std::shared_ptr<AstNode> expressionList;
+    std::shared_ptr<AstNode> names;
+    std::shared_ptr<AstNode> expressions;
     std::shared_ptr<AstNode> block;
 
     explicit GenericForStatNode() : AstNode(AstKind::GenericForStatNode) {}

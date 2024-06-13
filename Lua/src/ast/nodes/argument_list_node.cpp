@@ -15,5 +15,5 @@ std::shared_ptr<ArgumentListNode> ArgumentListNode::create(const std::shared_ptr
 
 void ArgumentListNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<ArgumentListNode>());
+    p_Visitor.visitNode(cast<ArgumentListNode>());
 }

@@ -15,6 +15,7 @@ private:
 public:
     void setVariables(const std::unordered_map<std::shared_ptr<AstNode>, VariableInfo>& p_Variables);
 
+protected:
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
     void visit(const std::shared_ptr<IdentifierNode>& p_Node) override;

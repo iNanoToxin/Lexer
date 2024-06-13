@@ -20,7 +20,7 @@ std::shared_ptr<AssignmentStatNode> AssignmentStatNode::create(const std::shared
 
 void AssignmentStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<AssignmentStatNode>());
+    p_Visitor.visitNode(cast<AssignmentStatNode>());
 }
 
 void AssignmentStatNode::remove(const std::shared_ptr<AstNode>& p_Node)

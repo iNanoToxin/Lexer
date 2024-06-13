@@ -15,5 +15,5 @@ std::shared_ptr<ReturnStatNode> ReturnStatNode::create(const std::shared_ptr<Ast
 
 void ReturnStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<ReturnStatNode>());
+    p_Visitor.visitNode(cast<ReturnStatNode>());
 }

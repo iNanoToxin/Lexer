@@ -18,7 +18,7 @@ std::shared_ptr<ExpressionListNode> ExpressionListNode::create(const std::vector
 
 void ExpressionListNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<ExpressionListNode>());
+    p_Visitor.visitNode(cast<ExpressionListNode>());
 }
 
 bool ExpressionListNode::remove(const std::shared_ptr<AstNode>& p_Node, std::size_t* p_Index)

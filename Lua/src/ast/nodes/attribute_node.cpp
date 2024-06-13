@@ -20,5 +20,5 @@ std::shared_ptr<AttributeNode> AttributeNode::create(const std::shared_ptr<AstNo
 
 void AttributeNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<AttributeNode>());
+    p_Visitor.visitNode(cast<AttributeNode>());
 }

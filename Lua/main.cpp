@@ -13,7 +13,7 @@
 #include "lualib.h"
 
 #define PATH(FILE) "C:\\Users\\dylan\\JetBrains\\CLionProjects\\Lexer\\Lua\\tests\\"#FILE
-#define CODE PATH(test_4.lua)
+#define CODE PATH(test_3.lua)
 
 int compile_lua(const std::string& p_Source);
 

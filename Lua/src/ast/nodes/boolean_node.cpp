@@ -10,7 +10,7 @@ std::shared_ptr<BooleanNode> BooleanNode::create(const bool p_Value)
 
 void BooleanNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<BooleanNode>());
+    p_Visitor.visitNode(cast<BooleanNode>());
 }
 
 void BooleanNode::flip()

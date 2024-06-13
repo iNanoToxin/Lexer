@@ -10,7 +10,7 @@ std::shared_ptr<IdentifierNode> IdentifierNode::create(const std::string& p_Name
 
 void IdentifierNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<IdentifierNode>());
+    p_Visitor.visitNode(cast<IdentifierNode>());
 }
 
 void IdentifierNode::setName(const std::string& p_Name)

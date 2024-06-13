@@ -7,9 +7,13 @@ class JsonVisitor final : public AstVisitor
 {
 private:
     JsonBuilder m_Builder;
+
 public:
     explicit JsonVisitor() : m_Builder(2) {}
 
+    std::string getResult() const;
+
+protected:
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
     void visit(const std::shared_ptr<IdentifierNode>& p_Node) override;
@@ -53,6 +57,4 @@ public:
     void visit(const std::shared_ptr<FuncNameNode>& p_Node) override;
     void visit(const std::shared_ptr<LabelNode>& p_Node) override;
     void visit(const std::shared_ptr<SemicolonNode>& p_Node) override;
-
-    std::string getResult() const;
 };

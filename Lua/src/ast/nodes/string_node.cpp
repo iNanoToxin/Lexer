@@ -12,7 +12,7 @@ std::shared_ptr<StringNode> StringNode::create(const std::string& p_Value)
 
 void StringNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<StringNode>());
+    p_Visitor.visitNode(cast<StringNode>());
 }
 
 std::string StringNode::getContent() const

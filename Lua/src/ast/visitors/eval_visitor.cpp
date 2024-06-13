@@ -55,7 +55,7 @@ void EvalVisitor::setVariables(const std::unordered_map<std::shared_ptr<AstNode>
         info.currentBlock = nullptr;
         m_Variables[pair.first] = info;
 
-        std::cout << Ansi(AnsiColor::Cyan, "INIT: ") << info << std::endl;
+        // std::cout << Ansi(AnsiColor::Cyan, "INIT: ") << info << std::endl;
     }
 }
 
@@ -453,6 +453,11 @@ void EvalVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
         }
         it++;
     }
+
+    if (p_Node->statements.empty())
+    {
+        std::cout << "EMPTY" << std::endl;
+    }
     m_Result = p_Node;
 }
 void EvalVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
@@ -468,7 +473,7 @@ void EvalVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
     for (const auto& pair : m_Variables)
     {
         if (pair.second.useCount > 0) continue;
-        std::cout << Ansi(AnsiColor::Magenta, "EVAL: ") << pair.second << std::endl;
+        // std::cout << Ansi(AnsiColor::Magenta, "EVAL: ") << pair.second << std::endl;
 
 
         for (const std::shared_ptr<AstNode>& node : pair.second.usages)
@@ -575,15 +580,15 @@ void EvalVisitor::visit(const std::shared_ptr<DoStatNode>& p_Node)
 }
 void EvalVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node)
 {
-    if (p_Node->nameList != nullptr)
+    if (p_Node->names != nullptr)
     {
-        p_Node->nameList->accept(*this);
-        p_Node->nameList = m_Result;
+        p_Node->names->accept(*this);
+        p_Node->names = m_Result;
     }
-    if (p_Node->expressionList != nullptr)
+    if (p_Node->expressions != nullptr)
     {
-        p_Node->expressionList->accept(*this);
-        p_Node->expressionList = m_Result;
+        p_Node->expressions->accept(*this);
+        p_Node->expressions = m_Result;
     }
     if (p_Node->block != nullptr)
     {
@@ -782,10 +787,10 @@ void EvalVisitor::visit(const std::shared_ptr<MethodNode>& p_Node)
 
 void EvalVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
 {
-    if (p_Node->fieldList != nullptr)
+    if (p_Node->fields != nullptr)
     {
-        p_Node->fieldList->accept(*this);
-        p_Node->fieldList = m_Result;
+        p_Node->fields->accept(*this);
+        p_Node->fields = m_Result;
     }
     m_Result = p_Node;
 }
@@ -853,10 +858,42 @@ void EvalVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node)
         p_Node->args->accept(*this);
         p_Node->args = m_Result;
     }
+
+    if (p_Node->root != nullptr && p_Node->args != nullptr && p_Node->root->kind == AstKind::FuncDefNode)
+    {
+        // FormatVisitor a;
+        // p_Node->root->accept(a);
+        // if (a.getResult().size() < 3000)
+        // {
+        //     std::cout << a.getResult() << std::endl;
+        // }
+    }
     m_Result = p_Node;
 }
 void EvalVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node)
 {
+    if (p_Node->name != nullptr && p_Node->body != nullptr)
+    {
+        std::shared_ptr<AstNode> reference = nullptr;
+        std::cout << "Called " << p_Node->name->cast<IdentifierNode>()->getName() << std::endl;
+        // if (getReference(reference, p_Node->name))
+        // {
+        //     FormatVisitor a;
+        //     reference->accept(a);
+        //     std::string r = a.getResult();
+        //     p_Node->body->accept(a);
+        //     std::string v = a.getResult();
+        //
+        //     std::cout << "HI: " << p_Node->getKindName() << " " << r << " = " << v << std::endl;
+        //
+        //     // if (m_Variables[reference].useCount > 0)
+        //     {
+        //         m_Variables.erase(reference);
+        //     }
+        // }
+        // p_Node->name->setReference(nullptr);
+    }
+
     if (p_Node->name != nullptr)
     {
         p_Node->name->accept(*this);

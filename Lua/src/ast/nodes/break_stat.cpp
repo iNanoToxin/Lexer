@@ -8,5 +8,5 @@ std::shared_ptr<BreakStat> BreakStat::create()
 
 void BreakStat::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<BreakStat>());
+    p_Visitor.visitNode(cast<BreakStat>());
 }

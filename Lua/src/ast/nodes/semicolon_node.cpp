@@ -8,5 +8,5 @@ std::shared_ptr<SemicolonNode> SemicolonNode::create()
 
 void SemicolonNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<SemicolonNode>());
+    p_Visitor.visitNode(cast<SemicolonNode>());
 }

@@ -15,5 +15,5 @@ std::shared_ptr<ChunkNode> ChunkNode::create(const std::shared_ptr<AstNode>& p_B
 
 void ChunkNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<ChunkNode>());
+    p_Visitor.visitNode(cast<ChunkNode>());
 }

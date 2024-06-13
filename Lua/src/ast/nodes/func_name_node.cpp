@@ -15,5 +15,5 @@ std::shared_ptr<FuncNameNode> FuncNameNode::create(const std::shared_ptr<AstNode
 
 void FuncNameNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<FuncNameNode>());
+    p_Visitor.visitNode(cast<FuncNameNode>());
 }

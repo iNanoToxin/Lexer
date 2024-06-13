@@ -4,17 +4,17 @@
 std::shared_ptr<GenericForStatNode> GenericForStatNode::create(const std::shared_ptr<AstNode>& p_NameList, const std::shared_ptr<AstNode>& p_ExpressionList, const std::shared_ptr<AstNode>& p_Block)
 {
     std::shared_ptr<GenericForStatNode> node = std::make_shared<GenericForStatNode>();
-    node->nameList = p_NameList;
-    node->expressionList = p_ExpressionList;
+    node->names = p_NameList;
+    node->expressions = p_ExpressionList;
     node->block = p_Block;
 
-    if (node->nameList != nullptr)
+    if (node->names != nullptr)
     {
-        node->nameList->setParent(node);
+        node->names->setParent(node);
     }
-    if (node->expressionList != nullptr)
+    if (node->expressions != nullptr)
     {
-        node->expressionList->setParent(node);
+        node->expressions->setParent(node);
     }
     if (node->block != nullptr)
     {
@@ -25,5 +25,5 @@ std::shared_ptr<GenericForStatNode> GenericForStatNode::create(const std::shared
 
 void GenericForStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<GenericForStatNode>());
+    p_Visitor.visitNode(cast<GenericForStatNode>());
 }

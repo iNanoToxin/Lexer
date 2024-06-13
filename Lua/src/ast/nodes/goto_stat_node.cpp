@@ -15,5 +15,5 @@ std::shared_ptr<GotoStatNode> GotoStatNode::create(const std::shared_ptr<AstNode
 
 void GotoStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<GotoStatNode>());
+    p_Visitor.visitNode(cast<GotoStatNode>());
 }

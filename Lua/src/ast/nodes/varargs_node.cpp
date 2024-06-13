@@ -8,5 +8,5 @@ std::shared_ptr<VarargsNode> VarargsNode::create()
 
 void VarargsNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<VarargsNode>());
+    p_Visitor.visitNode(cast<VarargsNode>());
 }

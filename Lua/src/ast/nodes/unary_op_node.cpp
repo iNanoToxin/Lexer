@@ -28,5 +28,5 @@ std::shared_ptr<UnaryOpNode> UnaryOpNode::create(const std::string& p_Operation,
 
 void UnaryOpNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<UnaryOpNode>());
+    p_Visitor.visitNode(cast<UnaryOpNode>());
 }

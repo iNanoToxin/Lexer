@@ -18,7 +18,7 @@ std::shared_ptr<FieldListNode> FieldListNode::create(const std::vector<std::shar
 
 void FieldListNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<FieldListNode>());
+    p_Visitor.visitNode(cast<FieldListNode>());
 }
 
 bool FieldListNode::remove(const std::shared_ptr<AstNode>& p_Node, std::size_t* p_Index)

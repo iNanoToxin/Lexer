@@ -39,7 +39,7 @@ std::shared_ptr<NumberNode> NumberNode::create(const LuaDouble p_Double)
 
 void NumberNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<NumberNode>());
+    p_Visitor.visitNode(cast<NumberNode>());
 }
 
 void NumberNode::setInt(const LuaInteger p_Integer)

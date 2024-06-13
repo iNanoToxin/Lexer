@@ -22,5 +22,5 @@ std::shared_ptr<IfStatNode> IfStatNode::create(const std::list<AstNodePair>& p_C
 
 void IfStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<IfStatNode>());
+    p_Visitor.visitNode(cast<IfStatNode>());
 }

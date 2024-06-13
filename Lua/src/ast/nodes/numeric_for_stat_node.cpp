@@ -35,5 +35,5 @@ std::shared_ptr<NumericForStatNode> NumericForStatNode::create(const std::shared
 
 void NumericForStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<NumericForStatNode>());
+    p_Visitor.visitNode(cast<NumericForStatNode>());
 }

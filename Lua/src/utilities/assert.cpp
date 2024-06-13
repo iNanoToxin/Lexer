@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 
-void assert_condition(const int p_Line, const char* p_File, const char* p_Condition, const bool p_Success, const std::string& p_Message, const char* p_Identifier)
+void assert_condition(const int p_Line, const char* p_File, const char* p_Func, const char* p_Condition, const bool p_Success, const std::string& p_Message, const char* p_Identifier)
 {
     if (p_Success) return;
 
@@ -12,6 +12,7 @@ void assert_condition(const int p_Line, const char* p_File, const char* p_Condit
     {
         stream << "    " << "Identifier: " << p_Identifier << "\n";
     }
+    stream << "    " << "Func: " << p_Func << "\n";
     stream << "    " << "Line: " << p_Line << "\n";
     stream << "    " << "File: " << p_File << "\n";
     stream << "    " << "Message: " << p_Message;
@@ -20,7 +21,7 @@ void assert_condition(const int p_Line, const char* p_File, const char* p_Condit
     std::exit(0);
 }
 
-void failure(const int p_Line, const char* p_File, const std::string& p_Condition, const std::string& p_Message, const char* p_Identifier)
+void failure(const int p_Line, const char* p_File, const char* p_Func, const std::string& p_Condition, const std::string& p_Message, const char* p_Identifier)
 {
     std::stringstream stream;
     stream << "Failure: " << p_Condition << "\n";
@@ -28,6 +29,7 @@ void failure(const int p_Line, const char* p_File, const std::string& p_Conditio
     {
         stream << "    " << "Identifier: " << p_Identifier << "\n";
     }
+    stream << "    " << "Func: " << p_Func << "\n";
     stream << "    " << "Line: " << p_Line << "\n";
     stream << "    " << "File: " << p_File << "\n";
     stream << "    " << "Message: " << p_Message;

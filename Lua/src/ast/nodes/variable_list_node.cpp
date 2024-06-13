@@ -18,7 +18,7 @@ std::shared_ptr<VariableListNode> VariableListNode::create(const std::vector<std
 
 void VariableListNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<VariableListNode>());
+    p_Visitor.visitNode(cast<VariableListNode>());
 }
 
 bool VariableListNode::remove(const std::shared_ptr<AstNode>& p_Node, std::size_t* p_Index)

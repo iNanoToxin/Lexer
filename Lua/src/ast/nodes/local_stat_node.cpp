@@ -15,5 +15,5 @@ std::shared_ptr<LocalStatNode> LocalStatNode::create(const std::shared_ptr<AstNo
 
 void LocalStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<LocalStatNode>());
+    p_Visitor.visitNode(cast<LocalStatNode>());
 }

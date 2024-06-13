@@ -18,7 +18,7 @@ std::shared_ptr<AttributeListNode> AttributeListNode::create(const std::vector<s
 
 void AttributeListNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<AttributeListNode>());
+    p_Visitor.visitNode(cast<AttributeListNode>());
 }
 
 bool AttributeListNode::remove(const std::shared_ptr<AstNode>& p_Node, std::size_t* p_Index)

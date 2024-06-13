@@ -20,5 +20,5 @@ std::shared_ptr<FuncBodyNode> FuncBodyNode::create(const std::shared_ptr<AstNode
 
 void FuncBodyNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<FuncBodyNode>());
+    p_Visitor.visitNode(cast<FuncBodyNode>());
 }

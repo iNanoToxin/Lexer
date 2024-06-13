@@ -18,5 +18,5 @@ std::shared_ptr<BlockNode> BlockNode::create(const std::list<std::shared_ptr<Ast
 
 void BlockNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<BlockNode>());
+    p_Visitor.visitNode(cast<BlockNode>());
 }

@@ -50,5 +50,5 @@ std::shared_ptr<BinaryOpNode> BinaryOpNode::create(const std::shared_ptr<AstNode
 
 void BinaryOpNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<BinaryOpNode>());
+    p_Visitor.visitNode(cast<BinaryOpNode>());
 }

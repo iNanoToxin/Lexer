@@ -143,13 +143,11 @@ void FormatVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node)
 {
     std::stringstream stream;
     stream << "(";
-
     if (p_Node->list != nullptr)
     {
         p_Node->list->accept(*this);
         stream << m_Result;
     }
-
     stream << ")";
     m_Result = stream.str();
 }
@@ -160,7 +158,6 @@ void FormatVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
 
     for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
         stream << separator;
         child->accept(*this);
         stream << m_Result;
@@ -175,7 +172,6 @@ void FormatVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
 
     for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
         stream << separator;
         child->accept(*this);
         stream << m_Result;
@@ -213,7 +209,6 @@ void FormatVisitor::visit(const std::shared_ptr<NameListNode>& p_Node)
 
     for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
         stream << separator;
         child->accept(*this);
         stream << m_Result;
@@ -228,7 +223,6 @@ void FormatVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node)
 
     for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
         stream << separator;
         child->accept(*this);
         stream << m_Result;
@@ -243,7 +237,6 @@ void FormatVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
 
     for (const std::shared_ptr<AstNode>& child : p_Node->list)
     {
-        LL_assert(child != nullptr, "Found `nullptr` in `AstNode` array.");
         stream << separator;
         child->accept(*this);
         stream << m_Result;
@@ -423,10 +416,10 @@ void FormatVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node)
 {
     std::stringstream stream;
     stream << "for ";
-    p_Node->nameList->accept(*this);
+    p_Node->names->accept(*this);
     stream << m_Result;
     stream << " in ";
-    p_Node->expressionList->accept(*this);
+    p_Node->expressions->accept(*this);
     stream << m_Result;
 
     if (p_Node->block != nullptr)
@@ -676,9 +669,9 @@ void FormatVisitor::visit(const std::shared_ptr<MethodNode>& p_Node)
 
 void FormatVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
 {
-    if (p_Node->fieldList != nullptr)
+    if (p_Node->fields != nullptr)
     {
-        const std::vector<std::shared_ptr<AstNode>>& list = p_Node->fieldList->cast<FieldListNode>()->list;
+        const std::vector<std::shared_ptr<AstNode>>& list = p_Node->fields->cast<FieldListNode>()->list;
         std::stringstream stream;
 
         if (list.size() == 1 && list[0]->kind == AstKind::TableValueNode)
@@ -707,7 +700,7 @@ void FormatVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
         }
 
         stream << "{\n";
-        p_Node->fieldList->accept(*this);
+        p_Node->fields->accept(*this);
         stream << m_Result;
         stream << "}";
         m_Result = stream.str();

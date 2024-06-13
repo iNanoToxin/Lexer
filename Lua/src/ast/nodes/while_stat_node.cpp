@@ -20,5 +20,5 @@ std::shared_ptr<WhileStatNode> WhileStatNode::create(const std::shared_ptr<AstNo
 
 void WhileStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<WhileStatNode>());
+    p_Visitor.visitNode(cast<WhileStatNode>());
 }

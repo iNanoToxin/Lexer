@@ -20,5 +20,5 @@ std::shared_ptr<TableNameValueNode> TableNameValueNode::create(const std::shared
 
 void TableNameValueNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<TableNameValueNode>());
+    p_Visitor.visitNode(cast<TableNameValueNode>());
 }

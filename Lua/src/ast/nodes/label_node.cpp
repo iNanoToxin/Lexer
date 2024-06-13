@@ -15,5 +15,5 @@ std::shared_ptr<LabelNode> LabelNode::create(const std::shared_ptr<AstNode>& p_L
 
 void LabelNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<LabelNode>());
+    p_Visitor.visitNode(cast<LabelNode>());
 }

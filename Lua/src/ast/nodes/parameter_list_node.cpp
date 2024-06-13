@@ -18,7 +18,7 @@ std::shared_ptr<ParameterListNode> ParameterListNode::create(const std::vector<s
 
 void ParameterListNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<ParameterListNode>());
+    p_Visitor.visitNode(cast<ParameterListNode>());
 }
 
 bool ParameterListNode::remove(const std::shared_ptr<AstNode>& p_Node, std::size_t* p_Index)

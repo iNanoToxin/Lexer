@@ -20,5 +20,5 @@ std::shared_ptr<IndexNode> IndexNode::create(const std::shared_ptr<AstNode>& p_R
 
 void IndexNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<IndexNode>());
+    p_Visitor.visitNode(cast<IndexNode>());
 }

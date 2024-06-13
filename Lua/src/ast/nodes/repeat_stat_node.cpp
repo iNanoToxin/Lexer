@@ -20,5 +20,5 @@ std::shared_ptr<RepeatStatNode> RepeatStatNode::create(const std::shared_ptr<Ast
 
 void RepeatStatNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<RepeatStatNode>());
+    p_Visitor.visitNode(cast<RepeatStatNode>());
 }

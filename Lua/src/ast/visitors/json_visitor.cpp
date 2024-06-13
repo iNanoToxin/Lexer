@@ -206,8 +206,8 @@ void JsonVisitor::visit(const std::shared_ptr<DoStatNode>& p_Node)
 void JsonVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node)
 {
     ADD_OBJECT({
-        ADD_ENTRY(nameList);
-        ADD_ENTRY(expressionList);
+        ADD_ENTRY(names);
+        ADD_ENTRY(expressions);
         ADD_ENTRY(block);
     });
 }
@@ -309,7 +309,7 @@ void JsonVisitor::visit(const std::shared_ptr<MethodNode>& p_Node)
 void JsonVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
 {
     ADD_OBJECT({
-        ADD_ENTRY(fieldList);
+        ADD_ENTRY(fields);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<TableIndexValueNode>& p_Node)

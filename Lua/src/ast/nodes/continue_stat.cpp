@@ -8,5 +8,5 @@ std::shared_ptr<ContinueStat> ContinueStat::create()
 
 void ContinueStat::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<ContinueStat>());
+    p_Visitor.visitNode(cast<ContinueStat>());
 }

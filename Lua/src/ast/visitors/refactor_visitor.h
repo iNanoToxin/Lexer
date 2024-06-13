@@ -6,10 +6,14 @@
 class RefactorVisitor final : public AstVisitor
 {
 private:
-    std::shared_ptr<AstNode> m_Result;
     ScopeStack m_ScopeTree;
 
+    void pushLocal(const std::shared_ptr<AstNode>& p_Node);
+
 public:
+    std::unordered_map<std::shared_ptr<AstNode>, VariableInfo> getVariables() const;
+
+protected:
     void visit(const std::shared_ptr<AttributeNode>& p_Node) override;
     void visit(const std::shared_ptr<BooleanNode>& p_Node) override;
     void visit(const std::shared_ptr<IdentifierNode>& p_Node) override;
@@ -53,11 +57,4 @@ public:
     void visit(const std::shared_ptr<FuncNameNode>& p_Node) override;
     void visit(const std::shared_ptr<LabelNode>& p_Node) override;
     void visit(const std::shared_ptr<SemicolonNode>& p_Node) override;
-
-    void pushLocal(const std::shared_ptr<AstNode>& p_Node);
-
-    std::unordered_map<std::shared_ptr<AstNode>, VariableInfo> getVariables() const
-    {
-        return m_ScopeTree.getVariables();
-    }
 };

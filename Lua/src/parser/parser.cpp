@@ -485,7 +485,7 @@ std::shared_ptr<AstNode> Parser::getFunctionName() {
     {
         consume();
 
-        std::shared_ptr<AstNode> name = getName();
+        const std::shared_ptr<AstNode> name = getName();
         LL_assert(name != nullptr, "Expected name after `.` in function name.");
 
         root = MemberNode::create(root, name);

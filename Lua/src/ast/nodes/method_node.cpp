@@ -20,5 +20,5 @@ std::shared_ptr<MethodNode> MethodNode::create(const std::shared_ptr<AstNode>& p
 
 void MethodNode::accept(AstVisitor& p_Visitor)
 {
-    p_Visitor.visit(cast<MethodNode>());
+    p_Visitor.visitNode(cast<MethodNode>());
 }
