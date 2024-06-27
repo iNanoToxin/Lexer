@@ -4,7 +4,6 @@
 #include "ast/visitors/ast_visitor.h"
 #include "utilities/math.h"
 #include "lua.h"
-#include "lnumutils.h"
 
 std::shared_ptr<NumberNode> NumberNode::create(const std::string& p_Number)
 {
@@ -103,19 +102,5 @@ LuaInteger NumberNode::toInt() const
 
 std::string NumberNode::toString() const
 {
-    // char s[LUAI_MAXNUM2STR];
-    // char* s2 = luai_num2str(s, 4343.0);
-    // std::cout << s << " format: " << (s2[0] == '\0') << std::endl;
-    //
-    // for (int i = 0; i < LUAI_MAXNUM2STR; i++)
-    // {
-    //     if (s[i] == '\0')
-    //     {
-    //         break;
-    //     }
-    //     std::cout << s[i];
-    // }
-    // std::cout << std::endl;
-
-    return "std::string{s}";
+    return "__NOT_IMPLEMENTED__";
 }

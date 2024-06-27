@@ -3,7 +3,15 @@ project(Lua_Lexer)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(third-party/luau)
+#--------------------------------FETCH-LUAU--------------------------------#
+include(FetchContent)
+FetchContent_Declare(
+    Luau
+    GIT_REPOSITORY https://github.com/luau-lang/luau.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(Luau)
+#--------------------------------FETCH-LUAU--------------------------------#
 
 file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 
