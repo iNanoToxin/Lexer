@@ -62,6 +62,7 @@ private:
     std::weak_ptr<AstNode> m_Parent;
     std::weak_ptr<AstNode> m_Reference;
     bool m_IsExpression = false;
+    bool m_IsStatic = true;
 public:
     AstKind kind;
 
@@ -82,7 +83,12 @@ public:
     void setExpression(bool p_IsExpression);
     void setReference(const std::shared_ptr<AstNode>& p_Reference);
     void setParent(const std::shared_ptr<AstNode>& p_Parent);
+    void setStatic(bool p_IsStatic);
+
+    void setStatic(const std::shared_ptr<AstNode>& p_Node);
     bool isExpression() const;
+    bool isStatic() const;
+
     std::shared_ptr<AstNode> getReference() const;
     std::shared_ptr<AstNode> getParent() const;
     std::shared_ptr<BlockNode> getBlock(int* p_Depth = nullptr) const;
@@ -90,8 +96,10 @@ public:
 
     template <class T>
     std::shared_ptr<T> getAncestor() const;
+
     template <class T>
     std::shared_ptr<T> getParent() const;
+
     template <class T>
     std::shared_ptr<T> cast();
 };

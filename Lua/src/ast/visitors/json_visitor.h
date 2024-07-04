@@ -9,7 +9,7 @@ private:
     JsonBuilder m_Builder;
 
 public:
-    explicit JsonVisitor() : m_Builder(2) {}
+    explicit JsonVisitor() : m_Builder(4) {}
 
     std::string getResult() const;
 

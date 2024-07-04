@@ -3,10 +3,12 @@
 #include "ast/scope/scope_tree.h"
 #include "ast_visitor.h"
 #include "ast/nodes/ast_node.h"
+#include "ast/scope/scope.h"
 
 class EvalVisitor final : public AstVisitor
 {
 private:
+    Scope m_Scope;
     std::shared_ptr<AstNode> m_Result;
     std::unordered_map<std::shared_ptr<AstNode>, VariableInfo> m_Variables;
 
@@ -60,37 +62,3 @@ protected:
     void visit(const std::shared_ptr<LabelNode>& p_Node) override;
     void visit(const std::shared_ptr<SemicolonNode>& p_Node) override;
 };
-
-bool perform_binary_op(
-    std::shared_ptr<AstNode>& p_Result,
-    const std::shared_ptr<AstNode>& p_Lhs,
-    double (*p_Operation)(double, double),
-    const std::shared_ptr<AstNode>& p_Rhs,
-    bool p_ForceDouble = false
-);
-
-bool perform_comparison(
-    std::shared_ptr<AstNode>& p_Result,
-    const std::shared_ptr<AstNode>& p_Lhs,
-    bool (*p_Operation)(double, double),
-    const std::shared_ptr<AstNode>& p_Rhs
-);
-
-bool perform_concatenation(
-    std::shared_ptr<AstNode>& p_Result,
-    const std::shared_ptr<AstNode>& p_Lhs,
-    const std::shared_ptr<AstNode>& p_Rhs
-);
-
-bool is_allowed_comparison(const std::shared_ptr<AstNode>& p_Node);
-bool convert_to_bool(bool* p_Bool, const std::shared_ptr<AstNode>& p_Node);
-
-void merge_blocks(
-    const std::shared_ptr<AstNode>& p_BlockA,
-    const std::shared_ptr<AstNode>& p_BlockB,
-    const std::shared_ptr<AstNode>& p_Node
-);
-
-std::vector<std::shared_ptr<AstNode>> get_variable_list(const std::shared_ptr<AstNode>& p_Node);
-
-bool remove_assignment(const std::shared_ptr<AstNode>& p_Node);

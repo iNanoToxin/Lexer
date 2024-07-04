@@ -42,9 +42,24 @@ void AstNode::setParent(const std::shared_ptr<AstNode>& p_Parent)
     m_Parent = p_Parent;
 }
 
+void AstNode::setStatic(const bool p_IsStatic)
+{
+    m_IsStatic = p_IsStatic;
+}
+
+void AstNode::setStatic(const std::shared_ptr<AstNode>& p_Node)
+{
+    m_IsStatic = m_IsStatic && p_Node->isStatic();
+}
+
 bool AstNode::isExpression() const
 {
     return m_IsExpression;
+}
+
+bool AstNode::isStatic() const
+{
+    return m_IsStatic;
 }
 
 std::shared_ptr<AstNode> AstNode::getReference() const

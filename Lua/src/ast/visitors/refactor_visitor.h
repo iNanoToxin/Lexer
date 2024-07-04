@@ -1,4 +1,5 @@
 #pragma once
+#include <stack>
 #include "ast_visitor.h"
 #include "ast/scope/scope_tree.h"
 
@@ -6,6 +7,7 @@
 class RefactorVisitor final : public AstVisitor
 {
 private:
+    std::stack<std::shared_ptr<AstNode>> m_FunctionStack;
     ScopeStack m_ScopeTree;
 
     void pushLocal(const std::shared_ptr<AstNode>& p_Node);

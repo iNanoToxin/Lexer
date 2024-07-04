@@ -2,7 +2,7 @@
 #include <string>
 #include "../../utilities/string.h"
 
-#define ADD_ENTRY(NAME)                \
+#define add_entry(NAME)                \
 do                                     \
 {                                      \
     if (p_Node->NAME != nullptr)       \
@@ -17,11 +17,12 @@ do                                     \
 }                                      \
 while (false)
 
-#define ADD_OBJECT(BODY)                               \
+#define add_object(BODY)                               \
 do                                                     \
 {                                                      \
     m_Builder.addObject();                             \
     m_Builder.addEntry("kind", p_Node->getKindName()); \
+    m_Builder.addEntry("static", p_Node->isStatic());  \
     BODY                                               \
     m_Builder.endObject();                             \
 }                                                      \
@@ -30,30 +31,30 @@ while (false)
 
 void JsonVisitor::visit(const std::shared_ptr<AttributeNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(value);
-        ADD_ENTRY(attribute);
+    add_object({
+        add_entry(value);
+        add_entry(attribute);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<BooleanNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addEntry("value", p_Node->value);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<IdentifierNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addEntry("name", p_Node->getName());
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<NilNode>& p_Node)
 {
-    ADD_OBJECT();
+    add_object();
 }
 void JsonVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         if (p_Node->isInt())
         {
             m_Builder.addEntry("value", p_Node->getInt());
@@ -66,40 +67,40 @@ void JsonVisitor::visit(const std::shared_ptr<NumberNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<StringNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addEntry("string", String::parse_escape_string(p_Node->getString()));
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<VarargsNode>& p_Node)
 {
-    ADD_OBJECT();
+    add_object();
 }
 
 void JsonVisitor::visit(const std::shared_ptr<BinaryOpNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addEntry("op", p_Node->op);
-        ADD_ENTRY(lhs);
-        ADD_ENTRY(rhs);
+        add_entry(lhs);
+        add_entry(rhs);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<UnaryOpNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addEntry("op", p_Node->op);
-        ADD_ENTRY(value);
+        add_entry(value);
     });
 }
 
 void JsonVisitor::visit(const std::shared_ptr<ArgumentListNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(list);
+    add_object({
+        add_entry(list);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("list");
         for (const std::shared_ptr<AstNode>& child : p_Node->list)
         {
@@ -110,7 +111,7 @@ void JsonVisitor::visit(const std::shared_ptr<AttributeListNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("list");
         for (const std::shared_ptr<AstNode>& child : p_Node->list)
         {
@@ -121,7 +122,7 @@ void JsonVisitor::visit(const std::shared_ptr<ExpressionListNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("list");
         for (const std::shared_ptr<AstNode>& child : p_Node->list)
         {
@@ -132,7 +133,7 @@ void JsonVisitor::visit(const std::shared_ptr<FieldListNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<NameListNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("list");
         for (const std::shared_ptr<AstNode>& child : p_Node->list)
         {
@@ -143,7 +144,7 @@ void JsonVisitor::visit(const std::shared_ptr<NameListNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("list");
         for (const std::shared_ptr<AstNode>& child : p_Node->list)
         {
@@ -154,7 +155,7 @@ void JsonVisitor::visit(const std::shared_ptr<ParameterListNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("list");
         for (const std::shared_ptr<AstNode>& child : p_Node->list)
         {
@@ -166,7 +167,7 @@ void JsonVisitor::visit(const std::shared_ptr<VariableListNode>& p_Node)
 
 void JsonVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("statements");
         for (const std::shared_ptr<AstNode>& child : p_Node->statements)
         {
@@ -177,49 +178,49 @@ void JsonVisitor::visit(const std::shared_ptr<BlockNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<ChunkNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(block);
+    add_object({
+        add_entry(block);
     });
 }
 
 void JsonVisitor::visit(const std::shared_ptr<AssignmentStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(lValues);
-        ADD_ENTRY(rValues);
+    add_object({
+        add_entry(lValues);
+        add_entry(rValues);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<BreakStat>& p_Node)
 {
-    ADD_OBJECT();
+    add_object();
 }
 void JsonVisitor::visit(const std::shared_ptr<ContinueStat>& p_Node)
 {
-    ADD_OBJECT();
+    add_object();
 }
 void JsonVisitor::visit(const std::shared_ptr<DoStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(block);
+    add_object({
+        add_entry(block);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<GenericForStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(names);
-        ADD_ENTRY(expressions);
-        ADD_ENTRY(block);
+    add_object({
+        add_entry(names);
+        add_entry(expressions);
+        add_entry(block);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<GotoStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(label);
+    add_object({
+        add_entry(label);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
 {
-    ADD_OBJECT({
+    add_object({
         m_Builder.addArray("control_blocks");
         for (const AstNodePair& pair : p_Node->blocks)
         {
@@ -249,127 +250,127 @@ void JsonVisitor::visit(const std::shared_ptr<IfStatNode>& p_Node)
 }
 void JsonVisitor::visit(const std::shared_ptr<LocalStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(statement);
+    add_object({
+        add_entry(statement);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<NumericForStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(name);
-        ADD_ENTRY(init);
-        ADD_ENTRY(goal);
-        ADD_ENTRY(step);
-        ADD_ENTRY(block);
+    add_object({
+        add_entry(name);
+        add_entry(init);
+        add_entry(goal);
+        add_entry(step);
+        add_entry(block);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<RepeatStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(block);
-        ADD_ENTRY(condition);
+    add_object({
+        add_entry(block);
+        add_entry(condition);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<ReturnStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(args);
+    add_object({
+        add_entry(args);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<WhileStatNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(condition);
-        ADD_ENTRY(block);
+    add_object({
+        add_entry(condition);
+        add_entry(block);
     });
 }
 
 void JsonVisitor::visit(const std::shared_ptr<IndexNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(root);
-        ADD_ENTRY(index);
+    add_object({
+        add_entry(root);
+        add_entry(index);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<MemberNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(root);
-        ADD_ENTRY(member);
+    add_object({
+        add_entry(root);
+        add_entry(member);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<MethodNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(root);
-        ADD_ENTRY(method);
+    add_object({
+        add_entry(root);
+        add_entry(method);
     });
 }
 
 void JsonVisitor::visit(const std::shared_ptr<TableConstructorNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(fields);
+    add_object({
+        add_entry(fields);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<TableIndexValueNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(index);
-        ADD_ENTRY(value);
+    add_object({
+        add_entry(index);
+        add_entry(value);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<TableNameValueNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(name);
-        ADD_ENTRY(value);
+    add_object({
+        add_entry(name);
+        add_entry(value);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<TableValueNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(value);
+    add_object({
+        add_entry(value);
     });
 }
 
 void JsonVisitor::visit(const std::shared_ptr<FuncBodyNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(parameters);
-        ADD_ENTRY(block);
+    add_object({
+        add_entry(parameters);
+        add_entry(block);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<FuncCallNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(root);
-        ADD_ENTRY(args);
+    add_object({
+        add_entry(root);
+        add_entry(args);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<FuncDefNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(name);
-        ADD_ENTRY(body);
+    add_object({
+        add_entry(name);
+        add_entry(body);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<FuncNameNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(name);
+    add_object({
+        add_entry(name);
     });
 }
 
 void JsonVisitor::visit(const std::shared_ptr<LabelNode>& p_Node)
 {
-    ADD_OBJECT({
-        ADD_ENTRY(label);
+    add_object({
+        add_entry(label);
     });
 }
 void JsonVisitor::visit(const std::shared_ptr<SemicolonNode>& p_Node)
 {
-    ADD_OBJECT();
+    add_object();
 }
 
 std::string JsonVisitor::getResult() const
